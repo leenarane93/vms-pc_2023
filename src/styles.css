@@ -1,1 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+
+/*Import CSS Globally*/
+@import "./assets/css/leaflet.css";
+@import "./assets/css/range.css";
+@import "./assets/css/VMS.css";
+@import "./assets/css/main-bs.css";
