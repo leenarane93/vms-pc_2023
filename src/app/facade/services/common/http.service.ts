@@ -1,0 +1,33 @@
+import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import { BehaviorSubject, Observable, take } from 'rxjs';
+import { UserFacadeService } from '../../facade_services/user-facade.service';
+import { Login } from 'src/app/models/request/Login';
+import { SessionService } from './session.service';
+@Injectable({
+  providedIn: 'root'
+})
+export class HttpService {
+  constructor(private http: HttpClient,
+              private _sessionService:SessionService,)
+  { 
+    this.getConfigDetails();
+  }
+  _configDataBS$=new BehaviorSubject<any[]>([]);
+  _configData$=this._configDataBS$.asObservable();
+  public _api_url = "";
+  getConfigDetails(){
+    return this.http.get("../../../../assets/config/config.json")
+    .pipe(take(1))
+    .subscribe((_config:any)=>{
+      this._configDataBS$.next(_config);
+      this._sessionService._setSessionValue("config_data",this._configData$);
+      this._api_url = _config.api_url;
+    })
+  }
+
+  _postMethod(_object:any,_appendUrl:string):Observable<any>{
+    return this.http.post( this._api_url+_appendUrl,_object);
+  }
+
+}

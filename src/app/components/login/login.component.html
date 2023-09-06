@@ -123,57 +123,37 @@
               <div class="clearfix"></div>
               <h3 class="mb-2 mt-2 pt-4 text-center border-top">Sign In</h3>
             </div>
-            <!-- <div class="w-100">
-    <p class="social-media d-flex justify-content-end">
-    <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a>
-    <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a>
-    </p>
-    </div> -->
           </div>
 
-          <form class="signin-form">
+          <form [formGroup]="form"  class="signin-form">
             <div class="form-group mb-3">
               <label class="label" for="name">Username</label>
-              <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted}"
-                placeholder="Username" />
-              <div *ngIf="submitted" class="invalid-feedback">
-                <div *ngIf="">Username is required</div>
+              <input type="text" formControlName="username" class="form-control" placeholder="Username"
+              [ngClass]="{ 'is-invalid': f['username'].touched && f['username'].errors, 'is-valid': f['username'].valid }" />
+              <div *ngIf="f['username'].touched && f['username'].errors" class="invalid-feedback">
+                <div>{{getErrorMessage('username','Username',false,"")}}</div>
               </div>
             </div>
             <div class="form-group mb-3">
               <label class="label" for="password">Password</label>
-              <input type="password" formControlName="password" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted} " placeholder="Password" />
-              <div class="invalid-feedback">
-                <div>Password is required</div>
+              <input type="password" formControlName="password" class="form-control" placeholder="Password" 
+              [ngClass]="{ 'is-invalid': f['password'].touched && f['password'].errors, 'is-valid': f['password'].valid }" />
+              <div *ngIf="f['password'].touched && f['password'].errors" class="invalid-feedback">
+                <div>{{getErrorMessage('password','Password',false,"")}}</div>
               </div>
 
             </div>
             <div class="form-group mb-3">
-              <button [disabled]="loading"
+              <button [disabled]="loading" (click)="loggedIn()"
                 class="btn btn-block gradient-custom-2 aniamteBg rounded submit px-3 text-white border-0"
                 style="line-height: 2em;">
-                <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-1" ></span>
                 Sign In
               </button>
-
             </div>
-            <!-- <div class="form-group d-md-flex">
-    <div class="w-50 text-left">
-    <label class="checkbox-wrap checkbox-primary mb-0">Remember Me
-    <input type="checkbox" checked>
-    <span class="checkmark"></span>
-    </label>
-    </div>
-     <div class="w-50 text-md-right">
-    <a href="#">Forgot Password</a>
-    </div>
-    </div> -->
           </form>
-
         </div>
       </div>
     </div>
   </div>
-
 </section>
