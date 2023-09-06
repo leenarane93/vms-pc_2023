@@ -12,13 +12,15 @@ import { LoaderComponent } from './components/shared/loader/loader.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoaderInterceptor } from './interceptor/interceptors/loader.interceptor';
 import { AuthInterceptor } from './interceptor/interceptors/auth.interceptor';
+import { UserComponent } from './components/user/user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     ConfigurationComponent,
-    LoaderComponent
+    LoaderComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { ConfigurationComponent } from './components/configuration/configuration.component';
 import { AuthGuradService } from './_auth/auth-gurad.service';
+import { UserComponent } from './components/user/user.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,11 @@ const routes: Routes = [
   {
     path: "config",
     component: ConfigurationComponent,
+    canActivate:[AuthGuradService]
+  },
+  {
+    path: "user",
+    component: UserComponent,
     canActivate:[AuthGuradService]
   }
 ];
