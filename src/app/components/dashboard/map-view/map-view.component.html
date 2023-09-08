@@ -1,0 +1,43 @@
+<div class="bg-dark pl-2 pr-2 filterArea" id="filterArea">
+    <div class="row">
+  
+      <div class="btn-group-sm  col-2 p-0 ml-3 mt-2" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-primary btn-rounded" id="btnList" (click)="toggle()">
+          <i class="{{buttonName}}"></i> {{viewName}}
+  
+        </button>
+  
+      </div>
+      <div class="col-md-2 col-lg-2 col-sm-12 form-group  mt-2">
+  
+  
+  
+        <select class="form-control-sm w-100 bg-dark text-light">
+          <option>Select Status</option>
+          <option>Active</option>
+          <option>InActive</option>
+        </select>
+  
+  
+      </div>
+      <div class="col-md-3 col-lg-3 col-sm-12 form-group  mt-2">
+        <select class="form-control-sm w-100 bg-dark text-light">
+          <option>Select Zone</option>
+          <option>North</option>
+          <option>Vadodara </option>
+          <option>Muzaffarnagar</option>
+        </select>
+  
+      </div>
+  
+      <div class="col-md-2 col-lg-2 col-sm-12"></div>
+      <div class="col text-right  mt-2 mb-1">
+        <button class="btn btn-danger btn-rounded btn-fw" id="publishBtn" (click)="openModal()"><i
+            class="icon-video mr-1"></i> Emergency Publish </button>
+      </div>
+    </div>
+  </div>
+  
+  <div id="map" class="map" [ngStyle]="{'display' : listView ? 'initial' : 'none'}"></div>
+  
+  <app-listview [ngStyle]="{'display' : !listView ? 'initial' : 'none' }"></app-listview>

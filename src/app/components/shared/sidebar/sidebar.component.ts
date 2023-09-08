@@ -164,7 +164,7 @@ export class SidebarComponent {
               subMnu.link = menu.menuPath;
               subMnu.link_name = menu.childMenuName;
               _subMnuArr.push(subMnu);
-              if (previousMenuName != "") {
+              if (previousMenuName != "" || menu.childPosition == 1) {
                 _mnu.sub_menu = _subMnuArr;
                 this.menusVM.push(_mnu);
               }

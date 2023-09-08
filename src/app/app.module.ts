@@ -12,10 +12,12 @@ import { LoaderComponent } from './components/shared/loader/loader.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoaderInterceptor } from './interceptor/interceptors/loader.interceptor';
 import { AuthInterceptor } from './interceptor/interceptors/auth.interceptor';
-import { UserComponent } from './components/user/user.component';
+import { UserComponent } from './components/user/user/user.component';
 import { HeaderComponent } from './components/shared/header/header.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
 import { SidebarComponent } from './components/shared/sidebar/sidebar.component';
+import { MapViewComponent } from './components/dashboard/map-view/map-view.component';
+import { RoleComponent } from './components/user/role/role.component';
 
 
 @NgModule({
@@ -27,7 +29,9 @@ import { SidebarComponent } from './components/shared/sidebar/sidebar.component'
     UserComponent,
     HeaderComponent,
     DashboardComponent,
-    SidebarComponent
+    SidebarComponent,
+    MapViewComponent,
+    RoleComponent
   ],
   imports: [
     BrowserModule,

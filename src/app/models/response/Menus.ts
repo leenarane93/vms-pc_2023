@@ -4,7 +4,7 @@ export class Menus{
     headerMenuName !: string;
     childCount !: number;
     childMenuName !: string;
-    chilePosition !: number;
+    childPosition !: number;
     headerPosition !: number;
     menuPath !: string;
     checkedAdd !:boolean;
