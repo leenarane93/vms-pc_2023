@@ -16,4 +16,8 @@ export class AuthenticationService {
     return this._httpService._postMethod( credentials,'User_API/api/User/LoginRequest');
   }
 
+  getMenuByRoleId(role_id : number): Observable<any> {
+    return this._httpService._getMethod('user_API/api/Role/GetMenuListById?id='+role_id);
+  }
+
 }

@@ -13,6 +13,10 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoaderInterceptor } from './interceptor/interceptors/loader.interceptor';
 import { AuthInterceptor } from './interceptor/interceptors/auth.interceptor';
 import { UserComponent } from './components/user/user.component';
+import { HeaderComponent } from './components/shared/header/header.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { SidebarComponent } from './components/shared/sidebar/sidebar.component';
+
 
 @NgModule({
   declarations: [
@@ -20,7 +24,10 @@ import { UserComponent } from './components/user/user.component';
     LoginComponent,
     ConfigurationComponent,
     LoaderComponent,
-    UserComponent
+    UserComponent,
+    HeaderComponent,
+    DashboardComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +35,8 @@ import { UserComponent } from './components/user/user.component';
     BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    StoreModule.forRoot({}, {})
+    StoreModule.forRoot({}, {}),
+    
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
               { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true }],

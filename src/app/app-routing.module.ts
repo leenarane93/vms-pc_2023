@@ -4,6 +4,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ConfigurationComponent } from './components/configuration/configuration.component';
 import { AuthGuradService } from './_auth/auth-gurad.service';
 import { UserComponent } from './components/user/user.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -23,7 +24,11 @@ const routes: Routes = [
     path: "user",
     component: UserComponent,
     canActivate:[AuthGuradService]
-  }
+  },
+  { path: 'dashboard', 
+    component:DashboardComponent, 
+    data:{title :'Dashboard'} 
+  },
 ];
 
 @NgModule({

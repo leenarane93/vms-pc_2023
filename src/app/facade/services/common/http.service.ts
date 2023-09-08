@@ -29,5 +29,9 @@ export class HttpService {
   _postMethod(_object:any,_appendUrl:string):Observable<any>{
     return this.http.post( this._api_url+_appendUrl,_object);
   }
+  
+  _getMethod(_appendUrl:string):Observable<any>{
+    return this.http.get(this._api_url+_appendUrl);
+  }
 
 }

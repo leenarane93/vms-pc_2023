@@ -1,16 +1,27 @@
 <div class="container-scroller">
-    <!-- <alert></alert>
-    <app-header  [title]="title"  *ngIf="user"></app-header> -->
-    <div class="container-fluid page-body-wrapper p-0">
-      <!-- <app-sidebar  *ngIf="user"></app-sidebar> -->
-      <div class="main-panel gradient-custom-2 aniamteBg" style="position: relative;">
-        <div class="grid"></div>
-        <div class="bgGrid" style="width:100%; display:block;position:absolute; z-index: 4; height:100%; top:1"></div>
-        <div class="content-wrapper p-0" style="position: relative;z-index: 4; background: transparent;">
-          <router-outlet></router-outlet>
-          <app-loader></app-loader>
+  <div class="row">
+    <div class="row">
+      <div class="col-md-12">
+        <app-header *ngIf="loggedIn"></app-header>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="container-fluid page-body-wrapper p-0">
+          <app-sidebar *ngIf="loggedIn"></app-sidebar>
+          <div class="main-panel gradient-custom-2 aniamteBg" style="position: relative;">
+            <div class="grid"></div>
+            <div class="bgGrid" style="width:100%; display:block;position:absolute; z-index: 4; height:100%; top:1"></div>
+            <div class="content-wrapper p-0" style="position: relative;z-index: 4; background: transparent;">
+              <router-outlet class="main-div"></router-outlet>
+              <app-loader></app-loader>
+            </div>
+            <!-- <app-footer  *ngIf="loggedIn"></app-footer> -->
+          </div>
         </div>
-      <!-- <app-footer  *ngIf="user"></app-footer> -->
+      </div>
+      
+    </div>
+  
   </div>
-  </div>
-  </div>
+</div>

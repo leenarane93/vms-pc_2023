@@ -15,57 +15,58 @@ export class ConfigurationComponent implements OnInit {
   form!: FormGroup;
   title!: string;
   loading = false;
-  user:any;
-    
-     //dtOptions: DataTables.Settings = {};
-     dtOptions: any = {};
-     allVmsList: any = [];
-     clickStatus: string = " ";
-     nativeElement: any;
-     drawCallback:any;
+  user: any;
 
-    users?: any[];
-   
-    constructor(
-      // private accountService: AccountService, 
-      // private httpClient: HttpClient, 
-      // public modalService: NgbModal,
-      // private formBuilder: FormBuilder,
-      private route:Router
-     ) {}
+  //dtOptions: DataTables.Settings = {};
+  dtOptions: any = {};
+  allVmsList: any = [];
+  clickStatus: string = " ";
+  nativeElement: any;
+  drawCallback: any;
 
-    ngOnInit() {    
-}
-openModal2(id:number){
+  users?: any[];
 
-}
-UserScreen(){
-  this.route.navigate(['user']);
-}
-    deleteUser(id: string) {
-       
-    }
+  constructor(
+    // private accountService: AccountService, 
+    // private httpClient: HttpClient, 
+    // public modalService: NgbModal,
+    // private formBuilder: FormBuilder,
+    private route: Router
+  ) { }
 
-    // edit(i:any, user:any){
-      
-    //   this.isedit=true;
-    //   this.userform.id= user.id;
-    //   this.userform.setValue({
-    //     name:user.name,
-    //     email:user.email,
-    //     phone:user.phone,
-    //     website:user.website
-    //   })
-    // }
+  ngOnInit() {
+    console.log("Form Refreshed");
+  }
+  openModal2(id: number) {
 
-    openModal() {
-   
-        }
+  }
+  UserScreen() {
+    this.route.navigate(['user']);
+  }
+  deleteUser(id: string) {
 
-        ngOnDestroy() {
-   
-      
-        }
-        
-  
+  }
+
+  // edit(i:any, user:any){
+
+  //   this.isedit=true;
+  //   this.userform.id= user.id;
+  //   this.userform.setValue({
+  //     name:user.name,
+  //     email:user.email,
+  //     phone:user.phone,
+  //     website:user.website
+  //   })
+  // }
+
+  openModal() {
+
+  }
+
+  ngOnDestroy() {
+
+
+  }
+
+
 }
