@@ -1,57 +1,60 @@
 <div class="p-4">
+<div class="row">
     <div class="row">
-        <div class="col-xl-12  grid-margin stretch-card">
-            <div class="card border-0 pb-0 bgTable">
-                <div class="card-body p-2">
-                    <div class="table-responsive">
-                        <!-- <button routerLink="add" class="btn dt-button btn-success btn-rounded text-dark mr-3 mb-2">Add User</button> -->
-                        <table class="table table-striped text-center mb-0 table-light" datatable>
-                            <thead>
-                                <tr>
-                                    <th style="width: 35%">First Name</th>
-                                    <th style="width: 25%">Last Name</th>
-                                    <th style="width: 25%">Username</th>
-                                    <th style="width: 100px">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let user of users">
-                                    <td style=" padding: 0px!important;">{{user.firstName}}</td>
-                                    <td style=" padding: 0px!important;">{{user.lastName}}</td>
-                                    <td style=" padding: 0px!important;">{{user.username}}</td>
-                                    <td style=" padding: 0px!important;">
-                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                            <button type="button" class="btn btn-inverse-primary btn-sm"><i
-                                                    class="icon-eye"></i></button>
-                                            <!-- <button type="button" class="btn btn-inverse-primary btn-sm"><i class="fa fa-pencil-square-o" routerLink="edit/{{user.id}}"></i></button> -->
-                                            <button type="button" class="btn btn-inverse-primary btn-sm"
-                                                (click)="openModal2(user.id)"><i
-                                                    class="fa fa-pencil-square-o"></i></button>
-                                            <button type="button" class="btn btn-inverse-primary btn-sm"
-                                                [disabled]="user.isDeleting">
-                                                <span *ngIf="user.isDeleting"
-                                                    class="spinner-border spinner-border-sm"></span>
-                                                <span *ngIf="!user.isDeleting"> <i class="icon-trash"></i></span>
-                                            </button>
-
-
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr *ngIf="!users">
-                                    <td colspan="4" class="text-center">
-                                        <span class="spinner-border spinner-border-lg align-center"></span>
-                                    </td>
-                                    <td style="display: none"></td>
-                                    <td style="display: none"></td>
-                                    <td style="display: none"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-            </div>
+        <div class="col-xl-9">
+            
         </div>
     </div>
+    <div class="col-xl-12  grid-margin stretch-card">
+      
+        <div class="card border-0 pb-0 bgTable">
+          <div class="card-body p-2">       
+        <div class="table-responsive">
+<!-- <button routerLink="add" class="btn dt-button btn-success btn-rounded text-dark mr-3 mb-2">Add User</button> -->
+<table class="table table-striped text-center mb-0 table-light">
+    <thead>
+        <tr>
+            <th style="width: 15%">First Name</th>
+            <th style="width: 15%">Last Name</th>
+            <th style="width: 15%">Username</th>
+            <th style="width: 15%">Role</th>
+            <th style="width: 15%">Created Date</th>
+            <th style="width: 25%">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of users">
+            <td style=" padding: 0px!important;">{{user.firstName}}</td>
+            <td style=" padding: 0px!important;">{{user.lastName}}</td>
+            <td style=" padding: 0px!important;">{{user.username}}</td>
+            <td style=" padding: 0px!important;"> 
+                <div class="btn-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-inverse-primary btn-sm"><i class="icon-eye"></i></button>
+                            <!-- <button type="button" class="btn btn-inverse-primary btn-sm"><i class="fa fa-pencil-square-o" routerLink="edit/{{user.id}}"></i></button> -->
+                            <button type="button" class="btn btn-inverse-primary btn-sm" (click)="openModal2(user.id)"><i class="fa fa-pencil-square-o"></i></button>
+                            <button type="button" class="btn btn-inverse-primary btn-sm"  [disabled]="user.isDeleting">
+                                <span *ngIf="user.isDeleting" class="spinner-border spinner-border-sm"></span>
+                                <span *ngIf="!user.isDeleting"> <i class="icon-trash"></i></span>
+                               </button>
+                            
+                           
+                          </div>
+                            </td>
+        </tr>
+        <tr *ngIf="!users">
+            <td colspan="4" class="text-center">
+                <span class="spinner-border spinner-border-lg align-center"></span>
+            </td>
+            <td style="display: none"></td>
+    <td style="display: none"></td>
+    <td style="display: none"></td>
+        </tr>
+    </tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
