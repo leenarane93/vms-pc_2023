@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { ConfigurationComponent } from './components/configuration/configuration.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { LoaderComponent } from './components/shared/loader/loader.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -18,7 +18,8 @@ import { DashboardComponent } from './components/dashboard/dashboard/dashboard.c
 import { SidebarComponent } from './components/shared/sidebar/sidebar.component';
 import { MapViewComponent } from './components/dashboard/map-view/map-view.component';
 import { RoleComponent } from './components/user/role/role.component';
-
+import { EncdecComponent } from './components/_extras/encdec/encdec.component';
+import {ToastrModule} from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -31,16 +32,19 @@ import { RoleComponent } from './components/user/role/role.component';
     DashboardComponent,
     SidebarComponent,
     MapViewComponent,
-    RoleComponent
+    RoleComponent,
+    EncdecComponent
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
     StoreModule.forRoot({}, {}),
-    
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule 
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
               { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true }],

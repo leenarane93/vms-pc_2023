@@ -5,13 +5,18 @@ import { Login } from 'src/app/models/request/Login';
 import { AuthenticationService } from '../services/user/authentication.service';
 import { User } from 'src/app/models/response/User';
 import { Router } from '@angular/router';
+import { UserLoggedIn } from 'src/app/models/$bs/userLoggedIn';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserFacadeService {
-  public isLoggedinSubject: BehaviorSubject<boolean | false>;
-  public isLoggedin: Observable<boolean | false>;
+  public isLoggedinSubject=new BehaviorSubject<UserLoggedIn>({
+    LoggedIn:false,
+    LoggedInUser :"",
+    LoggedTime : new Date()
+  });
+  public isLoggedin: Observable<UserLoggedIn>;
   public user!:User;
   private items = new BehaviorSubject<any>([]);
   public items$ = this.items.asObservable();
@@ -22,8 +27,6 @@ export class UserFacadeService {
   constructor(private _sessionService:SessionService,
               private _authenticationService: AuthenticationService,
               private _route:Router) {
-                this.isLoggedinSubject = new BehaviorSubject(false);
-                this.isLoggedinSubject.next(false);
                 this.isLoggedin = this.isLoggedinSubject.asObservable();
                }
   
@@ -37,12 +40,20 @@ export class UserFacadeService {
       .pipe(tap(items=>this.items.next(items)))
       .subscribe(res =>{
       if(res.status == 1){
-        this.isLoggedinSubject.next(true);
+        var user =new UserLoggedIn();
+        user.LoggedIn=true;
+        user.LoggedInUser = res.username;
+        user.LoggedTime = new Date();
+        this.isLoggedinSubject.next(user);
         this._sessionService._setSessionValue("access_token",res.token);
         this.user = res;
       }
       else {
-        this.isLoggedinSubject.next(false);
+        var user =new UserLoggedIn();
+        user.LoggedIn=false;
+        user.LoggedInUser = "";
+        user.LoggedTime = new Date();
+        this.isLoggedinSubject.next(user);
         this.user = res;
       }
     });

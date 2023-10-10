@@ -18,8 +18,8 @@ export class AppComponent implements OnInit {
               private _router: Router){ 
     console.log(this.loggedIn);
     this._facadeService.isLoggedin.subscribe(x => {
-      this.loggedIn = x;
-      if(x == false)
+      this.loggedIn = x.LoggedIn;
+      if(x.LoggedIn == false)
         this._router.navigate(['login']);
     });
    }

@@ -7,6 +7,7 @@ import { UserComponent } from './components/user/user/user.component';
 import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
 import { MapViewComponent } from './components/dashboard/map-view/map-view.component';
 import { RoleComponent } from './components/user/role/role.component';
+import { EncdecComponent } from './components/_extras/encdec/encdec.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,10 @@ const routes: Routes = [
   {
     path: "login",
     component: LoginComponent
+  },
+  {
+    path: "encdec",
+    component: EncdecComponent
   },
 
   {
