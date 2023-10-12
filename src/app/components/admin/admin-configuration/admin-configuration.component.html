@@ -38,15 +38,15 @@
             <input type="text" formControlName="lattitude" class="form-control" placeholder="Latitude" 
             [ngClass]="{ 'is-invalid': f['lattitude'].touched && f['lattitude'].errors, 'is-valid': f['lattitude'].valid }"/>
             <div *ngIf="f['lattitude'].touched && f['lattitude'].errors" class="invalid-feedback">
-                <div>{{getErrorMessage('lattitude','Latitude',false,"")}}</div>
+                <div>{{getErrorMessage('lattitude','Latitude',true,"Invalid data available in Latitude")}}</div>
               </div>
         </div>
         <div class="mb-3 col">
             <label class="form-label">Longitude*</label>
-            <input type="text" formControlName="longitude" class="form-control" placeholder="Report URL" 
+            <input type="text" formControlName="longitude" class="form-control" placeholder="Longitude" 
             [ngClass]="{ 'is-invalid': f['longitude'].touched && f['longitude'].errors, 'is-valid': f['longitude'].valid }"/>
             <div *ngIf="f['longitude'].touched && f['longitude'].errors" class="invalid-feedback">
-                <div>{{getErrorMessage('longitude','Longitude',false,"")}}</div>
+                <div>{{getErrorMessage('longitude','Longitude',true,"Invalid data available in Longitude")}}</div>
               </div>
         </div>
     </div>

@@ -102,7 +102,7 @@
                     <div class="form-group mb-3">
                         <button
                             class="btn btn-block gradient-custom-2 aniamteBg rounded submit px-3 text-white border-0"
-                            style="line-height: 2em;" (click)="OpenModal(mymodal)">
+                            style="line-height: 2em;" (click)="OpenModal(configmodal)">
                             Configuration
                         </button>
                     </div>
@@ -112,10 +112,13 @@
         <div class="col-xl-4 d-flex grid-margin stretch-card">
             <div class="card border-0">
                 <div class="card-body pb-0 pl-3 pr-3">
-
+                  <div class="form-group mb-3">
+                    <button
+                        class="btn btn-block gradient-custom-2 aniamteBg rounded submit px-3 text-white border-0"
+                        style="line-height: 2em;" (click)="OpenModal(bulkupload)">
+                        Bulk Upload
+                    </button>
                 </div>
-                <div class="card-footer bgTable">
-                    <h4 class="card-title text-center">Media Audit</h4>
                 </div>
             </div>
         </div>
@@ -203,6 +206,10 @@
 
     </div>
 </div>
-<ng-template #mymodal let-modal>
+<ng-template #configmodal let-modal>
     <app-admin-configuration></app-admin-configuration>
   </ng-template>
+  <ng-template #bulkupload let-modal>
+    <app-bulk-upload></app-bulk-upload>
+  </ng-template>
+  

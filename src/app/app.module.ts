@@ -25,6 +25,7 @@ import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/
 import { AdminConfigurationComponent } from './components/admin/admin-configuration/admin-configuration.component';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
+import { BulkUploadComponent } from './components/admin/bulk-upload/bulk-upload.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
     RoleComponent,
     EncdecComponent,
     AdminDashboardComponent,
-    AdminConfigurationComponent
+    AdminConfigurationComponent,
+    BulkUploadComponent
   ],
   imports: [
     FormsModule,

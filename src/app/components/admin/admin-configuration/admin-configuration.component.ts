@@ -39,8 +39,8 @@ ngOnInit() {
     this.form = this.formBuilder.group({
         apiUrl: ['', Validators.required],
         reportUrl: ['', Validators.required],
-        lattitude: ['', [Validators.required,Validators.pattern('/^[-+]?[0-9]{1,7}(\.[0-9]+)?$/')]],
-        longitude: ['', [Validators.required,Validators.pattern('/^[-+]?[0-9]{1,7}(\.[0-9]+)?$/')]]
+        lattitude: ['', [Validators.required,Validators.pattern('^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,10})$')]],
+        longitude: ['', [Validators.required,Validators.pattern('^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,10})$')]]
     });
 
   this.title = 'Configuration';
