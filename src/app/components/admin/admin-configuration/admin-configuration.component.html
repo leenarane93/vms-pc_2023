@@ -1,0 +1,66 @@
+<!-- <h1>{{title}}</h1> -->
+
+<div class="modal-header bgTable"  style="border-radius: 15px 15px 0 0!important;">
+    <h5 class="modal-title text-uppercase mr-5">{{title}}</h5> 
+    <!-- <h5 class="modal-title text-uppercase mr-5">{{ this.id != null ? 'Edit User':'Add New User'}} </h5>  -->
+    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close" (click)="passBack()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+</div>
+        <!-- <div class="card border-0  pb-0 bgTable">
+           <div class="card-header text-white">{{title}}</div> -->
+          
+<form *ngIf="!loading" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="modal-body">
+    <div class="row">
+        <div class="mb-6 col">
+            <label class="form-label">API URL*</label>
+            <input type="text" formControlName="apiUrl" class="form-control" placeholder="API URL" 
+            [ngClass]="{ 'is-invalid': f['apiUrl'].touched && f['apiUrl'].errors, 'is-valid': f['apiUrl'].valid }"/>
+            <div *ngIf="f['apiUrl'].touched && f['apiUrl'].errors" class="invalid-feedback">
+                <div>{{getErrorMessage('apiUrl','API URL',false,"")}}</div>
+              </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="mb-6 col">
+            <label class="form-label">Report URL*</label>
+            <input type="text" formControlName="reportUrl" class="form-control" placeholder="Report URL" 
+            [ngClass]="{ 'is-invalid': f['reportUrl'].touched && f['reportUrl'].errors, 'is-valid': f['reportUrl'].valid }"/>
+            <div *ngIf="f['reportUrl'].touched && f['reportUrl'].errors" class="invalid-feedback">
+                <div>{{getErrorMessage('reportUrl','Report URL',false,"")}}</div>
+              </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="mb-3 col">
+            <label class="form-label">Latitude*</label>
+            <input type="text" formControlName="lattitude" class="form-control" placeholder="Latitude" 
+            [ngClass]="{ 'is-invalid': f['lattitude'].touched && f['lattitude'].errors, 'is-valid': f['lattitude'].valid }"/>
+            <div *ngIf="f['lattitude'].touched && f['lattitude'].errors" class="invalid-feedback">
+                <div>{{getErrorMessage('lattitude','Latitude',false,"")}}</div>
+              </div>
+        </div>
+        <div class="mb-3 col">
+            <label class="form-label">Longitude*</label>
+            <input type="text" formControlName="longitude" class="form-control" placeholder="Report URL" 
+            [ngClass]="{ 'is-invalid': f['longitude'].touched && f['longitude'].errors, 'is-valid': f['longitude'].valid }"/>
+            <div *ngIf="f['longitude'].touched && f['longitude'].errors" class="invalid-feedback">
+                <div>{{getErrorMessage('longitude','Longitude',false,"")}}</div>
+              </div>
+        </div>
+    </div>
+</div>
+    <div class="modal-footer bg-light">
+        <button [disabled]="submitting" class="btn btn-primary" (click)="saveConfiguration()">
+            <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1" ></span>
+            Save
+        </button>
+        <a routerLink="/admin-dashboard" class="btn btn-link" (click)="passBack()">Cancel</a>
+    </div>
+</form>
+<div *ngIf="loading" class="text-center m-5">
+    <span class="spinner-border spinner-border-lg align-center"></span>
+</div>
+
+<!-- </div> -->

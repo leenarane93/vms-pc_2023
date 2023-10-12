@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { UserFacadeService } from './facade/facade_services/user-facade.service';
 import { User } from './models/response/User';
 import { Router } from '@angular/router';
-
+import { LocationStrategy } from '@angular/common';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,7 +15,8 @@ export class AppComponent implements OnInit {
   user!:User;
   loggedIn:boolean=false;
   constructor(private _facadeService:UserFacadeService,
-              private _router: Router){ 
+              private _router: Router,
+              ){ 
     console.log(this.loggedIn);
     this._facadeService.isLoggedin.subscribe(x => {
       this.loggedIn = x.LoggedIn;

@@ -8,6 +8,8 @@ import { DashboardComponent } from './components/dashboard/dashboard/dashboard.c
 import { MapViewComponent } from './components/dashboard/map-view/map-view.component';
 import { RoleComponent } from './components/user/role/role.component';
 import { EncdecComponent } from './components/_extras/encdec/encdec.component';
+import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/admin-dashboard.component';
+import { AdminConfigurationComponent } from './components/admin/admin-configuration/admin-configuration.component';
 
 const routes: Routes = [
   {
@@ -21,7 +23,8 @@ const routes: Routes = [
   },
   {
     path: "encdec",
-    component: EncdecComponent
+    component: EncdecComponent,
+    canActivate:[AuthGuradService]
   },
 
   {
@@ -47,7 +50,14 @@ const routes: Routes = [
     data:{title :'Dashboard'},
     canActivate:[AuthGuradService]
   },
-
+  { path: 'admin-dashboard', 
+  component:AdminDashboardComponent,
+  canActivate:[AuthGuradService]
+},
+{ path: 'admin-config', 
+  component:AdminConfigurationComponent, 
+  canActivate:[AuthGuradService]
+},
   { path: 'map-view', 
     component:MapViewComponent, 
     data:{title :'Map View'},

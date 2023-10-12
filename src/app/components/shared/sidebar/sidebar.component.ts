@@ -119,14 +119,17 @@ export class SidebarComponent {
 
   ]
   ngOnInit() {
+    this.menus = [];
+    this.menusVM = [];
     this._facadeService.getMenuDetailsByRole(1);
     let _data = this._facadeService.menus$;
+    console.log(_data);
     _data.forEach(ele => {
-      if (ele != undefined && ele.length > 0) {
+      this.menusVM = [];
+      if (ele != undefined && ele.length > 0) {0
         let _subMnuArr: SubMenu[] = [];
         this.menus = ele;
         this.menus.sort(x => x.headerPosition);
-        console.log(this.menus);
         var previousMenuName = "";
         this.menus.forEach(menu => {
           let _mnu = new MenusVM();
@@ -174,7 +177,7 @@ export class SidebarComponent {
         });
       }
     });
-    console.log(this.menusVM);
+    
     var body = $("body");
     var sidebar = $('.sidebar');
     jQuery(function () {

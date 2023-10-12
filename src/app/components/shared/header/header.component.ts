@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import * as $ from 'jquery';
+import { UserFacadeService } from 'src/app/facade/facade_services/user-facade.service';
 import { User } from 'src/app/models/response/User';
 
 @Component({
@@ -10,12 +11,13 @@ import { User } from 'src/app/models/response/User';
 export class HeaderComponent {
   user?: User | null;
   @Input() title: string = '';
-
-  constructor() {
+  username:string="";
+  constructor(private _userFacade:UserFacadeService) {
     //this.accountService.user.subscribe(x => this.user = x);
   }
   ngOnInit() {
-
+    this.user =this._userFacade.user;
+    this.username =this.user.username;
     var body = $("body");
     $('[data-toggle="minimize"]').on("click", function () {
       if ((body.hasClass('sidebar-toggle-display')) || (body.hasClass('sidebar-absolute'))) {
@@ -31,7 +33,7 @@ export class HeaderComponent {
   }
 
   logout() {
-    //this.accountService.logout();
+    this._userFacade.ClearUserObject();
   }
 
 }

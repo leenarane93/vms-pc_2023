@@ -37,15 +37,18 @@ export class LoginComponent implements OnInit {
   }
   get f() { return this.form.controls; }
   ngOnInit() {
-    const bs$ = new BehaviorSubject(this._facadeService.items$);
-    console.log(bs$.getValue());
-    this._facadeService.items$;
+    this._facadeService.ClearUserObject();
+    //const bs$ = new BehaviorSubject(this._facadeService.items$);
+    //console.log(bs$.getValue());
+    //this._facadeService.items$;
     this._facadeService.removeSessionValue("access_token");
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
+
+  
   getErrorMessage(_controlName: any, _controlLable: any, _isPattern: boolean = false, _msg: string) {
     return getErrorMsg(this.form, _controlName, _controlLable, _isPattern, _msg);
   }
@@ -55,14 +58,26 @@ export class LoginComponent implements OnInit {
     const bs$ = new BehaviorSubject(this._facadeService.items$);
     _login.Password = this.form.controls["password"].value;
     _login.Username = this.form.controls["username"].value;
-    this._facadeService.loginAuthenticate(_login);
-    this._authenticationService.login(_login).subscribe(res =>{
-      if(res!=null){
-        if(res.status == 1)
-          this.router.navigate(["dashboard"]);
-        else
-          this.toastr.error("Invalid username or password.");
-      }
-    })
+    
+    // if(_login.Username.toLowerCase() == environment.user && _login.Password == environment.password){
+    //   this.router.navigate(["admin-dashboard"]);
+    // }
+    // else{
+      this._facadeService.loginAuthenticate(_login);
+      this._authenticationService.login(_login).subscribe(res =>{
+        if(res!=null){
+          if(res.status == 1)
+          {
+            if(_login.Username == environment.user)
+            this.router.navigate(["admin-dashboard"]);
+          else
+            this.router.navigate(["dashboard"]);
+          }
+          else
+            this.toastr.error("Invalid username or password.");
+        }
+      })
+    //}
+    
   }
 }

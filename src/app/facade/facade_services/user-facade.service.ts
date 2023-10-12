@@ -70,8 +70,21 @@ export class UserFacadeService {
   getMenuDetailsByRole(id:number) {
     this._authenticationService.getMenuByRoleId(id).subscribe(res=>{
       if(res != null){
+        this.menus.next(null);
         this.menus.next(res);
       }
     });
+  }
+
+  ClearUserObject(){
+    var _user = new UserLoggedIn();
+    _user.LoggedIn =false;
+    _user.LoggedInUser="";
+    _user.LoggedTime=new Date();
+    this.isLoggedinSubject.next(_user);
+    if(this.user != undefined){
+      this.user.status = "0";
+    }
+    this._route.navigate(['login']);
   }
 }

@@ -20,6 +20,11 @@ import { MapViewComponent } from './components/dashboard/map-view/map-view.compo
 import { RoleComponent } from './components/user/role/role.component';
 import { EncdecComponent } from './components/_extras/encdec/encdec.component';
 import {ToastrModule} from 'ngx-toastr';
+import { BackButtonDisableModule } from 'angular-disable-browser-back-button';
+import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/admin-dashboard.component';
+import { AdminConfigurationComponent } from './components/admin/admin-configuration/admin-configuration.component';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -33,7 +38,9 @@ import {ToastrModule} from 'ngx-toastr';
     SidebarComponent,
     MapViewComponent,
     RoleComponent,
-    EncdecComponent
+    EncdecComponent,
+    AdminDashboardComponent,
+    AdminConfigurationComponent
   ],
   imports: [
     FormsModule,
@@ -44,10 +51,17 @@ import {ToastrModule} from 'ngx-toastr';
     ReactiveFormsModule,
     StoreModule.forRoot({}, {}),
     ToastrModule.forRoot(),
-    BrowserAnimationsModule 
+    BrowserAnimationsModule,
+    BackButtonDisableModule.forRoot({
+      preserveScroll: true
+    }),
+    NgbModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
-              { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true }],
+              { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true },
+              NgbActiveModal,
+              JwtHelperService,
+              { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
