@@ -52,7 +52,7 @@ const routes: Routes = [
   },
   { path: 'admin-dashboard', 
   component:AdminDashboardComponent,
-  canActivate:[AuthGuradService]
+  //canActivate:[AuthGuradService]
 },
 { path: 'admin-config', 
   component:AdminConfigurationComponent, 

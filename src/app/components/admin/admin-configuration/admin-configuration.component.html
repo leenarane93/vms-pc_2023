@@ -14,45 +14,38 @@
     <div class="modal-body">
     <div class="row">
         <div class="mb-6 col">
-            <label class="form-label">API URL*</label>
-            <input type="text" formControlName="apiUrl" class="form-control" placeholder="API URL" 
-            [ngClass]="{ 'is-invalid': f['apiUrl'].touched && f['apiUrl'].errors, 'is-valid': f['apiUrl'].valid }"/>
-            <div *ngIf="f['apiUrl'].touched && f['apiUrl'].errors" class="invalid-feedback">
-                <div>{{getErrorMessage('apiUrl','API URL',false,"")}}</div>
-              </div>
+            <label class="form-label">Unit*</label>
+            <select formControlName="prmUnit" class="form-control-sm w-100 bg-dark text-light" (change)="UnitChange()">
+                <option value="0">--Select Unit--</option>
+                <option  *ngFor="let v of _configData.config_unit" value="{{v.key}}">{{v.value}}</option>
+              </select>
         </div>
     </div>
     <div class="row">
         <div class="mb-6 col">
-            <label class="form-label">Report URL*</label>
-            <input type="text" formControlName="reportUrl" class="form-control" placeholder="Report URL" 
-            [ngClass]="{ 'is-invalid': f['reportUrl'].touched && f['reportUrl'].errors, 'is-valid': f['reportUrl'].valid }"/>
-            <div *ngIf="f['reportUrl'].touched && f['reportUrl'].errors" class="invalid-feedback">
-                <div>{{getErrorMessage('reportUrl','Report URL',false,"")}}</div>
-              </div>
+            <label class="form-label">Parameter*</label>
+            <select formControlName="prmKey" class="form-control-sm w-100 bg-dark text-light">
+                <option>--Select Parameter--</option>
+                <option *ngFor="let p of _parameterData" value="{{p.key}}">{{p.value}}</option>
+            </select>
+            <!-- <div *ngIf="f['apiUrl'].touched && f['apiUrl'].errors" class="invalid-feedback">
+                <div>{{getErrorMessage('apiUrl','API URL',false,"")}}</div>
+              </div> -->
         </div>
     </div>
     <div class="row">
-        <div class="mb-3 col">
-            <label class="form-label">Latitude*</label>
-            <input type="text" formControlName="lattitude" class="form-control" placeholder="Latitude" 
-            [ngClass]="{ 'is-invalid': f['lattitude'].touched && f['lattitude'].errors, 'is-valid': f['lattitude'].valid }"/>
-            <div *ngIf="f['lattitude'].touched && f['lattitude'].errors" class="invalid-feedback">
-                <div>{{getErrorMessage('lattitude','Latitude',true,"Invalid data available in Latitude")}}</div>
-              </div>
-        </div>
-        <div class="mb-3 col">
-            <label class="form-label">Longitude*</label>
-            <input type="text" formControlName="longitude" class="form-control" placeholder="Longitude" 
-            [ngClass]="{ 'is-invalid': f['longitude'].touched && f['longitude'].errors, 'is-valid': f['longitude'].valid }"/>
-            <div *ngIf="f['longitude'].touched && f['longitude'].errors" class="invalid-feedback">
-                <div>{{getErrorMessage('longitude','Longitude',true,"Invalid data available in Longitude")}}</div>
+        <div class="mb-6 col">
+            <label class="form-label">Value*</label>
+            <input type="text" formControlName="prmValue" class="form-control" placeholder="Value" 
+            [ngClass]="{ 'is-invalid': f['prmValue'].touched && f['prmValue'].errors, 'is-valid': f['prmValue'].valid }"/>
+            <div *ngIf="f['prmValue'].touched && f['prmValue'].errors" class="invalid-feedback">
+                <div>{{getErrorMessage('prmValue','Value',true,"Invalid data available in Value")}}</div>
               </div>
         </div>
     </div>
 </div>
     <div class="modal-footer bg-light">
-        <button [disabled]="submitting" class="btn btn-primary" (click)="saveConfiguration()">
+        <button [disabled]="!form.valid" class="btn btn-primary" (click)="saveConfiguration()">
             <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1" ></span>
             Save
         </button>

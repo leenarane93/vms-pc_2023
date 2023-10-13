@@ -12,6 +12,7 @@ import { NgbToast } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'src/app/facade/services/user/authentication.service';
 import { UserLoggedIn } from 'src/app/models/$bs/userLoggedIn';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -26,11 +27,12 @@ export class LoginComponent implements OnInit {
   config$!: Observable<any>;
   _isLoggedIn: boolean = false;
   constructor(private formBuilder: FormBuilder,
-    private _authenticationService:AuthenticationService,
+    private _authenticationService: AuthenticationService,
     private loaderService: LoaderService,
     private router: Router,
     private _facadeService: UserFacadeService,
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    private route: ActivatedRoute) {
     //this.config$ = this._facadeService._configData$;
     console.log(this._facadeService.getApiUrl());
     this.version = environment.version;
@@ -48,7 +50,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  
+
   getErrorMessage(_controlName: any, _controlLable: any, _isPattern: boolean = false, _msg: string) {
     return getErrorMsg(this.form, _controlName, _controlLable, _isPattern, _msg);
   }
@@ -58,26 +60,23 @@ export class LoginComponent implements OnInit {
     const bs$ = new BehaviorSubject(this._facadeService.items$);
     _login.Password = this.form.controls["password"].value;
     _login.Username = this.form.controls["username"].value;
-    
-    // if(_login.Username.toLowerCase() == environment.user && _login.Password == environment.password){
-    //   this.router.navigate(["admin-dashboard"]);
-    // }
-    // else{
+
       this._facadeService.loginAuthenticate(_login);
-      this._authenticationService.login(_login).subscribe(res =>{
-        if(res!=null){
-          if(res.status == 1)
-          {
-            if(_login.Username == environment.user)
-            this.router.navigate(["admin-dashboard"]);
-          else
-            this.router.navigate(["dashboard"]);
+      this._authenticationService.login(_login).subscribe(res => {
+        if (res != null) {
+          if (res.status == 1) {
+            if (_login.Username == environment.user)
+            {
+              this.router.navigate(["admin-dashboard"],{fragment:"0"});
+            }
+            else
+              this.router.navigate(["dashboard"]);
           }
           else
             this.toastr.error("Invalid username or password.");
         }
       })
+    }
     //}
-    
+
   }
-}
