@@ -14,7 +14,7 @@ export class AdminService {
     addConfigurationData(data:any){
       return this._httpService._postMethod( data,'administration_api/api/ConfigParam/AddConfigDetails');
     }
-
+    
     getKeysDataForConfig(key:string){
       return this._http.get(this.jsonurl);
     }

@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { first } from 'rxjs';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
 import { UserFacadeService } from 'src/app/facade/facade_services/user-facade.service';
+import { LoaderService } from 'src/app/facade/services/common/loader.service';
 import { PrmGlobal } from 'src/app/models/request/config';
 import { getErrorMsg } from 'src/app/utils/utils';
 
@@ -37,7 +38,8 @@ export class AdminConfigurationComponent implements AfterViewInit {
     private _adminFacade :AdminFacadeService,
     private _toastr : ToastrService,
     private _cdr:ChangeDetectorRef,
-    private _userFacade:UserFacadeService
+    private _userFacade:UserFacadeService,
+    private _loader:LoaderService
 ) { }
 ngAfterViewInit(){
   this._cdr.detectChanges();
@@ -111,14 +113,17 @@ saveConfiguration() {
       }
   });
   if(valid == true) {
-    this._adminFacade.AddConfigData(_data).subscribe(res => {
-      if(res == 1)
-        this._toastr.success("Data successfully submitted.");
-      else 
-        this._toastr.error("Something went wrong.");
-    },(err)=>{
-      this._toastr.error(err);
-    })
+    this._loader.showLoader();
+    // this._adminFacade.AddConfigData(_data).subscribe(res => {
+    //   if(res == 1)
+    //   {
+    //     this._toastr.success("Data successfully submitted.");
+    //   }
+    //   else 
+    //     this._toastr.error("Something went wrong.");
+    // },(err)=>{
+    //   this._toastr.error(err);
+    // })
   }
   console.log(_data);
 }
