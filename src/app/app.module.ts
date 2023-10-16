@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -26,6 +26,7 @@ import { AdminConfigurationComponent } from './components/admin/admin-configurat
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { BulkUploadComponent } from './components/admin/bulk-upload/bulk-upload.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,9 @@ import { BulkUploadComponent } from './components/admin/bulk-upload/bulk-upload.
     BackButtonDisableModule.forRoot({
       preserveScroll: true
     }),
-    NgbModule
+    NgbModule,
+    NgChartsModule,
+    LeafletModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
               { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true },

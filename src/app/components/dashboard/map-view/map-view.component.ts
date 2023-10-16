@@ -1,9 +1,10 @@
 import { Component, HostListener } from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import Map from 'ol/Map';
+//import Map from 'ol/Map';
 import View from 'ol/View';
 import { OSM } from 'ol/source';
 import TileLayer from 'ol/layer/Tile';
+import {icon, latLng, LeafletMouseEvent, Map, MapOptions, marker, tileLayer} from 'leaflet';
 
 @Component({
   selector: 'app-map-view',
@@ -16,25 +17,31 @@ export class MapViewComponent {
   buttonName:any = 'fa fa-list';
   viewName:any = 'View List';
   hide: any;
- 
+  options = {
+    layers: [
+        tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
+    ],
+    zoom: 8,
+    center: latLng(22.29985,73.19555)
+};
   constructor(
     public modalService: NgbModal,
   ) { }
  
  
   ngOnInit(): void {
-    this.map = new Map({
-    layers: [
-      new TileLayer({
-        source: new OSM(),
-      }),
-    ],
-    target: 'map',
-    view: new View({ 
-      center: [0, 0],
-      zoom: 2,maxZoom: 18, 
-    }),
-  });
+  //   this.map = new Map({
+  //   layers: [
+  //     new TileLayer({
+  //       source: new OSM(),
+  //     }),
+  //   ],
+  //   target: 'map',
+  //   view: new View({ 
+  //     center: [0, 0],
+  //     zoom: 2,maxZoom: 18, 
+  //   }),
+  // });
  }
 
  openModal() {

@@ -6,6 +6,7 @@ import { AuthenticationService } from '../services/user/authentication.service';
 import { User } from 'src/app/models/response/User';
 import { Router } from '@angular/router';
 import { UserLoggedIn } from 'src/app/models/$bs/userLoggedIn';
+import { DashboardService } from '../services/dashboard/dashboard.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +27,10 @@ export class UserFacadeService {
 
   constructor(private _sessionService:SessionService,
               private _authenticationService: AuthenticationService,
-              private _route:Router) {
-                this.isLoggedin = this.isLoggedinSubject.asObservable();
-               }
+              private _route:Router,
+              private _dashboard : DashboardService ) {
+                this.isLoggedin = this.isLoggedinSubject.asObservable();                  
+                }
   
   getApiUrl() {
    return this._sessionService._getSessionValue("api_url");
@@ -86,5 +88,9 @@ export class UserFacadeService {
       this.user.status = "0";
     }
     this._route.navigate(['login']);
+  }
+
+  GetDashboardCharts(){
+    return this._dashboard.getDashboardChartData();
   }
 }

@@ -38,6 +38,8 @@
     </div>
   </div>
   
-  <div id="map" class="map" [ngStyle]="{'display' : listView ? 'initial' : 'none'}"></div>
+  <div style="height: 600px;"
+  leaflet 
+  [leafletOptions]="options">
+</div>
   
-  <app-listview [ngStyle]="{'display' : !listView ? 'initial' : 'none' }"></app-listview>
