@@ -27,6 +27,7 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { BulkUploadComponent } from './components/admin/bulk-upload/bulk-upload.component';
 import { NgChartsModule } from 'ng2-charts';
+import { ZoneMngComponent } from './components/admin/zone-mng/zone-mng.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { NgChartsModule } from 'ng2-charts';
     EncdecComponent,
     AdminDashboardComponent,
     AdminConfigurationComponent,
-    BulkUploadComponent
+    BulkUploadComponent,
+    ZoneMngComponent
   ],
   imports: [
     FormsModule,

@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import * as $ from 'jquery';
 import { UserFacadeService } from 'src/app/facade/facade_services/user-facade.service';
 import { User } from 'src/app/models/response/User';
@@ -10,12 +11,20 @@ import { User } from 'src/app/models/response/User';
 })
 export class HeaderComponent {
   user?: User | null;
-  @Input() title: string = '';
+  title: any;
   username:string="";
-  constructor(private _userFacade:UserFacadeService) {
+  constructor(private _userFacade:UserFacadeService,
+              private route:ActivatedRoute) {
     //this.accountService.user.subscribe(x => this.user = x);
   }
   ngOnInit() {
+    this.route.data.subscribe((data) => {
+      this.title = data;
+      console.log(this.title);
+    });
+    console.log(this.title);
+    this.title = this.route.snapshot.data['data'];
+    console.log(this.title);
     this.user =this._userFacade.user;
     this.username =this.user.username;
     var body = $("body");

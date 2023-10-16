@@ -10,6 +10,7 @@ import { RoleComponent } from './components/user/role/role.component';
 import { EncdecComponent } from './components/_extras/encdec/encdec.component';
 import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/admin-dashboard.component';
 import { AdminConfigurationComponent } from './components/admin/admin-configuration/admin-configuration.component';
+import { ZoneMngComponent } from './components/admin/zone-mng/zone-mng.component';
 
 const routes: Routes = [
   {
@@ -30,27 +31,31 @@ const routes: Routes = [
   {
     path: "config",
     component: ConfigurationComponent,
+    data:{title :'Configuration'},
     canActivate:[AuthGuradService]
   },
 
   {
     path: "users/user-master",
     component: UserComponent,
+    data:{title :'User Management'},
     canActivate:[AuthGuradService]
   },
 
   {
     path: "users/role-master",
     component: RoleComponent,
+    data:{title :'Role Management'},
     canActivate:[AuthGuradService]
   },
 
   { path: 'dashboard', 
     component:DashboardComponent, 
-    data:{title :'Dashboard'},
+    data:[{title :'Dashboard'}],
     canActivate:[AuthGuradService]
   },
   { path: 'admin-dashboard', 
+  data:{title :'Dashboard'},
   component:AdminDashboardComponent,
   //canActivate:[AuthGuradService]
 },
@@ -63,6 +68,12 @@ const routes: Routes = [
     data:{title :'Map View'},
     canActivate:[AuthGuradService]
   },
+  {
+    path:'masters/zone-master',
+    component:ZoneMngComponent,
+    data:{title :'Zone Management'},
+    canActivate:[AuthGuradService]
+  }
 ];
 
 @NgModule({
