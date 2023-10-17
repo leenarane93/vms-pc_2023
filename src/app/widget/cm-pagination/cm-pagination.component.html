@@ -1,31 +1,27 @@
-<pagination-template #p="paginationApi" [id]="id" [maxSize]="maxSize" (pageChange)="pageChange.emit($event)">
-
-	<ul class="ngx-pagination" role="navigation" [attr.aria-label]="screenReaderPaginationLabel" *ngIf="!(autoHide && p.pages.length <= 1)">
-
-
-		<li [class.current]="p.getCurrent() === page.value" *ngFor="let page of p.pages">
-
-			<div *ngIf="p.getCurrent() === page.value">
-				<span class="show-for-sr">{{ screenReaderCurrentLabel }} </span>
-				<span>{{ 5*(page.label-1)+1 }} - {{5*p.getCurrent()}}</span>
-			</div>
-		</li>
-
-		<li class="total-pages" *ngIf="directionLinks">
-			<span>
-of {{totalListCount * p.pages.length }}
-			</span>
-		</li>
-		<li class="pagination-previous" [class.disabled]="p.isFirstPage()" *ngIf="directionLinks">
-			<a *ngIf="!p.isFirstPage()" (click)="p.previous()"> </a>
-		</li>
-		<li class="pagination-next" [class.disabled]="p.isLastPage()" *ngIf="directionLinks">
-			<a *ngIf="!p.isLastPage()" (click)="p.next()" [attr.aria-label]="nextLabel + ' ' + screenReaderPageLabel">
-				<span class="show-for-sr">{{ screenReaderPageLabel }}</span>
-			</a>
-			<span *ngIf="p.isLastPage()">
-                <span class="show-for-sr">{{ screenReaderPageLabel }}</span>
-			</span>
-		</li>
-	</ul>
-</pagination-template>
+<div class="row">
+	<div class="col-md-2">
+		<span>Records Per Page</span>
+	</div>
+	<div class="col-md-1 float-right">
+		<select class="form-control ">
+			<option>10</option>
+			<option>20</option>
+			<option>50</option>
+			<option>100</option>
+		</select>
+	</div>
+	<div class="col-md-9 float-left">
+		<nav aria-label="page navigation example">
+			<ul class="pagination">
+				<li class="page-item" (click)="onClickPage(activePage - 1)"><a class="page-link"
+						href="javascript:void(0);">«
+						Previous</a></li>
+				<li class="page-item" [ngClass]="{'active': activePage === item}" *ngFor="let item of pages"
+					(click)="onClickPage(item)"><a class="page-link" href="javascript:void(0);">{{item}}</a></li>
+				<li class="page-item" (click)="onClickPage(activePage + 1)"><a class="page-link"
+						href="javascript:void(0);">Next
+						»</a></li>
+			</ul>
+		</nav>
+	</div>
+</div>

@@ -1,22 +1,29 @@
 <div class="container text-center mt-4">
-    <input class="form-control mt-2 mb-2" type="text" [(ngModel)]="searchText"  (input)="Search()" placeholder="Search by name" /> 
-    <table class="table table-striped table-bordered table-sm row-border hover" id="datatableexample">
-      <thead>
-        <tr>
-          <th>Sr No.</th>
-          <th *ngFor="let column of headArr">{{column.Head}}</th>
-        </tr>
-      </thead>
-      <tbody>
-              <tr *ngFor="let item of gridArr;let sr=index">
-                  <td>{{sr+1}}</td>
-                  <td *ngFor="let head of headArr">
-                    {{item[head.FieldName]}}
-                  </td>
-              </tr>
-      </tbody>
-    </table>
+  <input class="form-control mt-2 mb-2" type="text" [(ngModel)]="searchText" (input)="Search()"
+    placeholder="Search Here" />
+  <table class="table table-striped table-bordered table-sm row-border hover" id="datatableexample">
+    <thead>
+      <tr>
+        <th>Sr No.</th>
+        <th *ngFor="let column of headArr">{{column.Head}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of gridArr;let sr=index">
+        <td>{{sr+1}}</td>
+        <td *ngFor="let head of headArr">
+          {{item[head.FieldName]}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
-<div class="container text-center mt-4">
-    <app-cm-pagination></app-cm-pagination>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <app-cm-pagination [totalRecords]="23" [recordsPerPage]="5"
+        (onPageChange)="displayActivePage($event)"></app-cm-pagination>
+    </div>
+  </div>
 </div>

@@ -16,25 +16,26 @@ export type eventModel = {
 export class ZoneMngComponent {
   title = 'angular13';
   searchText = "";
-  page:any;
-  listOfZones:any ;
+  page: any;
+  listOfZones: any;
+
   constructor(private adminFacade: AdminFacadeService,
-              private global : Globals){
+    private global: Globals) {
     this.global.CurrentPage = "Zone Management";
     this.getZones();
   }
 
-  headerArr =[
-    {"Head":"ID","FieldName":"id"},
-    {"Head":"Zone Name","FieldName":"zoneName"},
-    {"Head":"Description","FieldName":"description"}
+  headerArr = [
+    { "Head": "ID", "FieldName": "id" },
+    { "Head": "Zone Name", "FieldName": "zoneName" },
+    { "Head": "Description", "FieldName": "description" }
   ];
-  getZones(){
+  getZones() {
     //get request from web api
     this.adminFacade.getZones().subscribe(data => {
       console.log(data);
-        this.listOfZones = data;
-     
-            }, error => console.error(error));
+      this.listOfZones = data;
+
+    }, error => console.error(error));
   }
 }

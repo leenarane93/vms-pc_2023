@@ -13,6 +13,11 @@ export class CmTableComponent {
   @Input() headArr: any[] = [];
   @Input() gridArr: any[] = [];
   filteredData: any = [];
+  activePage: number = 0;
+
+  displayActivePage(activePageNumber: number) {
+    this.activePage = activePageNumber
+  }
   Search() {
     debugger;
     if (this.filteredData != undefined && this.filteredData.length > 0) {
@@ -25,7 +30,7 @@ export class CmTableComponent {
 
         console.log(this.gridArr);
       }
-      else{
+      else {
         this.gridArr = this.filteredData;
       }
     }
@@ -43,7 +48,7 @@ export class CmTableComponent {
 
         console.log(this.gridArr);
       }
-      else{
+      else {
         this.gridArr = this.filteredData;
       }
     }

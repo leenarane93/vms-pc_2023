@@ -1,47 +1,62 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 interface State {
-	page: number;
-	pageSize: number;
-	searchTerm: string;
+    page: number;
+    pageSize: number;
+    searchTerm: string;
 }
 
 @Component({
-  selector: 'app-cm-pagination',
-  templateUrl: './cm-pagination.component.html',
-  styleUrls: ['./cm-pagination.component.css']
+    selector: 'app-cm-pagination',
+    templateUrl: './cm-pagination.component.html',
+    styleUrls: ['./cm-pagination.component.css']
 })
 export class CmPaginationComponent {
-  page = 4; 
-  @Input() id!: string;
-  @Input() maxSize: number = 5;
-  @Input()
-  private _directionLinks: boolean = true;
-  private _autoHide: boolean = false;
-  public totalListCount:any=this.maxSize;
-  constructor() { }
+    @Input() totalRecords = 0;
+    @Input() recordsPerPage = 0;
 
-  ngOnInit() {
-  }
-  
-    get directionLinks(): boolean {
-        return this._directionLinks;
+    @Output() onPageChange: EventEmitter<number> = new EventEmitter();
+
+    public pages: number[] = [];
+    activePage!: number;
+
+    ngOnChanges(): any {
+        const pageCount = this.getPageCount();
+        this.pages = this.getArrayOfPage(pageCount);
+        this.activePage = 1;
+        this.onPageChange.emit(1);
     }
-    set directionLinks(value: boolean) {
-        this._directionLinks = !!value && <any>value !== 'false';
+
+    private getPageCount(): number {
+        let totalPage = 0;
+
+        if (this.totalRecords > 0 && this.recordsPerPage > 0) {
+            const pageCount = this.totalRecords / this.recordsPerPage;
+            const roundedPageCount = Math.floor(pageCount);
+
+            totalPage = roundedPageCount < pageCount ? roundedPageCount + 1 : roundedPageCount;
+        }
+
+        return totalPage;
     }
-    @Input()
-    get autoHide(): boolean {
-        return this._autoHide;
+
+    private getArrayOfPage(pageCount: number): number[] {
+        const pageArray = [];
+
+        if (pageCount > 0) {
+            for (let i = 1; i <= pageCount; i++) {
+                pageArray.push(i);
+            }
+        }
+
+        return pageArray;
     }
-    set autoHide(value: boolean) {
-        this._autoHide = !!value && <any>value !== 'false';
+
+    onClickPage(pageNumber: number): void {
+        if (pageNumber >= 1 && pageNumber <= this.pages.length) {
+            this.activePage = pageNumber;
+            this.onPageChange.emit(this.activePage);
+        }
     }
-    @Input() previousLabel: any = 'Previous';
-    @Input() nextLabel: string = 'Next';
-    @Input() screenReaderPaginationLabel: string = 'Pagination';
-    @Input() screenReaderPageLabel: string = 'page';
-    @Input() screenReaderCurrentLabel: string = `You're on page`;
-    @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 
 }
