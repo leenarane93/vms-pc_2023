@@ -28,6 +28,10 @@ import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { BulkUploadComponent } from './components/admin/bulk-upload/bulk-upload.component';
 import { NgChartsModule } from 'ng2-charts';
 import { ZoneMngComponent } from './components/admin/zone-mng/zone-mng.component';
+import { Globals } from './utils/global';
+import { CmTableComponent } from './widget/cm-table/cm-table.component';
+import { CmPaginationComponent } from './widget/cm-pagination/cm-pagination.component';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -45,7 +49,9 @@ import { ZoneMngComponent } from './components/admin/zone-mng/zone-mng.component
     AdminDashboardComponent,
     AdminConfigurationComponent,
     BulkUploadComponent,
-    ZoneMngComponent
+    ZoneMngComponent,
+    CmTableComponent,
+    CmPaginationComponent
   ],
   imports: [
     FormsModule,
@@ -62,13 +68,14 @@ import { ZoneMngComponent } from './components/admin/zone-mng/zone-mng.component
     }),
     NgbModule,
     NgChartsModule,
-    LeafletModule
+    LeafletModule,
+    NgxPaginationModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
               { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true },
               NgbActiveModal,
               JwtHelperService,
-              { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }],
+              { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },Globals],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

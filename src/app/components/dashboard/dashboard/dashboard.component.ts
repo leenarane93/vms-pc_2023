@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { map } from 'rxjs';
 import {ChartConfiguration, ChartData, ChartOptions, ChartType} from 'chart.js'
 import { UserFacadeService } from 'src/app/facade/facade_services/user-facade.service';
+import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
+import { Globals } from 'src/app/utils/global';
 
 declare let $: any;
 
@@ -159,9 +161,11 @@ export class DashboardComponent implements OnInit {
 // } ;
 
   constructor(private _userfacadeservice:UserFacadeService,
-              private _router:Router){
-    
-  }
+              private _router:Router,
+              private _commonFacade : CommonFacadeService,
+              private global:Globals){
+                this.global.CurrentPage = "Dashboard";
+    }
   dashboardChart : any=[];
   vmsList: any = [];
   

@@ -5,6 +5,8 @@ import View from 'ol/View';
 import { OSM } from 'ol/source';
 import TileLayer from 'ol/layer/Tile';
 import {icon, latLng, LeafletMouseEvent, Map, MapOptions, marker, tileLayer} from 'leaflet';
+import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
+import { Globals } from 'src/app/utils/global';
 
 @Component({
   selector: 'app-map-view',
@@ -26,7 +28,10 @@ export class MapViewComponent {
 };
   constructor(
     public modalService: NgbModal,
-  ) { }
+    private _commonFacade:CommonFacadeService,
+    private global : Globals){
+      this.global.CurrentPage = "Map View";
+    }
  
  
   ngOnInit(): void {

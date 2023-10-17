@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'src/app/facade/services/user/authentication.service';
 import { UserLoggedIn } from 'src/app/models/$bs/userLoggedIn';
 import { HttpHeaders } from '@angular/common/http';
+import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 
 @Component({
   selector: 'app-login',
@@ -31,10 +32,11 @@ export class LoginComponent implements OnInit {
     private loaderService: LoaderService,
     private router: Router,
     private _facadeService: UserFacadeService,
+    private _commonFacade: CommonFacadeService,
     private toastr: ToastrService,
     private route: ActivatedRoute) {
     //this.config$ = this._facadeService._configData$;
-    console.log(this._facadeService.getApiUrl());
+    console.log(this._commonFacade.getSession("api_url"));
     this.version = environment.version;
   }
   get f() { return this.form.controls; }
@@ -43,7 +45,7 @@ export class LoginComponent implements OnInit {
     //const bs$ = new BehaviorSubject(this._facadeService.items$);
     //console.log(bs$.getValue());
     //this._facadeService.items$;
-    this._facadeService.removeSessionValue("access_token");
+    this._commonFacade.removeSessionValue("access_token");
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]

@@ -18,4 +18,8 @@ export class AdminService {
     getKeysDataForConfig(key:string){
       return this._http.get(this.jsonurl);
     }
+
+    getZoneMasterData(){
+      return this._httpService._getMethod('Administration_API/api/ZoneMaster/GetZones');
+    }
 }

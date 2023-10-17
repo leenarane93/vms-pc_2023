@@ -18,4 +18,14 @@ export class CommonFacadeService {
    DecryptData(data:string){
     return this._encdecService.decryptUsingAES256(data);
    } 
+
+   setSession(key:string,val:string){
+    this._sessionService._setSessionValue(key,val);
+   }
+   getSession(key:string){
+    return this._sessionService._getSessionValue(key);
+   }
+  removeSessionValue(_key:string){
+    this._sessionService._removeSessionValue(_key);
+  }
 }

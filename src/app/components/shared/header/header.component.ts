@@ -1,8 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as $ from 'jquery';
+import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 import { UserFacadeService } from 'src/app/facade/facade_services/user-facade.service';
+import { SessionService } from 'src/app/facade/services/common/session.service';
 import { User } from 'src/app/models/response/User';
+import { Globals } from 'src/app/utils/global';
 
 @Component({
   selector: 'app-header',
@@ -11,20 +14,18 @@ import { User } from 'src/app/models/response/User';
 })
 export class HeaderComponent {
   user?: User | null;
-  title: any;
+  title?: any;
   username:string="";
+  global: Globals;
   constructor(private _userFacade:UserFacadeService,
-              private route:ActivatedRoute) {
+              private route:ActivatedRoute,
+              private _commonFacade:CommonFacadeService,
+              private globals:Globals) {
+                this.global = globals;
     //this.accountService.user.subscribe(x => this.user = x);
   }
   ngOnInit() {
-    this.route.data.subscribe((data) => {
-      this.title = data;
-      console.log(this.title);
-    });
-    console.log(this.title);
-    this.title = this.route.snapshot.data['data'];
-    console.log(this.title);
+    this.title = this.global.CurrentPage;
     this.user =this._userFacade.user;
     this.username =this.user.username;
     var body = $("body");

@@ -7,6 +7,7 @@ import { User } from 'src/app/models/response/User';
 import { Router } from '@angular/router';
 import { UserLoggedIn } from 'src/app/models/$bs/userLoggedIn';
 import { DashboardService } from '../services/dashboard/dashboard.service';
+import { CommonFacadeService } from './common-facade.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,16 +26,12 @@ export class UserFacadeService {
   private menus = new BehaviorSubject<any>([]);
   public menus$ = this.menus.asObservable();
 
-  constructor(private _sessionService:SessionService,
+  constructor(private _commonaFacade:CommonFacadeService,
               private _authenticationService: AuthenticationService,
               private _route:Router,
               private _dashboard : DashboardService ) {
                 this.isLoggedin = this.isLoggedinSubject.asObservable();                  
                 }
-  
-  getApiUrl() {
-   return this._sessionService._getSessionValue("api_url");
-  }
 
   loginAuthenticate(_login:Login) {
     //return this._httpService._postMethod(_login,'User_API/api/User/LoginRequest');
@@ -47,7 +44,7 @@ export class UserFacadeService {
         user.LoggedInUser = res.username;
         user.LoggedTime = new Date();
         this.isLoggedinSubject.next(user);
-        this._sessionService._setSessionValue("access_token",res.token);
+        this._commonaFacade.setSession("access_token",res.token);
         this.user = res;
       }
       else {
@@ -65,9 +62,6 @@ export class UserFacadeService {
     return of(this.isLoggedin).pipe(tap((v)=>console.log(v)));
   }
 
-  removeSessionValue(_key:string){
-    this._sessionService._removeSessionValue(_key);
-  }
 
   getMenuDetailsByRole(id:number) {
     this._authenticationService.getMenuByRoleId(id).subscribe(res=>{
