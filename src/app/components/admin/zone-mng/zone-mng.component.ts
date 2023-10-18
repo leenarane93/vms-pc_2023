@@ -18,6 +18,7 @@ export class ZoneMngComponent {
   searchText = "";
   page: any;
   listOfZones: any;
+  pager:number= 10;
 
   constructor(private adminFacade: AdminFacadeService,
     private global: Globals) {
@@ -37,5 +38,9 @@ export class ZoneMngComponent {
       this.listOfZones = data;
 
     }, error => console.error(error));
+  }
+
+  onPager(pager:number){
+    console.log(pager);
   }
 }

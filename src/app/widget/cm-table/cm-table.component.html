@@ -22,8 +22,9 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <app-cm-pagination [totalRecords]="23" [recordsPerPage]="5"
-        (onPageChange)="displayActivePage($event)"></app-cm-pagination>
+      <app-cm-pagination [totalRecords]="23" [recordsPerPage]="5" (pageno)="onPageChange($event)">
+        
+      </app-cm-pagination>
     </div>
   </div>
 </div>

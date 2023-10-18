@@ -14,8 +14,8 @@ interface State {
 export class CmPaginationComponent {
     @Input() totalRecords = 0;
     @Input() recordsPerPage = 0;
-
-    @Output() onPageChange: EventEmitter<number> = new EventEmitter();
+    selectedValue:number=10;
+    @Output() pageno = new EventEmitter<number>();
 
     public pages: number[] = [];
     activePage!: number;
@@ -24,7 +24,6 @@ export class CmPaginationComponent {
         const pageCount = this.getPageCount();
         this.pages = this.getArrayOfPage(pageCount);
         this.activePage = 1;
-        this.onPageChange.emit(1);
     }
 
     private getPageCount(): number {
@@ -55,8 +54,11 @@ export class CmPaginationComponent {
     onClickPage(pageNumber: number): void {
         if (pageNumber >= 1 && pageNumber <= this.pages.length) {
             this.activePage = pageNumber;
-            this.onPageChange.emit(this.activePage);
         }
+    }
+
+    onPageChange(){
+      this.pageno.emit(this.selectedValue);
     }
 
 }

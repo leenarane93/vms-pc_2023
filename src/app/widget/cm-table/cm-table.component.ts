@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-cm-table',
@@ -9,7 +9,7 @@ export class CmTableComponent {
 
   listOfData: any;
   searchText: string = "";
-
+  @Output() pager = new EventEmitter<number>();
   @Input() headArr: any[] = [];
   @Input() gridArr: any[] = [];
   filteredData: any = [];
@@ -54,4 +54,11 @@ export class CmTableComponent {
     }
   }
 
+  pageChange(pager: number) {
+    this.pager.emit(pager);
+  }
+
+  onPageChange(pageNo:number) {
+    this.pageChange(pageNo);
+  }
 }
