@@ -19,7 +19,7 @@ export class AdminService {
       return this._http.get(this.jsonurl);
     }
 
-    getZoneMasterData(){
-      return this._httpService._getMethod('Administration_API/api/ZoneMaster/GetZones');
+    getZoneMasterData(_data:any){
+      return this._httpService._postMethod(_data,'Administration_API/api/ZoneMaster/GetZones');
     }
 }

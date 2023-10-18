@@ -1,27 +1,31 @@
 <div class="row">
-	<div class="col-md-2">
-		<span>Records Per Page</span>
-	</div>
-	<div class="col-md-1 float-right">
-		<select class="form-control " [(ngModel)]="selectedValue" (change)="onPageChange()">
-			<option>10</option>
-			<option>20</option>
-			<option>50</option>
-			<option>100</option>
-		</select>
-	</div>
-	<div class="col-md-9 float-left">
-		<nav aria-label="page navigation example">
-			<ul class="pagination">
-				<li class="page-item" (click)="onClickPage(activePage - 1)"><a class="page-link"
-						href="javascript:void(0);">«
-						Previous</a></li>
-				<li class="page-item" [ngClass]="{'active': activePage === item}" *ngFor="let item of pages"
-					(click)="onClickPage(item)"><a class="page-link" href="javascript:void(0);">{{item}}</a></li>
-				<li class="page-item" (click)="onClickPage(activePage + 1)"><a class="page-link"
-						href="javascript:void(0);">Next
-						»</a></li>
-			</ul>
-		</nav>
-	</div>
+    <div class="col-md-2">
+        <span>Records Per Page</span>
+    </div>
+    <div class="col-md-1 float-right">
+        <select class="form-control " [(ngModel)]="selectedValue" (change)="onPageChange()">
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+        </select>
+    </div>
+    <div class="col-md-9 float-left">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li id="prev" class="page-item">
+                    <a class="page-link" href="#">Previous</a>
+                </li>
+                <ng-container>
+                    <li class="page-item" *ngFor="let i of fakeArray(totalPages)">
+                        <a class="page-link" href="#">{{i}}</a>
+                    </li>
+                </ng-container>
+                <li id="next" class="page-item">
+                    <a class="page-link" href="#" disabled="true">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </div>

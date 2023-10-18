@@ -12,6 +12,9 @@ export class CmTableComponent {
   @Output() pager = new EventEmitter<number>();
   @Input() headArr: any[] = [];
   @Input() gridArr: any[] = [];
+  @Input() totalRecords!:number;
+  @Input() perPage:number=10;
+  @Input() totalPages:number=1;
   filteredData: any = [];
   activePage: number = 0;
 

@@ -18,7 +18,7 @@ export class AdminFacadeService {
     return this._adminService.getKeysDataForConfig(key);
   }
 
-  getZones(){
-    return this._adminService.getZoneMasterData();
+  getZones(_data:any){
+    return this._adminService.getZoneMasterData(_data);
   }
 }

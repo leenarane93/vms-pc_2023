@@ -19,7 +19,7 @@
       </tbody>
     </table> -->
   <div class="row">
-    <app-cm-table [headArr]="headerArr" [gridArr]="listOfZones" (pager)="onPager($event)"></app-cm-table>
+    <app-cm-table [headArr]="headerArr" [gridArr]="listOfZones" [totalRecords]="totalRecords" [totalPages]="totalPages" [perPage]="pager" (pager)="onPager($event)"></app-cm-table>
   </div>
 
 </div>

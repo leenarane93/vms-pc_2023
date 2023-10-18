@@ -69,7 +69,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
     NgbModule,
     NgChartsModule,
     LeafletModule,
-    NgxPaginationModule
+    NgxPaginationModule, 
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
               { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true },
