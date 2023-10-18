@@ -19,7 +19,7 @@ import { SidebarComponent } from './components/shared/sidebar/sidebar.component'
 import { MapViewComponent } from './components/dashboard/map-view/map-view.component';
 import { RoleComponent } from './components/user/role/role.component';
 import { EncdecComponent } from './components/_extras/encdec/encdec.component';
-import {ToastrModule} from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
 import { BackButtonDisableModule } from 'angular-disable-browser-back-button';
 import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/admin-dashboard.component';
 import { AdminConfigurationComponent } from './components/admin/admin-configuration/admin-configuration.component';
@@ -31,7 +31,7 @@ import { ZoneMngComponent } from './components/admin/zone-mng/zone-mng.component
 import { Globals } from './utils/global';
 import { CmTableComponent } from './widget/cm-table/cm-table.component';
 import { CmPaginationComponent } from './widget/cm-pagination/cm-pagination.component';
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -69,13 +69,13 @@ import {NgxPaginationModule} from 'ngx-pagination';
     NgbModule,
     NgChartsModule,
     LeafletModule,
-    NgxPaginationModule, 
+    NgxPaginationModule,
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
-              { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true },
-              NgbActiveModal,
-              JwtHelperService,
-              { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },Globals],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    NgbActiveModal,
+    JwtHelperService,
+  { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }, Globals],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

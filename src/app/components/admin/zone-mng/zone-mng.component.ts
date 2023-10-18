@@ -19,7 +19,7 @@ export class ZoneMngComponent {
   searchText = "";
   page: any;
   listOfZones: any;
-  totalPages:number=1;
+  totalPages: number = 1;
   pager: number = 5;
   totalRecords!: number;
   startId!: number;
@@ -29,15 +29,16 @@ export class ZoneMngComponent {
     this.global.CurrentPage = "Zone Management";
     this.pager = 5;
     this.totalRecords = 0;
-    this.getZones(0,this.pager,0);
+    this.getZones(0, this.pager, 0);
   }
 
   headerArr = [
-    { "Head": "ID", "FieldName": "id" },
-    { "Head": "Zone Name", "FieldName": "zoneName" },
-    { "Head": "Description", "FieldName": "description" }
+    { "Head": "ID", "FieldName": "id", "type": "number" },
+    { "Head": "Zone Name", "FieldName": "zoneName", "type": "string" },
+    { "Head": "Description", "FieldName": "description", "type": "string" },
+    { "Head": "Status", "FieldName": "isActive", "type": "boolean" }
   ];
-  getZones(current_page:any,page_size:any,start_id:any) {
+  getZones(current_page: any, page_size: any, start_id: any) {
     this._request.currentPage = current_page;
     this._request.pageSize = this.pager;
     this._request.startId = start_id;
@@ -45,9 +46,9 @@ export class ZoneMngComponent {
     this.adminFacade.getZones(this._request).subscribe(data => {
       console.log(data);
       this.listOfZones = data.data;
-      if (this.listOfZones.data != null) {
-        this.totalRecords = this.listOfZones.length;
-        this.totalPages = this.totalRecords/this.pager;
+      if (this.listOfZones != null && this.listOfZones != undefined) {
+        this.totalRecords = data.totalRecords;
+        this.totalPages = this.totalRecords / this.pager;
       }
     }, error => console.error(error));
   }
@@ -55,6 +56,6 @@ export class ZoneMngComponent {
   onPager(pager: number) {
     this._request.pageSize = pager;
     this.pager = pager;
-    this.getZones(0,this.pager,0);
+    this.getZones(0, this.pager, 0);
   }
 }

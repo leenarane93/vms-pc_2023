@@ -12,19 +12,19 @@
       <tr *ngFor="let item of gridArr;let sr=index">
         <td>{{sr+1}}</td>
         <td *ngFor="let head of headArr">
-          {{item[head.FieldName]}}
+          <span *ngIf="item[head.FieldName] != true && item[head.FieldName] != false">{{item[head.FieldName]}}</span>
+          <span *ngIf="item[head.FieldName] == true" class="badge badge-success">{{item[head.FieldName]}}</span>
+          <span *ngIf="item[head.FieldName] == false" class="badge badge-danger">{{item[head.FieldName]}}</span>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
-
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-  @Input() totalPages:number=1;
-  @Input() totalPages:number=1;
-      <app-cm-pagination [totalRecords]="totalRecords" [recordsPerPage]="perPage" [totalPages]="totalPages" (pageno)="onPageChange($event)">
+      <app-cm-pagination [totalRecords]="totalRecords" [recordsPerPage]="perPage" [totalPages]="totalPages"
+        (pageno)="onPageChange($event)">
 
       </app-cm-pagination>
     </div>
