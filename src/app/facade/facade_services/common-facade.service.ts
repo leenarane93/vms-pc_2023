@@ -19,7 +19,7 @@ export class CommonFacadeService {
     return this._encdecService.decryptUsingAES256(data);
    } 
 
-   setSession(key:string,val:string){
+   setSession(key:string,val:any){
     this._sessionService._setSessionValue(key,val);
    }
    getSession(key:string){

@@ -3,8 +3,7 @@
         <span>Records Per Page</span>
     </div>
     <div class="col-md-1 float-right">
-        <select class="form-control " [(ngModel)]="selectedValue" (change)="onPageChange()">
-            <option>5</option>
+        <select class="form-control " [(ngModel)]="selectedPageValue" (change)="onPageRecordsChange()">
             <option>10</option>
             <option>20</option>
             <option>50</option>
@@ -12,7 +11,7 @@
         </select>
     </div>
     <div class="col-md-9 float-left">
-        <ngb-pagination [collectionSize]="100" [(page)]="selectedValue" [maxSize]="5" [rotate]="true" [ellipses]="false"
+        <ngb-pagination [collectionSize]="collectionSize" [(page)]="selectedValue" (pageChange)="onPageChange()" [maxSize]="5" [rotate]="true" [ellipses]="false"
             [boundaryLinks]="true"></ngb-pagination>
     </div>
 </div>

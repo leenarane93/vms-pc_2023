@@ -16,20 +16,21 @@ export type eventModel = {
 })
 export class ZoneMngComponent {
   title = 'angular13';
-  searchText = "";
+  searchText!:string;
   page: any;
   listOfZones: any;
   totalPages: number = 1;
-  pager: number = 5;
+  pager: number = 1;
   totalRecords!: number;
+  recordPerPage:number= 10;
   startId!: number;
   _request: any = new InputRequest();
   constructor(private adminFacade: AdminFacadeService,
     private global: Globals) {
     this.global.CurrentPage = "Zone Management";
-    this.pager = 5;
+    this.pager = 1;
     this.totalRecords = 0;
-    this.getZones(0, this.pager, 0);
+    this.getZones();
   }
 
   headerArr = [
@@ -38,24 +39,52 @@ export class ZoneMngComponent {
     { "Head": "Description", "FieldName": "description", "type": "string" },
     { "Head": "Status", "FieldName": "isActive", "type": "boolean" }
   ];
-  getZones(current_page: any, page_size: any, start_id: any) {
-    this._request.currentPage = current_page;
-    this._request.pageSize = this.pager;
-    this._request.startId = start_id;
+  getZones() {
+    this._request.currentPage = this.pager;
+    this._request.pageSize = this.recordPerPage;
+    this._request.startId =  this.startId;
+    this._request.searchItem = this.searchText;
     //get request from web api
     this.adminFacade.getZones(this._request).subscribe(data => {
-      console.log(data);
       this.listOfZones = data.data;
       if (this.listOfZones != null && this.listOfZones != undefined) {
-        this.totalRecords = data.totalRecords;
+        var _length = data.totalRecords/this.recordPerPage;
+         if(_length > Math.floor(_length) && Math.floor(_length) != 0)
+           this.totalRecords = this.recordPerPage * (_length);
+         else if(Math.floor(_length) == 0)
+           this.totalRecords = 10;
+          else 
+          this.totalRecords = data.totalRecords;
         this.totalPages = this.totalRecords / this.pager;
       }
+      this.listOfZones.forEach((ele:any) => {
+        if(ele.isActive == true)
+          ele.isActive = "Active";
+        else 
+          ele.isActive = "In Active";
+      });
     }, error => console.error(error));
   }
 
   onPager(pager: number) {
-    this._request.pageSize = pager;
+    this._request.pageSize = this.recordPerPage;
     this.pager = pager;
-    this.getZones(0, this.pager, 0);
+    this.startId = (this.pager-1) * this.recordPerPage;
+    this.getZones();
+  }
+
+  onRecordPageChange(recordPerPage:number){
+    this._request.pageSize = recordPerPage;
+    this.pager = recordPerPage;
+    this.recordPerPage = recordPerPage;
+    this.startId = 0;
+    this.pager = 1;
+    console.log(this.recordPerPage);
+    this.getZones();
+  }
+
+  onPageSearch(search:string) {
+    this.searchText = search;
+    this.getZones();
   }
 }

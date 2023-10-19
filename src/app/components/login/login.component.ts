@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit {
   }
   get f() { return this.form.controls; }
   ngOnInit() {
+    this._commonFacade.setSession("isLoggedIn",false);
     this._facadeService.ClearUserObject();
     //const bs$ = new BehaviorSubject(this._facadeService.items$);
     //console.log(bs$.getValue());
@@ -63,10 +64,19 @@ export class LoginComponent implements OnInit {
     _login.Password = this.form.controls["password"].value;
     _login.Username = this.form.controls["username"].value;
 
-      this._facadeService.loginAuthenticate(_login);
+      //this._facadeService.loginAuthenticate(_login);
       this._authenticationService.login(_login).subscribe(res => {
         if (res != null) {
           if (res.status == 1) {
+            this._commonFacade.setSession("isLoggedIn",true);
+            this._commonFacade.setSession("access_token",res.token);
+            var user =new UserLoggedIn();
+            user.LoggedIn=true;
+            user.LoggedInUser = res.username;
+            user.LoggedTime = new Date();
+            this._facadeService.isLoggedinSubject.next(user);
+            this._commonFacade.setSession("access_token",res.token);
+            this._facadeService.user = res;
             if (_login.Username == environment.user)
             {
               this.router.navigate(["admin-dashboard"],{fragment:"0"});
@@ -79,6 +89,4 @@ export class LoginComponent implements OnInit {
         }
       })
     }
-    //}
-
   }

@@ -15,8 +15,11 @@ export class CmPaginationComponent {
     @Input() totalRecords = 0;
     @Input() recordsPerPage = 0;
     @Input() totalPages = 10;
-    selectedValue: number = 5;
+    selectedValue: number = 1;
+    selectedPageValue:number = 10;
     @Output() pageno = new EventEmitter<number>();
+    @Output() perPage = new EventEmitter<number>();
+    @Input() collectionSize =1;
     public pages: number[] = [];
     activePage!: number;
 
@@ -56,7 +59,10 @@ export class CmPaginationComponent {
             this.activePage = pageNumber;
         }
     }
-
+    onPageRecordsChange() {
+      this.perPage.emit(this.selectedPageValue);
+      //this.pageno.emit(this.selectedValue);
+    }
     onPageChange() {
         this.pageno.emit(this.selectedValue);
     }
