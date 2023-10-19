@@ -32,6 +32,7 @@ import { Globals } from './utils/global';
 import { CmTableComponent } from './widget/cm-table/cm-table.component';
 import { CmPaginationComponent } from './widget/cm-pagination/cm-pagination.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { CmModalComponent } from './widget/cm-modal/cm-modal.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     BulkUploadComponent,
     ZoneMngComponent,
     CmTableComponent,
-    CmPaginationComponent
+    CmPaginationComponent,
+    CmModalComponent
   ],
   imports: [
     FormsModule,

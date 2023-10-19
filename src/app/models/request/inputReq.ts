@@ -3,3 +3,7 @@ export class InputRequest{
     currentPage!:number;
     startId!:number;
 }
+
+export class ModalRequest {
+    
+}
