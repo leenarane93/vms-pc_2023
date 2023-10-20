@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
 import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 import { Globals } from 'src/app/utils/global';
+import { CmModalComponent } from 'src/app/widget/cm-modal/cm-modal.component';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -10,19 +12,22 @@ import { Globals } from 'src/app/utils/global';
 })
 export class AdminDashboardComponent {
   vmsList !: any;
+  _configData!:any;
   
   closeResult!: string;
   constructor(private modalService: NgbModal,
-              private global : Globals){
+              private global : Globals,
+              private _adminFacade: AdminFacadeService){
       this.global.CurrentPage = "Dashboard";
     }
 
   OpenModal(content:any){
-      this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-        this.closeResult = `Closed with: ${result}`;
-      }, (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      });
+    this.GetUnitData();
+      // this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      //   this.closeResult = `Closed with: ${result}`;
+      // }, (reason) => {
+      //   this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      // });
   }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -32,5 +37,14 @@ export class AdminDashboardComponent {
     } else {
       return  `with: ${reason}`;
     }
+  }
+
+  GetUnitData(){
+    var _unit = "";
+    this._adminFacade.getKeysDataForConfig(_unit).subscribe(res=>{
+      this._configData=res;
+      const modalRef = this.modalService.open(CmModalComponent);
+      modalRef.componentInstance.data = this._configData;
+    });
   }
 }
