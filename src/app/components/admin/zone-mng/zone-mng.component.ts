@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
 import { InputRequest } from 'src/app/models/request/inputReq';
 import { Globals } from 'src/app/utils/global';
@@ -15,6 +16,7 @@ export type eventModel = {
   styleUrls: ['./zone-mng.component.css']
 })
 export class ZoneMngComponent {
+  form : any=[];
   title = 'angular13';
   searchText!:string;
   page: any;
@@ -24,9 +26,11 @@ export class ZoneMngComponent {
   totalRecords!: number;
   recordPerPage:number= 10;
   startId!: number;
+  closeResult!: string;
   _request: any = new InputRequest();
   constructor(private adminFacade: AdminFacadeService,
-    private global: Globals) {
+              private global: Globals,
+              private modalService: NgbModal) {
     this.global.CurrentPage = "Zone Management";
     this.pager = 1;
     this.totalRecords = 0;
@@ -87,4 +91,11 @@ export class ZoneMngComponent {
     this.searchText = search;
     this.getZones();
   }
+
+  OpenModal(content:any){
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+    });
+}
 }

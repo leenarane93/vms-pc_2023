@@ -1,10 +1,7 @@
-<!-- <p>{{data |json}}</p> -->
-<p>{{_configData |json}}</p>
-
 <!-- <h1>{{title}}</h1> -->
 
 <div class="modal-header bgTable"  style="border-radius: 15px 15px 0 0!important;">
-    <h5 class="modal-title text-uppercase mr-5">{{pageConfig.title}}</h5> 
+    <h5 class="modal-title text-uppercase mr-5">{{title}}</h5> 
     <!-- <h5 class="modal-title text-uppercase mr-5">{{ this.id != null ? 'Edit User':'Add New User'}} </h5>  -->
     <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close" (click)="passBack()">
         <span aria-hidden="true">&times;</span>
@@ -15,32 +12,41 @@
           
 <form *ngIf="!loading" [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="modal-body">
-    <div class="card" *ngFor="let row of pageConfig.controls;let i =index">
-        <div class="row" *ngIf="row.position == 1">
-            <div class="mb-6 col">
-                <label class="form-label">{{row.name}}*</label>
-                <div *ngIf="row.control =='select'">
-                    <select formControlName="prmUnit" class="form-control-sm w-100 bg-dark text-light" (change)="UnitChange()">
-                        <option value="0">--Select Unit--</option>
-                        <option  *ngFor="let v of _configData" value="{{v.key}}">{{v.value}}</option>
-                      </select> 
-                </div>
-            </div>
+    <div class="row">
+        <div class="mb-3 col">
+            <label class="form-label">Zone Name*</label>
+            <input type="text" formControlName="zoneName" class="form-control" placeholder="Zone Name" 
+            [ngClass]="{ 'is-invalid': f['zoneName'].touched && f['zoneName'].errors, 'is-valid': f['zoneName'].valid }"/>
+            <div *ngIf="f['zoneName'].touched && f['zoneName'].errors" class="invalid-feedback">
+                <div>{{getErrorMessage('zoneName','Zone Name',true,"Invalid data available in Zone Name")}}</div>
+              </div>
         </div>
-        <div class="mb-6 col" *ngIf="row.position != 1">
-            <label class="form-label">{{row.name}}*</label>
+        <div class="mb-3 col">
+            <label class="form-label">Description*</label>
+            <input type="text" formControlName="description" class="form-control" placeholder="Description" 
+            [ngClass]="{ 'is-invalid': f['description'].touched && f['description'].errors, 'is-valid': f['description'].valid }"/>
+            <div *ngIf="f['description'].touched && f['description'].errors" class="invalid-feedback">
+                <div>{{getErrorMessage('description','Description',true,"Invalid data available in Description")}}</div>
+              </div>
+        </div>
+        <div class="mb-3 col">
+            <label class="form-label">Active/InActive*</label>
+            <div class="form-check form-switch">
+                <input class="form-check-input" formControlName="isActive" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+              </div>
         </div>
     </div>
-    
 </div>
     <div class="modal-footer bg-light">
-        <button [disabled]="!form.valid" class="btn btn-primary" (click)="saveConfiguration()">
+        <button [disabled]="!form.valid" class="btn btn-primary" >
             <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1" ></span>
             Save
         </button>
         <a routerLink="/admin-dashboard" class="btn btn-link" (click)="passBack()">Cancel</a>
     </div>
 </form>
-<!-- <div *ngIf="loading" class="text-center m-5">
+<div *ngIf="loading" class="text-center m-5">
     <span class="spinner-border spinner-border-lg align-center"></span>
-</div> -->
+</div>
+
+<!-- </div> -->
