@@ -1,1 +1,46 @@
-<p>{{data |json}}</p>
+<!-- <p>{{data |json}}</p> -->
+<p>{{_configData |json}}</p>
+
+<!-- <h1>{{title}}</h1> -->
+
+<div class="modal-header bgTable"  style="border-radius: 15px 15px 0 0!important;">
+    <h5 class="modal-title text-uppercase mr-5">{{pageConfig.title}}</h5> 
+    <!-- <h5 class="modal-title text-uppercase mr-5">{{ this.id != null ? 'Edit User':'Add New User'}} </h5>  -->
+    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close" (click)="passBack()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+</div>
+        <!-- <div class="card border-0  pb-0 bgTable">
+           <div class="card-header text-white">{{title}}</div> -->
+          
+<form *ngIf="!loading" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="modal-body">
+    <div class="card" *ngFor="let row of pageConfig.controls;let i =index">
+        <div class="row" *ngIf="row.position == 1">
+            <div class="mb-6 col">
+                <label class="form-label">{{row.name}}*</label>
+                <div *ngIf="row.control =='select'">
+                    <select formControlName="prmUnit" class="form-control-sm w-100 bg-dark text-light" (change)="UnitChange()">
+                        <option value="0">--Select Unit--</option>
+                        <option  *ngFor="let v of _configData" value="{{v.key}}">{{v.value}}</option>
+                      </select> 
+                </div>
+            </div>
+        </div>
+        <div class="mb-6 col" *ngIf="row.position != 1">
+            <label class="form-label">{{row.name}}*</label>
+        </div>
+    </div>
+    
+</div>
+    <div class="modal-footer bg-light">
+        <button [disabled]="!form.valid" class="btn btn-primary" (click)="saveConfiguration()">
+            <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1" ></span>
+            Save
+        </button>
+        <a routerLink="/admin-dashboard" class="btn btn-link" (click)="passBack()">Cancel</a>
+    </div>
+</form>
+<!-- <div *ngIf="loading" class="text-center m-5">
+    <span class="spinner-border spinner-border-lg align-center"></span>
+</div> -->

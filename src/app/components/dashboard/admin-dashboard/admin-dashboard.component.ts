@@ -22,12 +22,11 @@ export class AdminDashboardComponent {
     }
 
   OpenModal(content:any){
-    this.GetUnitData();
-      // this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      //   this.closeResult = `Closed with: ${result}`;
-      // }, (reason) => {
-      //   this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      // });
+      this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
   }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -37,14 +36,5 @@ export class AdminDashboardComponent {
     } else {
       return  `with: ${reason}`;
     }
-  }
-
-  GetUnitData(){
-    var _unit = "";
-    this._adminFacade.getKeysDataForConfig(_unit).subscribe(res=>{
-      this._configData=res;
-      const modalRef = this.modalService.open(CmModalComponent);
-      modalRef.componentInstance.data = this._configData;
-    });
   }
 }
