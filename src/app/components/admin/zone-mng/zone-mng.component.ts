@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
 import { InputRequest } from 'src/app/models/request/inputReq';
@@ -30,7 +31,8 @@ export class ZoneMngComponent {
   _request: any = new InputRequest();
   constructor(private adminFacade: AdminFacadeService,
               private global: Globals,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private router:Router) {
     this.global.CurrentPage = "Zone Management";
     this.pager = 1;
     this.totalRecords = 0;
@@ -93,9 +95,10 @@ export class ZoneMngComponent {
   }
 
   OpenModal(content:any){
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-    });
+    // this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    //   this.closeResult = `Closed with: ${result}`;
+    // }, (reason) => {
+    // });
+    this.router.navigate(['admin/add-zone']);
 }
 }

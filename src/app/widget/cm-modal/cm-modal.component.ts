@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { latLng, tileLayer,Map } from 'leaflet';
 import { ToastrService } from 'ngx-toastr';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
 import { UserFacadeService } from 'src/app/facade/facade_services/user-facade.service';
@@ -15,9 +16,10 @@ import { getErrorMsg } from 'src/app/utils/utils';
   styleUrls: ['./cm-modal.component.css']
 })
 export class CmModalComponent {
+  public map !: Map;
   form : any=[];
   id?: string;
-  title!: string;
+  title:string = "Add Zone";
   loading = false;
   submitting = false;
   submitted = false;
@@ -26,7 +28,27 @@ export class CmModalComponent {
 active = 1;
 model2: string | undefined;
 model3: string | undefined;
+options = {
+  layers: [
+      tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
+  ],
+  zoom: 8,
+  center: latLng(22.29985,73.19555)
+};
 
+options4 = {
+  layers: [
+   tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+    })
+   ],
+  zoom: 7,
+  center: latLng([14.1111, 121.21111])};  
+
+  openCollision(map : L.Map){
+  setTimeout(function() {
+    map.invalidateSize();
+   }, 10);}
   constructor(private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
@@ -37,7 +59,8 @@ model3: string | undefined;
     private _cdr:ChangeDetectorRef,
     private _userFacade:UserFacadeService,
     private _loader:LoaderService)
-    {}
+    {
+      this.BuildForm();}
     get f() { return this.form.controls; }
     passBack() {
       this.modalService.dismissAll();
@@ -55,5 +78,8 @@ model3: string | undefined;
     }
     onSubmit(){
 
+    }
+    ViewMap(){
+      //this.map.invalidateSize();
     }
 }

@@ -11,6 +11,7 @@ import { EncdecComponent } from './components/_extras/encdec/encdec.component';
 import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/admin-dashboard.component';
 import { AdminConfigurationComponent } from './components/admin/admin-configuration/admin-configuration.component';
 import { ZoneMngComponent } from './components/admin/zone-mng/zone-mng.component';
+import { AddZoneComponent } from './components/admin/add-zone/add-zone.component';
 
 const routes: Routes = [
   {
@@ -72,6 +73,12 @@ const routes: Routes = [
     path:'masters/zone-master',
     component:ZoneMngComponent,
     data:{title :'Zone Management'},
+    canActivate:[AuthGuradService]
+  },
+  {
+    path: "admin/add-zone",
+    component: AddZoneComponent,
+    data:{title :'Add Zone'},
     canActivate:[AuthGuradService]
   }
 ];

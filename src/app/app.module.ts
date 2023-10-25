@@ -33,6 +33,7 @@ import { CmTableComponent } from './widget/cm-table/cm-table.component';
 import { CmPaginationComponent } from './widget/cm-pagination/cm-pagination.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CmModalComponent } from './widget/cm-modal/cm-modal.component';
+import { AddZoneComponent } from './components/admin/add-zone/add-zone.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { CmModalComponent } from './widget/cm-modal/cm-modal.component';
     ZoneMngComponent,
     CmTableComponent,
     CmPaginationComponent,
-    CmModalComponent
+    CmModalComponent,
+    AddZoneComponent
   ],
   imports: [
     FormsModule,

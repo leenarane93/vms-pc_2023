@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class CmTableComponent {
 
   listOfData: any;
+  tooltip:string ="";
   searchText: string = "";
   @Output() pager = new EventEmitter<number>();
   @Output() search = new EventEmitter<string>();
@@ -57,7 +58,9 @@ export class CmTableComponent {
     //   }
     // }
   }
-
+  mouseEnter(msg:string) {
+    this.tooltip = msg;
+  }
   pageChange(pager: number) {
     this.pager.emit(pager);
   }
