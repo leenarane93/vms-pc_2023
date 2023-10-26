@@ -9,7 +9,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of gridArr;let sr=index">
+      <tr *ngFor="let item of gridArr;let sr=index" (click)="ShowForm()">
         <td title="Click to View/Edit">{{sr+1}}</td>
         <td title="Click to View/Edit" *ngFor="let head of headArr">
           <span *ngIf="head.FieldName != 'isActive'">{{item[head.FieldName]}}</span>

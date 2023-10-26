@@ -52,6 +52,8 @@ export class ZoneMngComponent {
     this._request.searchItem = this.searchText;
     //get request from web api
     this.adminFacade.getZones(this._request).subscribe(data => {
+      if(data != null  && data != undefined){
+        
       this.listOfZones = data.data;
       if (this.listOfZones != null && this.listOfZones != undefined) {
         var _length = data.totalRecords/this.recordPerPage;
@@ -69,6 +71,10 @@ export class ZoneMngComponent {
         else 
           ele.isActive = "In Active";
       });
+      }
+      else {
+        this.router.navigate(['error-page']);
+      }
     }, error => console.error(error));
   }
 

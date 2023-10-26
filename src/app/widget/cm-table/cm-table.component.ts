@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cm-table',
@@ -14,6 +15,8 @@ export class CmTableComponent {
   @Output() search = new EventEmitter<string>();
   @Output() recordPerPage = new EventEmitter<number>();
   @Input() headArr: any[] = [];
+  @Input() link!: string;
+  @Input() fieldName!: string;
   @Input() gridArr: any[] = [];
   @Input() totalRecords!:number;
   @Input() perPage:number=10;
@@ -21,7 +24,9 @@ export class CmTableComponent {
   @Input() collectionSize:number=1;
   filteredData: any = [];
   activePage: number = 0;
+  constructor(private router:Router){
 
+  }
   displayActivePage(activePageNumber: number) {
     this.activePage = activePageNumber
   }
@@ -70,5 +75,9 @@ export class CmTableComponent {
   }
   onPageRecordsChange(pageNo:number) {
     this.recordPerPage.emit(pageNo);
+  }
+
+  ShowForm(){
+    this.router.navigate([this.link]);
   }
 }

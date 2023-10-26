@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -34,6 +33,10 @@ import { CmPaginationComponent } from './widget/cm-pagination/cm-pagination.comp
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CmModalComponent } from './widget/cm-modal/cm-modal.component';
 import { AddZoneComponent } from './components/admin/add-zone/add-zone.component';
+import { ErrorPageComponent } from './components/shared/error-page/error-page.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
+import { CmLeafletComponent } from './components/shared/cm-leaflet/cm-leaflet.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +58,9 @@ import { AddZoneComponent } from './components/admin/add-zone/add-zone.component
     CmTableComponent,
     CmPaginationComponent,
     CmModalComponent,
-    AddZoneComponent
+    AddZoneComponent,
+    ErrorPageComponent,
+    CmLeafletComponent
   ],
   imports: [
     FormsModule,
@@ -74,6 +79,8 @@ import { AddZoneComponent } from './components/admin/add-zone/add-zone.component
     NgChartsModule,
     LeafletModule,
     NgxPaginationModule,
+    LeafletDrawModule,
+    LeafletModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

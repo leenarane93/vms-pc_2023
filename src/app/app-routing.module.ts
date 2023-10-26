@@ -12,6 +12,7 @@ import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/
 import { AdminConfigurationComponent } from './components/admin/admin-configuration/admin-configuration.component';
 import { ZoneMngComponent } from './components/admin/zone-mng/zone-mng.component';
 import { AddZoneComponent } from './components/admin/add-zone/add-zone.component';
+import { ErrorPageComponent } from './components/shared/error-page/error-page.component';
 
 const routes: Routes = [
   {
@@ -80,7 +81,11 @@ const routes: Routes = [
     component: AddZoneComponent,
     data:{title :'Add Zone'},
     canActivate:[AuthGuradService]
-  }
+  },
+  { path: 'error-page', 
+    component:ErrorPageComponent,
+    canActivate:[AuthGuradService]
+  },
 ];
 
 @NgModule({

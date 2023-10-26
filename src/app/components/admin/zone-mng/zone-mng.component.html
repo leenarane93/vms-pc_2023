@@ -12,6 +12,7 @@
             <app-cm-table [headArr]="headerArr" [gridArr]="listOfZones" [totalRecords]="totalRecords"
                 [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)"
                 [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)"
+                link="admin/add-zone" fieldName="id"
                 (search)="onPageSearch($event)"></app-cm-table>
         </div>
     </div>
