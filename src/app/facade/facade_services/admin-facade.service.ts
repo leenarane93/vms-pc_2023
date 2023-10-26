@@ -7,18 +7,21 @@ import { SessionService } from '../services/common/session.service';
 })
 export class AdminFacadeService {
 
-  constructor(private _adminService:AdminService,
-              private _sessionService:SessionService) { }
+  constructor(private _adminService: AdminService,
+    private _sessionService: SessionService) { }
 
-  AddConfigData(data:any){
+  AddConfigData(data: any) {
     return this._adminService.addConfigurationData(data);
   }
 
-  getKeysDataForConfig(key:string){
+  getKeysDataForConfig(key: string) {
     return this._adminService.getKeysDataForConfig(key);
   }
 
-  getZones(_data:any){
+  getZones(_data: any) {
     return this._adminService.getZoneMasterData(_data);
+  }
+  getVmss(_data: any) {
+    return this._adminService.getVmsMasterData(_data);
   }
 }

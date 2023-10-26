@@ -37,6 +37,7 @@ import { ErrorPageComponent } from './components/shared/error-page/error-page.co
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 import { CmLeafletComponent } from './components/shared/cm-leaflet/cm-leaflet.component';
+import { VmsMasterComponent } from './components/admin/VMS_Management/vms-master/vms-master.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { CmLeafletComponent } from './components/shared/cm-leaflet/cm-leaflet.co
     CmModalComponent,
     AddZoneComponent,
     ErrorPageComponent,
-    CmLeafletComponent
+    CmLeafletComponent,
+    VmsMasterComponent
   ],
   imports: [
     FormsModule,

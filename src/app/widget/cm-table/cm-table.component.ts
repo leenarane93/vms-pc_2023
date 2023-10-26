@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 export class CmTableComponent {
 
   listOfData: any;
-  tooltip:string ="";
+  tooltip: string = "";
   searchText: string = "";
   @Output() pager = new EventEmitter<number>();
   @Output() search = new EventEmitter<string>();
@@ -18,13 +18,13 @@ export class CmTableComponent {
   @Input() link!: string;
   @Input() fieldName!: string;
   @Input() gridArr: any[] = [];
-  @Input() totalRecords!:number;
-  @Input() perPage:number=10;
-  @Input() totalPages:number=1;
-  @Input() collectionSize:number=1;
+  @Input() totalRecords!: number;
+  @Input() perPage: number = 10;
+  @Input() totalPages: number = 1;
+  @Input() collectionSize: number = 1;
   filteredData: any = [];
   activePage: number = 0;
-  constructor(private router:Router){
+  constructor(private router: Router) {
 
   }
   displayActivePage(activePageNumber: number) {
@@ -63,21 +63,21 @@ export class CmTableComponent {
     //   }
     // }
   }
-  mouseEnter(msg:string) {
+  mouseEnter(msg: string) {
     this.tooltip = msg;
   }
   pageChange(pager: number) {
     this.pager.emit(pager);
   }
 
-  onPageChange(pageNo:number) {
+  onPageChange(pageNo: number) {
     this.pageChange(pageNo);
   }
-  onPageRecordsChange(pageNo:number) {
+  onPageRecordsChange(pageNo: number) {
     this.recordPerPage.emit(pageNo);
   }
 
-  ShowForm(){
+  ShowForm() {
     this.router.navigate([this.link]);
   }
 }
