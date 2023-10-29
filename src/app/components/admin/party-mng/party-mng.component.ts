@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -6,17 +5,13 @@ import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.
 import { InputRequest } from 'src/app/models/request/inputReq';
 import { Globals } from 'src/app/utils/global';
 
-export type eventModel = {
-  id: number;
-  name: string;
-};
-
 @Component({
-  selector: 'app-zone-mng',
-  templateUrl: './zone-mng.component.html',
-  styleUrls: ['./zone-mng.component.css']
+  selector: 'app-party-mng',
+  templateUrl: './party-mng.component.html',
+  styleUrls: ['./party-mng.component.css']
 })
-export class ZoneMngComponent {
+export class PartyMngComponent {
+
   form: any = [];
   title = 'angular13';
   searchText!: string;
@@ -33,7 +28,7 @@ export class ZoneMngComponent {
     private global: Globals,
     private modalService: NgbModal,
     private router: Router) {
-    this.global.CurrentPage = "Zone Management";
+    this.global.CurrentPage = "Party Management";
     this.pager = 1;
     this.totalRecords = 0;
     this.getZones();
@@ -75,7 +70,7 @@ export class ZoneMngComponent {
       else {
         this.router.navigate(['error-page']);
       }
-    }, error => console.error(error));
+    }, (err: any) => console.error(err));
   }
 
   onPager(pager: number) {

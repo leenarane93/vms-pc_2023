@@ -40,6 +40,8 @@ import { CmLeafletComponent } from './components/shared/cm-leaflet/cm-leaflet.co
 import { VmsMasterComponent } from './components/admin/VMS_Management/vms-master/vms-master.component';
 import { AddVmsComponent } from './components/admin/VMS_Management/add-vms/add-vms.component';
 import { DrawMap } from 'leaflet';
+import { PartyMngComponent } from './components/admin/party-mng/party-mng.component';
+import { AddPartyComponent } from './components/admin/party-mng/add-party/add-party.component';
 const iconRetinaUrl = 'assets/leaflet/marker-icon-2x.png';
 const iconUrl = 'assets/leaflet/marker-icon.png';
 const shadowUrl = 'assets/leaflet/marker-shadow.png';
@@ -68,7 +70,9 @@ const shadowUrl = 'assets/leaflet/marker-shadow.png';
     ErrorPageComponent,
     CmLeafletComponent,
     VmsMasterComponent,
-    AddVmsComponent
+    AddVmsComponent,
+    PartyMngComponent,
+    AddPartyComponent
   ],
   imports: [
     FormsModule,

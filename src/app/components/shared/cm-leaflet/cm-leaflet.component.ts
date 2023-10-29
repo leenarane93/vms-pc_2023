@@ -254,22 +254,6 @@ export class CmLeafletComponent {
 
 		const baselayers = {
 			"openstreetmap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
-			"googleStreets": L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
-				maxZoom: 20,
-				subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-			}),
-			"googleHybrid": L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
-				maxZoom: 20,
-				subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-			}),
-			"googleSat": L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-				maxZoom: 20,
-				subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-			}),
-			"googleTerrain": L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
-				maxZoom: 20,
-				subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-			}),
 			"VMap": L.tileLayer('https://maps.vnpost.vn/api/tm/{z}/{x}/{y}@2x.png?apikey=8fb3246c12d442525034be04bcd038f22e34571be4adbd4c'),
 
 		};
