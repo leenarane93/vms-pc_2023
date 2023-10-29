@@ -39,6 +39,10 @@ import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 import { CmLeafletComponent } from './components/shared/cm-leaflet/cm-leaflet.component';
 import { VmsMasterComponent } from './components/admin/VMS_Management/vms-master/vms-master.component';
 import { AddVmsComponent } from './components/admin/VMS_Management/add-vms/add-vms.component';
+import { DrawMap } from 'leaflet';
+const iconRetinaUrl = 'assets/leaflet/marker-icon-2x.png';
+const iconUrl = 'assets/leaflet/marker-icon.png';
+const shadowUrl = 'assets/leaflet/marker-shadow.png';
 
 @NgModule({
   declarations: [
