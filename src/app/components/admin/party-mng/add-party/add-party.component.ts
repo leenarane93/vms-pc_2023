@@ -37,10 +37,6 @@ export class AddPartyComponent implements OnInit {
   }
   get f() { return this.form.controls; }
   BuildForm() {
-
-    // this.form = this.formBuilder.group({
-    //   items:this.setFormArray()
-    // })
     this.form = this.formBuilder.group({
       partyCode: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9]*$")]],
       partyName: ['', [Validators.required, Validators.pattern("^[a-zA-Z ]*$")]],
@@ -72,20 +68,6 @@ export class AddPartyComponent implements OnInit {
       })
     }
   }
-  // setFormArray(): FormArray {
-  //     return this.formBuilder.array(
-  //       this.form.group({
-  //         partyCode: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9]*$")]],
-  //         partyName: ['', [Validators.required, Validators.pattern("^[a-zA-Z ]*$")]],
-  //         description: ['', [Validators.required]],
-  //         contactNumber: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-  //         address: ['', [Validators.required]],
-  //         zipCode: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-  //         gstinNumber: ['', [Validators.required, Validators.pattern("^[A-Za-z0-9]*$")]],
-  //         isActive: [false, [Validators.required]],
-  //       })
-  //       )
-  //   }
   getErrorMessage(_controlName: any, _controlLable: any, _isPattern: boolean = false, _msg: string) {
     return getErrorMsg(this.form, _controlName, _controlLable, _isPattern, _msg);
   }
@@ -104,7 +86,7 @@ export class AddPartyComponent implements OnInit {
     _partyData.gstinNo = this.form.controls.gstinNumber.value;
     _partyData.isActive = this.active;
     _partyData.createdBy = this.global.UserCode;
-    if(this.id != 0) {
+    if (this.id != 0) {
       this._facade.updateParty(_partyData).subscribe(r => {
         if (r == 0) {
           this.toast.error("Error occured while saving data");
@@ -123,7 +105,7 @@ export class AddPartyComponent implements OnInit {
           this.clearForm();
         }
       })
-    }    
+    }
   }
   clearForm() {
     this.id = 0;
