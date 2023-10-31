@@ -35,4 +35,7 @@ export class AdminService {
     return this._httpService._postMethod(_data,'Administration_API/api/PartyMaster/PostPartyMaster');    
   }
 
+  updatePartyData(_data:any) {
+    return this._httpService._postMethod(_data,'Administration_API/api/PartyMaster/PutPartyMaster');    
+  }
 }

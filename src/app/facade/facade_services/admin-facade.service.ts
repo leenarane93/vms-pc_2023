@@ -30,4 +30,7 @@ export class AdminFacadeService {
   addParty(_data: any) {
     return this._adminService.addPartyData(_data);
   }
+  updateParty(_data: any) {
+    return this._adminService.updatePartyData(_data);
+  }
 }

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
@@ -18,7 +18,8 @@ export class AddPartyComponent implements OnInit {
   active: boolean = false;
   loading: boolean = false;
   submitting: boolean = false;
-  id : number=0;
+  id: number = 0;
+  formItems !: FormArray;
   constructor(private router: Router,
     private global: Globals,
     private formBuilder: FormBuilder,
@@ -30,16 +31,16 @@ export class AddPartyComponent implements OnInit {
     this.BuildForm();
   }
   ngOnInit(): void {
+    this.id = 0;
     let data = this._common.getSession("ModelShow");
     this.FillForm(data == null ? "" : JSON.parse(data));
   }
-  FillForm(data: any) {
-    if(data != "") {
-      this.id = data.id;
-    }
-  }
   get f() { return this.form.controls; }
   BuildForm() {
+
+    // this.form = this.formBuilder.group({
+    //   items:this.setFormArray()
+    // })
     this.form = this.formBuilder.group({
       partyCode: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9]*$")]],
       partyName: ['', [Validators.required, Validators.pattern("^[a-zA-Z ]*$")]],
@@ -50,8 +51,41 @@ export class AddPartyComponent implements OnInit {
       gstinNumber: ['', [Validators.required, Validators.pattern("^[A-Za-z0-9]*$")]],
       isActive: [false, [Validators.required]],
     });
-  }
 
+  }
+  FillForm(data: any) {
+    if (data != "") {
+      this.id = data.id;
+      if (data.isActive == "Active")
+        this.active = true;
+      else
+        this.active = false;
+      this.form.setValue({
+        partyCode: data.partyCode,
+        partyName: data.partyName,
+        description: data.description,
+        contactNumber: data.contactNo,
+        address: data.address,
+        zipCode: data.zipCode,
+        gstinNumber: data.gstinNo,
+        isActive: data.isActive
+      })
+    }
+  }
+  // setFormArray(): FormArray {
+  //     return this.formBuilder.array(
+  //       this.form.group({
+  //         partyCode: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9]*$")]],
+  //         partyName: ['', [Validators.required, Validators.pattern("^[a-zA-Z ]*$")]],
+  //         description: ['', [Validators.required]],
+  //         contactNumber: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+  //         address: ['', [Validators.required]],
+  //         zipCode: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+  //         gstinNumber: ['', [Validators.required, Validators.pattern("^[A-Za-z0-9]*$")]],
+  //         isActive: [false, [Validators.required]],
+  //       })
+  //       )
+  //   }
   getErrorMessage(_controlName: any, _controlLable: any, _isPattern: boolean = false, _msg: string) {
     return getErrorMsg(this.form, _controlName, _controlLable, _isPattern, _msg);
   }
@@ -59,7 +93,8 @@ export class AddPartyComponent implements OnInit {
 
   onSubmit() {
     let _partyData = new PartyMaster();
-    _partyData.id = 0;
+    if (this.id != 0)
+      _partyData.id = this.id;
     _partyData.partyCode = this.form.controls.partyCode.value;
     _partyData.partyName = this.form.controls.partyName.value;
     _partyData.description = this.form.controls.description.value;
@@ -69,17 +104,31 @@ export class AddPartyComponent implements OnInit {
     _partyData.gstinNo = this.form.controls.gstinNumber.value;
     _partyData.isActive = this.active;
     _partyData.createdBy = this.global.UserCode;
-    this._facade.addParty(_partyData).subscribe(r => {
-      if (r == 0) {
-        this.toast.error("Error occured while saving data");
-      } else {
-        this.toast.success("Saved successfully.");
-        this.clearForm();
-      }
-    })
+    if(this.id != 0) {
+      this._facade.updateParty(_partyData).subscribe(r => {
+        if (r == 0) {
+          this.toast.error("Error occured while saving data");
+        } else {
+          this.toast.success("Updated successfully.");
+          this.clearForm();
+        }
+      })
+    }
+    else {
+      this._facade.addParty(_partyData).subscribe(r => {
+        if (r == 0) {
+          this.toast.error("Error occured while saving data");
+        } else {
+          this.toast.success("Saved successfully.");
+          this.clearForm();
+        }
+      })
+    }    
   }
   clearForm() {
+    this.id = 0;
     this.form.reset();
+    this.form.controls["isActive"].setValue(false);
   }
   BackToList() {
     this.router.navigate(['masters/party-master']);
