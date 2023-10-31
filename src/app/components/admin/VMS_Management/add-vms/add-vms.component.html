@@ -1,4 +1,13 @@
 <div class="container">
+    <div class="row">
+        <div class="col-md-12" style="padding: 25px;">
+            <button class="btn btn-primary" (click)="BackToList()">
+                <!-- <span class="spinner-border spinner-border-sm me-1" ></span> -->
+                <i class="icon-arrow-left"></i>
+                Back To List
+            </button>
+        </div>
+    </div>
     <div class="card card-css">
         <div class="row">
             <div class="col-md-12">
@@ -20,7 +29,8 @@
                                     placeholder="Description"
                                     [ngClass]="{ 'is-invalid': f['serialNo'].touched && f['serialNo'].errors, 'is-valid': f['serialNo'].valid }" />
                                 <div *ngIf="f['serialNo'].touched && f['serialNo'].errors" class="invalid-feedback">
-                                    <div>{{getErrorMessage('serialNo','Serial No',true,"Invalid data available in Serial No")}}
+                                    <div>{{getErrorMessage('serialNo','Serial No',true,"Invalid data available in Serial
+                                        No")}}
                                     </div>
                                 </div>
                             </div>
@@ -31,7 +41,8 @@
                                     [ngClass]="{ 'is-invalid': f['description'].touched && f['description'].errors, 'is-valid': f['description'].valid }" />
                                 <div *ngIf="f['description'].touched && f['description'].errors"
                                     class="invalid-feedback">
-                                    <div>{{getErrorMessage('description','Description',true,"Invalid data available in Description")}}
+                                    <div>{{getErrorMessage('description','Description',true,"Invalid data available in
+                                        Description")}}
                                     </div>
                                 </div>
                             </div>
@@ -44,7 +55,8 @@
                                     <option value="">Select Zone</option>
                                 </select>
                                 <div *ngIf="f['zoneId'].touched && f['zoneId'].errors" class="invalid-feedback">
-                                    <div>{{getErrorMessage('zoneId','Zone ID',true,"Invalid data available in Zone ID")}}
+                                    <div>{{getErrorMessage('zoneId','Zone ID',true,"Invalid data available in Zone
+                                        ID")}}
                                     </div>
                                 </div>
                             </div>
@@ -55,7 +67,8 @@
                                     [ngClass]="{'is-invalid': submitting&& f['installDate'].errors}" />
                                 <div *ngIf="f['installDate'].touched && f['installDate'].errors"
                                     class="invalid-feedback">
-                                    <div>{{getErrorMessage('installDate','Install Date',true,"Invalid data available in Install Date")}}
+                                    <div>{{getErrorMessage('installDate','Install Date',true,"Invalid data available in
+                                        Install Date")}}
                                     </div>
                                 </div>
                             </div>
@@ -65,7 +78,8 @@
                                     id='ipAddress' formControlName="ipAddress"
                                     [ngClass]="{'is-invalid': submitting&& f['ipAddress'].errors}" />
                                 <div *ngIf="f['ipAddress'].touched && f['ipAddress'].errors" class="invalid-feedback">
-                                    <div>{{getErrorMessage('ipAddress','IP Address',true,"Invalid data available in IP Address")}}
+                                    <div>{{getErrorMessage('ipAddress','IP Address',true,"Invalid data available in IP
+                                        Address")}}
                                     </div>
                                 </div>
                             </div>
@@ -77,7 +91,8 @@
                                     id='longitude' formControlName="longitude"
                                     [ngClass]="{'is-invalid': submitting&& f['longitude'].errors}" />
                                 <div *ngIf="f['longitude'].touched && f['ipAddress'].errors" class="invalid-feedback">
-                                    <div>{{getErrorMessage('longitude','Longitude',true,"Invalid data available in Longitude")}}
+                                    <div>{{getErrorMessage('longitude','Longitude',true,"Invalid data available in
+                                        Longitude")}}
                                     </div>
                                 </div>
                             </div>
@@ -87,7 +102,8 @@
                                     id='latitude' formControlName="latitude"
                                     [ngClass]="{'is-invalid': submitting&& f['latitude'].errors}" />
                                 <div *ngIf="f['latitude'].touched && f['latitude'].errors" class="invalid-feedback">
-                                    <div>{{getErrorMessage('latitude','Latitude',true,"Invalid data available in Latitude")}}
+                                    <div>{{getErrorMessage('latitude','Latitude',true,"Invalid data available in
+                                        Latitude")}}
                                     </div>
                                 </div>
                             </div>
@@ -154,14 +170,20 @@
                             </div>
                         </div>
                         <div class="row">
-                            
+
                         </div>
                         <div class="row">
 
-                            <div class="mb-3 col">
-                                <button [disabled]="!form.valid" class="btn btn-primary">
+                            <div class="col-md-1" style="padding:10px">
+                                <button [disabled]="!form.valid" class="btn btn-success">
                                     <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
-                                    Configure Co-ordinates
+                                    Submit
+                                </button>
+                            </div>
+                            <div class="col-md-1" style="padding:10px">
+                                <button [disabled]="!form.valid" class="btn btn-danger">
+                                    <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+                                    Reset
                                 </button>
                             </div>
                         </div>

@@ -24,4 +24,10 @@ export class AdminFacadeService {
   getVmss(_data: any) {
     return this._adminService.getVmsMasterData(_data);
   }
+  getParties(_data: any) {
+    return this._adminService.getPartiesData(_data);
+  }
+  addParty(_data: any) {
+    return this._adminService.addPartyData(_data);
+  }
 }

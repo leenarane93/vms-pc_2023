@@ -14,6 +14,7 @@ import { AuthenticationService } from 'src/app/facade/services/user/authenticati
 import { UserLoggedIn } from 'src/app/models/$bs/userLoggedIn';
 import { HttpHeaders } from '@angular/common/http';
 import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
+import { Globals } from 'src/app/utils/global';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +35,8 @@ export class LoginComponent implements OnInit {
     private _facadeService: UserFacadeService,
     private _commonFacade: CommonFacadeService,
     private toastr: ToastrService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private global:Globals) {
     //this.config$ = this._facadeService._configData$;
     console.log(this._commonFacade.getSession("api_url"));
     this.version = environment.version;
@@ -77,6 +79,7 @@ export class LoginComponent implements OnInit {
             this._facadeService.isLoggedinSubject.next(user);
             this._commonFacade.setSession("access_token",res.token);
             this._facadeService.user = res;
+            this.global.UserCode = _login.Username;
             if (_login.Username == environment.user)
             {
               this.router.navigate(["admin-dashboard"],{fragment:"0"});

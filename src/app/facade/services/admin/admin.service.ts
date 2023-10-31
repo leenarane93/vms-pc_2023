@@ -27,4 +27,12 @@ export class AdminService {
     return this._httpService._postMethod(_data, 'Administration_api/api/VMSMaster/GetVmsMasterDetails');
   }
 
+  getPartiesData(_data: any) {
+    return this._httpService._postMethod(_data, 'administration_api/api/PartyMaster/GetParties');
+  }
+
+  addPartyData(_data:any) {
+    return this._httpService._postMethod(_data,'Administration_API/api/PartyMaster/PostPartyMaster');    
+  }
+
 }

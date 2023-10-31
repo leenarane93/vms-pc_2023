@@ -15,6 +15,8 @@ import { AddZoneComponent } from './components/admin/add-zone/add-zone.component
 import { ErrorPageComponent } from './components/shared/error-page/error-page.component';
 import { VmsMasterComponent } from './components/admin/VMS_Management/vms-master/vms-master.component';
 import { AddVmsComponent } from './components/admin/VMS_Management/add-vms/add-vms.component';
+import { PartyMngComponent } from './components/admin/party-mng/party-mng.component';
+import { AddPartyComponent } from './components/admin/party-mng/add-party/add-party.component';
 
 const routes: Routes = [
   {
@@ -89,6 +91,12 @@ const routes: Routes = [
     canActivate: [AuthGuradService]
   },
   {
+    path: 'masters/party-master',
+    component: PartyMngComponent,
+    data: { title: 'Party Management' },
+    canActivate: [AuthGuradService]
+  },
+  {
     path: "admin/add-zone",
     component: AddZoneComponent,
     data: { title: 'Add Zone' },
@@ -98,6 +106,12 @@ const routes: Routes = [
     path: "masters/add-vms",
     component: AddVmsComponent,
     data: { title: 'Add Zone' },
+    canActivate: [AuthGuradService]
+  },
+  {
+    path: "masters/add-party",
+    component: AddPartyComponent,
+    data: { title: 'Add Party' },
     canActivate: [AuthGuradService]
   },
   {

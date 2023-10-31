@@ -1,27 +1,23 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
+import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 import { InputRequest } from 'src/app/models/request/inputReq';
 import { Globals } from 'src/app/utils/global';
 
-export type eventModel = {
-  id: number;
-  name: string;
-};
-
 @Component({
-  selector: 'app-zone-mng',
-  templateUrl: './zone-mng.component.html',
-  styleUrls: ['./zone-mng.component.css']
+  selector: 'app-party-mng',
+  templateUrl: './party-mng.component.html',
+  styleUrls: ['./party-mng.component.css']
 })
-export class ZoneMngComponent {
+export class PartyMngComponent {
+
   form: any = [];
   title = 'angular13';
   searchText!: string;
   page: any;
-  listOfZones: any;
+  listOfParties: any;
   totalPages: number = 1;
   pager: number = 1;
   totalRecords!: number;
@@ -32,30 +28,32 @@ export class ZoneMngComponent {
   constructor(private adminFacade: AdminFacadeService,
     private global: Globals,
     private modalService: NgbModal,
+    private _commonFacade : CommonFacadeService,
     private router: Router) {
-    this.global.CurrentPage = "Zone Management";
+    this.global.CurrentPage = "Party Management";
     this.pager = 1;
     this.totalRecords = 0;
-    this.getZones();
+    this.getParties();
   }
 
   headerArr = [
     { "Head": "ID", "FieldName": "id", "type": "number" },
-    { "Head": "Zone Name", "FieldName": "zoneName", "type": "string" },
+    { "Head": "Party Code", "FieldName": "partyCode", "type": "string" },
+    { "Head": "Party Name", "FieldName": "partyName", "type": "string" },
     { "Head": "Description", "FieldName": "description", "type": "string" },
     { "Head": "Status", "FieldName": "isActive", "type": "boolean" }
   ];
-  getZones() {
+  getParties() {
     this._request.currentPage = this.pager;
     this._request.pageSize = this.recordPerPage;
     this._request.startId = this.startId;
     this._request.searchItem = this.searchText;
     //get request from web api
-    this.adminFacade.getZones(this._request).subscribe(data => {
+    this.adminFacade.getParties(this._request).subscribe(data => {
       if (data != null && data != undefined) {
 
-        this.listOfZones = data.data;
-        if (this.listOfZones != null && this.listOfZones != undefined) {
+        this.listOfParties = data.data;
+        if (this.listOfParties != null && this.listOfParties != undefined) {
           var _length = data.totalRecords / this.recordPerPage;
           if (_length > Math.floor(_length) && Math.floor(_length) != 0)
             this.totalRecords = this.recordPerPage * (_length);
@@ -65,7 +63,7 @@ export class ZoneMngComponent {
             this.totalRecords = data.totalRecords;
           this.totalPages = this.totalRecords / this.pager;
         }
-        this.listOfZones.forEach((ele: any) => {
+        this.listOfParties.forEach((ele: any) => {
           if (ele.isActive == true)
             ele.isActive = "Active";
           else
@@ -75,14 +73,14 @@ export class ZoneMngComponent {
       else {
         this.router.navigate(['error-page']);
       }
-    }, error => console.error(error));
+    }, (err: any) => console.error(err));
   }
 
   onPager(pager: number) {
     this._request.pageSize = this.recordPerPage;
     this.pager = pager;
     this.startId = (this.pager - 1) * this.recordPerPage;
-    this.getZones();
+    this.getParties();
   }
 
   onRecordPageChange(recordPerPage: number) {
@@ -92,12 +90,12 @@ export class ZoneMngComponent {
     this.startId = 0;
     this.pager = 1;
     console.log(this.recordPerPage);
-    this.getZones();
+    this.getParties();
   }
 
   onPageSearch(search: string) {
     this.searchText = search;
-    this.getZones();
+    this.getParties();
   }
 
   OpenModal(content: any) {
@@ -105,6 +103,6 @@ export class ZoneMngComponent {
     //   this.closeResult = `Closed with: ${result}`;
     // }, (reason) => {
     // });
-    this.router.navigate(['admin/add-zone']);
+    this.router.navigate(['masters/add-party']);
   }
 }
