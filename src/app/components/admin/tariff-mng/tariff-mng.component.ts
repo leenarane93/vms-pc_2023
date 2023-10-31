@@ -104,11 +104,11 @@ export class TariffMngComponent {
     // }, (reason) => {
     // });
     this._commonFacade.setSession("ModelShow", null);
-    this.router.navigate(['masters/add-party']);
+    this.router.navigate(['masters/add-tariff']);
   }
 
   SearchWithId(_searchItem: any) {
     this._commonFacade.setSession("ModelShow", JSON.stringify(_searchItem));
-    this.router.navigate(['masters/add-party']);
+    this.router.navigate(['masters/add-tariff']);
   }
 }
