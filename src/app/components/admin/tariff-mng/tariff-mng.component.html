@@ -1,0 +1,22 @@
+<div class="container text-center mt-12">
+    <div class="row float-right">
+        <div class="col-md-12 ">
+            <button class="btn btn-primary float-right" (click)="OpenModal(cmmodal)">
+                <span class="spinner-border-sm me-1"></span>
+                Add New
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 ">
+            <app-cm-table [headArr]="headerArr" [gridArr]="listOfParties" [totalRecords]="totalRecords"
+                [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)"
+                [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)" link="masters/add-party"
+                fieldName="id" (search)="onPageSearch($event)" (searchWithId)="SearchWithId($event)"></app-cm-table>
+        </div>
+    </div>
+
+</div>
+<ng-template #cmmodal let-modal>
+    <app-cm-modal></app-cm-modal>
+</ng-template>

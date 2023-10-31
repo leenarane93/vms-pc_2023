@@ -42,6 +42,8 @@ import { AddVmsComponent } from './components/admin/VMS_Management/add-vms/add-v
 import { DrawMap } from 'leaflet';
 import { PartyMngComponent } from './components/admin/party-mng/party-mng.component';
 import { AddPartyComponent } from './components/admin/party-mng/add-party/add-party.component';
+import { TariffMngComponent } from './components/admin/tariff-mng/tariff-mng.component';
+import { AddTariffComponent } from './components/admin/tariff-mng/add-tariff/add-tariff.component';
 const iconRetinaUrl = 'assets/leaflet/marker-icon-2x.png';
 const iconUrl = 'assets/leaflet/marker-icon.png';
 const shadowUrl = 'assets/leaflet/marker-shadow.png';
@@ -72,7 +74,9 @@ const shadowUrl = 'assets/leaflet/marker-shadow.png';
     VmsMasterComponent,
     AddVmsComponent,
     PartyMngComponent,
-    AddPartyComponent
+    AddPartyComponent,
+    TariffMngComponent,
+    AddTariffComponent
   ],
   imports: [
     FormsModule,

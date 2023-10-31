@@ -17,6 +17,8 @@ import { VmsMasterComponent } from './components/admin/VMS_Management/vms-master
 import { AddVmsComponent } from './components/admin/VMS_Management/add-vms/add-vms.component';
 import { PartyMngComponent } from './components/admin/party-mng/party-mng.component';
 import { AddPartyComponent } from './components/admin/party-mng/add-party/add-party.component';
+import { AddTariffComponent } from './components/admin/tariff-mng/add-tariff/add-tariff.component';
+import { TariffMngComponent } from './components/admin/tariff-mng/tariff-mng.component';
 
 const routes: Routes = [
   {
@@ -85,21 +87,15 @@ const routes: Routes = [
     canActivate: [AuthGuradService]
   },
   {
-    path: 'masters/vms-master',
-    component: VmsMasterComponent,
-    data: { title: 'VMS Management' },
-    canActivate: [AuthGuradService]
-  },
-  {
-    path: 'masters/party-master',
-    component: PartyMngComponent,
-    data: { title: 'Party Management' },
-    canActivate: [AuthGuradService]
-  },
-  {
     path: "admin/add-zone",
     component: AddZoneComponent,
     data: { title: 'Add Zone' },
+    canActivate: [AuthGuradService]
+  },
+  {
+    path: 'masters/vms-master',
+    component: VmsMasterComponent,
+    data: { title: 'VMS Management' },
     canActivate: [AuthGuradService]
   },
   {
@@ -109,9 +105,27 @@ const routes: Routes = [
     canActivate: [AuthGuradService]
   },
   {
+    path: 'masters/party-master',
+    component: PartyMngComponent,
+    data: { title: 'Party Management' },
+    canActivate: [AuthGuradService]
+  },
+  {
     path: "masters/add-party",
     component: AddPartyComponent,
     data: { title: 'Add Party' },
+    canActivate: [AuthGuradService]
+  },
+  {
+    path: 'masters/tariff-master',
+    component: TariffMngComponent,
+    data: { title: 'Tariff Management' },
+    canActivate: [AuthGuradService]
+  },
+  {
+    path: "masters/add-tariff",
+    component: AddTariffComponent,
+    data: { title: 'Add Tariff' },
     canActivate: [AuthGuradService]
   },
   {
