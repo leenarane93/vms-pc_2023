@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
+import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 import { PartyMaster } from 'src/app/models/admin/PartyMaster';
 import { Globals } from 'src/app/utils/global';
 import { getErrorMsg } from 'src/app/utils/utils';
@@ -12,18 +13,30 @@ import { getErrorMsg } from 'src/app/utils/utils';
   templateUrl: './add-party.component.html',
   styleUrls: ['./add-party.component.css']
 })
-export class AddPartyComponent {
+export class AddPartyComponent implements OnInit {
   form: any = [];
   active: boolean = false;
   loading: boolean = false;
   submitting: boolean = false;
+  id : number=0;
   constructor(private router: Router,
     private global: Globals,
     private formBuilder: FormBuilder,
-    private _facade:AdminFacadeService,
-    private toast:ToastrService) {
+    private _facade: AdminFacadeService,
+    private _common: CommonFacadeService,
+    private toast: ToastrService,
+    private actRoutes: ActivatedRoute) {
     this.global.CurrentPage = "Add Party";
     this.BuildForm();
+  }
+  ngOnInit(): void {
+    let data = this._common.getSession("ModelShow");
+    this.FillForm(data == null ? "" : JSON.parse(data));
+  }
+  FillForm(data: any) {
+    if(data != "") {
+      this.id = data.id;
+    }
   }
   get f() { return this.form.controls; }
   BuildForm() {
@@ -56,7 +69,7 @@ export class AddPartyComponent {
     _partyData.gstinNo = this.form.controls.gstinNumber.value;
     _partyData.isActive = this.active;
     _partyData.createdBy = this.global.UserCode;
-    this._facade.addParty(_partyData).subscribe(r=>{
+    this._facade.addParty(_partyData).subscribe(r => {
       if (r == 0) {
         this.toast.error("Error occured while saving data");
       } else {
@@ -65,7 +78,7 @@ export class AddPartyComponent {
       }
     })
   }
-  clearForm(){
+  clearForm() {
     this.form.reset();
   }
   BackToList() {

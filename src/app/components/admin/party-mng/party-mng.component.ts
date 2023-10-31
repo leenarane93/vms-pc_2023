@@ -103,6 +103,12 @@ export class PartyMngComponent {
     //   this.closeResult = `Closed with: ${result}`;
     // }, (reason) => {
     // });
+    this._commonFacade.setSession("ModelShow",null);
+    this.router.navigate(['masters/add-party']);
+  }
+
+  SearchWithId(_searchItem:any){
+    this._commonFacade.setSession("ModelShow",JSON.stringify(_searchItem));
     this.router.navigate(['masters/add-party']);
   }
 }

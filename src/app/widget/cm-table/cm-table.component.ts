@@ -12,6 +12,7 @@ export class CmTableComponent {
   tooltip: string = "";
   searchText: string = "";
   @Output() pager = new EventEmitter<number>();
+  @Output() searchWithId = new EventEmitter<any>();
   @Output() search = new EventEmitter<string>();
   @Output() recordPerPage = new EventEmitter<number>();
   @Input() headArr: any[] = [];
@@ -77,7 +78,8 @@ export class CmTableComponent {
     this.recordPerPage.emit(pageNo);
   }
 
-  ShowForm() {
-    this.router.navigate([this.link]);
+  ShowForm(item:any) {
+    this.searchWithId.emit(item);
+    //this.router.navigate([this.link]);
   }
 }
