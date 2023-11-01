@@ -15,12 +15,24 @@ export class AdminService {
     return this._httpService._postMethod(data, 'administration_api/api/ConfigParam/AddConfigDetails');
   }
 
+  getConfigurationData() {
+    return this._httpService._getMethod('administration_api/api/ConfigParam/GetConfigDetails');
+  }
+
   getKeysDataForConfig(key: string) {
     return this._http.get(this.jsonurl);
   }
 
   getZoneMasterData(_data: any) {
     return this._httpService._postMethod(_data, 'Administration_API/api/ZoneMaster/GetZones');
+  }
+
+  addZoneMasterData(_data: any) {
+    return this._httpService._postMethod(_data, 'Administration_API/api/ZoneMaster/PostZoneMaster');
+  }
+
+  updateZoneMasterData(_data: any) {
+    return this._httpService._postMethod(_data, 'Administration_API/api/ZoneMaster/PutZoneMaster');
   }
 
   getVmsMasterData(_data: any) {
@@ -38,4 +50,6 @@ export class AdminService {
   updatePartyData(_data:any) {
     return this._httpService._postMethod(_data,'Administration_API/api/PartyMaster/PutPartyMaster');    
   }
+
+
 }

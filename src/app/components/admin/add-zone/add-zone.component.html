@@ -20,8 +20,7 @@
                                     placeholder="Zone Name"
                                     [ngClass]="{ 'is-invalid': f['zoneName'].touched && f['zoneName'].errors, 'is-valid': f['zoneName'].valid }" />
                                 <div *ngIf="f['zoneName'].touched && f['zoneName'].errors" class="invalid-feedback">
-                                    <div>{{getErrorMessage('zoneName','Zone Name',true,"Invalid data available in Zone
-                                        Name")}}</div>
+                                    <div>{{getErrorMessage('zoneName','Zone Name',true,"Invalid data available in Zone Name")}}</div>
                                 </div>
                             </div>
                             <div class="mb-9 col">
@@ -31,26 +30,33 @@
                                     [ngClass]="{ 'is-invalid': f['description'].touched && f['description'].errors, 'is-valid': f['description'].valid }" />
                                 <div *ngIf="f['description'].touched && f['description'].errors"
                                     class="invalid-feedback">
-                                    <div>{{getErrorMessage('description','Description',true,"Invalid data available in
-                                        Description")}}
+                                    <div>{{getErrorMessage('description','Description',true,"Invalid data available in Description")}}
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="mb-3 col">
-                                <label class="form-label">Active/InActive*</label>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" formControlName="isActive" type="checkbox"
-                                        role="switch" id="flexSwitchCheckDefault">
+                            <div class="mb-3 col" style="padding-top: 40px;">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Status*</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="mb-3 col">
-                                <button [disabled]="!form.valid" class="btn btn-primary" (click)="ViewMap()">
-                                    <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
-                                    Configure Co-ordinates
-                                </button>
-                            </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="switch active">
+                                            <input type="checkbox" formControlName="isActive" [(ngModel)]="active">
+                                            <div class="slider round"></div>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button [disabled]="!form.valid" class="btn btn-primary" (click)="ViewMap()">
+                                            <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+                                            Configure Co-ordinates
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>                            
                         </div>
                     </div>
 
@@ -65,11 +71,8 @@
                     <div class="row">
                     </div>
                 </div>
-
-                <!-- <div style="height: 500px;" leaflet [leafletOptions]="options">
-                </div> -->
                 <div style="height:500px;">
-                    <app-cm-leaflet></app-cm-leaflet>
+                    <app-cm-leaflet ></app-cm-leaflet>
                 </div>
             </div>
         </div>

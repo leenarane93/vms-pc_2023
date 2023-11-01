@@ -13,13 +13,21 @@ export class AdminFacadeService {
   AddConfigData(data: any) {
     return this._adminService.addConfigurationData(data);
   }
-
+  getConfiguration(){
+    return this._adminService.getConfigurationData();
+  }
   getKeysDataForConfig(key: string) {
     return this._adminService.getKeysDataForConfig(key);
   }
 
   getZones(_data: any) {
     return this._adminService.getZoneMasterData(_data);
+  }
+  addZoneMaster(_data: any) {
+    return this._adminService.addZoneMasterData(_data);
+  }
+  updateZoneMaster(_data: any) {
+    return this._adminService.updateZoneMasterData(_data);
   }
   getVmss(_data: any) {
     return this._adminService.getVmsMasterData(_data);
@@ -33,4 +41,5 @@ export class AdminFacadeService {
   updateParty(_data: any) {
     return this._adminService.updatePartyData(_data);
   }
+  
 }

@@ -82,6 +82,7 @@ onSubmit() {
 }
 
 saveConfiguration() {
+  debugger;
   //Latitude
   var _data = new PrmGlobal();
   _data.id = 0;
@@ -114,16 +115,16 @@ saveConfiguration() {
   });
   if(valid == true) {
     this._loader.showLoader();
-    // this._adminFacade.AddConfigData(_data).subscribe(res => {
-    //   if(res == 1)
-    //   {
-    //     this._toastr.success("Data successfully submitted.");
-    //   }
-    //   else 
-    //     this._toastr.error("Something went wrong.");
-    // },(err)=>{
-    //   this._toastr.error(err);
-    // })
+    this._adminFacade.AddConfigData(_data).subscribe(res => {
+      if(res == 1)
+      {
+        this._toastr.success("Data successfully submitted.");
+      }
+      else 
+        this._toastr.error("Something went wrong.");
+    },(err)=>{
+      this._toastr.error(err);
+    })
   }
   console.log(_data);
 }

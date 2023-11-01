@@ -15,6 +15,7 @@ import { UserLoggedIn } from 'src/app/models/$bs/userLoggedIn';
 import { HttpHeaders } from '@angular/common/http';
 import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 import { Globals } from 'src/app/utils/global';
+import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
 
 @Component({
   selector: 'app-login',
@@ -35,6 +36,7 @@ export class LoginComponent implements OnInit {
     private _facadeService: UserFacadeService,
     private _commonFacade: CommonFacadeService,
     private toastr: ToastrService,
+    private _adminFacade:AdminFacadeService,
     private route: ActivatedRoute,
     private global:Globals) {
     //this.config$ = this._facadeService._configData$;
@@ -82,10 +84,21 @@ export class LoginComponent implements OnInit {
             this.global.UserCode = _login.Username;
             if (_login.Username == environment.user)
             {
+              this._adminFacade.getConfiguration().subscribe(res=>{
+                if(res != undefined && res != null){
+                  let data = JSON.stringify(res);
+                  this._commonFacade.setSession("Configuration",data);
+                }
+              })
               this.router.navigate(["admin-dashboard"],{fragment:"0"});
             }
-            else
+            else {
+              this._adminFacade.getConfiguration().subscribe(res=>{
+                if(res != undefined && res != null)
+                  this._commonFacade.setSession("Configuration",res);
+              })
               this.router.navigate(["dashboard"]);
+            }
           }
           else
             this.toastr.error("Invalid username or password.");

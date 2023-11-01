@@ -1,7 +1,7 @@
     {
         "api_url": "https://172.19.32.139:442/",
         "config_unit": [{"key":"admin","value" : "Admin Configuration"},{"key":"api","value":"API Configuration"},{"key":"report","value":"Report Configuration"}],
-        "config_keys": [{"admin":[{"key":"long","value":"Longitude","type":"coords"},{"key":"lat","value":"Latitude","type":"coords"}]},
+        "config_keys": [{"admin":[{"key":"long","value":"Longitude","type":"coords"},{"key":"lat","value":"Latitude","type":"coords"},{"key":"zoomlevel","value":"Zoom Level","type":"int"}]},
                         {"api":[{ "key": "api_URL", "value": "API_URL","type":"api" },
                         { "key": "media_URL", "value": "Media URL","type":"api"  },
                         { "key": "report_URL", "value": "Report URL","type":"api"  },
