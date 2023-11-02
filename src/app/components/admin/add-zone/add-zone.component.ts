@@ -117,7 +117,8 @@ export class AddZoneComponent implements OnInit {
         zoneName: data.zoneName,
         description: data.description,
         isActive: data.isActive
-      })
+      });
+
     }
   }
   clearForm() {

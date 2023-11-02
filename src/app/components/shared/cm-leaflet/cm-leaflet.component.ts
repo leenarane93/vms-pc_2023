@@ -1,5 +1,5 @@
 
-import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 
 // when the docs use an import:
 declare const L: any; // --> Works
@@ -43,37 +43,61 @@ L.Marker.prototype.options.icon = markerIcon;
 })
 export class CmLeafletComponent {
 	name = "Angular";
-	layers :any;
+	layers: any;
 	map: any;
 	lat: number = 0;
 	lon: number = 0;
-	zoom:number = 10;
+	zoom: number = 10;
 	maker!: any;
 	dbmaker!: any[];
+	polygon: any[] = [];
 	@Output() latLng = new EventEmitter<any[]>();
 	markers!: any[];
 	drawnItems: any;
-
+	@Input() zoneId :number=0;
 	datachild: any;
 	isAddFieldTask!: boolean;
 	isSave!: boolean;
-	constructor(private adminFacade :AdminFacadeService,
-				private toast:ToastrService){
+	constructor(private adminFacade: AdminFacadeService,
+		private toast: ToastrService) {
 
 	}
 	ngOnInit() {
-		this.adminFacade.getConfiguration().subscribe(res=>{
-			var latitude= res.find((x:any)=>x.prmkey == 'lat');
-      		this.lat = latitude.prmvalue;
-      		var longs= res.find((x:any)=>x.prmkey == 'long');
-      		this.lon = longs.prmvalue;
-      		var zooms= res.find((x:any)=>x.prmkey == 'zoomlevel');
-      		this.zoom = zooms.prmvalue;
+		this.adminFacade.getConfiguration().subscribe(res => {
+			var latitude = res.find((x: any) => x.prmkey == 'lat');
+			this.lat = latitude.prmvalue;
+			var longs = res.find((x: any) => x.prmkey == 'long');
+			this.lon = longs.prmvalue;
+			var zooms = res.find((x: any) => x.prmkey == 'zoomlevel');
+			this.zoom = zooms.prmvalue;
 			this.InItMap();
-		})
+		});
+
+		if(this.zoneId != 0 ){
+			this.adminFacade.getZoneCoordinates(this.zoneId).subscribe(res=>{
+				console.log(res);
+				
+				if (this.polygon.length > 0) {
+					console.log(this.polygon);
+					const myLines = [{
+						"type": "Polygon",
+						"coordinates": [[
+							[105.02517700195314, 19.433801201715198],
+							[106.23367309570314, 18.852796311610007],
+							[105.61843872070314, 7.768472031139744]
+		
+						]]
+					}, {
+						"type": "LineString",
+						"coordinates": [[-105, 40], [-110, 45], [-115, 55]]
+					}];
+				}
+			});
+		}
+		
 	}
 
-	InItMap(){
+	InItMap() {
 		this.map = L.map('map',).setView([this.lat, this.lon], this.zoom);
 		//L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
 
@@ -141,7 +165,7 @@ export class CmLeafletComponent {
 		this.map.addControl(drawControl);
 
 		var app = this;
-		this.map.on(L.Draw.Event.CREATED,  (e: any) => {
+		this.map.on(L.Draw.Event.CREATED, (e: any) => {
 			var type = e.layerType,
 				layer = e.layer;
 
@@ -150,7 +174,7 @@ export class CmLeafletComponent {
 				console.log(layer.getLatLng());
 			}
 			else {
-				
+
 				this.layers = [];
 				this.layers = layer.getLatLngs();
 				console.log(this.layers);
@@ -184,10 +208,10 @@ export class CmLeafletComponent {
 	}
 
 	SubmitCoordinates() {
-		if(this.layers == undefined || this.layers.length == 0) {
-			this.toast.error("Zone Area not selected","Error",{
-				positionClass: 'toast-bottom-right' 
-			 });
+		if (this.layers == undefined || this.layers.length == 0) {
+			this.toast.error("Zone Area not selected", "Error", {
+				positionClass: 'toast-bottom-right'
+			});
 		}
 		else {
 			this.latLng.emit(this.layers);
