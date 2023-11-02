@@ -36,6 +36,18 @@ const markerIcon = L.icon({
 	shadowUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-shadow.png"
 });
 L.Marker.prototype.options.icon = markerIcon;
+// const myLines = [{
+// 	"type": "Polygon",
+// 	"coordinates": [[
+// 		[105.02517700195314, 19.433801201715198],
+// 		[106.23367309570314, 18.852796311610007],
+// 		[105.61843872070314, 7.768472031139744]
+
+// 	]]
+// }, {
+// 	"type": "LineString",
+// 	"coordinates": [[-105, 40], [-110, 45], [-115, 55]]
+// }];
 @Component({
 	selector: 'app-cm-leaflet',
 	templateUrl: './cm-leaflet.component.html',
@@ -54,7 +66,7 @@ export class CmLeafletComponent {
 	@Output() latLng = new EventEmitter<any[]>();
 	markers!: any[];
 	drawnItems: any;
-	@Input() zoneId :number=0;
+	@Input() zoneId: number = 0;
 	datachild: any;
 	isAddFieldTask!: boolean;
 	isSave!: boolean;
@@ -70,31 +82,27 @@ export class CmLeafletComponent {
 			this.lon = longs.prmvalue;
 			var zooms = res.find((x: any) => x.prmkey == 'zoomlevel');
 			this.zoom = zooms.prmvalue;
-			this.InItMap();
+			//this.InItMap();
+			this.CheckCoordinates();
 		});
+	}
+	CheckCoordinates() {
+		if (this.zoneId != 0) {
+			this.adminFacade.getZoneCoordinates(this.zoneId).subscribe(res => {
+				let cordsArr: any[] = [];
+				res.forEach((ele: any) => {
+					let lat = ele.latitude;
+					let long = ele.longitude;
+					let cords = [lat, long];
+					cordsArr.push(cords);
+				});
 
-		if(this.zoneId != 0 ){
-			this.adminFacade.getZoneCoordinates(this.zoneId).subscribe(res=>{
-				console.log(res);
-				
-				if (this.polygon.length > 0) {
-					console.log(this.polygon);
-					const myLines = [{
-						"type": "Polygon",
-						"coordinates": [[
-							[105.02517700195314, 19.433801201715198],
-							[106.23367309570314, 18.852796311610007],
-							[105.61843872070314, 7.768472031139744]
-		
-						]]
-					}, {
-						"type": "LineString",
-						"coordinates": [[-105, 40], [-110, 45], [-115, 55]]
-					}];
-				}
+				this.polygon = [{ "type": "Polygon", "coordinates": [[[73.16060234337762, 22.327465740576802], [73.24187526230807, 22.32390876106537], [73.24105154208249, 22.25808836444047], [73.14714837903118, 22.25757998605908]]] }];
+				this.InItMap();
 			});
 		}
-		
+		else
+			this.InItMap();
 	}
 
 	InItMap() {
@@ -193,11 +201,11 @@ export class CmLeafletComponent {
 
 		});
 
-		// var layerPostalcodes = L.geoJSON(myLines, {
-		// 	style: myStyle
-		// }).addTo(this.map);
+		var layerPostalcodes = L.geoJSON(this.polygon, {
+			style: myStyle
+		}).addTo(this.map);
 
-		//this.drawnItems.addLayer(layerPostalcodes);
+		this.drawnItems.addLayer(layerPostalcodes);
 		// var layerGroup = new L.LayerGroup();
 		// layerGroup.addTo(this.map);
 		// layerGroup.addLayer(layerPostalcodes);
