@@ -1,9 +1,10 @@
 
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 
 // when the docs use an import:
 declare const L: any; // --> Works
 import 'leaflet-draw';
+import { ToastrService } from 'ngx-toastr';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
 // const myLines = [{
 // 	"type": "Polygon",
@@ -42,20 +43,22 @@ L.Marker.prototype.options.icon = markerIcon;
 })
 export class CmLeafletComponent {
 	name = "Angular";
+	layers :any;
 	map: any;
 	lat: number = 0;
 	lon: number = 0;
 	zoom:number = 10;
 	maker!: any;
 	dbmaker!: any[];
-
+	@Output() latLng = new EventEmitter<any[]>();
 	markers!: any[];
 	drawnItems: any;
 
 	datachild: any;
 	isAddFieldTask!: boolean;
 	isSave!: boolean;
-	constructor(private adminFacade :AdminFacadeService){
+	constructor(private adminFacade :AdminFacadeService,
+				private toast:ToastrService){
 
 	}
 	ngOnInit() {
@@ -138,7 +141,7 @@ export class CmLeafletComponent {
 		this.map.addControl(drawControl);
 
 		var app = this;
-		this.map.on(L.Draw.Event.CREATED, function (e: any) {
+		this.map.on(L.Draw.Event.CREATED,  (e: any) => {
 			var type = e.layerType,
 				layer = e.layer;
 
@@ -147,7 +150,10 @@ export class CmLeafletComponent {
 				console.log(layer.getLatLng());
 			}
 			else {
-				console.log(layer.getLatLngs());
+				
+				this.layers = [];
+				this.layers = layer.getLatLngs();
+				console.log(this.layers);
 			}
 			app.drawnItems.addLayer(layer);
 			//TODO: ask yes no
@@ -175,5 +181,16 @@ export class CmLeafletComponent {
 		// this.map.removeLayer(layerGroup);
 
 		//
+	}
+
+	SubmitCoordinates() {
+		if(this.layers == undefined || this.layers.length == 0) {
+			this.toast.error("Zone Area not selected","Error",{
+				positionClass: 'toast-bottom-right' 
+			 });
+		}
+		else {
+			this.latLng.emit(this.layers);
+		}
 	}
 }

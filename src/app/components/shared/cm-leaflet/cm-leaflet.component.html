@@ -18,7 +18,18 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css" />
 </head>
 
-<div class="map" #map id="map" style="width: 100%; height: 500px;"></div>
 
+<div class="row">
+    <div class="col-md-12">
+        <div class="map" #map id="map" style="width: 100%; height: 450px;"></div>
+    </div>
+</div>
+<div class="row card-css">
+    <div class="mb-3 col text-center" id="bottom" (click)="SubmitCoordinates()">
+        <button class="btn btn-success">
+            Submit
+        </button>
+    </div>
+</div>
 <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>

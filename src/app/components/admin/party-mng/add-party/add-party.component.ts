@@ -39,10 +39,10 @@ export class AddPartyComponent implements OnInit {
   BuildForm() {
     this.form = this.formBuilder.group({
       partyCode: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9]*$")]],
-      partyName: ['', [Validators.required, Validators.pattern("^[a-zA-Z ]*$")]],
-      description: ['', [Validators.required]],
+      partyName: ['', [Validators.required, Validators.pattern("^[A-Za-z][A-Za-z ]*$")]],
+      description: ['', [Validators.required,Validators.pattern("[A-Za-z][A-Za-z ]*$")]],
       contactNumber: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      address: ['', [Validators.required]],
+      address: ['', [Validators.required,Validators.pattern("[A-Za-z0-9][A-Za-z0-9/-: ]*$")]],
       zipCode: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       gstinNumber: ['', [Validators.required, Validators.pattern("^[A-Za-z0-9]*$")]],
       isActive: [false, [Validators.required]],

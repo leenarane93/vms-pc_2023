@@ -5,3 +5,10 @@ export class ZoneMaster{
     isActive !: boolean;
     createdBy!:string;
 }
+
+export class ZoneCoords {
+    id!:number;
+    zoneId!:number;
+    latitude!:number;
+    longitude!:number;
+}

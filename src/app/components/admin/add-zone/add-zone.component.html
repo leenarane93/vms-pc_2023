@@ -72,18 +72,11 @@
                     </div>
                 </div>
                 <div style="height:500px;">
-                    <app-cm-leaflet ></app-cm-leaflet>
+                    <app-cm-leaflet (latLng)="GetLatLong($event)"></app-cm-leaflet>
                 </div>
             </div>
         </div>
-        <div class="row card-css">
-            <div class="mb-3 col text-center" id="bottom">
-                <button [disabled]="isMap ==false" class="btn btn-success">
-                    <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
-                    Submit
-                </button>
-            </div>
-        </div>
+        
     </div>
 
 </div>

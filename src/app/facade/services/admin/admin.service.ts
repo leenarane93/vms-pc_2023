@@ -31,6 +31,14 @@ export class AdminService {
     return this._httpService._postMethod(_data, 'Administration_API/api/ZoneMaster/PostZoneMaster');
   }
 
+  getZoneCoordinates(_data: string) {
+    return this._httpService._getMethod('Administration_API/api/ZoneMaster/GetZoneCoordsByZoneId?zoneId='+_data);
+  }
+
+  addZoneCoordinates(_data: any) {
+    return this._httpService._postMethod(_data, 'Administration_API/api/ZoneMaster/PostZoneCoords');
+  }
+
   updateZoneMasterData(_data: any) {
     return this._httpService._postMethod(_data, 'Administration_API/api/ZoneMaster/PutZoneMaster');
   }

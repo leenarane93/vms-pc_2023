@@ -1,10 +1,11 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
-import { ZoneMaster } from 'src/app/models/admin/ZoneMaster';
+import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
+import { ZoneCoords, ZoneMaster } from 'src/app/models/admin/ZoneMaster';
 import { Globals } from 'src/app/utils/global';
 import { getErrorMsg } from 'src/app/utils/utils';
 
@@ -13,59 +14,65 @@ import { getErrorMsg } from 'src/app/utils/utils';
   templateUrl: './add-zone.component.html',
   styleUrls: ['./add-zone.component.css']
 })
-export class AddZoneComponent {
+export class AddZoneComponent implements OnInit {
   @ViewChild('scroll', { static: true }) scroll: any;
-  form : any=[];
+  form: any = [];
   loading = false;
   submitting = false;
-  isMap:boolean=false;
-  lat : number =0;
-  long : number =0;
-  active:boolean=false;
-  id:number = 0;
-//   options = {
-//     layers: [
-//         tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
-//     ],
-//     zoom: 8,
-//     center: latLng(22.29985,73.19555)
-// };
-  constructor(private router:Router,
-              private global :Globals,
-              private formBuilder:FormBuilder,
-              private scroller: ViewportScroller,
-              private toast : ToastrService,
-              private adminFacade : AdminFacadeService){
-      this.global.CurrentPage = "Add Zone";
-      this.BuildForm();
+  isMap: boolean = false;
+  lat: number = 0;
+  long: number = 0;
+  active: boolean = false;
+  id: number = 0;
+  //   options = {
+  //     layers: [
+  //         tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
+  //     ],
+  //     zoom: 8,
+  //     center: latLng(22.29985,73.19555)
+  // };
+  constructor(private router: Router,
+    private global: Globals,
+    private formBuilder: FormBuilder,
+    private scroller: ViewportScroller,
+    private toast: ToastrService,
+    private adminFacade: AdminFacadeService,
+    private common: CommonFacadeService) {
+    this.global.CurrentPage = "Add Zone";
+    this.BuildForm();
+  }
+  ngOnInit(): void {
+    this.id = 0;
+    let data = this.common.getSession("ModelShow");
+    this.FillForm(data == null ? "" : JSON.parse(data));
   }
   get f() { return this.form.controls; }
-  BuildForm(){
-    let _configData = this.adminFacade.getConfiguration().subscribe(res =>{
+  BuildForm() {
+    let _configData = this.adminFacade.getConfiguration().subscribe(res => {
       debugger;
       _configData = res;
-      var latitude= res.find((x:any)=>x.prmkey == 'lat');
+      var latitude = res.find((x: any) => x.prmkey == 'lat');
       this.lat = latitude.prmvalue;
-      var latitude= res.find((x:any)=>x.prmkey == 'long');
+      var latitude = res.find((x: any) => x.prmkey == 'long');
       this.long = latitude.prmvalue;
     })
     this.form = this.formBuilder.group({
-      zoneName: ['', Validators.required],
-      description: ['', Validators.required],
+      zoneName: ['', [Validators.required, Validators.pattern("[A-Za-z0-9][A-Za-z0-9 ]*$")]],
+      description: ['', [Validators.required, Validators.pattern("[A-Za-z0-9][A-Za-z0-9 ]*$")]],
       isActive: ['', [Validators.required]],
       //longitude: ['', [Validators.required,Validators.pattern('^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,10})$')]]
-  });
+    });
   }
   getErrorMessage(_controlName: any, _controlLable: any, _isPattern: boolean = false, _msg: string) {
     return getErrorMsg(this.form, _controlName, _controlLable, _isPattern, _msg);
   }
-  BackToList(){
+  BackToList() {
     this.router.navigate(['masters/zone-master']);
   }
-  onSubmit(){
+  onSubmit() {
 
   }
-  ViewMap(){
+  ViewMap() {
     this.isMap = true;
     this.scroller.scrollToAnchor("bottom");
     let _zoneMaster = new ZoneMaster();
@@ -79,8 +86,9 @@ export class AddZoneComponent {
         if (r == 0) {
           this.toast.error("Error occured while updating data");
         } else {
-          this.toast.success("Updated successfully.");
-          this.clearForm();
+          this.id = r;
+          //this.toast.success("Updated successfully.");
+          //this.clearForm();
         }
       })
     }
@@ -89,21 +97,62 @@ export class AddZoneComponent {
         if (r == 0) {
           this.toast.error("Error occured while saving data");
         } else {
-          this.toast.success("Saved successfully.");
-          this.clearForm();
+          this.id = r;
+          //this.toast.success("Saved successfully.");
+          //this.clearForm();
         }
       })
     }
+
   }
-  
+
+  FillForm(data: any) {
+    if (data != "") {
+      this.id = data.id;
+      if (data.isActive == "Active")
+        this.active = true;
+      else
+        this.active = false;
+      this.form.setValue({
+        zoneName: data.zoneName,
+        description: data.description,
+        isActive: data.isActive
+      })
+    }
+  }
   clearForm() {
     this.id = 0;
     this.form.reset();
     this.form.controls["isActive"].setValue(false);
   }
   scrollToBottom(): void {
-    this.scroll.nativeElement.scrollTop = this.scroll.nativeElement.scrollHeight;        
-}
+    this.scroll.nativeElement.scrollTop = this.scroll.nativeElement.scrollHeight;
+  }
+  GetLatLong(content: any) {
+    if (this.id == 0) {
+      this.toast.error("Zone is not available for this request.", "Error", { positionClass: "toast-bottom-right" })
+    }
+    else {
+      let _zoneCoords: any[] = [];
+      console.log(content);
+      content[0].forEach((ele: any) => {
+        var _zoneCoord = new ZoneCoords();
+        _zoneCoord.id = 0;
+        _zoneCoord.zoneId = this.id;
+        _zoneCoord.latitude = ele.lat;
+        _zoneCoord.longitude = ele.lng;
+        _zoneCoords.push(_zoneCoord);
+      });
 
-
+      this.adminFacade.addZoneCoordinates(_zoneCoords).subscribe(res => {
+        if (res == 0 || res == undefined) {
+          this.toast.error("Something Went Wrong..!!! Contact System administrator.", "Error", { positionClass: 'toast-bottom-right' });
+        }
+        else {
+          this.toast.success("Saved Successfully.");
+          this.router.navigate(['masters/zone-master']);
+        }
+      })
+    }
+  }
 }

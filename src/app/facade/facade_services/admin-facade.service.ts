@@ -26,6 +26,13 @@ export class AdminFacadeService {
   addZoneMaster(_data: any) {
     return this._adminService.addZoneMasterData(_data);
   }
+
+  getZoneCoordinates(_data: any) {
+    return this._adminService.getZoneCoordinates(_data);
+  }
+  addZoneCoordinates(_data: any) {
+    return this._adminService.addZoneCoordinates(_data);
+  }
   updateZoneMaster(_data: any) {
     return this._adminService.updateZoneMasterData(_data);
   }
