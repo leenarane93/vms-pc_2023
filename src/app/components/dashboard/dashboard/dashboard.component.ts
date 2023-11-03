@@ -173,7 +173,6 @@ export class DashboardComponent implements OnInit {
     this.GetChartData();
   }
   GetChartData(){
-    debugger;
     this._userfacadeservice.GetDashboardCharts().subscribe(res=>{
       this.dashboardChart= res;
       let devdata = [];

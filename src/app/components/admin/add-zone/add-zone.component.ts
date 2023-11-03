@@ -18,12 +18,14 @@ export class AddZoneComponent implements OnInit {
   @ViewChild('scroll', { static: true }) scroll: any;
   form: any = [];
   loading = false;
+  btnDis:boolean=false;
   submitting = false;
   isMap: boolean = false;
   lat: number = 0;
   long: number = 0;
   active: boolean = false;
   id: number = 0;
+  btnSaveName!:string;
   //   options = {
   //     layers: [
   //         tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
@@ -42,6 +44,7 @@ export class AddZoneComponent implements OnInit {
     this.BuildForm();
   }
   ngOnInit(): void {
+    this.btnSaveName = "Configured Co-Ordinates";
     this.id = 0;
     let data = this.common.getSession("ModelShow");
     this.FillForm(data == null ? "" : JSON.parse(data));
@@ -49,7 +52,6 @@ export class AddZoneComponent implements OnInit {
   get f() { return this.form.controls; }
   BuildForm() {
     let _configData = this.adminFacade.getConfiguration().subscribe(res => {
-      debugger;
       _configData = res;
       var latitude = res.find((x: any) => x.prmkey == 'lat');
       this.lat = latitude.prmvalue;
@@ -86,9 +88,8 @@ export class AddZoneComponent implements OnInit {
         if (r == 0) {
           this.toast.error("Error occured while updating data");
         } else {
-          this.id = r;
-          //this.toast.success("Updated successfully.");
-          //this.clearForm();
+          this.toast.success("Updated successfully.");
+          this.clearForm();
         }
       })
     }
@@ -108,6 +109,7 @@ export class AddZoneComponent implements OnInit {
 
   FillForm(data: any) {
     if (data != "") {
+      this.btnDis =true;
       this.id = data.id;
       if (data.isActive == "Active")
         this.active = true;
@@ -119,7 +121,11 @@ export class AddZoneComponent implements OnInit {
         isActive: data.isActive
       });
 
+      this.btnSaveName = "Submit";
     }
+    else
+    this.btnDis =false;
+      
   }
   clearForm() {
     this.id = 0;
@@ -140,8 +146,8 @@ export class AddZoneComponent implements OnInit {
         var _zoneCoord = new ZoneCoords();
         _zoneCoord.id = 0;
         _zoneCoord.zoneId = this.id;
-        _zoneCoord.latitude = ele.lat;
-        _zoneCoord.longitude = ele.lng;
+        _zoneCoord.latitude = ele.lng;
+        _zoneCoord.longitude = ele.lat;
         _zoneCoords.push(_zoneCoord);
       });
 

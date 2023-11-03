@@ -6,21 +6,6 @@ declare const L: any; // --> Works
 import 'leaflet-draw';
 import { ToastrService } from 'ngx-toastr';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
-// const myLines = [{
-// 	"type": "Polygon",
-// 	"coordinates": [[
-// 		[105.02517700195314, 19.433801201715198],
-// 		[106.23367309570314, 18.852796311610007],
-// 		[105.61843872070314, 7.768472031139744]
-
-// 	]]
-// }, {
-// 	"type": "LineString",
-// 	"coordinates": [[-105, 40], [-110, 45], [-115, 55]]
-// }];
-
-
-//For geometry from data
 const myStyle = {
 	"color": "green",
 	"weight": 5,
@@ -67,12 +52,12 @@ export class CmLeafletComponent {
 	markers!: any[];
 	drawnItems: any;
 	@Input() zoneId: number = 0;
+	@Input() btnDisabled:boolean =false;
 	datachild: any;
 	isAddFieldTask!: boolean;
 	isSave!: boolean;
 	constructor(private adminFacade: AdminFacadeService,
 		private toast: ToastrService) {
-
 	}
 	ngOnInit() {
 		this.adminFacade.getConfiguration().subscribe(res => {
@@ -91,13 +76,13 @@ export class CmLeafletComponent {
 			this.adminFacade.getZoneCoordinates(this.zoneId).subscribe(res => {
 				let cordsArr: any[] = [];
 				res.forEach((ele: any) => {
-					let lat = ele.latitude;
-					let long = ele.longitude;
+					let lat = Number(ele.latitude);
+					let long = Number(ele.longitude);
 					let cords = [lat, long];
 					cordsArr.push(cords);
 				});
 
-				this.polygon = [{ "type": "Polygon", "coordinates": [[[73.16060234337762, 22.327465740576802], [73.24187526230807, 22.32390876106537], [73.24105154208249, 22.25808836444047], [73.14714837903118, 22.25757998605908]]] }];
+				this.polygon = [{ "type": "Polygon", "coordinates": [cordsArr] }];
 				this.InItMap();
 			});
 		}

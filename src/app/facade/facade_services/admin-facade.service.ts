@@ -48,5 +48,14 @@ export class AdminFacadeService {
   updateParty(_data: any) {
     return this._adminService.updatePartyData(_data);
   }
+  getTarrifs(_data: any) {
+    return this._adminService.getTarrifMasterData(_data);
+  }
+  addTarrif(_data: any) {
+    return this._adminService.addTarrifMasterData(_data);
+  }
+  updateTarrif(_data: any) {
+    return this._adminService.updateTarrifMasterData(_data);
+  }
   
 }

@@ -117,7 +117,7 @@ const routes: Routes = [
     canActivate: [AuthGuradService]
   },
   {
-    path: 'masters/tariff-master',
+    path: 'masters/tarrif-master',
     component: TariffMngComponent,
     data: { title: 'Tariff Management' },
     canActivate: [AuthGuradService]

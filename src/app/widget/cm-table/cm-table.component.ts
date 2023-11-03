@@ -32,7 +32,6 @@ export class CmTableComponent {
     this.activePage = activePageNumber
   }
   Search() {
-    debugger;
     this.search.emit(this.searchText);
     // if (this.filteredData != undefined && this.filteredData.length > 0) {
     //   if (this.searchText !== "") {

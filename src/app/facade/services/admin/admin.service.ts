@@ -59,5 +59,17 @@ export class AdminService {
     return this._httpService._postMethod(_data,'Administration_API/api/PartyMaster/PutPartyMaster');    
   }
 
+  getTarrifMasterData(_data: any) {
+    return this._httpService._postMethod(_data, 'Administration_API/api/Tarrif/GetTarrifs');
+  }
+
+  addTarrifMasterData(_data: any) {
+    return this._httpService._postMethod(_data, 'Administration_API/api/Tarrif/PostTarrifMaster');
+  }
+
+  updateTarrifMasterData(_data:any) {
+    return this._httpService._postMethod(_data,'Administration_API/api/Tarrif/PutTarrifMaster');    
+  }
+
 
 }

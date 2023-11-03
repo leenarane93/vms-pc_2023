@@ -90,10 +90,20 @@
                                 </div>
                             </div>
                             <div class="mb-3 col" style="padding-top: 40px;">
-                                <label class="switch active">
-                                    <input type="checkbox" formControlName="isActive" [(ngModel)]="active">
-                                    <div class="slider round"></div>
-                                </label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Status*</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="switch active">
+                                            <input type="checkbox" formControlName="isActive" [(ngModel)]="active">
+                                            <div class="slider round"></div>
+                                        </label>
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
                         <div class="row">

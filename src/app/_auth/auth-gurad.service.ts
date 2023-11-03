@@ -19,7 +19,6 @@ export class AuthGuradService implements CanActivate {
   }
 
   CheckTokenExpireation(){
-    debugger;
     const token = sessionStorage.getItem("access_token");
 
     //Check if the token is expired or not and if token is expired then redirect to login page and return false

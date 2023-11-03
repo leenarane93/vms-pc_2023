@@ -49,7 +49,6 @@ ngOnInit() {
     this.id = this.route.snapshot.params['id'];
 
     // form with validation rules
-    debugger;
     this.form = this.formBuilder.group({
         prmUnit: ['', Validators.required],
         prmKey: ['', Validators.required],
@@ -82,7 +81,6 @@ onSubmit() {
 }
 
 saveConfiguration() {
-  debugger;
   //Latitude
   var _data = new PrmGlobal();
   _data.id = 0;

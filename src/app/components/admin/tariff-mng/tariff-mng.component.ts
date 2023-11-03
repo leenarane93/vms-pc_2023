@@ -17,7 +17,7 @@ export class TariffMngComponent {
   title = 'angular13';
   searchText!: string;
   page: any;
-  listOfParties: any;
+  listOfTarrifs: any;
   totalPages: number = 1;
   pager: number = 1;
   totalRecords!: number;
@@ -33,27 +33,30 @@ export class TariffMngComponent {
     this.global.CurrentPage = "Tariff Management";
     this.pager = 1;
     this.totalRecords = 0;
-    this.getParties();
+    this.getTarrifs();
   }
 
   headerArr = [
     { "Head": "ID", "FieldName": "id", "type": "number" },
-    { "Head": "Party Code", "FieldName": "partyCode", "type": "string" },
-    { "Head": "Party Name", "FieldName": "partyName", "type": "string" },
-    { "Head": "Description", "FieldName": "description", "type": "string" },
+    { "Head": "Tarrif Code", "FieldName": "tarrifCode", "type": "string" },
+    { "Head": "Tarrif Type", "FieldName": "tarrifType", "type": "string" },
+    { "Head": "Unit Of Measurement", "FieldName": "uomName", "type": "string" },
+    { "Head": "Amount", "FieldName": "amount", "type": "string" },
+    { "Head": "Tax(%)", "FieldName": "gstPer", "type": "string" },
+    { "Head": "Total Amount", "FieldName": "totalAmount", "type": "string" },
     { "Head": "Status", "FieldName": "isActive", "type": "boolean" }
   ];
-  getParties() {
+  getTarrifs() {
     this._request.currentPage = this.pager;
     this._request.pageSize = this.recordPerPage;
     this._request.startId = this.startId;
     this._request.searchItem = this.searchText;
     //get request from web api
-    this.adminFacade.getParties(this._request).subscribe(data => {
+    this.adminFacade.getTarrifs(this._request).subscribe(data => {
       if (data != null && data != undefined) {
 
-        this.listOfParties = data.data;
-        if (this.listOfParties != null && this.listOfParties != undefined) {
+        this.listOfTarrifs = data.data;
+        if (this.listOfTarrifs != null && this.listOfTarrifs != undefined) {
           var _length = data.totalRecords / this.recordPerPage;
           if (_length > Math.floor(_length) && Math.floor(_length) != 0)
             this.totalRecords = this.recordPerPage * (_length);
@@ -63,7 +66,7 @@ export class TariffMngComponent {
             this.totalRecords = data.totalRecords;
           this.totalPages = this.totalRecords / this.pager;
         }
-        this.listOfParties.forEach((ele: any) => {
+        this.listOfTarrifs.forEach((ele: any) => {
           if (ele.isActive == true)
             ele.isActive = "Active";
           else
@@ -80,7 +83,7 @@ export class TariffMngComponent {
     this._request.pageSize = this.recordPerPage;
     this.pager = pager;
     this.startId = (this.pager - 1) * this.recordPerPage;
-    this.getParties();
+    this.getTarrifs();
   }
 
   onRecordPageChange(recordPerPage: number) {
@@ -90,12 +93,12 @@ export class TariffMngComponent {
     this.startId = 0;
     this.pager = 1;
     console.log(this.recordPerPage);
-    this.getParties();
+    this.getTarrifs();
   }
 
   onPageSearch(search: string) {
     this.searchText = search;
-    this.getParties();
+    this.getTarrifs();
   }
 
   OpenModal(content: any) {

@@ -9,7 +9,7 @@
     </div>
     <div class="row">
         <div class="col-md-12 ">
-            <app-cm-table [headArr]="headerArr" [gridArr]="listOfParties" [totalRecords]="totalRecords"
+            <app-cm-table [headArr]="headerArr" [gridArr]="listOfTarrifs" [totalRecords]="totalRecords"
                 [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)"
                 [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)" link="masters/add-party"
                 fieldName="id" (search)="onPageSearch($event)" (searchWithId)="SearchWithId($event)"></app-cm-table>

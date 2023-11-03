@@ -44,6 +44,8 @@ import { PartyMngComponent } from './components/admin/party-mng/party-mng.compon
 import { AddPartyComponent } from './components/admin/party-mng/add-party/add-party.component';
 import { TariffMngComponent } from './components/admin/tariff-mng/tariff-mng.component';
 import { AddTariffComponent } from './components/admin/tariff-mng/add-tariff/add-tariff.component';
+import { CmConfirmBoxComponent } from './widget/cm-confirm-box/cm-confirm-box.component';
+import { ConfirmationDialogService } from './facade/services/confirmation-dialog.service';
 const iconRetinaUrl = 'assets/leaflet/marker-icon-2x.png';
 const iconUrl = 'assets/leaflet/marker-icon.png';
 const shadowUrl = 'assets/leaflet/marker-shadow.png';
@@ -76,7 +78,8 @@ const shadowUrl = 'assets/leaflet/marker-shadow.png';
     PartyMngComponent,
     AddPartyComponent,
     TariffMngComponent,
-    AddTariffComponent
+    AddTariffComponent,
+    CmConfirmBoxComponent
   ],
   imports: [
     FormsModule,
@@ -101,7 +104,7 @@ const shadowUrl = 'assets/leaflet/marker-shadow.png';
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     NgbActiveModal,
-    JwtHelperService,
+    JwtHelperService,ConfirmationDialogService,
   { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }, Globals],
   bootstrap: [AppComponent]
 })

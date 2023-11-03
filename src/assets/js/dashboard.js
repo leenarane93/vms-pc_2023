@@ -369,7 +369,6 @@
 				var text = [];
         text.push('<div class="row">'); 
         for (var i = 0; i < chart.data.datasets.length; i++) {
-          debugger;
           text.push('<div class="col-lg-3"><div class="row"><div class="col-sm-12"><h5 class="font-weight-bold text-dark mb-1">'+ chart.data.datasets[i].data[i].toLocaleString() + '</h5></div></div><div class="row align-items-center"><div class="col-9 pl-0"><span class="legend-label mt-1" style="background-color:' + chart.data.datasets[i].backgroundColor[i] + '"></span><p class="text-dark m-0 ml-1">'+ chart.data.labels[i].toLocaleString()   + '</p></div></div>');
           text.push('</div> <div class="col-lg-3"><div class="row"><div class="col-sm-12"><h5 class="font-weight-bold text-dark mb-1">'+ chart.data.datasets[i].data[i+1].toLocaleString() + '</h5></div></div><div class="row align-items-center"><div class="col-9 pl-0"><span class="legend-label mt-1" style="background-color:' + chart.data.datasets[i].backgroundColor[i+1] + '"></span><p class="text-dark m-0 ml-1">'+ chart.data.labels[i+1].toLocaleString()   + '</p></div></div>');
           text.push('</div> <div class="col-lg-3"><div class="row"><div class="col-sm-12"><h5 class="font-weight-bold text-dark mb-1">'+ chart.data.datasets[i].data[i+2].toLocaleString() + '</h5></div></div><div class="row align-items-center"><div class="col-9 pl-0"><span class="legend-label mt-1" style="background-color:' + chart.data.datasets[i].backgroundColor[i+2] + '"></span><p class="text-dark m-0 ml-1">'+ chart.data.labels[i+2].toLocaleString()  + '</p></div></div>');
