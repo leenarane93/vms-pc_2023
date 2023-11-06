@@ -1,5 +1,6 @@
 
-import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { event } from 'jquery';
 
 // when the docs use an import:
 declare const L: any; // --> Works
@@ -38,8 +39,9 @@ L.Marker.prototype.options.icon = markerIcon;
 	templateUrl: './cm-leaflet.component.html',
 	styleUrls: ['./cm-leaflet.component.css']
 })
-export class CmLeafletComponent {
+export class CmLeafletComponent implements AfterViewInit {
 	name = "Angular";
+	@Input() mapType: string = "";
 	layers: any;
 	map: any;
 	lat: number = 0;
@@ -52,12 +54,17 @@ export class CmLeafletComponent {
 	markers!: any[];
 	drawnItems: any;
 	@Input() zoneId: number = 0;
-	@Input() btnDisabled:boolean =false;
+	@Input() btnDisabled: boolean = false;
 	datachild: any;
 	isAddFieldTask!: boolean;
 	isSave!: boolean;
+	@Output() markerCoords =new EventEmitter<any[]>();
 	constructor(private adminFacade: AdminFacadeService,
-		private toast: ToastrService) {
+				private toast: ToastrService,
+				private cdr:ChangeDetectorRef) {
+	}
+	ngAfterViewInit(): void {
+		this.cdr.detectChanges();
 	}
 	ngOnInit() {
 		this.adminFacade.getConfiguration().subscribe(res => {
@@ -158,6 +165,21 @@ export class CmLeafletComponent {
 		this.map.addControl(drawControl);
 
 		var app = this;
+		if(this.mapType == "vms") {
+			this.map.on('click', (e: any) => {
+				var popLocation = e.latlng;
+	
+				let val = this.isMarkerInsidePolygon(popLocation.lat, popLocation.lng, this.polygon);
+				console.log(val);
+				if(val == true)
+					this.ProvideMarker(popLocation);
+				else {
+					this.toast.error("Selected location is outside of zone area.","Error", {
+						positionClass: 'toast-bottom-right'
+					})
+				}
+			})
+		}
 		this.map.on(L.Draw.Event.CREATED, (e: any) => {
 			var type = e.layerType,
 				layer = e.layer;
@@ -198,6 +220,12 @@ export class CmLeafletComponent {
 		// this.map.removeLayer(layerGroup);
 
 		//
+
+		this.map.on("singleclick", (event: any) => {
+			var lonLat = L.proj.toLonLat(event.coordinate);
+			console.log(lonLat);
+			//this.addMarker(lonLat[0], lonLat[1]);
+		});
 	}
 
 	SubmitCoordinates() {
@@ -209,5 +237,30 @@ export class CmLeafletComponent {
 		else {
 			this.latLng.emit(this.layers);
 		}
+	}
+
+
+	isMarkerInsidePolygon(lat: any, lng: any, poly: any) {
+		var x = lat, y = lng;
+		var polyPoints = poly[0].coordinates[0];
+		var inside = false;
+		for (var i = 0, j = polyPoints.length - 1; i < polyPoints.length; j = i++) {
+			var xi = polyPoints[i][0], yi = polyPoints[i][1];
+			var xj = polyPoints[j][0], yj = polyPoints[j][1];
+
+			var intersect = ((xi > y) != (xj > y))
+				&& (x < (yj - yi) * (x - xi) / (xj - xi) + yi);
+			if (intersect) {
+				inside = !inside;
+				break;
+			}
+
+		}
+
+		return inside;
+	};
+
+	ProvideMarker(loc:any){
+		this.markerCoords.emit(loc);
 	}
 }

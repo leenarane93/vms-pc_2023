@@ -27,6 +27,10 @@ export class AdminService {
     return this._httpService._postMethod(_data, 'Administration_API/api/ZoneMaster/GetZones');
   }
 
+  getZoneForDrp(_data: any) {
+    return this._httpService._postMethod(_data, 'Administration_API/api/ZoneMaster/GetZonesForPublish');
+  }
+
   addZoneMasterData(_data: any) {
     return this._httpService._postMethod(_data, 'Administration_API/api/ZoneMaster/PostZoneMaster');
   }

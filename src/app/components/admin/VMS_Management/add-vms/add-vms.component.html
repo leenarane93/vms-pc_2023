@@ -29,8 +29,7 @@
                                     placeholder="Description"
                                     [ngClass]="{ 'is-invalid': f['serialNo'].touched && f['serialNo'].errors, 'is-valid': f['serialNo'].valid }" />
                                 <div *ngIf="f['serialNo'].touched && f['serialNo'].errors" class="invalid-feedback">
-                                    <div>{{getErrorMessage('serialNo','Serial No',true,"Invalid data available in Serial
-                                        No")}}
+                                    <div>{{getErrorMessage('serialNo','Serial No',true,"Invalid data available in Serial No")}}
                                     </div>
                                 </div>
                             </div>
@@ -41,8 +40,7 @@
                                     [ngClass]="{ 'is-invalid': f['description'].touched && f['description'].errors, 'is-valid': f['description'].valid }" />
                                 <div *ngIf="f['description'].touched && f['description'].errors"
                                     class="invalid-feedback">
-                                    <div>{{getErrorMessage('description','Description',true,"Invalid data available in
-                                        Description")}}
+                                    <div>{{getErrorMessage('description','Description',true,"Invalid data available in Description")}}
                                     </div>
                                 </div>
                             </div>
@@ -51,12 +49,12 @@
                             <div class="mb-3 col">
                                 <label class="form-label">Select Zone*</label>
                                 <select class="form-control form-control-sm" formControlName="zoneId"
-                                    [ngClass]="{'is-invalid': submitting && f['zoneId'].errors}">
-                                    <option value="">Select Zone</option>
+                                    [ngClass]="{'is-invalid': submitting && f['zoneId'].errors}" [(ngModel)]="selectedZone">
+                                    <option value="0">Select Zone</option>
+                                    <option *ngFor="let zone of zones" value="{{zone.id}}">{{zone.zoneName}}</option>
                                 </select>
                                 <div *ngIf="f['zoneId'].touched && f['zoneId'].errors" class="invalid-feedback">
-                                    <div>{{getErrorMessage('zoneId','Zone ID',true,"Invalid data available in Zone
-                                        ID")}}
+                                    <div>{{getErrorMessage('zoneId','Zone ID',true,"Invalid data available in Zone ID")}}
                                     </div>
                                 </div>
                             </div>
@@ -67,8 +65,7 @@
                                     [ngClass]="{'is-invalid': submitting&& f['installDate'].errors}" />
                                 <div *ngIf="f['installDate'].touched && f['installDate'].errors"
                                     class="invalid-feedback">
-                                    <div>{{getErrorMessage('installDate','Install Date',true,"Invalid data available in
-                                        Install Date")}}
+                                    <div>{{getErrorMessage('installDate','Install Date',true,"Invalid data available in Install Date")}}
                                     </div>
                                 </div>
                             </div>
@@ -78,8 +75,7 @@
                                     id='ipAddress' formControlName="ipAddress"
                                     [ngClass]="{'is-invalid': submitting&& f['ipAddress'].errors}" />
                                 <div *ngIf="f['ipAddress'].touched && f['ipAddress'].errors" class="invalid-feedback">
-                                    <div>{{getErrorMessage('ipAddress','IP Address',true,"Invalid data available in IP
-                                        Address")}}
+                                    <div>{{getErrorMessage('ipAddress','IP Address',true,"Invalid data available in IP Address")}}
                                     </div>
                                 </div>
                             </div>
@@ -87,30 +83,28 @@
                         <div class="row">
                             <div class="mb-3 col">
                                 <label class="form-label">Longitude*</label>
-                                <input type="text" class="form-control form-control-sm" placeholder="Longitude"
+                                <input type="text" class="form-control form-control-sm" placeholder="Longitude" [(ngModel)]="lonVal"
                                     id='longitude' formControlName="longitude"
                                     [ngClass]="{'is-invalid': submitting&& f['longitude'].errors}" />
                                 <div *ngIf="f['longitude'].touched && f['ipAddress'].errors" class="invalid-feedback">
-                                    <div>{{getErrorMessage('longitude','Longitude',true,"Invalid data available in
-                                        Longitude")}}
+                                    <div>{{getErrorMessage('longitude','Longitude',true,"Invalid data available in Longitude")}}
                                     </div>
                                 </div>
                             </div>
                             <div class="mb-3 col">
                                 <label class="form-label">Latitude*</label>
                                 <input type="text" class="form-control form-control-sm" placeholder="Latitude"
-                                    id='latitude' formControlName="latitude"
+                                    id='latitude' formControlName="latitude" [(ngModel)]="latVal"
                                     [ngClass]="{'is-invalid': submitting&& f['latitude'].errors}" />
                                 <div *ngIf="f['latitude'].touched && f['latitude'].errors" class="invalid-feedback">
-                                    <div>{{getErrorMessage('latitude','Latitude',true,"Invalid data available in
-                                        Latitude")}}
+                                    <div>{{getErrorMessage('latitude','Latitude',true,"Invalid data available in Latitude")}}
                                     </div>
                                 </div>
                             </div>
                             <div class="mb-4 col">
                                 <label class="form-label">Location*</label>
                                 <div class="form-group col-md-4 pt-2 text-primary text-center">
-                                    <a class="btn btn-outline-primary btn-icon-text" style="width: 200px;"><i
+                                    <a class="btn btn-outline-primary btn-icon-text" (click)="OpenZoneMap()" style="width: 200px;"><i
                                             class="fa fa-map-marker"></i> Check on Map </a>
 
                                 </div>
@@ -140,7 +134,7 @@
                             </div>
                             <div class="mb-3 col" style="padding-top: 40px;">
                                 <label class="switch active">
-                                    <input type="checkbox" [(ngModel)]="active">
+                                    <input type="checkbox" formControlName="isActive" [(ngModel)]="active">
                                     <div class="slider round"></div>
                                 </label>
                             </div>
@@ -156,7 +150,7 @@
                             <div class="form-group col-md-6">
                                 <div class="range-slider">
                                     <div id="tooltip"></div>
-                                    <input id="range" type="range" step="2" value="0" min="1" max="254">
+                                    <input id="range" formControlName="brightnessCtrl" type="range" step="2" value="0" min="1" max="254">
                                 </div>
                                 <label class="text-center w-100"> Brightness <span
                                         class="text-dark">{{brightness}}</span> </label>
@@ -164,7 +158,7 @@
                             </div>
                             <div class="form-group col-md-4 text-center">
                                 <label class="switch onOff">
-                                    <input type="checkbox" [(ngModel)]="vmsOn">
+                                    <input type="checkbox" formControlName="vmson" [(ngModel)]="vmsOn">
                                     <div class="slider round"></div>
                                 </label>
                             </div>

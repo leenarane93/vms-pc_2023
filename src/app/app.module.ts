@@ -46,6 +46,7 @@ import { TariffMngComponent } from './components/admin/tariff-mng/tariff-mng.com
 import { AddTariffComponent } from './components/admin/tariff-mng/add-tariff/add-tariff.component';
 import { CmConfirmBoxComponent } from './widget/cm-confirm-box/cm-confirm-box.component';
 import { ConfirmationDialogService } from './facade/services/confirmation-dialog.service';
+import { CmMapBoxComponent } from './widget/cm-map-box/cm-map-box.component';
 const iconRetinaUrl = 'assets/leaflet/marker-icon-2x.png';
 const iconUrl = 'assets/leaflet/marker-icon.png';
 const shadowUrl = 'assets/leaflet/marker-shadow.png';
@@ -79,7 +80,8 @@ const shadowUrl = 'assets/leaflet/marker-shadow.png';
     AddPartyComponent,
     TariffMngComponent,
     AddTariffComponent,
-    CmConfirmBoxComponent
+    CmConfirmBoxComponent,
+    CmMapBoxComponent
   ],
   imports: [
     FormsModule,

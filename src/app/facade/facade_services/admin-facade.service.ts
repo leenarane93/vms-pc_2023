@@ -23,6 +23,10 @@ export class AdminFacadeService {
   getZones(_data: any) {
     return this._adminService.getZoneMasterData(_data);
   }
+
+  getZonesForDrp(_data: any) {
+    return this._adminService.getZoneForDrp(_data);
+  }
   addZoneMaster(_data: any) {
     return this._adminService.addZoneMasterData(_data);
   }
