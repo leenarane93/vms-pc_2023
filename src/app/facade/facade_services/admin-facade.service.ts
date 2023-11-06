@@ -13,7 +13,7 @@ export class AdminFacadeService {
   AddConfigData(data: any) {
     return this._adminService.addConfigurationData(data);
   }
-  getConfiguration(){
+  getConfiguration() {
     return this._adminService.getConfigurationData();
   }
   getKeysDataForConfig(key: string) {
@@ -43,6 +43,12 @@ export class AdminFacadeService {
   getVmss(_data: any) {
     return this._adminService.getVmsMasterData(_data);
   }
+  addVMS(_data: any) {
+    return this._adminService.addVmsMasterData(_data);
+  }
+  updateVms(_data: any) {
+    return this._adminService.updateVmsMasterData(_data);
+  }
   getParties(_data: any) {
     return this._adminService.getPartiesData(_data);
   }
@@ -61,5 +67,5 @@ export class AdminFacadeService {
   updateTarrif(_data: any) {
     return this._adminService.updateTarrifMasterData(_data);
   }
-  
+
 }

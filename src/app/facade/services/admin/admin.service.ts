@@ -36,7 +36,7 @@ export class AdminService {
   }
 
   getZoneCoordinates(_data: string) {
-    return this._httpService._getMethod('Administration_API/api/ZoneMaster/GetZoneCoordsByZoneId?zoneId='+_data);
+    return this._httpService._getMethod('Administration_API/api/ZoneMaster/GetZoneCoordsByZoneId?zoneId=' + _data);
   }
 
   addZoneCoordinates(_data: any) {
@@ -50,17 +50,23 @@ export class AdminService {
   getVmsMasterData(_data: any) {
     return this._httpService._postMethod(_data, 'Administration_api/api/VMSMaster/GetVmsMasterDetails');
   }
+  addVmsMasterData(_data: any) {
+    return this._httpService._postMethod(_data, 'Administration_API/api/VMSMaster/PostVmsMaster');
+  }
 
+  updateVmsMasterData(_data: any) {
+    return this._httpService._postMethod(_data, 'Administration_API/api/VMSMaster/PutVmsMaster');
+  }
   getPartiesData(_data: any) {
     return this._httpService._postMethod(_data, 'administration_api/api/PartyMaster/GetParties');
   }
 
-  addPartyData(_data:any) {
-    return this._httpService._postMethod(_data,'Administration_API/api/PartyMaster/PostPartyMaster');    
+  addPartyData(_data: any) {
+    return this._httpService._postMethod(_data, 'Administration_API/api/PartyMaster/PostPartyMaster');
   }
 
-  updatePartyData(_data:any) {
-    return this._httpService._postMethod(_data,'Administration_API/api/PartyMaster/PutPartyMaster');    
+  updatePartyData(_data: any) {
+    return this._httpService._postMethod(_data, 'Administration_API/api/PartyMaster/PutPartyMaster');
   }
 
   getTarrifMasterData(_data: any) {
@@ -71,8 +77,8 @@ export class AdminService {
     return this._httpService._postMethod(_data, 'Administration_API/api/Tarrif/PostTarrifMaster');
   }
 
-  updateTarrifMasterData(_data:any) {
-    return this._httpService._postMethod(_data,'Administration_API/api/Tarrif/PutTarrifMaster');    
+  updateTarrifMasterData(_data: any) {
+    return this._httpService._postMethod(_data, 'Administration_API/api/Tarrif/PutTarrifMaster');
   }
 
 

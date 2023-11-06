@@ -50,6 +50,7 @@ import { CmMapBoxComponent } from './widget/cm-map-box/cm-map-box.component';
 const iconRetinaUrl = 'assets/leaflet/marker-icon-2x.png';
 const iconUrl = 'assets/leaflet/marker-icon.png';
 const shadowUrl = 'assets/leaflet/marker-shadow.png';
+import { RxReactiveFormsModule } from "@rxweb/reactive-form-validators"
 
 @NgModule({
   declarations: [
@@ -101,12 +102,13 @@ const shadowUrl = 'assets/leaflet/marker-shadow.png';
     LeafletModule,
     NgxPaginationModule,
     LeafletDrawModule,
-    LeafletModule
+    LeafletModule,
+    RxReactiveFormsModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     NgbActiveModal,
-    JwtHelperService,ConfirmationDialogService,
+    JwtHelperService, ConfirmationDialogService,
   { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }, Globals],
   bootstrap: [AppComponent]
 })
