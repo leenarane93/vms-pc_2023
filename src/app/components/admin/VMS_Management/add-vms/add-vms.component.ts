@@ -49,8 +49,8 @@ export class AddVmsComponent {
       serialNo: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9]*$")]],
       description: ['', [Validators.required]],
       installDate: ['', [Validators.required]],
-      latitude: ['', [Validators.required, Validators.pattern('^([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,10})$')]],
-      longitude: ['', [Validators.required, Validators.pattern('^([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,10})$')]],
+      latitude: ['', [Validators.required, Validators.pattern('^([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,20})$')]],
+      longitude: ['', [Validators.required, Validators.pattern('^([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,20})$')]],
       height: ['', [Validators.required, Validators.pattern("^([0-9])*$")]],
       width: ['', [Validators.required, Validators.pattern("^([0-9])*$")]],
       ipAddress: ['', [Validators.required, Validators.pattern("(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)")]],
@@ -98,6 +98,8 @@ export class AddVmsComponent {
         const modalRef = this.modalService.open(CmMapBoxComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
         modalRef.componentInstance.zoneId = this.selectedZone;
         modalRef.componentInstance.emitService.subscribe((emmitedValue: any) => {
+          this.form.controls["latitude"].setValue(emmitedValue.lat);
+          this.form.controls["longitude"].setValue(emmitedValue.lng);
           this.latVal = emmitedValue.lat;
           this.lonVal = emmitedValue.lng;
         });
@@ -114,6 +116,7 @@ export class AddVmsComponent {
     if (this.id != 0)
       _vmsMaster.id = this.id;
     _vmsMaster.vmsId = this.form.controls.vmsId.value;
+    _vmsMaster.zoneId = this.form.controls.zoneId.value;
     _vmsMaster.serialNo = this.form.controls.serialNo.value;
     _vmsMaster.description = this.form.controls.description.value;
     _vmsMaster.height = this.form.controls.height.value;
