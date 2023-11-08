@@ -80,6 +80,12 @@ export class AdminService {
   updateTarrifMasterData(_data: any) {
     return this._httpService._postMethod(_data, 'Administration_API/api/Tarrif/PutTarrifMaster');
   }
-
+  
+  getMediaClearance() {
+    return this._httpService._getMethod('Administration_API/api/VMSMaster/GetMediaSentData');
+  }
+  mediaClearance(_data:any) {
+    return this._httpService._postMethod(_data,'Administration_API/api/VMSMaster/RemoveMedia');
+  }
 
 }

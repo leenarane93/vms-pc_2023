@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
+import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 import { ConfirmationDialogService } from 'src/app/facade/services/confirmation-dialog.service';
 import { VmsMaster } from 'src/app/models/admin/VMSMaster';
 import { InputRequest } from 'src/app/models/request/inputReq';
@@ -17,10 +18,10 @@ import { CmMapBoxComponent } from 'src/app/widget/cm-map-box/cm-map-box.componen
   templateUrl: './add-vms.component.html',
   styleUrls: ['./add-vms.component.css']
 })
-export class AddVmsComponent {
+export class AddVmsComponent implements OnInit {
   id: number = 0;
   form: any = [];
-  brightness: any;
+  brightness: number = 130;
   vmsOn: boolean = false;
   active: boolean = false;
   loading: boolean = false;
@@ -29,6 +30,7 @@ export class AddVmsComponent {
   latVal: number = 0;
   lonVal: number = 0;
   selectedZone: number = 0;
+  installDate!: any;
   _request: any = new InputRequest();
   _zoneCoords: any[] = [];
   constructor(private router: Router,
@@ -37,11 +39,45 @@ export class AddVmsComponent {
     private adminFacade: AdminFacadeService,
     private toaster: ToastrService,
     private confirmationDialogService: ConfirmationDialogService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private commonFacade: CommonFacadeService) {
     this.global.CurrentPage = "Add VMS";
     this.BuildForm();
   }
+  ngOnInit(): void {
+    let data = this.commonFacade.getSession("ModelShow");
+    this.FillForm(data == null ? "" : JSON.parse(data));
+  }
   get f() { return this.form.controls; }
+
+  FillForm(data: any) {
+    if (data != "") {
+      this.id = data.id;
+      if (data.isActive == "Active")
+        this.active = true;
+      else
+        this.active = false;
+      this.vmsOn = data.vmsOn;
+      this.selectedZone = data.zoneId;
+      this.installDate = data.installDate.slice(0, 10);
+      this.brightness = data.brightnessCtrl;
+      this.form.setValue({
+        vmsId: data.vmsId,
+        serialNo: data.serialNo,
+        description: data.description,
+        zoneId: data.zoneId,
+        installDate: this.installDate,
+        longitude: data.longitude,
+        latitude: data.latitude,
+        height: data.height,
+        width: data.width,
+        ipAddress: data.ipAddress,
+        isActive: data.isActive,
+        brightnessCtrl: data.brightnessCtrl,
+        vmson: data.vmsOn,
+      })
+    }
+  }
   BuildForm() {
     this.form = this.formBuilder.group({
       vmsId: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9]*$")]],
@@ -80,6 +116,10 @@ export class AddVmsComponent {
         console.log(this.zones);
       }
     });
+  }
+
+  BrightnessChage() {
+    this.brightness = this.form.controls.brightnessCtrl.value;
   }
   OpenZoneMap() {
     if (this.selectedZone == 0)
@@ -126,7 +166,7 @@ export class AddVmsComponent {
     _vmsMaster.ipAddress = this.form.controls.ipAddress.value;
     _vmsMaster.createdBy = this.global.UserCode;
     _vmsMaster.brightnessCtrl = this.form.controls.brightnessCtrl.value;
-    _vmsMaster.vmsOn = this.form.controls.vmson.value;
+    _vmsMaster.vmsOn = this.vmsOn;
     _vmsMaster.installDate = this.form.controls.installDate.value;
     _vmsMaster.isActive = this.active;
     if (type == 1)
@@ -157,5 +197,14 @@ export class AddVmsComponent {
     this.id = 0;
     this.form.reset();
     this.form.controls["isActive"].setValue(false);
+  }
+  DeleteVMS() {
+    this.confirmationDialogService.confirm('Please confirm..', 'Do you really want to remove this VMS... ?')
+      .then((confirmed) => { if (confirmed == true) this.RemoveVMS() })
+      .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
+  }
+  RemoveVMS() {
+    this.AddVmsMaster(1);
+    this.router.navigate(['masters/vms-master']);
   }
 }

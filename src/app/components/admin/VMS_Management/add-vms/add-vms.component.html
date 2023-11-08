@@ -60,7 +60,8 @@
                             <div class="mb-3 col">
                                 <label class="form-label">Installation Date*</label>
                                 <input type="date" class="form-control form-control-sm" placeholder="Installation Date"
-                                    id='installDate' formControlName="installDate" [ngClass]="{ 'is-invalid': f['installDate'].touched && f['installDate'].errors, 'is-valid': f['installDate'].valid }" />
+                                    id='installDate' formControlName="installDate" [(ngModel)]="installDate"
+                                    [ngClass]="{ 'is-invalid': f['installDate'].touched && f['installDate'].errors, 'is-valid': f['installDate'].valid }" />
                                 <div *ngIf="f['installDate'].touched && f['installDate'].errors"
                                     class="invalid-feedback">
                                     <div>{{getErrorMessage('installDate','Install Date',true,"Invalid data available in Install Date")}}
@@ -146,10 +147,10 @@
                             <div class="form-group col-md-6">
                                 <div class="range-slider">
                                     <div id="tooltip"></div>
-                                    <input id="range" formControlName="brightnessCtrl" type="range" step="2" value="0"
+                                    <input id="range" formControlName="brightnessCtrl" (input)="BrightnessChage()" [(ngModel)]="brightness" type="range" step="2" value="0"
                                         min="1" max="254">
                                 </div>
-                                <label class="text-center w-100"> Brightness <span
+                                <label class="text-center w-100"> Brightness : <span
                                         class="text-dark">{{brightness}}</span> </label>
 
                             </div>
@@ -166,15 +167,21 @@
                         <div class="row">
 
                             <div class="col-md-1" style="padding:10px">
-                                <button [disabled]="!form.valid" class="btn btn-success" (click)="onSubmit()">
+                                <button [disabled]="!form.valid" type="button" class="btn btn-success" (click)="onSubmit()">
                                     <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
                                     Submit
                                 </button>
                             </div>
                             <div class="col-md-1" style="padding:10px">
-                                <button [disabled]="!form.valid" class="btn btn-danger">
+                                <button [disabled]="!form.valid" class="btn btn-warning">
                                     <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
                                     Reset
+                                </button>
+                            </div>
+                            <div class="col-md-1" style="padding:10px" *ngIf="id!=0">
+                                <button type="button" class="btn btn-danger" (click)="DeleteVMS()">
+                                    <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+                                    Delete
                                 </button>
                             </div>
                         </div>

@@ -6,7 +6,6 @@ import { AuthGuradService } from './_auth/auth-gurad.service';
 import { UserComponent } from './components/user/user/user.component';
 import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
 import { MapViewComponent } from './components/dashboard/map-view/map-view.component';
-import { RoleComponent } from './components/user/role/role.component';
 import { EncdecComponent } from './components/_extras/encdec/encdec.component';
 import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/admin-dashboard.component';
 import { AdminConfigurationComponent } from './components/admin/admin-configuration/admin-configuration.component';
@@ -19,6 +18,8 @@ import { PartyMngComponent } from './components/admin/party-mng/party-mng.compon
 import { AddPartyComponent } from './components/admin/party-mng/add-party/add-party.component';
 import { AddTariffComponent } from './components/admin/tariff-mng/add-tariff/add-tariff.component';
 import { TariffMngComponent } from './components/admin/tariff-mng/tariff-mng.component';
+import { MediaClearanceComponent } from './components/admin/media-clearance/media-clearance.component';
+import { RoleMasterComponent } from './components/user/role-master/role-master.component';
 
 const routes: Routes = [
   {
@@ -52,7 +53,7 @@ const routes: Routes = [
 
   {
     path: "users/role-master",
-    component: RoleComponent,
+    component: RoleMasterComponent,
     data: { title: 'Role Management' },
     canActivate: [AuthGuradService]
   },
@@ -133,6 +134,13 @@ const routes: Routes = [
     component: ErrorPageComponent,
     canActivate: [AuthGuradService]
   },
+  {
+    path: "masters/media-clearance",
+    component: MediaClearanceComponent,
+    data: { title: 'Media Clearance' },
+    canActivate: [AuthGuradService]
+  },
+  
 ];
 
 @NgModule({

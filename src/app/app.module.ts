@@ -16,7 +16,6 @@ import { HeaderComponent } from './components/shared/header/header.component';
 import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
 import { SidebarComponent } from './components/shared/sidebar/sidebar.component';
 import { MapViewComponent } from './components/dashboard/map-view/map-view.component';
-import { RoleComponent } from './components/user/role/role.component';
 import { EncdecComponent } from './components/_extras/encdec/encdec.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BackButtonDisableModule } from 'angular-disable-browser-back-button';
@@ -50,7 +49,9 @@ import { CmMapBoxComponent } from './widget/cm-map-box/cm-map-box.component';
 const iconRetinaUrl = 'assets/leaflet/marker-icon-2x.png';
 const iconUrl = 'assets/leaflet/marker-icon.png';
 const shadowUrl = 'assets/leaflet/marker-shadow.png';
-import { RxReactiveFormsModule } from "@rxweb/reactive-form-validators"
+import { RxReactiveFormsModule } from "@rxweb/reactive-form-validators";
+import { MediaClearanceComponent } from './components/admin/media-clearance/media-clearance.component';
+import { RoleMasterComponent } from './components/user/role-master/role-master.component'
 
 @NgModule({
   declarations: [
@@ -63,7 +64,6 @@ import { RxReactiveFormsModule } from "@rxweb/reactive-form-validators"
     DashboardComponent,
     SidebarComponent,
     MapViewComponent,
-    RoleComponent,
     EncdecComponent,
     AdminDashboardComponent,
     AdminConfigurationComponent,
@@ -82,7 +82,9 @@ import { RxReactiveFormsModule } from "@rxweb/reactive-form-validators"
     TariffMngComponent,
     AddTariffComponent,
     CmConfirmBoxComponent,
-    CmMapBoxComponent
+    CmMapBoxComponent,
+    MediaClearanceComponent,
+    RoleMasterComponent
   ],
   imports: [
     FormsModule,

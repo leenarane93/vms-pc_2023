@@ -67,5 +67,11 @@ export class AdminFacadeService {
   updateTarrif(_data: any) {
     return this._adminService.updateTarrifMasterData(_data);
   }
+  getMediaClearance() {
+    return this._adminService.getMediaClearance();
+  }
+  mediaClearance(_data: any) {
+    return this._adminService.mediaClearance(_data);
+  }
 
 }

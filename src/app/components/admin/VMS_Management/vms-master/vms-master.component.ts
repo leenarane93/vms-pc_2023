@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
+import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 import { InputRequest } from 'src/app/models/request/inputReq';
 import { Globals } from 'src/app/utils/global';
 
@@ -28,7 +29,8 @@ export class VmsMasterComponent {
   constructor(private adminFacade: AdminFacadeService,
     private global: Globals,
     private modalService: NgbModal,
-    private router: Router) {
+    private router: Router,
+    private commonFacade:CommonFacadeService) {
     this.global.CurrentPage = "VMS Management";
     this.pager = 1;
     this.totalRecords = 0;
@@ -66,6 +68,7 @@ export class VmsMasterComponent {
   }
 
   OpenModal(content: any) {
+    this.commonFacade.setSession("ModelShow",null);
     this.router.navigate(['masters/add-vms']);
   }
 
@@ -100,5 +103,10 @@ export class VmsMasterComponent {
         this.router.navigate(['error-page']);
       }
     }, error => console.error(error));
+  }
+
+  SearchWithId(_searchItem: any) {
+    this.commonFacade.setSession("ModelShow", JSON.stringify(_searchItem));
+    this.router.navigate(['masters/add-vms']);
   }
 }
