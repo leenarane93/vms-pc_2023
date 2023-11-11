@@ -20,6 +20,7 @@ import { AddTariffComponent } from './components/admin/tariff-mng/add-tariff/add
 import { TariffMngComponent } from './components/admin/tariff-mng/tariff-mng.component';
 import { MediaClearanceComponent } from './components/admin/media-clearance/media-clearance.component';
 import { RoleMasterComponent } from './components/user/role-master/role-master.component';
+import { AddRoleComponent } from './components/user/role-master/add-role/add-role.component';
 
 const routes: Routes = [
   {
@@ -140,7 +141,13 @@ const routes: Routes = [
     data: { title: 'Media Clearance' },
     canActivate: [AuthGuradService]
   },
-  
+  {
+    path: "masters/add-role",
+    component: AddRoleComponent,
+    data: { title: 'Add Role' },
+    canActivate: [AuthGuradService]
+  },
+
 ];
 
 @NgModule({

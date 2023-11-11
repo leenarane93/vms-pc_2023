@@ -8,83 +8,93 @@ import { Router } from '@angular/router';
 import { UserLoggedIn } from 'src/app/models/$bs/userLoggedIn';
 import { DashboardService } from '../services/dashboard/dashboard.service';
 import { CommonFacadeService } from './common-facade.service';
+import { RolesService } from '../services/user/roles.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserFacadeService {
-  public isLoggedinSubject=new BehaviorSubject<UserLoggedIn>({
-    LoggedIn:false,
-    LoggedInUser :"",
-    LoggedTime : new Date()
+  public isLoggedinSubject = new BehaviorSubject<UserLoggedIn>({
+    LoggedIn: false,
+    LoggedInUser: "",
+    LoggedTime: new Date()
   });
   public isLoggedin: Observable<UserLoggedIn>;
-  public user!:User;
+  public user!: User;
   private items = new BehaviorSubject<any>([]);
   public items$ = this.items.asObservable();
-  
+
   private menus = new BehaviorSubject<any>([]);
   public menus$ = this.menus.asObservable();
 
-  constructor(private _commonaFacade:CommonFacadeService,
-              private _authenticationService: AuthenticationService,
-              private _route:Router,
-              private _dashboard : DashboardService ) {
-                this.isLoggedin = this.isLoggedinSubject.asObservable();                  
-                }
+  constructor(private _commonaFacade: CommonFacadeService,
+    private _authenticationService: AuthenticationService,
+    private _route: Router,
+    private _dashboard: DashboardService,
+    private _roleService: RolesService) {
+    this.isLoggedin = this.isLoggedinSubject.asObservable();
+  }
 
-  loginAuthenticate(_login:Login) {
+  loginAuthenticate(_login: Login) {
     //return this._httpService._postMethod(_login,'User_API/api/User/LoginRequest');
     return this._authenticationService.login(_login)
-      .pipe(tap(items=>this.items.next(items)))
-      .subscribe(res =>{
-      if(res.status == 1){
-        var user =new UserLoggedIn();
-        user.LoggedIn=true;
-        user.LoggedInUser = res.username;
-        user.LoggedTime = new Date();
-        this.isLoggedinSubject.next(user);
-        this._commonaFacade.setSession("access_token",res.token);
-        this.user = res;
-      }
-      else {
-        var user =new UserLoggedIn();
-        user.LoggedIn=false;
-        user.LoggedInUser = "";
-        user.LoggedTime = new Date();
-        this.isLoggedinSubject.next(user);
-        this.user = res;
-      }
-    });
+      .pipe(tap(items => this.items.next(items)))
+      .subscribe(res => {
+        if (res.status == 1) {
+          var user = new UserLoggedIn();
+          user.LoggedIn = true;
+          user.LoggedInUser = res.username;
+          user.LoggedTime = new Date();
+          this.isLoggedinSubject.next(user);
+          this._commonaFacade.setSession("access_token", res.token);
+          this.user = res;
+        }
+        else {
+          var user = new UserLoggedIn();
+          user.LoggedIn = false;
+          user.LoggedInUser = "";
+          user.LoggedTime = new Date();
+          this.isLoggedinSubject.next(user);
+          this.user = res;
+        }
+      });
   }
 
-  checkLoggedIn(){
-    return of(this.isLoggedin).pipe(tap((v)=>console.log(v)));
+  checkLoggedIn() {
+    return of(this.isLoggedin).pipe(tap((v) => console.log(v)));
   }
 
 
-  getMenuDetailsByRole(id:number) {
-    this._authenticationService.getMenuByRoleId(id).subscribe(res=>{
-      if(res != null){
+  getMenuDetailsByRole(id: number) {
+    this._authenticationService.getMenuByRoleId(id).subscribe(res => {
+      if (res != null) {
         this.menus.next(null);
         this.menus.next(res);
       }
     });
   }
 
-  ClearUserObject(){
+  ClearUserObject() {
     var _user = new UserLoggedIn();
-    _user.LoggedIn =false;
-    _user.LoggedInUser="";
-    _user.LoggedTime=new Date();
+    _user.LoggedIn = false;
+    _user.LoggedInUser = "";
+    _user.LoggedTime = new Date();
     this.isLoggedinSubject.next(_user);
-    if(this.user != undefined){
+    if (this.user != undefined) {
       this.user.status = "0";
     }
     this._route.navigate(['login']);
   }
 
-  GetDashboardCharts(){
+  GetDashboardCharts() {
     return this._dashboard.getDashboardChartData();
+  }
+
+  getRoles(data: any) {
+    return this._roleService.getRoles(data);
+  }
+
+  addRoles(data: any) {
+    return this._roleService.addRoles(data);
   }
 }

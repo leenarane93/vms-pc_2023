@@ -51,7 +51,8 @@ const iconUrl = 'assets/leaflet/marker-icon.png';
 const shadowUrl = 'assets/leaflet/marker-shadow.png';
 import { RxReactiveFormsModule } from "@rxweb/reactive-form-validators";
 import { MediaClearanceComponent } from './components/admin/media-clearance/media-clearance.component';
-import { RoleMasterComponent } from './components/user/role-master/role-master.component'
+import { RoleMasterComponent } from './components/user/role-master/role-master.component';
+import { AddRoleComponent } from './components/user/role-master/add-role/add-role.component'
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { RoleMasterComponent } from './components/user/role-master/role-master.c
     CmConfirmBoxComponent,
     CmMapBoxComponent,
     MediaClearanceComponent,
-    RoleMasterComponent
+    RoleMasterComponent,
+    AddRoleComponent
   ],
   imports: [
     FormsModule,
