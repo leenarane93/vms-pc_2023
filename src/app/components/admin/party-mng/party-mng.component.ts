@@ -13,7 +13,6 @@ import { Globals } from 'src/app/utils/global';
 })
 export class PartyMngComponent {
 
-  form: any = [];
   title = 'angular13';
   searchText!: string;
   page: any;
