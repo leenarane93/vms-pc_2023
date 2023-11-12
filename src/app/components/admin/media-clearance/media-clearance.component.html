@@ -1,6 +1,15 @@
 <div class="container" #scroll>
     <div class="card card-css">
         <div class="row">
+            <div class="col-md-12" style="padding: 25px;">
+                <button class="btn btn-primary" (click)="BackToList()">
+                    <!-- <span class="spinner-border spinner-border-sm me-1" ></span> -->
+                    <i class="icon-arrow-left"></i>
+                    Back To List
+                </button>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-12">
                 <div class="modal-body">
                     <div class="container text-center mt-4">
@@ -29,9 +38,9 @@
                                     <td>{{item.description}}</td>
                                     <td>{{item.totalMedia}}</td>
                                     <td><button class="btn btn-primary" (click)="RemoveMedias(item.vmsId)">
-                                        <span class="spinner-border-sm me-1"></span>
-                                        Clear Media
-                                    </button></td>
+                                            <span class="spinner-border-sm me-1"></span>
+                                            Clear Media
+                                        </button></td>
                                 </tr>
                             </tbody>
                         </table>

@@ -20,4 +20,9 @@ export class RolesService {
     return this._httpService._postMethod(_data, 'user_api/api/Role/postRoleMaster');
   }
 
+  updateRoles(_data: any) {
+    return this._httpService._postMethod(_data, 'user_api/api/Role/putRoleMaster');
+  }
+
+
 }

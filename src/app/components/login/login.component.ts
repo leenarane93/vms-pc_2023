@@ -36,16 +36,16 @@ export class LoginComponent implements OnInit {
     private _facadeService: UserFacadeService,
     private _commonFacade: CommonFacadeService,
     private toastr: ToastrService,
-    private _adminFacade:AdminFacadeService,
+    private _adminFacade: AdminFacadeService,
     private route: ActivatedRoute,
-    private global:Globals) {
+    private global: Globals) {
     //this.config$ = this._facadeService._configData$;
     console.log(this._commonFacade.getSession("api_url"));
     this.version = environment.version;
   }
   get f() { return this.form.controls; }
   ngOnInit() {
-    this._commonFacade.setSession("isLoggedIn",false);
+    this._commonFacade.setSession("isLoggedIn", false);
     this._facadeService.ClearUserObject();
     //const bs$ = new BehaviorSubject(this._facadeService.items$);
     //console.log(bs$.getValue());
@@ -68,41 +68,50 @@ export class LoginComponent implements OnInit {
     _login.Password = this.form.controls["password"].value;
     _login.Username = this.form.controls["username"].value;
 
-      //this._facadeService.loginAuthenticate(_login);
-      this._authenticationService.login(_login).subscribe(res => {
-        if (res != null) {
-          if (res.status == 1) {
-            this._commonFacade.setSession("isLoggedIn",true);
-            this._commonFacade.setSession("access_token",res.token);
-            var user =new UserLoggedIn();
-            user.LoggedIn=true;
-            user.LoggedInUser = res.username;
-            user.LoggedTime = new Date();
-            this._facadeService.isLoggedinSubject.next(user);
-            this._commonFacade.setSession("access_token",res.token);
-            this._facadeService.user = res;
-            this.global.UserCode = _login.Username;
-            if (_login.Username == environment.user)
-            {
-              this._adminFacade.getConfiguration().subscribe(res=>{
-                if(res != undefined && res != null){
-                  let data = JSON.stringify(res);
-                  this._commonFacade.setSession("Configuration",data);
-                }
-              })
-              this.router.navigate(["admin-dashboard"],{fragment:"0"});
+    //this._facadeService.loginAuthenticate(_login);
+    this._authenticationService.login(_login).subscribe(res => {
+      if (res != null) {
+        if (res.status == 1) {
+          this._commonFacade.setSession("isLoggedIn", true);
+          this._commonFacade.setSession("access_token", res.token);
+          var user = new UserLoggedIn();
+          user.LoggedIn = true;
+          user.LoggedInUser = res.username;
+          user.LoggedTime = new Date();
+          this._facadeService.isLoggedinSubject.next(user);
+          this._commonFacade.setSession("access_token", res.token);
+          this._facadeService.user = res;
+          this.global.UserCode = _login.Username;
+          if (_login.Username == environment.user) {
+            this._adminFacade.getConfiguration().subscribe(res => {
+              if (res != undefined && res != null) {
+                let data = JSON.stringify(res);
+                this._commonFacade.setSession("Configuration", data);
+              }
+            })
+            var role = {
+              "RoleID": 0,
+              "RoleName": "Super Admin"
             }
-            else {
-              this._adminFacade.getConfiguration().subscribe(res=>{
-                if(res != undefined && res != null)
-                  this._commonFacade.setSession("Configuration",res);
-              })
-              this.router.navigate(["dashboard"]);
-            }
+            this._commonFacade.setSession("Role", JSON.stringify(role));
+            this.router.navigate(["admin-dashboard"], { fragment: "0" });
           }
-          else
-            this.toastr.error("Invalid username or password.");
+          else {
+            var rolData = {
+              "RoleID": res.roleId,
+              "RoleName": res.roleName
+            }
+            this._commonFacade.setSession("Role", JSON.stringify(rolData));
+            this._adminFacade.getConfiguration().subscribe(res => {
+              if (res != undefined && res != null)
+                this._commonFacade.setSession("Configuration", res);
+            })
+            this.router.navigate(["dashboard"]);
+          }
         }
-      })
-    }
+        else
+          this.toastr.warning(res.token, "Error", { positionClass: 'toast-bottom-right' });
+      }
+    })
   }
+}

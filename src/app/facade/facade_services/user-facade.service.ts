@@ -65,8 +65,8 @@ export class UserFacadeService {
   }
 
 
-  getMenuDetailsByRole(id: number) {
-    this._authenticationService.getMenuByRoleId(id).subscribe(res => {
+  getMenuDetailsByRole(data: any) {
+    this._authenticationService.getMenuByRoleId(data.RoleID).subscribe(res => {
       if (res != null) {
         this.menus.next(null);
         this.menus.next(res);
@@ -96,5 +96,9 @@ export class UserFacadeService {
 
   addRoles(data: any) {
     return this._roleService.addRoles(data);
+  }
+
+  updateRoles(data: any) {
+    return this._roleService.updateRoles(data);
   }
 }

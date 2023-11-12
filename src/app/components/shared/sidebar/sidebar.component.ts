@@ -4,6 +4,7 @@ import { User } from 'src/app/models/response/User';
 
 import PerfectScrollbar from 'perfect-scrollbar';
 import { Menus, MenusVM, SubMenu } from 'src/app/models/response/Menus';
+import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,7 +19,8 @@ export class SidebarComponent {
   isMenuOpen: boolean = false;
   isCollapsed: boolean = false;
   element: any;
-  constructor(private _facadeService: UserFacadeService) {
+  constructor(private _facadeService: UserFacadeService,
+    private _commonFacade: CommonFacadeService) {
     this.user = this._facadeService.user;
   }
   menuSidebar = [
@@ -121,12 +123,15 @@ export class SidebarComponent {
   ngOnInit() {
     this.menus = [];
     this.menusVM = [];
-    this._facadeService.getMenuDetailsByRole(1);
+    var data = this._commonFacade.getSession("Role");
+    console.log(data);
+    this._facadeService.getMenuDetailsByRole(data == null ? 0 : JSON.parse(data));
     let _data = this._facadeService.menus$;
     console.log(_data);
     _data.forEach(ele => {
       this.menusVM = [];
-      if (ele != undefined && ele.length > 0) {0
+      if (ele != undefined && ele.length > 0) {
+        0
         let _subMnuArr: SubMenu[] = [];
         this.menus = ele;
         this.menus.sort(x => x.headerPosition);
@@ -158,7 +163,7 @@ export class SidebarComponent {
               _subMnuArr.push(subMnu);
             }
             else {
-              _subMnuArr =[];
+              _subMnuArr = [];
               _mnu.link_name = menu.headerMenuName;
               _mnu.icon = menu.menuIcon;
               _mnu.id = menu.menuId;
@@ -177,7 +182,7 @@ export class SidebarComponent {
         });
       }
     });
-    
+
     var body = $("body");
     var sidebar = $('.sidebar');
     jQuery(function () {

@@ -72,7 +72,7 @@
                                 </button>
                             </div>
                             <div class="col-md-10 text-right" style="padding:10px">
-                                <button [disabled]="!isEdit" class="btn btn-success">
+                                <button [disabled]="!isEdit" class="btn btn-success" (click)="goToAccessConfig()">
                                     <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
                                     Access Configuration
                                 </button>

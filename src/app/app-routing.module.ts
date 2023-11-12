@@ -21,6 +21,7 @@ import { TariffMngComponent } from './components/admin/tariff-mng/tariff-mng.com
 import { MediaClearanceComponent } from './components/admin/media-clearance/media-clearance.component';
 import { RoleMasterComponent } from './components/user/role-master/role-master.component';
 import { AddRoleComponent } from './components/user/role-master/add-role/add-role.component';
+import { AccessConfigComponent } from './components/user/role-master/access-config/access-config.component';
 
 const routes: Routes = [
   {
@@ -144,6 +145,12 @@ const routes: Routes = [
   {
     path: "masters/add-role",
     component: AddRoleComponent,
+    data: { title: 'Add Role' },
+    canActivate: [AuthGuradService]
+  },
+  {
+    path: "masters/access-config",
+    component: AccessConfigComponent,
     data: { title: 'Add Role' },
     canActivate: [AuthGuradService]
   },

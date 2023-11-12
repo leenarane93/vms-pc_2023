@@ -81,7 +81,7 @@ export class AddRoleComponent implements OnInit {
     _roleData.description = this.form.controls.description.value;
     _roleData.createdBy = this.global.UserCode;
     if (this.id != 0) {
-      this.userFacade.addRoles(_roleData).subscribe(r => {
+      this.userFacade.updateRoles(_roleData).subscribe(r => {
         if (r == 0) {
           this.toast.error("Error occured while saving data");
         } else {
@@ -101,5 +101,8 @@ export class AddRoleComponent implements OnInit {
         }
       })
     }
+  }
+  goToAccessConfig() {
+    this.router.navigate(['masters/access-config']);
   }
 }
