@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 import { UserFacadeService } from 'src/app/facade/facade_services/user-facade.service';
 import { RoleMaster } from 'src/app/models/user/RoleMaster';
 import { Globals } from 'src/app/utils/global';
 import { getErrorMsg } from 'src/app/utils/utils';
+import { AccessConfigComponent } from '../access-config/access-config.component';
 
 @Component({
   selector: 'app-add-role',
@@ -26,6 +28,7 @@ export class AddRoleComponent implements OnInit {
     private _common: CommonFacadeService,
     private toast: ToastrService,
     private userFacade: UserFacadeService,
+    private ngModal: NgbModal
   ) {
     this.global.CurrentPage = "Add Role";
     this.BuildForm();
@@ -103,6 +106,12 @@ export class AddRoleComponent implements OnInit {
     }
   }
   goToAccessConfig() {
-    this.router.navigate(['masters/access-config']);
+    const modalRef = this.ngModal.open(AccessConfigComponent, { windowClass: 'rounded-7', size: 'xl' });
+
+    modalRef.result.then((result) => {
+      if (result) {
+        console.log(result);
+      }
+    });
   }
 }

@@ -9,6 +9,7 @@ import { UserLoggedIn } from 'src/app/models/$bs/userLoggedIn';
 import { DashboardService } from '../services/dashboard/dashboard.service';
 import { CommonFacadeService } from './common-facade.service';
 import { RolesService } from '../services/user/roles.service';
+import { MenusService } from '../services/user/menus.service';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,8 @@ export class UserFacadeService {
     private _authenticationService: AuthenticationService,
     private _route: Router,
     private _dashboard: DashboardService,
-    private _roleService: RolesService) {
+    private _roleService: RolesService,
+    private _menusService: MenusService) {
     this.isLoggedin = this.isLoggedinSubject.asObservable();
   }
 
@@ -100,5 +102,9 @@ export class UserFacadeService {
 
   updateRoles(data: any) {
     return this._roleService.updateRoles(data);
+  }
+
+  getMenus() {
+    return this._menusService.getMenus();
   }
 }

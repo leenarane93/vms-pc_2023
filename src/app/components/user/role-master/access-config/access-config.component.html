@@ -1,29 +1,40 @@
 <div class="p-4">
     <div class="row">
 
-        <div class="col-xl-12  grid-margin" id="mediaList">
+        <div class="col-xl-12  grid-margin" id="mediaList" style="height: 600px;">
             <div class="card  border-0">
-                <div class="card-body p-2 bgTable" style="border-radius: 0 0;">
+                <div class="card-body p-2 bgTable" style="border-radius: 0 0;height:600px">
 
 
-                    <div class="table-responsive">
+                    <div class="table-responsive" style="height:580px">
                         <table class="table table-striped text-center mb-0 table-light table-hover" id="vmsList"
-                            datatable>
+                            datatable [dtOptions]="dtOptions">
                             <thead>
                                 <tr>
-                                    <th style="width:100px;text-align: left!important;"><input type="checkbox"
+                                    <th style="width:100px;text-align: center!important;"><input type="checkbox"
                                             [(ngModel)]="select_all" (ngModelChange)="onSelectAll($event)" /> <strong>
                                             Select All</strong> </th>
-                                    <th style="text-align: left!important;"> Media List</th>
+                                    <th class="text-center"> Header Name</th>
+                                    <th class="text-center"> Menu Name</th>
+                                    <th class="text-center"> All</th>
+                                    <th class="text-center"> Add</th>
+                                    <th class="text-center"> Update</th>
+                                    <th class="text-center"> Remove</th>
                                 </tr>
                             </thead>
                             <tbody>
 
                                 <tr *ngFor="let d of data">
                                     <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected" /></td>
-                                    <td class="text-left p-3" style=" padding: 0px!important;"><span
+                                    <!-- <td class="text-left p-3" style=" padding: 0px!important;"><span
                                             class="rounded-circle  p-2 bgTable text-white border-1 border-primary m-2 text-center d-inline-block"><i
-                                                class="icon-video"></i> </span> {{d.vmsId}} - {{d.description}}</td>
+                                                class="icon-video"></i> </span> {{d.vmsId}} - {{d.description}}</td> -->
+                                    <td>{{d.headerMenuName}}</td>
+                                    <td>{{d.childMenuName}}</td>
+                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected" /></td>
+                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected" /></td>
+                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected" /></td>
+                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected" /></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -31,12 +42,16 @@
 
 
                 </div>
-
-                <blockquote class="blockquote text-center bg-light mb-0" style="border-radius: 0 0 15px 15px;">
-                    <h5 class="mb-0 text-danger"> Note <sup>*</sup> : Use this functionality whenever you have reset vms
-                        or clear/delete vms medias from third party application.</h5>
-                </blockquote>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-success" type="button">
+                Submit
+            </button>
         </div>
     </div>
 </div>

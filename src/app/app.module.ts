@@ -54,6 +54,7 @@ import { MediaClearanceComponent } from './components/admin/media-clearance/medi
 import { RoleMasterComponent } from './components/user/role-master/role-master.component';
 import { AddRoleComponent } from './components/user/role-master/add-role/add-role.component';
 import { AccessConfigComponent } from './components/user/role-master/access-config/access-config.component'
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   declarations: [
@@ -109,7 +110,8 @@ import { AccessConfigComponent } from './components/user/role-master/access-conf
     NgxPaginationModule,
     LeafletDrawModule,
     LeafletModule,
-    RxReactiveFormsModule
+    RxReactiveFormsModule,
+    DataTablesModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
