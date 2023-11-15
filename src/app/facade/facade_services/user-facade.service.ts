@@ -107,4 +107,10 @@ export class UserFacadeService {
   getMenus() {
     return this._menusService.getMenus();
   }
+  getRoleMenuAccess(id:number) {
+    return this._menusService.getRoleMenuAccessData(id);
+  }
+  updateRoleAccess(data:any){
+    return this._menusService.updateRoleAccess(data);
+  }
 }

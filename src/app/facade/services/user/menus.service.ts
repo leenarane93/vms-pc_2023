@@ -16,4 +16,11 @@ export class MenusService {
     return this._httpService._getMethod('user_api/api/MenuMaster/GetMenuMaster');
   }
 
+  getRoleMenuAccessData(id:number){
+    return this._httpService._getMethod("user_api/api/RoleMenu/GetRoleMenuRelationsByRoleId?roleId="+id);
+  }
+
+  updateRoleAccess(data:any) {
+    return this._httpService._postMethod(data,"user_api/api/RoleMenu/PostRoleMenuRelation");
+  }
 }

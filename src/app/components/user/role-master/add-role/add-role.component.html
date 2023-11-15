@@ -20,8 +20,7 @@
                                     placeholder="Role Name"
                                     [ngClass]="{ 'is-invalid': f['roleName'].touched && f['roleName'].errors, 'is-valid': f['roleName'].valid }" />
                                 <div *ngIf="f['roleName'].touched && f['roleName'].errors" class="invalid-feedback">
-                                    <div>{{getErrorMessage('roleName','Role Name',true,"Invalid data available in Role
-                                        Name")}}
+                                    <div>{{getErrorMessage('roleName','Role Name',true,"Invalid data available in Role Name")}}
                                     </div>
                                 </div>
                             </div>
@@ -32,8 +31,7 @@
                                     [ngClass]="{ 'is-invalid': f['description'].touched && f['description'].errors, 'is-valid': f['description'].valid }" />
                                 <div *ngIf="f['description'].touched && f['description'].errors"
                                     class="invalid-feedback">
-                                    <div>{{getErrorMessage('description','Description',true,"Invalid data available in
-                                        Description")}}
+                                    <div>{{getErrorMessage('description','Description',true,"Invalid data available in Description")}}
                                     </div>
                                 </div>
                             </div>
@@ -66,20 +64,25 @@
                                 </button>
                             </div>
                             <div class="col-md-1" style="padding:10px">
-                                <button [disabled]="!form.valid" class="btn btn-danger" (click)="clearForm()">
+                                <button [disabled]="!form.valid" type="button" class="btn btn-warning" (click)="clearForm()">
                                     <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
                                     Reset
                                 </button>
                             </div>
-                            <div class="col-md-10 text-right" style="padding:10px">
-                                <button [disabled]="!isEdit" class="btn btn-success" (click)="goToAccessConfig()">
+                            <div class="col-md-1" style="padding:10px">
+                                <button [disabled]="!isEdit" type="button" class="btn btn-danger" (click)="removeRole()">
+                                    <span class="me-1"></span>
+                                    Remove
+                                </button>
+                            </div>
+                            <div class="col-md-9 text-right" style="padding:10px">
+                                <button [disabled]="!isEdit" class="btn btn-success" type="button" (click)="goToAccessConfig()">
                                     <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
                                     Access Configuration
                                 </button>
                             </div>
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>

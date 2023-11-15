@@ -56,7 +56,7 @@ export class RoleMasterComponent implements OnInit {
 
   onPageSearch(search: string) {
     this.searchText = search;
-
+    this.getRoles();
   }
 
   OpenModal(content: any) {

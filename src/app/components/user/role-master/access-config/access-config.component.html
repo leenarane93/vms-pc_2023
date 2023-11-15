@@ -25,16 +25,13 @@
                             <tbody>
 
                                 <tr *ngFor="let d of data">
-                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected" /></td>
-                                    <!-- <td class="text-left p-3" style=" padding: 0px!important;"><span
-                                            class="rounded-circle  p-2 bgTable text-white border-1 border-primary m-2 text-center d-inline-block"><i
-                                                class="icon-video"></i> </span> {{d.vmsId}} - {{d.description}}</td> -->
+                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected" [disabled]="d.is_Alldisabled" (ngModelChange)="onSingleSelectAll($event,d)" /></td>
                                     <td>{{d.headerMenuName}}</td>
-                                    <td>{{d.childMenuName}}</td>
-                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected" /></td>
-                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected" /></td>
-                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected" /></td>
-                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected" /></td>
+                                    <td>{{d.childMenuName}}</td> 
+                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_allSelected" [disabled]="d.is_disabled" (ngModelChange)="onSelectAccessAll($event,d)" /></td>
+                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_addselected" [disabled]="d.is_disabled" (ngModelChange)="onSelectAccess($event,d,'add')"/></td>
+                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_updselected" [disabled]="d.is_disabled" (ngModelChange)="onSelectAccess($event,d,'upd')"/></td>
+                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_delselected" [disabled]="d.is_disabled" (ngModelChange)="onSelectAccess($event,d,'del')"/></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -49,7 +46,7 @@
         <div class="col-md-10">
         </div>
         <div class="col-md-2">
-            <button class="btn btn-success" type="button">
+            <button class="btn btn-success" type="button" (click)="SubmitActionConfig()">
                 Submit
             </button>
         </div>
