@@ -10,6 +10,7 @@ import { DashboardService } from '../services/dashboard/dashboard.service';
 import { CommonFacadeService } from './common-facade.service';
 import { RolesService } from '../services/user/roles.service';
 import { MenusService } from '../services/user/menus.service';
+import { UserService } from '../services/user/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,8 @@ export class UserFacadeService {
     private _route: Router,
     private _dashboard: DashboardService,
     private _roleService: RolesService,
-    private _menusService: MenusService) {
+    private _menusService: MenusService,
+    private _userService:UserService) {
     this.isLoggedin = this.isLoggedinSubject.asObservable();
   }
 
@@ -112,5 +114,9 @@ export class UserFacadeService {
   }
   updateRoleAccess(data:any){
     return this._menusService.updateRoleAccess(data);
+  }
+  
+  getUsers(data:any) {
+    return this._userService.getUsers(data);
   }
 }

@@ -22,6 +22,7 @@ import { MediaClearanceComponent } from './components/admin/media-clearance/medi
 import { RoleMasterComponent } from './components/user/role-master/role-master.component';
 import { AddRoleComponent } from './components/user/role-master/add-role/add-role.component';
 import { AccessConfigComponent } from './components/user/role-master/access-config/access-config.component';
+import { AddUserComponent } from './components/user/user/add-user/add-user.component';
 
 const routes: Routes = [
   {
@@ -53,6 +54,12 @@ const routes: Routes = [
     canActivate: [AuthGuradService]
   },
 
+  {
+    path: "users/add-user",
+    component: AddUserComponent,
+    data: { title: 'Add User' },
+    canActivate: [AuthGuradService]
+  },
   {
     path: "users/role-master",
     component: RoleMasterComponent,
@@ -154,7 +161,12 @@ const routes: Routes = [
     data: { title: 'Add Role' },
     canActivate: [AuthGuradService]
   },
-
+{
+    path: "masters/access-config",
+    component: AccessConfigComponent,
+    data: { title: 'Add Role' },
+    canActivate: [AuthGuradService]
+  },
 ];
 
 @NgModule({
