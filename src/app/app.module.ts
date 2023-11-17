@@ -56,6 +56,7 @@ import { AddRoleComponent } from './components/user/role-master/add-role/add-rol
 import { AccessConfigComponent } from './components/user/role-master/access-config/access-config.component'
 import { DataTablesModule } from 'angular-datatables';
 import { AddUserComponent } from './components/user/user/add-user/add-user.component';
+import { MediaUploadComponent } from './components/media/media-upload/media-upload.component';
 
 @NgModule({
   declarations: [
@@ -91,7 +92,8 @@ import { AddUserComponent } from './components/user/user/add-user/add-user.compo
     RoleMasterComponent,
     AddRoleComponent,
     AccessConfigComponent,
-    AddUserComponent
+    AddUserComponent,
+    MediaUploadComponent
   ],
   imports: [
     FormsModule,

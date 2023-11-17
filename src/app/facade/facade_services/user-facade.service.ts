@@ -35,7 +35,7 @@ export class UserFacadeService {
     private _dashboard: DashboardService,
     private _roleService: RolesService,
     private _menusService: MenusService,
-    private _userService:UserService) {
+    private _userService: UserService) {
     this.isLoggedin = this.isLoggedinSubject.asObservable();
   }
 
@@ -109,14 +109,22 @@ export class UserFacadeService {
   getMenus() {
     return this._menusService.getMenus();
   }
-  getRoleMenuAccess(id:number) {
+  getRoleMenuAccess(id: number) {
     return this._menusService.getRoleMenuAccessData(id);
   }
-  updateRoleAccess(data:any){
+  updateRoleAccess(data: any) {
     return this._menusService.updateRoleAccess(data);
   }
-  
-  getUsers(data:any) {
+
+  getUsers(data: any) {
     return this._userService.getUsers(data);
+  }
+
+  addUser(data: any) {
+    return this._userService.addUser(data);
+  }
+
+  updateUser(data: any) {
+    return this._userService.updateUser(data);
   }
 }

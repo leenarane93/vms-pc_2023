@@ -22,18 +22,18 @@ export class AccessConfigComponent implements OnInit {
   select_all = false;
   data: any[] = [];
   selection = new SelectionModel<Element>(true, []);
-  @Input() selectedRole : any;
+  @Input() selectedRole: any;
   @ViewChild(DataTableDirective)
   datatableElement!: DataTableDirective;
   dtOptions: any = {};
-  _role : any;
+  _role: any;
   constructor(
     private _userFacade: UserFacadeService,
     private toastr: ToastrService,
-    private _commonFacade : CommonFacadeService,
-    private global:Globals,
-    public router:Router,
-    private ngModal : NgbModal
+    private _commonFacade: CommonFacadeService,
+    private global: Globals,
+    public router: Router,
+    private ngModal: NgbModal
   ) { }
 
 
@@ -137,26 +137,26 @@ export class AccessConfigComponent implements OnInit {
     })
   }
 
-  getRoleMenuAccess(){
-    if(this.selectedRole != "" && this.selectedRole != undefined)
-    this._userFacade.getRoleMenuAccess(this.selectedRole).subscribe(res => {
-      if(res != null && res != undefined && res.length > 0) {
-        res.forEach((ele:any) => {
-          let menuIdx = this.data.findIndex(x=>x.id == ele.menuId);
-          if(ele.checkedAdd == true) 
-            this.data[menuIdx].is_addselected = true;
-          if(ele.checkedUpd == true) 
-            this.data[menuIdx].is_updselected = true;
-          if(ele.checkedDel == true) 
-            this.data[menuIdx].is_delselected = true;
-        });
-      }
-    })
+  getRoleMenuAccess() {
+    if (this.selectedRole != "" && this.selectedRole != undefined)
+      this._userFacade.getRoleMenuAccess(this.selectedRole).subscribe(res => {
+        if (res != null && res != undefined && res.length > 0) {
+          res.forEach((ele: any) => {
+            let menuIdx = this.data.findIndex(x => x.id == ele.menuId);
+            if (ele.checkedAdd == true)
+              this.data[menuIdx].is_addselected = true;
+            if (ele.checkedUpd == true)
+              this.data[menuIdx].is_updselected = true;
+            if (ele.checkedDel == true)
+              this.data[menuIdx].is_delselected = true;
+          });
+        }
+      })
   }
 
 
-  SubmitActionConfig() { 
-    let roleAccess : RoleMenuAccess[] =[];
+  SubmitActionConfig() {
+    let roleAccess: RoleMenuAccess[] = [];
     this.data.forEach(ele => {
       var role = new RoleMenuAccess();
       role.checkedAdd = ele.is_addselected;
@@ -167,19 +167,22 @@ export class AccessConfigComponent implements OnInit {
       role.menuId = ele.id;
       role.roleId = this.selectedRole;
       roleAccess.push(role);
-    });    
-    this._userFacade.updateRoleAccess(roleAccess).subscribe(res=>{
-      if(res != 0) {
+    });
+    this._userFacade.updateRoleAccess(roleAccess).subscribe(res => {
+      if (res != 0) {
         this.toastr.success("Saved successfully.");
         this.ngModal.dismissAll();
         this.router.navigate(['users/role-master']);
       }
       else {
-        this.toastr.error("Something went wrong","Error",{positionClass:"toats-bottom-right"});
+        this.toastr.error("Something went wrong", "Error", { positionClass: "toats-bottom-right" });
       }
-    },(err)=>{
+    }, (err) => {
       console.log(err);
-      this.toastr.error("Contact System administrator.","Error",{positionClass:"toats-bottom-right"});
+      this.toastr.error("Contact System administrator.", "Error", { positionClass: "toats-bottom-right" });
     })
+  }
+  CancelAction() {
+    this.ngModal.dismissAll();
   }
 }

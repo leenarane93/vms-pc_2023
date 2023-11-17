@@ -11,6 +11,7 @@ import { getErrorMsg } from 'src/app/utils/utils';
 import { TarrifMaster } from 'src/app/models/admin/TarrifMaster';
 import { UserFacadeService } from 'src/app/facade/facade_services/user-facade.service';
 import { InputRequest } from 'src/app/models/request/inputReq';
+import { UserMaster } from 'src/app/models/user/UserMaster';
 
 @Component({
   selector: 'app-add-user',
@@ -41,7 +42,7 @@ export class AddUserComponent implements OnInit {
   }
   ngOnInit(): void {
     this.getRoles();
-    
+
   }
   get f() { return this.form.controls; }
   BuildForm() {
@@ -59,6 +60,7 @@ export class AddUserComponent implements OnInit {
   }
   FillForm(data: any) {
     if (data != "") {
+
       this.global.CurrentPage = "Edit User";
       this.id = data.id;
       if (data.isActive == "Active")
@@ -73,10 +75,10 @@ export class AddUserComponent implements OnInit {
         username: data.username,
         roleId: this.selectedRole,
         password: data.password,
-        confirmPassword: data.password,
+        confirmPassword: "",
         mobileNo: data.mobileNo,
         emailId: data.emailId,
-        isActive: data.isActive
+        isActive: this.active
       })
     }
   }
@@ -99,7 +101,7 @@ export class AddUserComponent implements OnInit {
   }
 
   onSubmit() {
-    this.AddUpdateTarrif(0);
+    this.AddUpdateUser(0);
   }
   clearForm() {
     this.id = 0;
@@ -109,48 +111,61 @@ export class AddUserComponent implements OnInit {
   BackToList() {
     this.router.navigate(['users/user-master']);
   }
-  DeleteTarrif() {
+  DeleteUser() {
     this.confirmationDialogService.confirm('Please confirm..', 'Do you really want to remove this User... ?')
-      .then((confirmed) => { if (confirmed == true) this.RemoveTarrif() })
+      .then((confirmed) => { if (confirmed == true) this.RemoveUser() })
       .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
   }
-  RemoveTarrif() {
-    this.AddUpdateTarrif(1);
+  RemoveUser() {
+    this.AddUpdateUser(1);
   }
-
-  AddUpdateTarrif(type?: any) {
-    let _trfData = new TarrifMaster();
-    if (this.id != 0)
-      _trfData.id = this.id;
-    _trfData.tarrifCode = this.form.controls.tarrifCode.value;
-    _trfData.tarrifType = this.form.controls.tarrifType.value;
-    _trfData.uomName = this.form.controls.uomName.value;
-    _trfData.amount = this.form.controls.amount.value;
-    _trfData.gstPer = this.form.controls.gstPer.value;
-    _trfData.totalAmount = this.form.controls.totalAmount.value;
-    _trfData.isActive = this.active;
-    _trfData.createdBy = this.global.UserCode;
-    if (type == 1)
-      _trfData.isDeleted = true;
-    // if (this.id != 0) {
-    //   this._facade.updateTarrif(_trfData).subscribe(r => {
-    //     if (r == 0) {
-    //       this.toast.error("Error occured while saving data");
-    //     } else {
-    //       this.toast.success("Updated successfully.");
-    //       this.clearForm();
-    //     }
-    //   })
-    // }
-    // else {
-    //   this._facade.addTarrif(_trfData).subscribe(r => {
-    //     if (r == 0) {
-    //       this.toast.error("Error occured while saving data");
-    //     } else {
-    //       this.toast.success("Saved successfully.");
-    //       this.clearForm();
-    //     }
-    //   })
-    // }
+  ConfirmPasswordCheck(type: number) {
+    let pass = this.form.controls.password.value;
+    let confpass = this.form.controls.confirmPassword.value;
+    if (pass == confpass || type == 1)
+      return true;
+    else {
+      this.toast.error("Password not matched", "Error", { positionClass: "toast-bottom-right" });
+      return false
+    };
+  }
+  AddUpdateUser(type?: any) {
+    let v = this.ConfirmPasswordCheck(type);
+    if (v == true) {
+      let _usrData = new UserMaster();
+      if (this.id != 0)
+        _usrData.id = this.id;
+      _usrData.userFName = this.form.controls.userFName.value;
+      _usrData.userLName = this.form.controls.userLName.value;
+      _usrData.username = this.form.controls.username.value;
+      _usrData.password = this.form.controls.password.value;
+      _usrData.emailId = this.form.controls.emailId.value;
+      _usrData.mobileNo = this.form.controls.mobileNo.value;
+      _usrData.roleId = this.form.controls.roleId.value;
+      _usrData.isActive = this.form.controls.isActive.value;
+      _usrData.createdBy = this.global.UserCode;
+      if (type == 1)
+        _usrData.isDeleted = true;
+      if (this.id != 0) {
+        this._facade.updateUser(_usrData).subscribe(r => {
+          if (r == 0) {
+            this.toast.error("Error occured while saving data");
+          } else {
+            this.toast.success("Updated successfully.");
+            this.clearForm();
+          }
+        })
+      }
+      else {
+        this._facade.addUser(_usrData).subscribe(r => {
+          if (r == 0) {
+            this.toast.error("Error occured while saving data");
+          } else {
+            this.toast.success("Saved successfully.");
+            this.clearForm();
+          }
+        })
+      }
+    }
   }
 }

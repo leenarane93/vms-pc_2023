@@ -25,13 +25,23 @@
                             <tbody>
 
                                 <tr *ngFor="let d of data">
-                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected" [disabled]="d.is_Alldisabled" (ngModelChange)="onSingleSelectAll($event,d)" /></td>
+                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected"
+                                            [disabled]="d.is_Alldisabled"
+                                            (ngModelChange)="onSingleSelectAll($event,d)" /></td>
                                     <td>{{d.headerMenuName}}</td>
-                                    <td>{{d.childMenuName}}</td> 
-                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_allSelected" [disabled]="d.is_disabled" (ngModelChange)="onSelectAccessAll($event,d)" /></td>
-                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_addselected" [disabled]="d.is_disabled" (ngModelChange)="onSelectAccess($event,d,'add')"/></td>
-                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_updselected" [disabled]="d.is_disabled" (ngModelChange)="onSelectAccess($event,d,'upd')"/></td>
-                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_delselected" [disabled]="d.is_disabled" (ngModelChange)="onSelectAccess($event,d,'del')"/></td>
+                                    <td>{{d.childMenuName}}</td>
+                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_allSelected"
+                                            [disabled]="d.is_disabled" (ngModelChange)="onSelectAccessAll($event,d)" />
+                                    </td>
+                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_addselected"
+                                            [disabled]="d.is_disabled"
+                                            (ngModelChange)="onSelectAccess($event,d,'add')" /></td>
+                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_updselected"
+                                            [disabled]="d.is_disabled"
+                                            (ngModelChange)="onSelectAccess($event,d,'upd')" /></td>
+                                    <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_delselected"
+                                            [disabled]="d.is_disabled"
+                                            (ngModelChange)="onSelectAccess($event,d,'del')" /></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -43,11 +53,16 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-8">
         </div>
         <div class="col-md-2">
             <button class="btn btn-success" type="button" (click)="SubmitActionConfig()">
                 Submit
+            </button>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-danger" type="button" (click)="CancelAction()">
+                Cancel
             </button>
         </div>
     </div>

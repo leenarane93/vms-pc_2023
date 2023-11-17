@@ -23,6 +23,7 @@ import { RoleMasterComponent } from './components/user/role-master/role-master.c
 import { AddRoleComponent } from './components/user/role-master/add-role/add-role.component';
 import { AccessConfigComponent } from './components/user/role-master/access-config/access-config.component';
 import { AddUserComponent } from './components/user/user/add-user/add-user.component';
+import { MediaUploadComponent } from './components/media/media-upload/media-upload.component';
 
 const routes: Routes = [
   {
@@ -161,10 +162,16 @@ const routes: Routes = [
     data: { title: 'Add Role' },
     canActivate: [AuthGuradService]
   },
-{
+  {
     path: "masters/access-config",
     component: AccessConfigComponent,
     data: { title: 'Add Role' },
+    canActivate: [AuthGuradService]
+  },
+  {
+    path: "medias/media-upload",
+    component: MediaUploadComponent,
+    data: { title: 'Media Upload' },
     canActivate: [AuthGuradService]
   },
 ];

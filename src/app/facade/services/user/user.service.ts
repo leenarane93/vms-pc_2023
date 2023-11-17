@@ -10,7 +10,15 @@ export class UserService {
     private _httpService: HttpService,
     private _http: HttpClient) { }
 
-    getUsers(_data: any) {
-      return this._httpService._postMethod(_data, 'user_api/api/User/GetUserMaster');
-    }
+  getUsers(_data: any) {
+    return this._httpService._postMethod(_data, 'user_api/api/User/GetUserMaster');
+  }
+
+  addUser(_data: any) {
+    return this._httpService._postMethod(_data, 'user_api/api/User/PostUserMaster');
+  }
+
+  updateUser(_data: any) {
+    return this._httpService._postMethod(_data, 'user_api/api/User/PutUserMaster');
+  }
 }

@@ -20,7 +20,8 @@
                                     placeholder="First Name"
                                     [ngClass]="{ 'is-invalid': f['userFName'].touched && f['userFName'].errors, 'is-valid': f['userFName'].valid }" />
                                 <div *ngIf="f['userFName'].touched && f['userFName'].errors" class="invalid-feedback">
-                                    <div>{{getErrorMessage('userFName','First Name',true,"Invalid data available in First Name")}}
+                                    <div>{{getErrorMessage('userFName','First Name',true,"Invalid data available in
+                                        First Name")}}
                                     </div>
                                 </div>
                             </div>
@@ -30,7 +31,8 @@
                                     placeholder="Last Name"
                                     [ngClass]="{ 'is-invalid': f['userLName'].touched && f['userLName'].errors, 'is-valid': f['userLName'].valid }" />
                                 <div *ngIf="f['userLName'].touched && f['userLName'].errors" class="invalid-feedback">
-                                    <div>{{getErrorMessage('userLName','Last Name',true,"Invalid data available in Last Name")}}
+                                    <div>{{getErrorMessage('userLName','Last Name',true,"Invalid data available in Last
+                                        Name")}}
                                     </div>
                                 </div>
                             </div>
@@ -40,7 +42,8 @@
                                     placeholder="UserName (Login ID)"
                                     [ngClass]="{ 'is-invalid': f['username'].touched && f['username'].errors, 'is-valid': f['username'].valid }" />
                                 <div *ngIf="f['username'].touched && f['username'].errors" class="invalid-feedback">
-                                    <div>{{getErrorMessage('username','UserName (Login ID)',true,"Invalid data available in UserName (Login ID)")}}
+                                    <div>{{getErrorMessage('username','UserName (Login ID)',true,"Invalid data available
+                                        in UserName (Login ID)")}}
                                     </div>
                                 </div>
                             </div>
@@ -51,7 +54,8 @@
                                         placeholder="Password"
                                         [ngClass]="{ 'is-invalid': f['username'].touched && f['password'].errors, 'is-valid': f['password'].valid }" />
                                     <div *ngIf="f['password'].touched && f['password'].errors" class="invalid-feedback">
-                                        <div>{{getErrorMessage('password','Password',true,"Invalid data available in Password")}}
+                                        <div>{{getErrorMessage('password','Password',true,"Invalid data available in
+                                            Password")}}
                                         </div>
                                     </div>
                                 </div>
@@ -63,7 +67,8 @@
                                         [ngClass]="{ 'is-invalid': f['confirmPassword'].touched && f['confirmPassword'].errors, 'is-valid': f['confirmPassword'].valid }" />
                                     <div *ngIf="f['confirmPassword'].touched && f['confirmPassword'].errors"
                                         class="invalid-feedback">
-                                        <div>{{getErrorMessage('confirmPassword','Confirm Password',true,"Invalid data available in Confirm Password")}}
+                                        <div>{{getErrorMessage('confirmPassword','Confirm Password',true,"Invalid data
+                                            available in Confirm Password")}}
                                         </div>
                                     </div>
                                 </div>
@@ -73,7 +78,8 @@
                                         [(ngModel)]="selectedRole"
                                         [ngClass]="{'is-invalid': submitting && f['roleId'].errors}">
                                         <option value="">Select Role</option>
-                                        <option *ngFor="let role of roles" value="{{role.id}}">{{role.roleName}}</option>
+                                        <option *ngFor="let role of roles" value="{{role.id}}">{{role.roleName}}
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -84,7 +90,8 @@
                                         placeholder="Mobile No."
                                         [ngClass]="{ 'is-invalid': f['mobileNo'].touched && f['mobileNo'].errors, 'is-valid': f['mobileNo'].valid }" />
                                     <div *ngIf="f['mobileNo'].touched && f['mobileNo'].errors" class="invalid-feedback">
-                                        <div>{{getErrorMessage('mobileNo','Mobile No.',true,"Invalid data available in Mobile No.")}}
+                                        <div>{{getErrorMessage('mobileNo','Mobile No.',true,"Invalid data available in
+                                            Mobile No.")}}
                                         </div>
                                     </div>
                                 </div>
@@ -94,7 +101,8 @@
                                         placeholder="Email ID"
                                         [ngClass]="{ 'is-invalid': f['emailId'].touched && f['emailId'].errors, 'is-valid': f['emailId'].valid }" />
                                     <div *ngIf="f['emailId'].touched && f['emailId'].errors" class="invalid-feedback">
-                                        <div>{{getErrorMessage('emailId','Email ID',true,"Invalid data available in Email ID")}}
+                                        <div>{{getErrorMessage('emailId','Email ID',true,"Invalid data available in
+                                            Email ID")}}
                                         </div>
                                     </div>
                                 </div>
@@ -115,7 +123,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-md-1" style="padding:10px">
                                 <button [disabled]="!form.valid" class="btn btn-success">
@@ -130,7 +138,7 @@
                                 </button>
                             </div>
                             <div class="col-md-1" style="padding:10px" *ngIf="id!=0">
-                                <button type="button" class="btn btn-danger" (click)="DeleteTarrif()">
+                                <button type="button" class="btn btn-danger" (click)="DeleteUser()">
                                     <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
                                     Delete
                                 </button>
