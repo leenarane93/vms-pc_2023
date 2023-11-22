@@ -15,6 +15,9 @@
           <span *ngIf="head.FieldName != 'isActive'">{{item[head.FieldName]}}</span>
           <span *ngIf="head.FieldName == 'isActive' && item[head.FieldName] == 'Active'" class="badge badge-success">{{item[head.FieldName]}}</span>
           <span *ngIf="head.FieldName == 'isActive' && item[head.FieldName] == 'In Active'" class="badge badge-danger">{{item[head.FieldName]}}</span>
+          <span *ngIf="head.type=='button'">
+            <button *ngFor="let btn of head.content" type="button" class="btn btn-inverse-primary btn-sm"><i [class]="head.content.icon"></i></button>
+          </span>
         </td>
       </tr>
     </tbody>
