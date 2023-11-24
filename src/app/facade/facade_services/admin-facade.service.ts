@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AdminService } from '../services/admin/admin.service';
 import { SessionService } from '../services/common/session.service';
+import { PlaylistService } from '../services/admin/playlist.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ import { SessionService } from '../services/common/session.service';
 export class AdminFacadeService {
 
   constructor(private _adminService: AdminService,
-    private _sessionService: SessionService) { }
+    private _sessionService: SessionService,
+    private _plService:PlaylistService) { }
 
   AddConfigData(data: any) {
     return this._adminService.addConfigurationData(data);
@@ -74,4 +76,7 @@ export class AdminFacadeService {
     return this._adminService.mediaClearance(_data);
   }
 
+  getPlaylistMasterData(data:any) {
+    return this._plService.getPlaylistData(data);
+  }
 }

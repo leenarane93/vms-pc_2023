@@ -3,6 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DataTableDirective } from 'angular-datatables';
+import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
 import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 import { InputRequest } from 'src/app/models/request/inputReq';
 import { Globals } from 'src/app/utils/global';
@@ -16,13 +17,15 @@ export class PlaylistCreationComponent {
   headerArr = [
     { "Head": "ID", "FieldName": "id", "type": "number" },
     { "Head": "Playlist Name", "FieldName": "playlistName", "type": "string" },
-    { "Head": "Height", "FieldName": "userLName", "type": "string" },
-    { "Head": "Width", "FieldName": "username", "type": "string" },
-    { "Head": "Uploaded By", "FieldName": "roleId", "type": "string" },
-    { "Head": "Audited By", "FieldName": "roleId", "type": "string" },
+    { "Head": "Height", "FieldName": "height", "type": "string" },
+    { "Head": "Width", "FieldName": "width", "type": "string" },
+    { "Head": "Uploaded By", "FieldName": "createdBy", "type": "string" },
+    { "Head": "Audited By", "FieldName": "auditedBy", "type": "string" },
     { "Head": "Status", "FieldName": "isActive", "type": "boolean" },
-    { "Head": "Actions", "FieldName": "", "type": "button", "content": [{ "name": "View", "icon": "icon-eye" }, { "name": "Remove", "icon": "icon-trash" }, { "name": "Copy", "icon": "fa fa-copy" },] },
+    { "Head": "Actions", "FieldName": "actions", "type": "button" }
   ];
+
+  btnArray : any[]= [{ "name": "View", "icon": "icon-eye","tip":"Click to View" }, { "name": "Remove", "icon": "icon-trash" ,"tip":"Click to Remove"}, { "name": "Copy", "icon": "fa fa-copy","tip":"Copy same playlist" }]; 
   
   searchText!: string;
   page: any;
@@ -38,6 +41,7 @@ export class PlaylistCreationComponent {
 
   constructor(private global: Globals,
     public modalService: NgbModal,
+    public adminFacade: AdminFacadeService,
     public _commonFacade:CommonFacadeService,
     public _router:Router) {
     this.global.CurrentPage = "Playlist Creation";
@@ -49,7 +53,29 @@ export class PlaylistCreationComponent {
 
   }
   getPlaylistData() {
-
+    this._request.currentPage = this.pager;
+    this._request.pageSize = this.recordPerPage;
+    this._request.startId = this.startId;
+    this._request.searchItem = this.searchText;
+    this.adminFacade.getPlaylistMasterData(this._request).subscribe(data=>{
+      if(data != null || data != undefined) {
+        this.listOfPlaylist = data.data;
+        var _length = data.totalRecords / this.recordPerPage;
+          if (_length > Math.floor(_length) && Math.floor(_length) != 0)
+            this.totalRecords = this.recordPerPage * (_length);
+          else if (Math.floor(_length) == 0)
+            this.totalRecords = 10;
+          else
+            this.totalRecords = data.totalRecords;
+          this.totalPages = this.totalRecords / this.pager;
+      } 
+      this.listOfPlaylist.forEach((ele: any) => {
+        if (ele.isActive == true)
+          ele.isActive = "Active";
+        else
+          ele.isActive = "In Active";
+      });
+    })
   }
   onPager(pager: number) {
     this._request.pageSize = this.recordPerPage;
