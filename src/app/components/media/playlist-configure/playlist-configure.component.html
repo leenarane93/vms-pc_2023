@@ -1,0 +1,78 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12" style="padding: 25px;">
+            <button class="btn btn-primary" (click)="BackToList()">
+                <!-- <span class="spinner-border spinner-border-sm me-1" ></span> -->
+                <i class="icon-arrow-left"></i>
+                Back To List
+            </button>
+        </div>
+    </div>
+    <div id="stepper1" class="bs-stepper card">
+        <div class="bs-stepper-header">
+            <div class="step" data-target="#test-l-1">
+                <button class="step-trigger">
+                    <span class="bs-stepper-circle">1</span>
+                    <span class="bs-stepper-label">Playlist Info.</span>
+                </button>
+            </div>
+            <div class="step" data-target="#test-l-2">
+                <button class="step-trigger">
+                    <span class="bs-stepper-circle">2</span>
+                    <span class="bs-stepper-label">Block Configuration</span>
+                </button>
+            </div>
+            <div class="step" data-target="#test-l-3">
+                <button class="step-trigger">
+                    <span class="bs-stepper-circle">3</span>
+                    <span class="bs-stepper-label">Media Selection</span>
+                </button>
+            </div>
+            <div class="step" data-target="#test-l-3">
+                <button class="step-trigger">
+                    <span class="bs-stepper-circle">4</span>
+                    <span class="bs-stepper-label">Media Management</span>
+                </button>
+            </div>
+            <div class="step" data-target="#test-l-3">
+                <button class="step-trigger">
+                    <span class="bs-stepper-circle">5</span>
+                    <span class="bs-stepper-label">Finish</span>
+                </button>
+            </div>
+        </div>
+        <div class="bs-stepper-content">
+            <form (ngSubmit)="onSubmit()">
+                <div id="test-l-1" class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="exampleInputEmail1">Playlist Name</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1"
+                                placeholder="Playlist Name" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="exampleInputEmail1">Height</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Height" />
+                    </div>
+                    <div class="col-md-6">
+                        <label for="exampleInputEmail1">Width</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Width" />
+                    </div>
+                    <button (click)="next()" class="btn btn-primary">Next</button>
+                </div>
+                <div id="test-l-2" class="content">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
+                    </div>
+                    <button (click)="next()" class="btn btn-primary">Next</button>
+                </div>
+                <div id="test-l-3" class="content text-center">
+                    <button type="submit" class="btn btn-primary mt-5">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

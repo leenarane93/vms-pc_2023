@@ -57,6 +57,8 @@ import { AccessConfigComponent } from './components/user/role-master/access-conf
 import { DataTablesModule } from 'angular-datatables';
 import { AddUserComponent } from './components/user/user/add-user/add-user.component';
 import { MediaUploadComponent } from './components/media/media-upload/media-upload.component';
+import { PlaylistCreationComponent } from './components/media/playlist-creation/playlist-creation.component';
+import { PlaylistConfigureComponent } from './components/media/playlist-configure/playlist-configure.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +95,9 @@ import { MediaUploadComponent } from './components/media/media-upload/media-uplo
     AddRoleComponent,
     AccessConfigComponent,
     AddUserComponent,
-    MediaUploadComponent
+    MediaUploadComponent,
+    PlaylistCreationComponent,
+    PlaylistConfigureComponent
   ],
   imports: [
     FormsModule,

@@ -1,0 +1,175 @@
+::ng-deep .modal-content  {
+    border-radius: 15px!important;
+  }
+  ::ng-deep .modal .btn-primary {
+    color: #fff;
+    background-color: #ec37fc;
+    border-color: #ec37fc;
+}
+::ng-deep .modal .btn-outline-primary {
+    color: #ec37fc;
+    background-color: #fff;
+    border-color: #ec37fc;
+}
+::ng-deep .modal .btn-primary:hover, ::ng-deep .btn-outline-primary:hover {
+    color: #fff;
+    background-color: #bf21ce;
+    border-color: #ec37fc;
+}
+::ng-deep  .form-select{background: #9518a0!important;border: 0!important;
+    color: white!important;
+    margin: 2px!important;}
+
+    ::ng-deep .btn-link {color:white;}
+    ::ng-deep .ngb-dp-weekday, ::ng-deep .ngb-dp-weekdays  {color: white !important;;background: #b71ec5!important;}
+::ng-deep .ngb-dp-header{background: #b71ec5!important;}
+::ng-deep .nav-pills .nav-link.active, ::ng-deep .nav-pills .show>.nav-link {
+    color: var(--bs-nav-pills-link-active-color);
+    background-color: #4801ff;
+}
+::ng-deep .input-group .form-control{color: #ccc,!important;}
+::ng-deep .ngb-dp-day .bg-primary{background: #b71ec5!important;}
+.nav-pills .nav-link{line-height: 28px;}
+
+.active .bs-stepper-circle, .step.completed .bs-stepper-circle {
+    background: #7918f2;
+    background: -webkit-linear-gradient(-68deg,#ac32e4,#4801ff);
+    background: -o-linear-gradient(-68deg,#ac32e4,#4801ff);
+    background: -moz-linear-gradient(-68deg,#ac32e4,#4801ff);
+    background: linear-gradient(-68deg,#ac32e4,#4801ff);
+    color: #fff;
+}
+.active .bs-stepper-label, .step.completed .bs-stepper-label{color: #7918f2; font-size: 14px;}
+
+.bs-stepper-label{font-size: 14px;}
+
+.stepper-item.completed .step-counter {
+    background-color: #7918f2;
+  }
+  .stepper-header {
+    font-family: Arial;
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+   
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
+  }
+  .step-trigger{position: relative;z-index: 5; background-color: white; padding: 20px 0;}
+  .bs-stepper .step-trigger:hover {
+    text-decoration: none;
+    background-color:#fff;
+}
+  .bs-stepper-header{position: relative;}
+  .step::before {
+    position: absolute;
+    content: "";
+    border-bottom: 2px solid #ccc;
+    width: 100%;
+    top: 42px;
+    left: -50%;
+    z-index: 1;
+  }
+  
+  .step::after {
+    position: absolute;
+    content: "";
+    border-bottom: 2px solid #ccc;
+    width: 100%;
+    top: 42px;
+    left: 50%;
+    z-index: 1;
+  }
+  .step.completed::after {
+    position: absolute;
+    content: "";
+    border-bottom: 2px solid #7918f2;
+    width: 100%;
+    top: 42px;
+    left: 50%;
+    z-index: 3;
+  }
+  
+  .step:first-child::before {
+    content: none;
+  }
+  .step:last-child::after {
+    content: none;
+  }
+
+  hr {
+    margin: 0.5em 0;
+    border: none;
+    border-bottom: solid 1px #000000;
+  }
+  .dashed {
+    border-bottom: dashed 1px #000000;
+  }
+  .dashed-2 {
+    border: none;
+    height: 1px;
+    background: #000;
+    background: repeating-linear-gradient(90deg,#000,#000 6px,transparent 6px,transparent 12px);
+  }
+  .blockDiv{position: relative;} 
+  .blockDiv .resize {
+     position: absolute;
+    left: 0;
+    top:0; 
+    border: 2px solid;
+    width: 50px;
+    height: 50px;
+    resize: both;
+    /* overflow: auto; */
+    max-height: 200px;
+    max-width: 200px;
+  }
+
+input[type="checkbox"],
+input[type="radio"]{
+	width: 1.2em;
+	height: 1.2em;
+	margin-right: 0.25rem;
+  accent-color: #7316f3;
+    
+}
+.clearfix{float: none; clear: both;}
+.btn i {
+  font-size: 1.2rem;
+}
+.btn-inverse-info {
+  background-color: rgba(55, 148, 252, 0.2);
+  background-image: none;
+  border-color: rgba(55, 148, 252, 0);
+}
+.btn-inverse-info:hover {
+  color: #ffffff;
+  background-color: #3794fc;
+  border-color: #3794fc;
+}
+.btn-inverse-danger {
+  background-color: rgba(252, 56, 29, 0.2);
+  background-image: none;
+  border-color: rgba(252, 56, 29, 0);
+}
+.btn-inverse-danger:hover {
+  color: #ffffff;
+  background-color: #fc381d;
+  border-color: #fc381d;
+}
+.btn.btn-icon.btn-sm {
+  width: 35px;
+  height: 35px;
+  padding: 0;
+}
+.form-control-sm {height:32px}
+.form-control{line-height: 2;}

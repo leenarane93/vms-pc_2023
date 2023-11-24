@@ -23,6 +23,7 @@ export class CmTableComponent {
   @Input() perPage: number = 10;
   @Input() totalPages: number = 1;
   @Input() collectionSize: number = 1;
+  @Input() btnArray: any[] = [];
   filteredData: any = [];
   activePage: number = 0;
   constructor(private router: Router) {
@@ -77,8 +78,12 @@ export class CmTableComponent {
     this.recordPerPage.emit(pageNo);
   }
 
-  ShowForm(item:any) {
-    this.searchWithId.emit(item);
+  ShowForm(item: any) {
+    if (this.btnArray.length == 0)
+      this.searchWithId.emit(item);
     //this.router.navigate([this.link]);
+  }
+  GoToConfig() {
+    this.router.navigate(['medias/playlist-configure']);
   }
 }

@@ -24,6 +24,8 @@ import { AddRoleComponent } from './components/user/role-master/add-role/add-rol
 import { AccessConfigComponent } from './components/user/role-master/access-config/access-config.component';
 import { AddUserComponent } from './components/user/user/add-user/add-user.component';
 import { MediaUploadComponent } from './components/media/media-upload/media-upload.component';
+import { PlaylistCreationComponent } from './components/media/playlist-creation/playlist-creation.component';
+import { PlaylistConfigureComponent } from './components/media/playlist-configure/playlist-configure.component';
 
 const routes: Routes = [
   {
@@ -172,6 +174,18 @@ const routes: Routes = [
     path: "medias/media-upload",
     component: MediaUploadComponent,
     data: { title: 'Media Upload' },
+    canActivate: [AuthGuradService]
+  },
+  {
+    path: "medias/playlist-creation",
+    component: PlaylistCreationComponent,
+    data: { title: 'Playlist Creation' },
+    canActivate: [AuthGuradService]
+  },
+  {
+    path: "medias/playlist-configure",
+    component: PlaylistConfigureComponent,
+    data: { title: 'Playlist Configuration' },
     canActivate: [AuthGuradService]
   },
 ];
