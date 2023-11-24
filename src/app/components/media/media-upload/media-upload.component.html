@@ -15,7 +15,7 @@
 
                                 <ng-template ngbNavContent>
                                     <div>
-                                        <h4>Upload Media Files - Add Images, Videos or GIFs </h4>
+                                        <h4>Upload Media Files - Add Images or Videos </h4>
                                         <hr>
                                         <hr>
                                         <h5>Upload Set ID : {{uploadSetId}} </h5>
@@ -24,7 +24,16 @@
                                             placeholder="Upload Image" (change)="save($event)" multiple="multiple">
 
                                         <br>
-                                        <span [innerHTML]="result"></span>
+                                        <table>
+                                            <tr>
+                                                <th>Files</th>
+                                            </tr>
+                                            <tr *ngFor="let file of selectedFiles">
+                                                <td>
+                                                    {{file.name}}
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </ng-template>
                             </li>
@@ -140,7 +149,8 @@
                         <div [ngbNavOutlet]="nav" class="mt-0 p-4 pb-0" style="border-top: 1px solid #ccc;"></div>
                         <div class="p-2 ml-3 mr-3 bg-light text-right" style="border-top: 1px solid #ccc;">
                             <button type="button" class="btn btn-secondary btn-sm mr-3">Reset </button>
-                            <button type="button" class="btn btn-primary btn-sm">Save </button>
+                            <button type="button" class="btn btn-primary btn-sm" (click)="RequestSubmit()">Save
+                            </button>
                         </div>
                     </div>
                     <div class="card-footer bg-light text-right">
@@ -151,7 +161,15 @@
             </div>
 
         </div>
-        <!-- <app-medialist class="mb-5"></app-medialist> -->
+        <div class="row">
+            <div class="col-md-12 ">
+                <app-cm-table [headArr]="headerArr" [gridArr]="listOfMediaSet" [totalRecords]="totalRecords"
+                    [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)"
+                    [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)"
+                    link="masters/add-party" fieldName="id" (search)="onPageSearch($event)"
+                    (searchWithId)="SearchWithId($event)"></app-cm-table>
+            </div>
+        </div>
 
     </div>
 </div>
