@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, numberAttribute } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 import { MediaFacadeService } from 'src/app/facade/facade_services/media-facade.service';
 import { InputRequest } from 'src/app/models/request/inputReq';
+import { Globals } from 'src/app/utils/global';
 
 @Component({
   selector: 'app-media-upload',
@@ -27,6 +29,9 @@ export class MediaUploadComponent implements OnInit {
   startId!: number;
   closeResult!: string;
   _request: any = new InputRequest();
+  @ViewChild("uploadedFiles", { static: false })
+  files: File[] = [];
+  InputVar!: ElementRef;
   //this is your original recipe name which you had passed from previous page
   headerArr = [
     { "Head": "ID", "FieldName": "id", "type": "number" },
@@ -42,7 +47,11 @@ export class MediaUploadComponent implements OnInit {
     private toast: ToastrService,
     private _commonFacade: CommonFacadeService,
     private router: Router,
-    private _mediaFacade: MediaFacadeService) { }
+    private sanitizer: DomSanitizer,
+    private _mediaFacade: MediaFacadeService,
+    private global: Globals) {
+    this.global.CurrentPage = "Media/Text Upload";
+  }
 
 
   ngOnInit() {
@@ -65,13 +74,30 @@ export class MediaUploadComponent implements OnInit {
 
   save(event: any): void {
     this.selectedFiles = event.target.files;
+    this.files = [];
+    let files = event.dataTransfer
+      ? event.dataTransfer.files
+      : event.target.files;
+    console.log("event::::::", event);
+    for (let i = 0; i < files.length; i++) {
+      let file = files[i];
+
+      //if(!this.isFileSelected(file)){
+      if (this.Validations()) {
+        //      if(this.isImage(file)) {
+        file.objectURL = this.sanitizer.bypassSecurityTrustUrl(
+          window.URL.createObjectURL(files[i])
+        );
+        //      }
+        this.files.push(files[i]);
+        //  }
+      }
+      //}
+    }
   }
-  RemoveFile(idx: number) {
-    this.selectedFiles.slice(idx, 1);
-  }
-  RequestSubmit() {
+  Validations() {
+    let res = true;
     if (this.active == 1) {
-      let res = true;
       if (this.selectedFiles.length > 0) {
         for (var i = 0; i < this.selectedFiles.length; i++) {
           if (this.selectedFiles[i].type.includes('image') || this.selectedFiles[i].type.includes('video')) {
@@ -82,12 +108,43 @@ export class MediaUploadComponent implements OnInit {
             break;
           }
         }
-        if (res == false)
+        if (res == false) {
           this.toast.error("Only image/video files are allowed.", "Error", { positionClass: "toast-bottom-right" });
+          return res;
+        }
+
       }
       else {
         this.toast.error("Files not selected", "Error", { positionClass: "toast-bottom-right" });
       }
+
+    }
+    return res;
+  }
+  AddMediaUpload() {
+    var formData = new FormData();
+    formData.append("uploadsetid", this.uploadSetId.toString());
+    formData.append("userCode", this.global.UserCode);
+    let fileList = this.files;
+    for (var i = 0; i < fileList.length; i++) {
+      formData.append("files.files", fileList[i]);
+    }
+    this._mediaFacade.uploadMedia(formData).subscribe(res => {
+      if (res != 0 || res != undefined) {
+        this.toast.success("Saved Successfully");
+        this.Reset(1);
+      }
+      else {
+        this.toast.error("Something went wrong", "Error", { positionClass: "toast-bottom-right" });
+      }
+    })
+  }
+  RemoveFile(idx: number) {
+    this.selectedFiles.slice(idx, 1);
+  }
+  RequestSubmit() {
+    if (this.Validations()) {
+      this.AddMediaUpload();
     }
   }
   onPager(pager: number) {
@@ -137,5 +194,14 @@ export class MediaUploadComponent implements OnInit {
         this.listOfMediaSet = res.data;
       }
     })
+  }
+  Reset(type: number) {
+    this.selectedFiles = [];
+    this.InputVar.nativeElement.value = "";
+    this.generateUploadSetId();
+    if (type == 0) {
+    }
+    else {
+    }
   }
 }

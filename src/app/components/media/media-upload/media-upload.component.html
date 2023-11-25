@@ -20,7 +20,7 @@
                                         <hr>
                                         <h5>Upload Set ID : {{uploadSetId}} </h5>
 
-                                        <input type="file" class="form-control file-upload-primary"
+                                        <input type="file" #uploadedFiles class="form-control file-upload-primary"
                                             placeholder="Upload Image" (change)="save($event)" multiple="multiple">
 
                                         <br>
@@ -148,14 +148,15 @@
 
                         <div [ngbNavOutlet]="nav" class="mt-0 p-4 pb-0" style="border-top: 1px solid #ccc;"></div>
                         <div class="p-2 ml-3 mr-3 bg-light text-right" style="border-top: 1px solid #ccc;">
-                            <button type="button" class="btn btn-secondary btn-sm mr-3">Reset </button>
+                            <button type="button" class="btn btn-secondary btn-sm mr-3" (click)="Reset(0)">Reset
+                            </button>
                             <button type="button" class="btn btn-primary btn-sm" (click)="RequestSubmit()">Save
                             </button>
                         </div>
                     </div>
                     <div class="card-footer bg-light text-right">
 
-                        <button type="button" class="btn btn-secondary">Reset All</button>
+                        <button type="button" class="btn btn-secondary" (click)="Reset(1)">Reset All</button>
                     </div>
                 </form>
             </div>

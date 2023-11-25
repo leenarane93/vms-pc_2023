@@ -13,4 +13,7 @@ export class MediaUploadService {
   getuploaddetails(data: any) {
     return this._httpService._postMethod(data, 'media_API/api/MediaMaster/GetMediaUploadDetails');
   }
+  UploadMediaDetails(data: any) {
+    return this._httpService._postMethod(data, 'media_API/api/MediaUpload/AddMediaDetails');
+  }
 }

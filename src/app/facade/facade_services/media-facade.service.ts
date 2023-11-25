@@ -10,4 +10,8 @@ export class MediaFacadeService {
   getMediaUploadDetails(data: any) {
     return this._mediaUploadService.getuploaddetails(data);
   }
+
+  uploadMedia(data: any) {
+    return this._mediaUploadService.UploadMediaDetails(data);
+  }
 }
