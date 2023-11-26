@@ -4,7 +4,7 @@
         <div class="col-xl-12  grid-margin stretch-card">
 
             <div class="card border-0  pb-0">
-                <form [formGroup]="myForm">
+                <form class="form">
                     <div class="card-header bgTable pb-0">
                         <ul class="nav nav-tabs mb-0 border-0 mt-1" (click)="tabChange()" id="pills-tab" role="tablist"
                             ngbNav #nav="ngbNav" [(activeId)]="active">
@@ -20,7 +20,7 @@
                                         <hr>
                                         <h5>Upload Set ID : {{uploadSetId}} </h5>
 
-                                        <input type="file" #uploadedFiles class="form-control file-upload-primary"
+                                        <input type="file" #InputVar class="form-control file-upload-primary"
                                             placeholder="Upload Image" (change)="save($event)" multiple="multiple">
 
                                         <br>

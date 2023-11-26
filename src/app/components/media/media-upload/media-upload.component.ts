@@ -29,9 +29,9 @@ export class MediaUploadComponent implements OnInit {
   startId!: number;
   closeResult!: string;
   _request: any = new InputRequest();
-  @ViewChild("uploadedFiles", { static: false })
+  @ViewChild('InputVar') InputVar: any;
+  //@ViewChild("InputVar", { static: true }) InputVar;
   files: File[] = [];
-  InputVar!: ElementRef;
   //this is your original recipe name which you had passed from previous page
   headerArr = [
     { "Head": "ID", "FieldName": "id", "type": "number" },
@@ -202,6 +202,7 @@ export class MediaUploadComponent implements OnInit {
     if (type == 0) {
     }
     else {
+      this.getMediaUploadData();
     }
   }
 }
