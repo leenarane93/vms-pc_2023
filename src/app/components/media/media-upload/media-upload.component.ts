@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, numberAttribute } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild, numberAttribute } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { CommonFacadeService } from 'src/app/facade/facade_services/common-facad
 import { MediaFacadeService } from 'src/app/facade/facade_services/media-facade.service';
 import { InputRequest } from 'src/app/models/request/inputReq';
 import { Globals } from 'src/app/utils/global';
+import { TooltipPosition } from "../../../utils/tooltip.enums";
 
 @Component({
   selector: 'app-media-upload',
@@ -32,6 +33,10 @@ export class MediaUploadComponent implements OnInit {
   @ViewChild('InputVar') InputVar: any;
   //@ViewChild("InputVar", { static: true }) InputVar;
   files: File[] = [];
+  TooltipPosition: typeof TooltipPosition = TooltipPosition;
+  x = 0;
+  y = 0;
+  coordinates = "";
   //this is your original recipe name which you had passed from previous page
   headerArr = [
     { "Head": "ID", "FieldName": "id", "type": "number" },
@@ -41,8 +46,10 @@ export class MediaUploadComponent implements OnInit {
     { "Head": "Created By", "FieldName": "uploadedBy", "type": "string" },
     { "Head": "File Count", "FieldName": "fileCounts", "type": "number" },
     { "Head": "Status", "FieldName": "status", "type": "number" },
-    { "Head": "Remarks", "FieldName": "remarks", "type": "string" }
+    { "Head": "Remarks", "FieldName": "remarks", "type": "string" },
+    { "Head": "Action", "FieldName": "actions", "type": "button" }
   ];
+  btnArray: any[] = [{ "name": "View", "icon": "icon-eye", "tip": "Click to View" }, { "name": "Remove", "icon": "icon-trash", "tip": "Click to Remove" }];
   constructor(private fb: FormBuilder,
     private toast: ToastrService,
     private _commonFacade: CommonFacadeService,
@@ -204,5 +211,12 @@ export class MediaUploadComponent implements OnInit {
     else {
       this.getMediaUploadData();
     }
+  }
+
+  @HostListener('mousemove', ['$event'])
+  onMouseMove($event: MouseEvent): void {
+    this.x = $event.clientX;
+    this.y = $event.clientY;
+    this.coordinates = `${this.x},${this.y}`;
   }
 }

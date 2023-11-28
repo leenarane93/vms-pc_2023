@@ -155,17 +155,20 @@
                         </div>
                     </div>
                     <div class="card-footer bg-light text-right">
-
-                        <button type="button" class="btn btn-secondary" (click)="Reset(1)">Reset All</button>
+                        <div class="icon icon--vader" [tooltip]="'Welcome to the DARK side!'">Check for
+                            ToolTip</div>
+                        <button type="button" [tooltip]="'Welcome to the DARK side!'" class="btn btn-secondary"
+                            (click)="Reset(1)">Reset All</button>
                     </div>
                 </form>
             </div>
 
         </div>
+        <div class="icon icon--vader" [tooltip]="'Welcome to the DARK side!'"></div>
         <div class="row">
             <div class="col-md-12 ">
                 <app-cm-table [headArr]="headerArr" [gridArr]="listOfMediaSet" [totalRecords]="totalRecords"
-                    [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)"
+                    [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)" [btnArray]="btnArray"
                     [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)"
                     link="masters/add-party" fieldName="id" (search)="onPageSearch($event)"
                     (searchWithId)="SearchWithId($event)"></app-cm-table>

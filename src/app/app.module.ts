@@ -59,6 +59,8 @@ import { AddUserComponent } from './components/user/user/add-user/add-user.compo
 import { MediaUploadComponent } from './components/media/media-upload/media-upload.component';
 import { PlaylistCreationComponent } from './components/media/playlist-creation/playlist-creation.component';
 import { PlaylistConfigureComponent } from './components/media/playlist-configure/playlist-configure.component';
+import { CmTooltipComponent } from './widget/cm-tooltip/cm-tooltip.component';
+import { TooltipDirective } from './interceptor/interceptors/tooltip.directive';
 
 @NgModule({
   declarations: [
@@ -97,7 +99,9 @@ import { PlaylistConfigureComponent } from './components/media/playlist-configur
     AddUserComponent,
     MediaUploadComponent,
     PlaylistCreationComponent,
-    PlaylistConfigureComponent
+    PlaylistConfigureComponent,
+    CmTooltipComponent,
+    TooltipDirective
   ],
   imports: [
     FormsModule,
@@ -121,11 +125,12 @@ import { PlaylistConfigureComponent } from './components/media/playlist-configur
     RxReactiveFormsModule,
     DataTablesModule
   ],
+  exports: [TooltipDirective],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     NgbActiveModal,
     JwtHelperService, ConfirmationDialogService,
   { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }, Globals],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
