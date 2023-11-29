@@ -61,6 +61,7 @@ import { PlaylistCreationComponent } from './components/media/playlist-creation/
 import { PlaylistConfigureComponent } from './components/media/playlist-configure/playlist-configure.component';
 import { CmTooltipComponent } from './widget/cm-tooltip/cm-tooltip.component';
 import { TooltipDirective } from './interceptor/interceptors/tooltip.directive';
+import { CmMediaModalComponent } from './widget/cm-media-modal/cm-media-modal.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +102,8 @@ import { TooltipDirective } from './interceptor/interceptors/tooltip.directive';
     PlaylistCreationComponent,
     PlaylistConfigureComponent,
     CmTooltipComponent,
-    TooltipDirective
+    TooltipDirective,
+    CmMediaModalComponent
   ],
   imports: [
     FormsModule,
