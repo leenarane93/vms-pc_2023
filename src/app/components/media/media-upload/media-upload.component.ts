@@ -8,6 +8,8 @@ import { MediaFacadeService } from 'src/app/facade/facade_services/media-facade.
 import { InputRequest } from 'src/app/models/request/inputReq';
 import { Globals } from 'src/app/utils/global';
 import { TooltipPosition } from "../../../utils/tooltip.enums";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CmMediaModalComponent } from 'src/app/widget/cm-media-modal/cm-media-modal.component';
 
 @Component({
   selector: 'app-media-upload',
@@ -49,11 +51,12 @@ export class MediaUploadComponent implements OnInit {
     { "Head": "Remarks", "FieldName": "remarks", "type": "string" },
     { "Head": "Action", "FieldName": "actions", "type": "button" }
   ];
-  btnArray: any[] = [{ "name": "View", "icon": "icon-eye", "tip": "Click to View" }, { "name": "Remove", "icon": "icon-trash", "tip": "Click to Remove" }];
+  btnArray: any[] = [{ "name": "View", "icon": "icon-eye", "tip": "Click to View","action":"view" }, { "name": "Remove", "icon": "icon-trash", "tip": "Click to Remove","action":"delete" }];
   constructor(private fb: FormBuilder,
     private toast: ToastrService,
     private _commonFacade: CommonFacadeService,
     private router: Router,
+    private modalService: NgbModal,
     private sanitizer: DomSanitizer,
     private _mediaFacade: MediaFacadeService,
     private global: Globals) {
@@ -213,10 +216,12 @@ export class MediaUploadComponent implements OnInit {
     }
   }
 
-  // @HostListener('mousemove', ['$event'])
-  // onMouseMove($event: MouseEvent): void {
-  //   this.x = $event.clientX;
-  //   this.y = $event.clientY;
-  //   this.coordinates = `${this.x},${this.y}`;
-  // }
+  ButtonAction(actiondata:any){
+    console.log(actiondata);
+    if(actiondata.action == "view") {
+      const modalRef = this.modalService.open(CmMediaModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
+      let _data = {"action":actiondata.action,urls:[]};
+      modalRef.componentInstance.data = actiondata.data;
+    }
+  }
 }

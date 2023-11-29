@@ -15,10 +15,8 @@
           <span *ngIf="head.FieldName != 'isActive' && head.FieldName != 'actions'">{{item[head.FieldName]}}</span>
           <span *ngIf="head.FieldName == 'isActive' && item[head.FieldName] == 'Active'" class="badge badge-success">{{item[head.FieldName]}}</span>
           <span *ngIf="head.FieldName == 'isActive' && item[head.FieldName] == 'In Active'" class="badge badge-danger">{{item[head.FieldName]}}</span>
-          <span *ngIf="head.FieldName == 'actions' && btnArray.length > 0"><button *ngFor="let btn of btnArray" type="button" class="btn btn-inverse-primary btn-sm" (click)="GoToConfig()">
-            <div class="tooltip-example">
-              <div tooltip="Click to change" placement="top" delay="500" ><i [class]="btn.icon"></i></div>
-            </div>
+          <span *ngIf="head.FieldName == 'actions' && btnArray.length > 0"><button *ngFor="let btn of btnArray" tooltip="Click to change" placement="top" delay="500" type="button" class="btn btn-inverse-primary btn-sm" (click)="GoToBtnAction(btn,item)">
+            <i [class]="btn.icon"></i>
           </button></span>
         </td>
         <!-- <td *ngIf="btnArray.length > 0">

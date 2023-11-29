@@ -26,6 +26,7 @@ export class CmTableComponent {
   @Input() btnArray: any[] = [];
   filteredData: any = [];
   activePage: number = 0;
+  @Output() btnAction = new EventEmitter<any>();
   constructor(private router: Router) {
 
   }
@@ -34,35 +35,6 @@ export class CmTableComponent {
   }
   Search() {
     this.search.emit(this.searchText);
-    // if (this.filteredData != undefined && this.filteredData.length > 0) {
-    //   if (this.searchText !== "") {
-    //     let searchValue = this.searchText.toLocaleLowerCase();
-
-    //     this.gridArr = this.filteredData.filter((contact: any) => {
-    //       return contact.zoneName.toLocaleLowerCase().match(searchValue);
-    //     });
-    //     console.log(this.gridArr);
-    //   }
-    //   else {
-    //     this.gridArr = this.filteredData;
-    //   }
-    // }
-    // else {
-    //   this.filteredData = this.gridArr;
-    //   if (this.searchText !== "") {
-    //     let searchValue = this.searchText.toLocaleLowerCase();
-
-    //     this.gridArr = this.filteredData.filter((contact: any) => {
-    //       return contact.zoneName.toLocaleLowerCase().match(searchValue);
-    //       // you can keep on adding object properties here
-    //     });
-
-    //     console.log(this.gridArr);
-    //   }
-    //   else {
-    //     this.gridArr = this.filteredData;
-    //   }
-    // }
   }
   mouseEnter(msg: string) {
     this.tooltip = msg;
@@ -83,7 +55,8 @@ export class CmTableComponent {
       this.searchWithId.emit(item);
     //this.router.navigate([this.link]);
   }
-  GoToConfig() {
-    this.router.navigate(['medias/playlist-configure']);
+  GoToBtnAction(action:any,data:any) {
+    let _sendData = {"action":action.action,"data":data};
+      this.btnAction.emit(_sendData);
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-cm-media-modal',
@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./cm-media-modal.component.css']
 })
 export class CmMediaModalComponent {
-
-}
+  @Input() data:any;
+} 
