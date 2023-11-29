@@ -1,4 +1,4 @@
-import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Directive, ElementRef, EmbeddedViewRef, HostListener, Injector, Input } from "@angular/core";
+import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Directive, ElementRef, EmbeddedViewRef, HostListener, Injector, Input, Renderer2 } from "@angular/core";
 import { TooltipPosition, TooltipTheme } from "src/app/utils/tooltip.enums";
 import { CmTooltipComponent } from "src/app/widget/cm-tooltip/cm-tooltip.component";
 
@@ -6,127 +6,94 @@ import { CmTooltipComponent } from "src/app/widget/cm-tooltip/cm-tooltip.compone
     selector: '[tooltip]'
 })
 export class TooltipDirective {
-
-    @Input() tooltip = '';
-    @Input() position: TooltipPosition = TooltipPosition.DEFAULT;
-    @Input() theme: TooltipTheme = TooltipTheme.DEFAULT;
-    @Input() showDelay = 0;
-    @Input() hideDelay = 0;
-
-    private componentRef: ComponentRef<any> | null = null;
-    private showTimeout?: number;
-    private hideTimeout?: number;
-    private touchTimeout?: number;
-
-    constructor(private elementRef: ElementRef, private appRef: ApplicationRef,
-        private componentFactoryResolver: ComponentFactoryResolver, private injector: Injector) {
+    @Input('tooltip') tooltipTitle: string;
+    @Input() placement: string;
+    @Input() delay: any;
+    tooltip: any;
+    // 호스트 요소와 tooltip 요소 간의 거리
+    offset = 10;
+  
+    constructor(private el: ElementRef, private renderer: Renderer2) { }
+  
+    @HostListener('mouseenter') onMouseEnter() {
+      if (!this.tooltip) { this.show(); }
     }
-
-    @HostListener('mouseenter')
-    onMouseEnter(): void {
-        this.initializeTooltip();
+  
+    @HostListener('mouseleave') onMouseLeave() {
+      if (this.tooltip) { this.hide(); }
     }
-
-    @HostListener('mouseleave')
-    onMouseLeave(): void {
-        this.setHideTooltipTimeout();
+  
+    show() {
+      this.create();
+      this.setPosition();
+      this.renderer.addClass(this.tooltip, 'ng-tooltip-show');
     }
-
-    @HostListener('mousemove', ['$event'])
-    onMouseMove($event: MouseEvent): void {
-        if (this.componentRef !== null && this.position === TooltipPosition.DYNAMIC) {
-            this.componentRef.instance.left = $event.clientX;
-            this.componentRef.instance.top = $event.clientY;
-            this.componentRef.instance.tooltip = this.tooltip;
-        }
+  
+    hide() {
+      this.renderer.removeClass(this.tooltip, 'ng-tooltip-show');
+      window.setTimeout(() => {
+        this.renderer.removeChild(document.body, this.tooltip);
+        this.tooltip = null ;
+      }, this.delay);
     }
-
-    @HostListener('touchstart', ['$event'])
-    onTouchStart($event: TouchEvent): void {
-        $event.preventDefault();
-        window.clearTimeout(this.touchTimeout);
-        this.touchTimeout = window.setTimeout(this.initializeTooltip.bind(this), 5000);
+  
+    create() {
+      this.tooltip = this.renderer.createElement('span');
+  
+      this.renderer.appendChild(
+        this.tooltip,
+        this.renderer.createText(this.tooltipTitle) // textNode
+      );
+  
+      this.renderer.appendChild(document.body, this.tooltip);
+      // this.renderer.appendChild(this.el.nativeElement, this.tooltip);
+  
+      this.renderer.addClass(this.tooltip, 'ng-tooltip');
+      this.renderer.addClass(this.tooltip, `ng-tooltip-${this.placement}`);
+  
+      // delay 설정
+      this.renderer.setStyle(this.tooltip, '-webkit-transition', `opacity ${this.delay}ms`);
+      this.renderer.setStyle(this.tooltip, '-moz-transition', `opacity ${this.delay}ms`);
+      this.renderer.setStyle(this.tooltip, '-o-transition', `opacity ${this.delay}ms`);
+      this.renderer.setStyle(this.tooltip, 'transition', `opacity ${this.delay}ms`);
     }
-
-    @HostListener('touchend')
-    onTouchEnd(): void {
-        window.clearTimeout(this.touchTimeout);
-        this.setHideTooltipTimeout();
-    }
-
-    private initializeTooltip() {
-        if (this.componentRef === null) {
-            window.clearInterval(this.hideDelay);
-            const componentFactory = this.componentFactoryResolver.resolveComponentFactory(CmTooltipComponent);
-            this.componentRef = componentFactory.create(this.injector);
-
-            this.appRef.attachView(this.componentRef.hostView);
-            const [tooltipDOMElement] = (this.componentRef.hostView as EmbeddedViewRef<any>).rootNodes;
-
-            this.setTooltipComponentProperties();
-
-            document.body.appendChild(tooltipDOMElement);
-            this.showTimeout = window.setTimeout(this.showTooltip.bind(this), this.showDelay);
-        }
-    }
-
-    private setTooltipComponentProperties() {
-        if (this.componentRef !== null) {
-            this.componentRef.instance.tooltip = this.tooltip;
-            this.componentRef.instance.position = this.position;
-            this.componentRef.instance.theme = this.theme;
-
-            const { left, right, top, bottom } = this.elementRef.nativeElement.getBoundingClientRect();
-
-            switch (this.position) {
-                case TooltipPosition.BELOW: {
-                    this.componentRef.instance.left = Math.round((right - left) / 2 + left);
-                    this.componentRef.instance.top = Math.round(bottom);
-                    break;
-                }
-                case TooltipPosition.ABOVE: {
-                    this.componentRef.instance.left = Math.round((right - left) / 2 + left);
-                    this.componentRef.instance.top = Math.round(top);
-                    break;
-                }
-                case TooltipPosition.RIGHT: {
-                    this.componentRef.instance.left = Math.round(right);
-                    this.componentRef.instance.top = Math.round(top + (bottom - top) / 2);
-                    break;
-                }
-                case TooltipPosition.LEFT: {
-                    this.componentRef.instance.left = Math.round(left);
-                    this.componentRef.instance.top = Math.round(top + (bottom - top) / 2);
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
-        }
-    }
-
-    private showTooltip() {
-        if (this.componentRef !== null) {
-            this.componentRef.instance.visible = true;
-        }
-    }
-
-    private setHideTooltipTimeout() {
-        this.hideTimeout = window.setTimeout(this.destroy.bind(this), this.hideDelay);
-    }
-
-    ngOnDestroy(): void {
-        this.destroy();
-    }
-
-    destroy(): void {
-        if (this.componentRef !== null) {
-            window.clearInterval(this.showTimeout);
-            window.clearInterval(this.hideDelay);
-            this.appRef.detachView(this.componentRef.hostView);
-            this.componentRef.destroy();
-            this.componentRef = null;
-        }
+  
+    setPosition() {
+      // 호스트 요소의 사이즈와 위치 정보
+      const hostPos = this.el.nativeElement.getBoundingClientRect();
+  
+      // tooltip 요소의 사이즈와 위치 정보
+      const tooltipPos = this.tooltip.getBoundingClientRect();
+  
+      // window의 scroll top
+      // getBoundingClientRect 메소드는 viewport에서의 상대적인 위치를 반환한다.
+      // 스크롤이 발생한 경우, tooltip 요소의 top에 세로 스크롤 좌표값을 반영하여야 한다.
+      const scrollPos = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+  
+      let top, left;
+  
+      if (this.placement === 'top') {
+        top = hostPos.top - tooltipPos.height - this.offset;
+        left = hostPos.left + (hostPos.width - tooltipPos.width) / 2;
+      }
+  
+      if (this.placement === 'bottom') {
+        top = hostPos.bottom + this.offset;
+        left = hostPos.left + (hostPos.width - tooltipPos.width) / 2;
+      }
+  
+      if (this.placement === 'left') {
+        top = hostPos.top + (hostPos.height - tooltipPos.height) / 2;
+        left = hostPos.left - tooltipPos.width - this.offset;
+      }
+  
+      if (this.placement === 'right') {
+        top = hostPos.top + (hostPos.height - tooltipPos.height) / 2;
+        left = hostPos.right + this.offset;
+      }
+  
+      // 스크롤이 발생한 경우, tooltip 요소의 top에 세로 스크롤 좌표값을 반영하여야 한다.
+      this.renderer.setStyle(this.tooltip, 'top', `${top + scrollPos}px`);
+      this.renderer.setStyle(this.tooltip, 'left', `${left}px`);
     }
 }

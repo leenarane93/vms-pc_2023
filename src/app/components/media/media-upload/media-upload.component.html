@@ -155,16 +155,19 @@
                         </div>
                     </div>
                     <div class="card-footer bg-light text-right">
-                        <div class="icon icon--vader" [tooltip]="'Welcome to the DARK side!'">Check for
-                            ToolTip</div>
-                        <button type="button" [tooltip]="'Welcome to the DARK side!'" class="btn btn-secondary"
+                        <!-- <div class="tooltip-example">
+                            <div tooltip="tootip on left" placement="left" delay="500">tootip on left</div>
+                            <div tooltip="tootip on top" placement="top" delay="500">tootip on top</div>
+                            <div tooltip="tootip on bottom" placement="bottom" delay="500">tootip on bottom</div>
+                            <div tooltip="tootip on right" placement="right" delay="500">tootip on right</div>
+                          </div> -->
+                        <button type="button" tooltip="Reset All" placement="top" delay="500" class="btn btn-secondary"
                             (click)="Reset(1)">Reset All</button>
                     </div>
                 </form>
             </div>
 
         </div>
-        <div class="icon icon--vader" [tooltip]="'Welcome to the DARK side!'"></div>
         <div class="row">
             <div class="col-md-12 ">
                 <app-cm-table [headArr]="headerArr" [gridArr]="listOfMediaSet" [totalRecords]="totalRecords"

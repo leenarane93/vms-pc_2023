@@ -213,10 +213,10 @@ export class MediaUploadComponent implements OnInit {
     }
   }
 
-  @HostListener('mousemove', ['$event'])
-  onMouseMove($event: MouseEvent): void {
-    this.x = $event.clientX;
-    this.y = $event.clientY;
-    this.coordinates = `${this.x},${this.y}`;
-  }
+  // @HostListener('mousemove', ['$event'])
+  // onMouseMove($event: MouseEvent): void {
+  //   this.x = $event.clientX;
+  //   this.y = $event.clientY;
+  //   this.coordinates = `${this.x},${this.y}`;
+  // }
 }
