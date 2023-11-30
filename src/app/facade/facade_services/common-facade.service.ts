@@ -33,4 +33,7 @@ export class CommonFacadeService {
   getSwaggerUrl() {
     return this._httpService._getSwaggerUrl();
   }
+  setSwaggerUrl(){
+    return this._httpService._setSwaggerUrl();
+  }
 }

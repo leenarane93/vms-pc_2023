@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
   submitted = false;
   config$!: Observable<any>;
   _isLoggedIn: boolean = false;
-  swaggerUrl :string = '';
+  swaggerUrl :any;
   constructor(private formBuilder: FormBuilder,
     private _authenticationService: AuthenticationService,
     private loaderService: LoaderService,
@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
     //this.config$ = this._facadeService._configData$;
     console.log(this._commonFacade.getSession("api_url"));
     this.version = environment.version;
+    this._commonFacade.setSwaggerUrl();
   }
   get f() { return this.form.controls; }
   ngOnInit() {
@@ -56,7 +57,7 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-   this._commonFacade.getSwaggerUrl();
+   this.swaggerUrl = this._commonFacade.getSwaggerUrl();
   }
 
 

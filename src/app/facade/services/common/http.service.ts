@@ -24,16 +24,20 @@ export class HttpService {
       this._configDataBS$.next(_config);
       this._sessionService._setSessionValue("config_data",this._configData$);
       this._api_url = _config.api_url;
-      this._swagger_url = _config.swaggerUrl;
+      this._sessionService._setSessionValue("swagger_url",_config.swaggerUrl);
+    })
+  }
+
+  _setSwaggerUrl() {
+    return this.http.get("../../../../assets/config/config.json")
+    .pipe(take(1))
+    .subscribe((_config:any)=>{
+      this._sessionService._setSessionValue("swagger_url",_config.swaggerUrl);
     })
   }
 
   _getSwaggerUrl() {
-    return this.http.get("../../../../assets/config/config.json")
-    .pipe(take(1))
-    .subscribe((_config:any)=>{
-      this._swagger_url = _config.swaggerUrl;
-    })
+    return this._sessionService._getSessionValue("swagger_url");
   }
 
   _postMethod(_object:any,_appendUrl:string):Observable<any>{
