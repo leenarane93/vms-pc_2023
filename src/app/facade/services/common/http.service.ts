@@ -16,6 +16,7 @@ export class HttpService {
   _configDataBS$=new BehaviorSubject<any[]>([]);
   _configData$=this._configDataBS$.asObservable();
   public _api_url = "";
+  public _swagger_url = "";
   getConfigDetails(){
     return this.http.get("../../../../assets/config/config.json")
     .pipe(take(1))
@@ -23,6 +24,15 @@ export class HttpService {
       this._configDataBS$.next(_config);
       this._sessionService._setSessionValue("config_data",this._configData$);
       this._api_url = _config.api_url;
+      this._swagger_url = _config.swaggerUrl;
+    })
+  }
+
+  _getSwaggerUrl() {
+    return this.http.get("../../../../assets/config/config.json")
+    .pipe(take(1))
+    .subscribe((_config:any)=>{
+      this._swagger_url = _config.swaggerUrl;
     })
   }
 

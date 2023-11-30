@@ -10,7 +10,8 @@ import { SessionService } from '../services/common/session.service';
 export class CommonFacadeService {
 
   constructor(private _sessionService:SessionService,
-    private _encdecService: EncdecService){}
+    private _encdecService: EncdecService,
+    private _httpService:HttpService){}
 
    EncryptData(data:string){
     return this._encdecService.encryptUsingAES256(data);
@@ -27,5 +28,9 @@ export class CommonFacadeService {
    }
   removeSessionValue(_key:string){
     this._sessionService._removeSessionValue(_key);
+  }
+
+  getSwaggerUrl() {
+    return this._httpService._getSwaggerUrl();
   }
 }

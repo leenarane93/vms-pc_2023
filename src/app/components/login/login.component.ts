@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
   submitted = false;
   config$!: Observable<any>;
   _isLoggedIn: boolean = false;
+  swaggerUrl :string = '';
   constructor(private formBuilder: FormBuilder,
     private _authenticationService: AuthenticationService,
     private loaderService: LoaderService,
@@ -55,6 +56,7 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
+   this._commonFacade.getSwaggerUrl();
   }
 
 
