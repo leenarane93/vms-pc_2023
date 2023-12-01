@@ -57,7 +57,6 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-   this.swaggerUrl = this._commonFacade.getSwaggerUrl();
   }
 
 
@@ -116,5 +115,10 @@ export class LoginComponent implements OnInit {
           this.toastr.warning(res.token, "Error", { positionClass: 'toast-bottom-right' });
       }
     })
+  }
+
+  loadSwagger() {
+    this.swaggerUrl = this._commonFacade.getSwaggerUrl();
+    //window.location.href = this.swaggerUrl;
   }
 }

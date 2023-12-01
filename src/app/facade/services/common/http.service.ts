@@ -32,7 +32,7 @@ export class HttpService {
     return this.http.get("../../../../assets/config/config.json")
     .pipe(take(1))
     .subscribe((_config:any)=>{
-      this._sessionService._setSessionValue("swagger_url",_config.swaggerUrl);
+      this._sessionService._setSessionValue("swagger_url",_config.swagger_url);
     })
   }
 
