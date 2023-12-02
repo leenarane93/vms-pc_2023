@@ -14,4 +14,8 @@ export class MediaFacadeService {
   uploadMedia(data: any) {
     return this._mediaUploadService.UploadMediaDetails(data);
   }
+
+  getMediaByUsID(data: any) {
+    return this._mediaUploadService.getMediaByUploadSetId(data);
+  }
 }

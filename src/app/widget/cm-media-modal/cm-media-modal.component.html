@@ -1,1 +1,22 @@
-<p>cm-media-modal works!</p>
+<div class="card">
+    <div class="row">
+        <div class="col-md-12 text-center" style="padding: 20px;">
+            {{type}}
+            <hr>
+        </div><button tooltip="Click to VIew" placement="top" delay="500" type="button"
+            class="btn btn-inverse-primary btn-sm">View
+            File</button>
+        <div *ngIf="type == 'Media Upload'">
+            <div class="row" *ngFor="let media of data.medias">
+                <div class="col-md-9">
+                    {{media.fileName}}
+                </div>
+                <div class="col-md-3">
+                    <button tooltip="Click to View" placement="top" delay="500" type="button"
+                        class="btn btn-inverse-primary btn-sm">View File</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
