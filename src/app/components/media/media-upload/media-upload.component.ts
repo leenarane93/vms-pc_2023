@@ -10,6 +10,9 @@ import { Globals } from 'src/app/utils/global';
 import { TooltipPosition } from "../../../utils/tooltip.enums";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CmMediaModalComponent } from 'src/app/widget/cm-media-modal/cm-media-modal.component';
+import { CmConfirmBoxComponent } from 'src/app/widget/cm-confirm-box/cm-confirm-box.component';
+import { ConfirmationDialogService } from 'src/app/facade/services/confirmation-dialog.service';
+import { MediaDetails, MediaUpload } from 'src/app/models/media/Media';
 
 @Component({
   selector: 'app-media-upload',
@@ -47,15 +50,16 @@ export class MediaUploadComponent implements OnInit {
     { "Head": "Created Date", "FieldName": "createdDate", "type": "string" },
     { "Head": "Created By", "FieldName": "uploadedBy", "type": "string" },
     { "Head": "File Count", "FieldName": "fileCounts", "type": "number" },
-    { "Head": "Status", "FieldName": "status", "type": "number" },
+    { "Head": "Status", "FieldName": "statusText", "type": "number" },
     { "Head": "Remarks", "FieldName": "remarks", "type": "string" },
     { "Head": "Action", "FieldName": "actions", "type": "button" }
   ];
-  btnArray: any[] = [{ "name": "View", "icon": "icon-eye", "tip": "Click to View","action":"view" }, { "name": "Remove", "icon": "icon-trash", "tip": "Click to Remove","action":"delete" }];
+  btnArray: any[] = [{ "name": "View", "icon": "icon-eye", "tip": "Click to View", "action": "view" }, { "name": "Remove", "icon": "icon-trash", "tip": "Click to Remove", "action": "delete" }];
   constructor(private fb: FormBuilder,
     private toast: ToastrService,
     private _commonFacade: CommonFacadeService,
     private router: Router,
+    private _confirmService: ConfirmationDialogService,
     private modalService: NgbModal,
     private sanitizer: DomSanitizer,
     private _mediaFacade: MediaFacadeService,
@@ -201,7 +205,22 @@ export class MediaUploadComponent implements OnInit {
 
     this._mediaFacade.getMediaUploadDetails(this._request).subscribe(res => {
       if (res != null && res != undefined) {
+        res.data.forEach((ele: any) => {
+          if (ele.status == 0) {
+            ele.statusText = "Approval Pending";
+            ele.class = "badge badge-info sizeStatus";
+          }
+          else if (ele.status == 1) {
+            ele.statusText = "Approved";
+            ele.class = "badge badge-success sizeStatus";
+          }
+          else if (ele.status == 2) {
+            ele.statusText = "Rejected"
+            ele.class = "badge badge-danger sizeStatus";
+          }
+        });
         this.listOfMediaSet = res.data;
+
       }
     })
   }
@@ -216,12 +235,42 @@ export class MediaUploadComponent implements OnInit {
     }
   }
 
-  ButtonAction(actiondata:any){
-    console.log(actiondata);
-    if(actiondata.action == "view") {
+  ButtonAction(actiondata: any) {
+    if (actiondata.action == "view") {
       const modalRef = this.modalService.open(CmMediaModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
-      let _data = {"action":actiondata.action,urls:[]};
-      modalRef.componentInstance.data = actiondata.data;
+      let _data = { "action": actiondata.action, urls: [], modalType: "mediaupload", content: actiondata.data };
+      modalRef.componentInstance.data = _data;
     }
+    else if (actiondata.action == "delete") {
+      this._confirmService.confirm("Remove Media", "Do You Really Want To Remove Upload Set : " + actiondata.data.uploadSetId, "Confirm", "Cancel", "lg")
+      .then((confirmed) => {
+        if(confirmed == true) {
+          this.RemoveUploadSetID(actiondata.data);
+        }
+      })
+    .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));;
+      
+    }
+  }
+  RemoveUploadSetID(data:any){
+    let md = new MediaUpload();
+    md.id = data.id;
+    md.uploadSetId = data.uploadSetId;
+    md.status = data.status;
+    md.remarks = data.remarks;
+    md.isDeleted = true;
+    md.createdBy = data.createdBy;
+    md.modifiedBy = this.global.UserCode;
+
+    this._mediaFacade.updateMediaUpload(md).subscribe(res=>{
+      if(res != null && res != 0) {
+        this.toast.success("Successfully Removed.");
+        this.modalService.dismissAll();
+        this.getMediaUploadData();
+      }
+      else {
+        this.toast.error("Something went wrong", "Error", { positionClass: "toast-bottom-right" });
+      }
+    })
   }
 }

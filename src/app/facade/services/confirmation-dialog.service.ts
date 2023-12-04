@@ -8,7 +8,7 @@ import { CmMapBoxComponent } from 'src/app/widget/cm-map-box/cm-map-box.componen
 
 @Injectable()
 export class ConfirmationDialogService {
-
+  result: any;
   constructor(private modalService: NgbModal) { }
 
   public confirm(
@@ -16,14 +16,21 @@ export class ConfirmationDialogService {
     message: string,
     btnOkText: string = 'OK',
     btnCancelText: string = 'Cancel',
-    dialogSize: 'sm'|'lg' = 'sm'): Promise<boolean> {
+    dialogSize: 'sm' | 'lg' = 'sm'): Promise<boolean> {
     const modalRef = this.modalService.open(CmConfirmBoxComponent, { size: dialogSize });
     modalRef.componentInstance.title = title;
     modalRef.componentInstance.message = message;
     modalRef.componentInstance.btnOkText = btnOkText;
     modalRef.componentInstance.btnCancelText = btnCancelText;
-
     return modalRef.result;
+  }
+
+  btnReponse(){
+    console.log("Emit Called");
+  }
+
+  public getResponse() {
+    return this.result;
   }
 
   public mapModal(
@@ -31,7 +38,7 @@ export class ConfirmationDialogService {
     message: string,
     btnOkText: string = 'OK',
     btnCancelText: string = 'Cancel',
-    dialogSize: 'lg'|'sm' = 'lg'): Promise<boolean> {
+    dialogSize: 'lg' | 'sm' = 'lg'): Promise<boolean> {
     const modalRef = this.modalService.open(CmMapBoxComponent, { size: dialogSize });
     modalRef.componentInstance.title = title;
     modalRef.componentInstance.message = message;

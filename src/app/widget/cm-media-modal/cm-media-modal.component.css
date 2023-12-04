@@ -68,3 +68,19 @@
 .ng-tooltip-show {
     opacity: 1;
 }
+
+.spacing{
+    padding: 20px;
+    border-radius: 25px;
+}
+
+.onlyBgTbl{
+    width: 1000px;
+    background-color: #e6fff3;
+    padding-top: 10px;
+    overflow-y: auto;
+    height: 200px;
+    border-radius:1px;
+    border-width: 1px;
+    border-style: solid;
+  }

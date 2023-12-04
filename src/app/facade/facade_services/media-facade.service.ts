@@ -18,4 +18,11 @@ export class MediaFacadeService {
   getMediaByUsID(data: any) {
     return this._mediaUploadService.getMediaByUploadSetId(data);
   }
+
+  getMediaString(data:any) {
+    return this._mediaUploadService.getMediaString(data);
+  }
+  updateMediaUpload(data: any) {
+    return this._mediaUploadService.updateMediaUpload(data);
+  }
 }

@@ -57,6 +57,6 @@ export class CmTableComponent {
   }
   GoToBtnAction(action:any,data:any) {
     let _sendData = {"action":action.action,"data":data};
-      this.btnAction.emit(_sendData);
+    this.btnAction.emit(_sendData);
   }
 }

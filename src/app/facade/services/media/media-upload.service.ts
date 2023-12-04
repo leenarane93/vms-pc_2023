@@ -19,4 +19,14 @@ export class MediaUploadService {
   getMediaByUploadSetId(data: any) {
     return this._httpService._getMethod('media_api/api/MediaMaster/GetMediaUploadDetailsByUSId?uploadSetId=' + data);
   }
+
+  getMediaString(data:any) {
+    return this._httpService._postMethod(data,"Media_API/api/MediaMaster/GetMediaString");
+    //return this.http.post<any>("http://10.20.1.111:44364/api/MediaMaster/GetMediaString",body);
+  }
+
+  updateMediaUpload(data:any) {
+    return this._httpService._postMethod(data,"Media_API/api/MediaMaster/updateMediaUpload");
+    //return this.http.post<any>("http://10.20.1.111:44364/api/MediaMaster/GetMediaString",body);
+  }
 }

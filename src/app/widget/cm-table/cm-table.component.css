@@ -60,3 +60,6 @@
   .ng-tooltip-show {
     opacity: 1;
   }
+  .sizeStatus {
+    font-size: medium;
+  }

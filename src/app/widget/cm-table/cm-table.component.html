@@ -1,4 +1,4 @@
-<div class="container text-center mt-4">
+<div class="container text-center col-md-12">
   <input class="form-control mt-2 mb-2" type="text" [(ngModel)]="searchText" (input)="Search()"
     placeholder="Search Here" />
   <table class="table table-striped table-bordered table-sm row-border hover" id="datatableexample">
@@ -12,9 +12,10 @@
       <tr *ngFor="let item of gridArr;let sr=index" (click)="ShowForm(item)">
         <td title="Click to View/Edit/Remove">{{sr+1}}</td>
         <td *ngFor="let head of headArr">
-          <span *ngIf="head.FieldName != 'isActive' && head.FieldName != 'actions'">{{item[head.FieldName]}}</span>
+          <span *ngIf="head.FieldName != 'isActive' && head.FieldName != 'actions' && head.FieldName != 'statusText'">{{item[head.FieldName]}}</span>
           <span *ngIf="head.FieldName == 'isActive' && item[head.FieldName] == 'Active'" class="badge badge-success">{{item[head.FieldName]}}</span>
           <span *ngIf="head.FieldName == 'isActive' && item[head.FieldName] == 'In Active'" class="badge badge-danger">{{item[head.FieldName]}}</span>
+          <span *ngIf="head.FieldName == 'statusText'" [class]="item.class">{{item[head.FieldName]}}</span>
           <span *ngIf="head.FieldName == 'actions' && btnArray.length > 0"><button *ngFor="let btn of btnArray" tooltip="Click to change" placement="top" delay="500" type="button" class="btn btn-inverse-primary btn-sm" (click)="GoToBtnAction(btn,item)">
             <i [class]="btn.icon"></i>
           </button></span>
