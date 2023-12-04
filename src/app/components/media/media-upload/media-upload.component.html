@@ -4,7 +4,7 @@
         <div class="col-xl-12  grid-margin stretch-card">
 
             <div class="card border-0  pb-0">
-                <form class="form">
+                <div class="form">
                     <div class="card-header bgTable pb-0">
                         <ul class="nav nav-tabs mb-0 border-0 mt-1" (click)="tabChange()" id="pills-tab" role="tablist"
                             ngbNav #nav="ngbNav" [(activeId)]="active">
@@ -64,30 +64,33 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td><select name="font" id="font"
+                                                    <td><select name="font" id="font" [(ngModel)]="fontName"
                                                             class="form-control form-control-sm">
-                                                            <option value="">Arial</option>
-                                                            <option value="">Aharoni</option>
-                                                            <option value="">Aldhabi</option>
+                                                            <option value="{{_font.fontValue}}"
+                                                                *ngFor="let _font of _fontData" value="_font.fontValue">
+                                                                {{_font.fontName}}</option>
                                                         </select></td>
-                                                    <td><input type="text" class="form-control form-control-sm"></td>
-                                                    <td><input type="color"
+                                                    <td><input type="text" class="form-control form-control-sm"
+                                                            [(ngModel)]="textContent"></td>
+                                                    <td><input type="color" [(ngModel)]="foreColor"
                                                             class="form-control form-control-color w-100"
-                                                            value="#FFFF00" title="Choose your color"></td>
-                                                    <td><input type="color"
+                                                            title="Choose your color"></td>
+                                                    <td><input type="color" [(ngModel)]="backColor"
                                                             class="form-control form-control-color w-100"
-                                                            value="#563d7c" title="Choose your color"></td>
-                                                    <td><input type="text"
+                                                            title="Choose your color"></td>
+                                                    <td><input type="text" [(ngModel)]="fontSize"
                                                             class="form-control form-control-sm text-center"></td>
                                                     <td><select name="font" id="font"
-                                                            class="form-control form-control-sm">
-                                                            <option value="">Normal</option>
-                                                            <option value="">Bold</option>
-                                                            <option value="">Italic</option>
+                                                            class="form-control form-control-sm"
+                                                            [(ngModel)]="fontStyle">
+                                                            <option value="Normal">Normal</option>
+                                                            <option value="Bold">Bold</option>
+                                                            <option value="Italic">Italic</option>
                                                         </select></td>
-                                                    <td><input type="text" class="form-control text-center"></td>
+                                                    <td><input type="text" class="form-control text-center"
+                                                            [(ngModel)]="scrollDirection"></td>
                                                     <td class="text-center">
-                                                        <button type="button"
+                                                        <button type="button" (click)="AddTextData()"
                                                             class="btn btn-sm btn-inverse-primary btn-rounded btn-icon">
                                                             <i class="icon-circle-plus"></i>
                                                         </button>
@@ -112,18 +115,19 @@
                                                 </tr>
                                             </thead>
                                             <tbody class=" text-center">
-                                                <tr>
-                                                    <td>Aldhabi</td>
-                                                    <td>20</td>
-                                                    <td>#e67ad7 </td>
-                                                    <td>#2d2020 </td>
-                                                    <td>123</td>
-                                                    <td>Bold</td>
-                                                    <td>1</td>
+                                                <tr *ngFor="let _text of textData">
+                                                    <td>{{_text.font}}</td>
+                                                    <td>{{_text.textContent}}</td>
+                                                    <td>{{_text.foreColor}} </td>
+                                                    <td>{{_text.backColor}} </td>
+                                                    <td>{{_text.fontSize}} </td>
+                                                    <td>{{_text.fontStyle}} </td>
+                                                    <td>{{_text.scrollingDirection}} </td>
                                                     <td class="text-center">
                                                         <button type="button"
                                                             class="btn btn-inverse-info btn-rounded btn-icon btn-sm">
-                                                            <i class="mdi mdi-file-check btn-icon-append"></i>
+                                                            <i class="mdi mdi-file-check btn-icon-append"
+                                                                (click)="EditText(_text)"></i>
                                                         </button> <button type="button"
                                                             class="btn btn-inverse-danger btn-rounded btn-icon btn-sm">
                                                             <i class="fa fa-trash btn-icon-append"></i>
@@ -164,7 +168,7 @@
                         <button type="button" tooltip="Reset All" placement="top" delay="500" class="btn btn-secondary"
                             (click)="Reset(1)">Reset All</button>
                     </div>
-                </form>
+                </div>
             </div>
 
         </div>
@@ -173,8 +177,8 @@
                 <app-cm-table [headArr]="headerArr" [gridArr]="listOfMediaSet" [totalRecords]="totalRecords"
                     [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)" [btnArray]="btnArray"
                     [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)"
-                    link="masters/add-party" fieldName="id" (search)="onPageSearch($event)" (btnAction)="ButtonAction($event)"
-                    (searchWithId)="SearchWithId($event)"></app-cm-table>
+                    link="masters/add-party" fieldName="id" (search)="onPageSearch($event)"
+                    (btnAction)="ButtonAction($event)" (searchWithId)="SearchWithId($event)"></app-cm-table>
             </div>
         </div>
 

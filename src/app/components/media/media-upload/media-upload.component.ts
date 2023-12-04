@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild, numberAttribute } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
@@ -12,7 +12,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CmMediaModalComponent } from 'src/app/widget/cm-media-modal/cm-media-modal.component';
 import { CmConfirmBoxComponent } from 'src/app/widget/cm-confirm-box/cm-confirm-box.component';
 import { ConfirmationDialogService } from 'src/app/facade/services/confirmation-dialog.service';
-import { MediaDetails, MediaUpload } from 'src/app/models/media/Media';
+import { MediaDetails, MediaUpload, TextDetails } from 'src/app/models/media/Media';
 
 @Component({
   selector: 'app-media-upload',
@@ -35,8 +35,19 @@ export class MediaUploadComponent implements OnInit {
   startId!: number;
   closeResult!: string;
   _request: any = new InputRequest();
+  _fontData: any[] = [];
   @ViewChild('InputVar') InputVar: any;
   //@ViewChild("InputVar", { static: true }) InputVar;
+  //Text Data
+  scrollDirection: number = 0;
+  fontStyle: string = "";
+  fontSize: number = 18;
+  fontName: any;
+  backColor: string = "#000000";
+  foreColor: string = "#ffffff";
+  textContent: string = "";
+  textData: any[] = [];
+
   files: File[] = [];
   TooltipPosition: typeof TooltipPosition = TooltipPosition;
   x = 0;
@@ -70,6 +81,7 @@ export class MediaUploadComponent implements OnInit {
 
   ngOnInit() {
     this.generateUploadSetId();
+    this.GetFontDetails();
   }
   tabChange() {
     this.generateUploadSetId();
@@ -243,16 +255,16 @@ export class MediaUploadComponent implements OnInit {
     }
     else if (actiondata.action == "delete") {
       this._confirmService.confirm("Remove Media", "Do You Really Want To Remove Upload Set : " + actiondata.data.uploadSetId, "Confirm", "Cancel", "lg")
-      .then((confirmed) => {
-        if(confirmed == true) {
-          this.RemoveUploadSetID(actiondata.data);
-        }
-      })
-    .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));;
-      
+        .then((confirmed) => {
+          if (confirmed == true) {
+            this.RemoveUploadSetID(actiondata.data);
+          }
+        })
+        .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));;
+
     }
   }
-  RemoveUploadSetID(data:any){
+  RemoveUploadSetID(data: any) {
     let md = new MediaUpload();
     md.id = data.id;
     md.uploadSetId = data.uploadSetId;
@@ -262,8 +274,8 @@ export class MediaUploadComponent implements OnInit {
     md.createdBy = data.createdBy;
     md.modifiedBy = this.global.UserCode;
 
-    this._mediaFacade.updateMediaUpload(md).subscribe(res=>{
-      if(res != null && res != 0) {
+    this._mediaFacade.updateMediaUpload(md).subscribe(res => {
+      if (res != null && res != 0) {
         this.toast.success("Successfully Removed.");
         this.modalService.dismissAll();
         this.getMediaUploadData();
@@ -272,5 +284,44 @@ export class MediaUploadComponent implements OnInit {
         this.toast.error("Something went wrong", "Error", { positionClass: "toast-bottom-right" });
       }
     })
+  }
+
+  GetFontDetails() {
+    this._mediaFacade.getAvailableFont().subscribe(res => {
+      if (res != null) {
+        this._fontData = res;
+      }
+      else {
+        console.log("Get Available Font Details Error");
+      }
+
+    })
+  }
+
+  AddTextData() {
+    var _date = new Date();
+    var _text = new TextDetails();
+    _text.fontSize = this.fontSize;
+    _text.backColor = this.backColor;
+    _text.foreColor = this.foreColor;
+    _text.font = this.fontName;
+    _text.createdBy = this.global.UserCode;
+    _text.fileName = "Text_" + _date.getFullYear() + _date.getMonth() + _date.getDay() + _date.getHours() + _date.getMinutes() + _date.getSeconds();
+    _text.id = 0;
+    _text.isActive = true;
+    _text.textContent = this.textContent;
+    _text.scrollingDirection = this.scrollDirection;
+    _text.fontStyle = this.fontStyle;
+    this.textData.push(_text);
+  }
+  EditText(_text: any) {
+    console.log(_text.fontName);
+    this.fontName = _text.font;
+    this.fontSize = _text.fontSize;
+    this.fontStyle = _text.fontStyle;
+    this.foreColor = _text.foreColor;
+    this.backColor = _text.backColor;
+    this.textContent = _text.textContent;
+    this.scrollDirection = _text.scrollingDirection;
   }
 }

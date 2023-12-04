@@ -19,10 +19,14 @@ export class MediaFacadeService {
     return this._mediaUploadService.getMediaByUploadSetId(data);
   }
 
-  getMediaString(data:any) {
+  getMediaString(data: any) {
     return this._mediaUploadService.getMediaString(data);
   }
   updateMediaUpload(data: any) {
     return this._mediaUploadService.updateMediaUpload(data);
+  }
+
+  getAvailableFont() {
+    return this._mediaUploadService.getSystemFont();
   }
 }
