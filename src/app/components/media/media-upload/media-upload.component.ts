@@ -2,6 +2,7 @@ import { Component, ElementRef, HostListener, OnInit, ViewChild, numberAttribute
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 import { MediaFacadeService } from 'src/app/facade/facade_services/media-facade.service';
@@ -21,6 +22,7 @@ import { MediaDetails, MediaUpload, TextDetails } from 'src/app/models/media/Med
 })
 export class MediaUploadComponent implements OnInit {
   active = 1;
+  activeNav: number = 1;
   result: string = '';
   myForm!: FormGroup;
   uploadSetId!: any;
@@ -58,7 +60,7 @@ export class MediaUploadComponent implements OnInit {
     { "Head": "ID", "FieldName": "id", "type": "number" },
     { "Head": "File Type", "FieldName": "mediaType", "type": "string" },
     { "Head": "Upload Set ID", "FieldName": "uploadSetId", "type": "string" },
-    { "Head": "Created Date", "FieldName": "createdDate", "type": "string" },
+    { "Head": "Created Date", "FieldName": "createdDate", "type": "datetime" },
     { "Head": "Created By", "FieldName": "uploadedBy", "type": "string" },
     { "Head": "File Count", "FieldName": "fileCounts", "type": "number" },
     { "Head": "Status", "FieldName": "statusText", "type": "number" },
@@ -169,8 +171,11 @@ export class MediaUploadComponent implements OnInit {
     this.selectedFiles.slice(idx, 1);
   }
   RequestSubmit() {
-    if (this.Validations()) {
+    if (this.Validations() && this.active == 1) {
       this.AddMediaUpload();
+    }
+    else if(this.active == 2) {
+      this.SaveTextData();
     }
   }
   onPager(pager: number) {
@@ -238,13 +243,9 @@ export class MediaUploadComponent implements OnInit {
   }
   Reset(type: number) {
     this.selectedFiles = [];
-    this.InputVar.nativeElement.value = "";
     this.generateUploadSetId();
-    if (type == 0) {
-    }
-    else {
-      this.getMediaUploadData();
-    }
+    this.textData = [];
+    this.InputVar.nativeElement.value = "";
   }
 
   ButtonAction(actiondata: any) {
@@ -301,6 +302,7 @@ export class MediaUploadComponent implements OnInit {
   AddTextData() {
     var _date = new Date();
     var _text = new TextDetails();
+    _text.uploadSetId = this.uploadSetId;
     _text.fontSize = this.fontSize;
     _text.backColor = this.backColor;
     _text.foreColor = this.foreColor;
@@ -323,5 +325,17 @@ export class MediaUploadComponent implements OnInit {
     this.backColor = _text.backColor;
     this.textContent = _text.textContent;
     this.scrollDirection = _text.scrollingDirection;
+  }
+  RemoveText(idx: number) {
+    this.textData.splice(idx, 1);
+  }
+  SaveTextData() {
+    this._mediaFacade.addTextDetails(this.textData).subscribe(res => {
+      if (res != null && res != 0) {
+        this.toast.success("Saved Successfully");
+        this.getMediaUploadData();
+        this.tabChange();
+      }
+    })
   }
 }

@@ -12,7 +12,8 @@
       <tr *ngFor="let item of gridArr;let sr=index" (click)="ShowForm(item)">
         <td title="Click to View/Edit/Remove">{{sr+1}}</td>
         <td *ngFor="let head of headArr">
-          <span *ngIf="head.FieldName != 'isActive' && head.FieldName != 'actions' && head.FieldName != 'statusText'">{{item[head.FieldName]}}</span>
+          <span *ngIf="head.FieldName != 'isActive' && head.FieldName != 'actions' && head.FieldName != 'statusText' && head.type != 'datetime'" >{{item[head.FieldName]}}</span>
+          <span *ngIf="head.FieldName != 'isActive' && head.FieldName != 'actions' && head.FieldName != 'statusText' && head.type == 'datetime'" >{{item[head.FieldName] | date:'dd-MM-YYYY HH:mm:ss'}}</span>
           <span *ngIf="head.FieldName == 'isActive' && item[head.FieldName] == 'Active'" class="badge badge-success">{{item[head.FieldName]}}</span>
           <span *ngIf="head.FieldName == 'isActive' && item[head.FieldName] == 'In Active'" class="badge badge-danger">{{item[head.FieldName]}}</span>
           <span *ngIf="head.FieldName == 'statusText'" [class]="item.class">{{item[head.FieldName]}}</span>

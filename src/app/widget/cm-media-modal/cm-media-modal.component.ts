@@ -14,6 +14,7 @@ export class CmMediaModalComponent implements OnInit {
   isImage: boolean = false;
   isText: boolean = false;
   imgData: string;
+  mediaType:string = "";
   @Input() data: any;
   viewData:any[]=[];
   type: string = "Media Upload";
@@ -23,17 +24,32 @@ export class CmMediaModalComponent implements OnInit {
 
   }
   ngOnInit() {
+    this.mediaType =this.data.content.mediaType;
     if (this.data.modalType == "mediaupload") {
       let _uploadSetId = this.data.content.uploadSetId;
-      this._mediaFacade.getMediaByUsID(_uploadSetId).subscribe(res => {
-        if (res == undefined || res == null)
-          this._toast.error("Something is wrong, Please contact sytem administration", "Error", { positionClass: "toast-right-bottom" });
-        else if (res.length == 0)
-          this._toast.error("No active media found against Upload Set ID : " + _uploadSetId, "Error", { positionClass: "toast-right-bottom" });
-        else {
-          this.viewData = res;
-        }
-      })
+      if(this.mediaType != "Text") {
+        this._mediaFacade.getMediaByUsID(_uploadSetId).subscribe(res => {
+          if (res == undefined || res == null)
+            this._toast.error("Something is wrong, Please contact sytem administration", "Error", { positionClass: "toast-right-bottom" });
+          else if (res.length == 0)
+            this._toast.error("No active media found against Upload Set ID : " + _uploadSetId, "Error", { positionClass: "toast-right-bottom" });
+          else {
+            this.viewData = res;
+          }
+        })
+      }
+      else {
+        this._mediaFacade.getTextByUsID(_uploadSetId).subscribe(res => {
+          if (res == undefined || res == null)
+            this._toast.error("Something is wrong, Please contact sytem administration", "Error", { positionClass: "toast-right-bottom" });
+          else if (res.length == 0)
+            this._toast.error("No active media found against Upload Set ID : " + _uploadSetId, "Error", { positionClass: "toast-right-bottom" });
+          else {
+            this.viewData = res;
+          }
+        })
+      }
+      
     }
   }
 

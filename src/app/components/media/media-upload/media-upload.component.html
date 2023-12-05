@@ -13,7 +13,7 @@
                                     aria-controls="media-upload" aria-selected="true" ngbNavLink> <i
                                         class="icon-camera"></i> Media Upload</a>
 
-                                <ng-template ngbNavContent>
+                                <ng-template ngbNavContent="activeNav">
                                     <div>
                                         <h4>Upload Media Files - Add Images or Videos </h4>
                                         <hr>
@@ -38,7 +38,7 @@
                                 </ng-template>
                             </li>
 
-                            <li class="nav-item" [ngbNavItem]="2">
+                            <li class="nav-item" ngbNavItem="2">
 
                                 <a class="nav-link text-center " data-toggle="pill" href="#text-content" role="tab"
                                     aria-controls="text-content" aria-selected="false" ngbNavLink> <i
@@ -115,7 +115,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody class=" text-center">
-                                                <tr *ngFor="let _text of textData">
+                                                <tr *ngFor="let _text of textData; let sr=index">
                                                     <td>{{_text.font}}</td>
                                                     <td>{{_text.textContent}}</td>
                                                     <td>{{_text.foreColor}} </td>
@@ -130,7 +130,7 @@
                                                                 (click)="EditText(_text)"></i>
                                                         </button> <button type="button"
                                                             class="btn btn-inverse-danger btn-rounded btn-icon btn-sm">
-                                                            <i class="fa fa-trash btn-icon-append"></i>
+                                                            <i class="fa fa-trash btn-icon-append" (click)="RemoveText(sr)"></i>
                                                         </button>
                                                     </td>
                                                 </tr>

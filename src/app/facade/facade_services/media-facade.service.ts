@@ -18,6 +18,9 @@ export class MediaFacadeService {
   getMediaByUsID(data: any) {
     return this._mediaUploadService.getMediaByUploadSetId(data);
   }
+  getTextByUsID(data: any) {
+    return this._mediaUploadService.getTextUploadDetailsByUploadSetId(data);
+  }
 
   getMediaString(data: any) {
     return this._mediaUploadService.getMediaString(data);
@@ -28,5 +31,8 @@ export class MediaFacadeService {
 
   getAvailableFont() {
     return this._mediaUploadService.getSystemFont();
+  }
+  addTextDetails(data: any) {
+    return this._mediaUploadService.addTextDetails(data);
   }
 }
