@@ -237,7 +237,14 @@ export class MediaUploadComponent implements OnInit {
           }
         });
         this.listOfMediaSet = res.data;
-
+        var _length = res.totalRecords / this.recordPerPage;
+        if (_length > Math.floor(_length) && Math.floor(_length) != 0)
+          this.totalRecords = this.recordPerPage * (_length);
+        else if (Math.floor(_length) == 0)
+          this.totalRecords = 10;
+        else
+          this.totalRecords = res.totalRecords;
+        this.totalPages = this.totalRecords / this.pager;
       }
     })
   }
@@ -338,4 +345,7 @@ export class MediaUploadComponent implements OnInit {
       }
     })
   }
+
+
+  
 }
