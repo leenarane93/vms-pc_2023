@@ -346,7 +346,4 @@ export class MediaUploadComponent implements OnInit {
       }
     })
   }
-
-
-  
 }
