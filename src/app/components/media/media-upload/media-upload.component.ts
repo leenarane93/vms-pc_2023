@@ -340,6 +340,7 @@ export class MediaUploadComponent implements OnInit {
     this._mediaFacade.addTextDetails(this.textData).subscribe(res => {
       if (res != null && res != 0) {
         this.toast.success("Saved Successfully");
+        this.textData = [];
         this.getMediaUploadData();
         this.tabChange();
       }
