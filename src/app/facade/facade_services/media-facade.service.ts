@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { MediaUploadService } from '../services/media/media-upload.service';
+import { PlaylistService } from '../services/media/playlist.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MediaFacadeService {
 
-  constructor(private _mediaUploadService: MediaUploadService) { }
+  constructor(private _mediaUploadService: MediaUploadService,
+              private _playlistService:PlaylistService) { }
   getMediaUploadDetails(data: any) {
     return this._mediaUploadService.getuploaddetails(data);
   }
@@ -35,4 +37,9 @@ export class MediaFacadeService {
   addTextDetails(data: any) {
     return this._mediaUploadService.addTextDetails(data);
   }
+
+  addPlaylistMaster(data:any) { 
+    return this._playlistService.addPlaylistMaster(data);
+  }
+
 }

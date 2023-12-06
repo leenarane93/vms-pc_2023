@@ -32,6 +32,8 @@
     "ag-grid-community": "^30.2.0",
     "angular-datatables": "^16.0.0",
     "angular-disable-browser-back-button": "^2.0.0",
+    "angular-resizable": "^1.2.0",
+    "angular2-draggable": "^16.0.0",
     "bootstrap": "^5.3.1",
     "bs-stepper": "^1.7.0",
     "chart.js": "^4.4.0",

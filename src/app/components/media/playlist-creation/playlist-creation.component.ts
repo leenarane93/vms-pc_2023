@@ -47,10 +47,9 @@ export class PlaylistCreationComponent {
     this.global.CurrentPage = "Playlist Creation";
     this.pager = 1;
     this.totalRecords = 0;
-    this.getPlaylistData();
   }
   ngOnInit(): void {
-
+    this.getPlaylistData();
   }
   getPlaylistData() {
     this._request.currentPage = this.pager;
@@ -104,7 +103,7 @@ export class PlaylistCreationComponent {
     // }, (reason) => {
     // });
     this._commonFacade.setSession("ModelShow", null);
-    this._router.navigate(['users/add-user']);
+    this._router.navigate(['medias/playlist-configure']);
   }
 
   SearchWithId(_searchItem: any) {

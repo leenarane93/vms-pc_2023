@@ -62,7 +62,7 @@ import { PlaylistConfigureComponent } from './components/media/playlist-configur
 import { CmTooltipComponent } from './widget/cm-tooltip/cm-tooltip.component';
 import { TooltipDirective } from './interceptor/interceptors/tooltip.directive';
 import { CmMediaModalComponent } from './widget/cm-media-modal/cm-media-modal.component';
-
+import { AngularDraggableModule } from 'angular2-draggable';
 @NgModule({
   declarations: [
     AppComponent,
@@ -125,7 +125,8 @@ import { CmMediaModalComponent } from './widget/cm-media-modal/cm-media-modal.co
     LeafletDrawModule,
     LeafletModule,
     RxReactiveFormsModule,
-    DataTablesModule
+    DataTablesModule,
+    AngularDraggableModule
   ],
   exports: [TooltipDirective],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },

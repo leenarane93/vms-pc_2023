@@ -1,6 +1,14 @@
-<div class="p-4">
+<div class="container">
     <div class="row">
-                             
+        <div class="col-md-2">
+            <button class="btn btn-primary float-left" (click)="OpenModal(cmmodal)">
+                <span class="spinner-border-sm me-1"></span>
+                Add New
+            </button>
+        </div>
+    </div>
+    <div class="row">
+
         <div class="row">
             <div class="col-md-12 ">
                 <app-cm-table [headArr]="headerArr" [gridArr]="listOfPlaylist" [totalRecords]="totalRecords"
@@ -9,8 +17,11 @@
                     fieldName="id" (search)="onPageSearch($event)" (searchWithId)="SearchWithId($event)"></app-cm-table>
             </div>
         </div>
-    
-          
+
+
     </div>
-    
-    </div>
+</div>
+
+<ng-template #cmmodal let-modal>
+    <app-cm-modal></app-cm-modal>
+</ng-template>
