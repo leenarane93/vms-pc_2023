@@ -239,8 +239,31 @@
         </div>
         <div class="container">
           <div class="card">
-            <table class="table-striped text-center" mat-table #table class="mat-elevation-z8"
-              cdkDropList [cdkDropListData]="selectedMedia" (cdkDropListDropped)="dropTable($event)">
+            <table class="table-striped text-center" mat-table #table class="mat-elevation-z8" cdkDropList
+              [cdkDropListData]="selectedMedia" (cdkDropListDropped)="dropTable($event)">
+              <tr>
+                <th>Sequence No</th>
+                <th>File/Content Name</th>
+                <th>Block Number</th>
+                <th>Duration(Seconds)</th>
+                <th>Party Name</th>
+                <th>Tarrif Name</th>
+                <th>Remove</th>
+              </tr>
+              <tr *ngFor="let m of dataSource">
+                <td></td>
+                <td>{{m.fileName}}</td>
+                <td><input type="text" class="form-control" placeholder="Block Number" value="1" disabled="true" /></td>
+                <td><input type="text" class="form-control" placeholder="Duration" value="100" disabled="true" /></td>
+                <td><select class="form-control form-control-sm">
+                    <option value="0">Select Party</option>
+                    <option *ngFor="let prt of partyDetails" value="prt.id">{{prt.partyName}}</option>
+                  </select></td>
+                <td><select class="form-control form-control-sm">
+                    <option value="0">Select Tarrif</option>
+                    <option *ngFor="let trf of tarrifDetails" value="trf.id">{{trf.tarrifType}}</option>
+                  </select></td>
+              </tr>
             </table>
           </div>
         </div>

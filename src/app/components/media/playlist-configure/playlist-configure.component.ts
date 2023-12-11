@@ -65,11 +65,13 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   styleUrls: ['./playlist-configure.component.css']
 })
 export class PlaylistConfigureComponent {
+  tarrifDetails: any[] = [];
+  partyDetails: any[] = [];
   @ViewChild("table", { static: false }) table: any;
-  plid:number=0;
-  seqData:any[]=[];
+  plid: number = 0;
+  seqData: any[] = [];
   dataSource: MediaDetails[];
-  plBlData:any[]=[];
+  plBlData: any[] = [];
   searchText: string = "";
   alignlist: any = [];
   nodeLeft: number;
@@ -179,7 +181,10 @@ export class PlaylistConfigureComponent {
     this.stepper = new Stepper(document.querySelector('#stepper1') as HTMLElement, {
       linear: false,
       animation: true
-    })
+    });
+
+    this.GetTarrifDetails();
+    this.GetPartyDetails();
   }
   StepNext(step: number) {
     if (step == 0) {
@@ -206,6 +211,7 @@ export class PlaylistConfigureComponent {
         //   if(res != null && res != 0) {
         //     this.toast.success("Saved Successfully");
         //     this.form.reset();
+        //     this.plid = res;
         //     //this.router.navigate(['medias/playlist-creation']);
         //   } else {
         //     this.toast.error("An error occured while processing your request.","Error",{positionClass:"toast-botton-right"});
@@ -219,11 +225,13 @@ export class PlaylistConfigureComponent {
       this.stepper.next();
     }
     else if (step == 2) {
-      if(this.selectedMedia.length > 0) {
+      if (this.selectedMedia.length > 0) {
         this.stepper.next();
+        this.dataSource = this.selectedMedia;
+        console.log(this.dataSource);
       }
-      else 
-        this.toast.error("Media not selected","Error",{positionClass:"toast-bottom-right"}); 
+      else
+        this.toast.error("Media not selected", "Error", { positionClass: "toast-bottom-right" });
     }
   }
 
@@ -252,11 +260,6 @@ export class PlaylistConfigureComponent {
   ResetForm(step: number) {
 
   }
-  UndoBlock() {
-
-  }
-
-
   addNewBlock() {
     var maxId = Math.max.apply(
       Math,
@@ -444,6 +447,9 @@ export class PlaylistConfigureComponent {
             this.selectedMedia.splice(i, 1);
         }
       }
+      else {
+        this.selectedMedia.push(_data);
+      }
     }
   }
 
@@ -477,4 +483,19 @@ export class PlaylistConfigureComponent {
       this.plBlData.push(_pl);
     }
   }
+
+  GetTarrifDetails() {
+    let _data = { "currentPage": "0", "pageSize": "0", "startId": "0", "searchItem": null };
+    this._media.getTarrifData(_data).subscribe(res => {
+      this.tarrifDetails = res.data;
+    });
+  }
+
+  GetPartyDetails() {
+    let _data = { "currentPage": "0", "pageSize": "0", "startId": "0", "searchItem": null };
+    this._media.getPartyData(_data).subscribe(res => {
+      this.partyDetails = res.data;
+    });
+  }
 }
+

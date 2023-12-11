@@ -9,8 +9,8 @@ import { AdminFacadeService } from './admin-facade.service';
 export class MediaFacadeService {
 
   constructor(private _mediaUploadService: MediaUploadService,
-              private _playlistService:PlaylistService,
-              private _adminFacade : AdminFacadeService) { }
+    private _playlistService: PlaylistService,
+    private _adminFacade: AdminFacadeService) { }
   getMediaUploadDetails(data: any) {
     return this._mediaUploadService.getuploaddetails(data);
   }
@@ -40,7 +40,7 @@ export class MediaFacadeService {
     return this._mediaUploadService.addTextDetails(data);
   }
 
-  addPlaylistMaster(data:any) { 
+  addPlaylistMaster(data: any) {
     return this._playlistService.addPlaylistMaster(data);
   }
   getAllMediaDetails() {
@@ -49,14 +49,14 @@ export class MediaFacadeService {
   getAllTextDetails() {
     return this._playlistService.getAllTextDetails();
   }
-  getVideoDuration(data:any){
+  getVideoDuration(data: any) {
     return this._playlistService.GetVideoDurationFromAPI(data);
   }
 
-  getPartyData(data:any){
-    this._adminFacade.getParties(data);
+  getPartyData(data: any) {
+    return this._adminFacade.getParties(data);
   }
-  getTarrifData(data:any){
-    this._adminFacade.getTarrifs(data);
+  getTarrifData(data: any) {
+    return this._adminFacade.getTarrifs(data);
   }
 }
