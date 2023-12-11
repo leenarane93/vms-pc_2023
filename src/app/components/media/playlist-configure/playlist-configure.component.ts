@@ -40,7 +40,8 @@ export class CustomAdapter extends NgbDateAdapter<string> {
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
   readonly DELIMITER = '/';
-
+  active = 1;
+  activeNav: number = 1;
   parse(value: string): NgbDateStruct | null {
     if (value) {
       const date = value.split(this.DELIMITER);
@@ -116,6 +117,8 @@ export class PlaylistConfigureComponent {
   };
   stepper: Stepper;
   inBounds = true;
+  textDetails: any[] = [];
+  mediaDetails: any[] = [];
   constructor(public activeModal: NgbActiveModal,
     public router: Router,
     private ngbCalendar: NgbCalendar,
@@ -200,6 +203,10 @@ export class PlaylistConfigureComponent {
         // })
         this.stepper.next();
       }
+    }
+    else if (step == 1) {
+      this.getMediaDetails();
+      this.stepper.next();
     }
   }
 
@@ -364,4 +371,24 @@ export class PlaylistConfigureComponent {
     }
   }
   //
+  tabChange() { }
+
+  getMediaDetails() {
+    this._media.getAllMediaDetails().subscribe(res => {
+      if (res != null && res.length > 0) {
+        this.mediaDetails = res;
+        this.getTextDetails();
+      }
+      else
+        this.toast.error("Failed to failed media details.", "Error", { positionClass: "toast-bottom-right" });
+    }, (err) => { console.log(err) })
+  }
+  getTextDetails() {
+    this._media.getAllTextDetails().subscribe(res => {
+      if (res != null && res.length > 0)
+        this.textDetails = res;
+      else
+        this.toast.error("Failed to failed text details.", "Error", { positionClass: "toast-bottom-right" });
+    }, (err) => { console.log(err) })
+  }
 }

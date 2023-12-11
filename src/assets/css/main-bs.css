@@ -5003,8 +5003,8 @@ fieldset:disabled .ajax-upload-dragdrop a.ajax-file-upload,
 
 .btn-primary {
     color: #fff;
-    background-color: #ec37fc;
-    border-color: #ec37fc;
+    background-color: #ec37fc!important;
+    border-color: #ec37fc!important;
 }
 
 .btn-primary:hover {

@@ -14,4 +14,10 @@ export class PlaylistService {
   addPlaylistMaster(data: any) {
     return this._httpService._postMethod(data, 'media_api/api/PlaylistMaster/PostPlaylistMaster');
   }
+  getAllMediaDetails(){
+    return this._httpService._getMethod("Media_API/api/MediaMaster/GetAllMediaDetailsForBlocks");
+  }
+  getAllTextDetails(){
+    return this._httpService._getMethod("Media_API/api/MediaMaster/GetAllTextDetails");
+  }
 }

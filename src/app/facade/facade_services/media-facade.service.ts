@@ -41,5 +41,10 @@ export class MediaFacadeService {
   addPlaylistMaster(data:any) { 
     return this._playlistService.addPlaylistMaster(data);
   }
-
+  getAllMediaDetails() {
+    return this._playlistService.getAllMediaDetails();
+  }
+  getAllTextDetails() {
+    return this._playlistService.getAllTextDetails();
+  }
 }
