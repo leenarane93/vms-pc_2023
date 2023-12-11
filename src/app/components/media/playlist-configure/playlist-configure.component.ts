@@ -8,8 +8,9 @@ import { Globals } from 'src/app/utils/global';
 import { getErrorMsg } from 'src/app/utils/utils';
 import { ToastrService } from 'ngx-toastr';
 import { MediaFacadeService } from 'src/app/facade/facade_services/media-facade.service';
-import { MediaDuration, PlaylistMaster } from 'src/app/models/media/PlaylistMaster';
+import { MediaDetails, MediaDuration, PlBlMdDetails, PlaylistMaster } from 'src/app/models/media/PlaylistMaster';
 import { Router } from '@angular/router';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -64,6 +65,11 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   styleUrls: ['./playlist-configure.component.css']
 })
 export class PlaylistConfigureComponent {
+  @ViewChild("table", { static: false }) table: any;
+  plid:number=0;
+  seqData:any[]=[];
+  dataSource: MediaDetails[];
+  plBlData:any[]=[];
   searchText: string = "";
   alignlist: any = [];
   nodeLeft: number;
@@ -438,6 +444,37 @@ export class PlaylistConfigureComponent {
             this.selectedMedia.splice(i, 1);
         }
       }
+    }
+  }
+
+  dropTable(event: CdkDragDrop<any[]>) {
+    var r = 1;//this.FormValidation();
+    if (r == 1) {
+      const prevIndex = this.selectedMedia.findIndex((d) => d === event.item.data);
+      moveItemInArray(this.selectedMedia, prevIndex, event.currentIndex);
+      this.table.renderRows();
+      var dCurr = this.selectedMedia[event.currentIndex];
+      var dPrev = this.selectedMedia[prevIndex];
+      var currSeq = this.seqData[event.currentIndex];
+      this.changeSequence();
+    }
+  }
+  changeSequence() {
+    this.plBlData = [];
+    for (var i = 0; i < this.dataSource.length; i++) {
+      let _pl = new PlBlMdDetails();
+      this.dataSource[i].seqNo = i + 1;
+      _pl.blId = this.dataSource[i].block;
+      _pl.duration = this.dataSource[i].duration;
+      _pl.effectIn = this.dataSource[i].eIn;
+      _pl.effectOut = this.dataSource[i].eOut;
+      _pl.mdId = this.dataSource[i].id;
+      _pl.partyId = this.dataSource[i].party;
+      _pl.tarrifId = this.dataSource[i].tarrif;
+      _pl.plId = this.plid;
+      _pl.sequenceNo = this.dataSource[i].seqNo;
+      _pl.mediaName = this.plid + "_" + this.dataSource[i].seqNo + ".avi";
+      this.plBlData.push(_pl);
     }
   }
 }

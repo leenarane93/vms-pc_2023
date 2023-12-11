@@ -63,6 +63,8 @@ import { CmTooltipComponent } from './widget/cm-tooltip/cm-tooltip.component';
 import { TooltipDirective } from './interceptor/interceptors/tooltip.directive';
 import { CmMediaModalComponent } from './widget/cm-media-modal/cm-media-modal.component';
 import { AngularDraggableModule } from 'angular2-draggable';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { CdkTableModule } from "@angular/cdk/table";
 @NgModule({
   declarations: [
     AppComponent,
@@ -126,7 +128,9 @@ import { AngularDraggableModule } from 'angular2-draggable';
     LeafletModule,
     RxReactiveFormsModule,
     DataTablesModule,
-    AngularDraggableModule
+    AngularDraggableModule,
+    DragDropModule,
+    CdkTableModule
   ],
   exports: [TooltipDirective],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
