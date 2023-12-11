@@ -11,3 +11,6 @@ export class PlaylistMaster {
     remarks: string;
     auditedBy: string;
 }
+export class MediaDuration {
+    path: string;
+  }

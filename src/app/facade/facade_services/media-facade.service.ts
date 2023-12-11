@@ -47,4 +47,7 @@ export class MediaFacadeService {
   getAllTextDetails() {
     return this._playlistService.getAllTextDetails();
   }
+  getVideoDuration(data:any){
+    return this._playlistService.GetVideoDurationFromAPI(data);
+  }
 }

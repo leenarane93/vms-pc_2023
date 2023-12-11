@@ -20,4 +20,7 @@ export class PlaylistService {
   getAllTextDetails(){
     return this._httpService._getMethod("Media_API/api/MediaMaster/GetAllTextDetails");
   }
+  GetVideoDurationFromAPI(path:any) {
+    return this._httpService._postMethod(path,"User_API/api/User/GetMediaDurationFromUser");
+  }
 }

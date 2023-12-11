@@ -8,7 +8,7 @@ import { Globals } from 'src/app/utils/global';
 import { getErrorMsg } from 'src/app/utils/utils';
 import { ToastrService } from 'ngx-toastr';
 import { MediaFacadeService } from 'src/app/facade/facade_services/media-facade.service';
-import { PlaylistMaster } from 'src/app/models/media/PlaylistMaster';
+import { MediaDuration, PlaylistMaster } from 'src/app/models/media/PlaylistMaster';
 import { Router } from '@angular/router';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -64,6 +64,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   styleUrls: ['./playlist-configure.component.css']
 })
 export class PlaylistConfigureComponent {
+  searchText: string = "";
   alignlist: any = [];
   nodeLeft: number;
   nodeTop: number;
@@ -117,8 +118,11 @@ export class PlaylistConfigureComponent {
   };
   stepper: Stepper;
   inBounds = true;
+  mainTextDetails: any[] = [];
+  mainMediaDetails: any[] = [];
   textDetails: any[] = [];
   mediaDetails: any[] = [];
+  selectedMedia: any[] = [];
   constructor(public activeModal: NgbActiveModal,
     public router: Router,
     private ngbCalendar: NgbCalendar,
@@ -207,6 +211,13 @@ export class PlaylistConfigureComponent {
     else if (step == 1) {
       this.getMediaDetails();
       this.stepper.next();
+    }
+    else if (step == 2) {
+      if(this.selectedMedia.length > 0) {
+        this.stepper.next();
+      }
+      else 
+        this.toast.error("Media not selected","Error",{positionClass:"toast-bottom-right"}); 
     }
   }
 
@@ -376,6 +387,7 @@ export class PlaylistConfigureComponent {
   getMediaDetails() {
     this._media.getAllMediaDetails().subscribe(res => {
       if (res != null && res.length > 0) {
+        this.mainMediaDetails = res;
         this.mediaDetails = res;
         this.getTextDetails();
       }
@@ -385,10 +397,47 @@ export class PlaylistConfigureComponent {
   }
   getTextDetails() {
     this._media.getAllTextDetails().subscribe(res => {
-      if (res != null && res.length > 0)
+      if (res != null && res.length > 0) {
+        this.mainTextDetails = res;
         this.textDetails = res;
+      }
       else
         this.toast.error("Failed to failed text details.", "Error", { positionClass: "toast-bottom-right" });
     }, (err) => { console.log(err) })
+  }
+
+  Search() {
+    let _d: any[] = [];
+    this.mainMediaDetails.forEach(ele => {
+      if (ele.fileName.includes(this.searchText))
+        _d.push(ele);
+    });
+    this.mediaDetails = _d;
+
+    _d = [];
+    this.mainTextDetails.forEach(ele => {
+      if (ele.textContent.includes(this.searchText))
+        _d.push(ele);
+    });
+    this.textDetails = _d;
+  }
+
+  MediaCheck(_data: any, event: any, type: any) {
+    if (type == 0) {
+      if (_data.fileType.toLocaleLowerCase() == "video" && event.currentTarget.checked == true) {
+        var _mPath = new MediaDuration();
+        _mPath.path = _data.filePath;
+        this._media.getVideoDuration(_mPath).subscribe(res => {
+          _data.duration = Math.round(res);
+          this.selectedMedia.push(_data);
+        });
+      }
+      else if (event.currentTarget.checked == false) {
+        for (var i = 0; i < this.selectedMedia.length; i++) {
+          if (this.selectedMedia[i].id == _data.id)
+            this.selectedMedia.splice(i, 1);
+        }
+      }
+    }
   }
 }
