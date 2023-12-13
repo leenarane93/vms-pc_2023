@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Injectable, Input, Output, Renderer2, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal, NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbTimeStruct, NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModal, NgbTimeStruct, NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import Stepper from 'bs-stepper';
 import * as $ from 'jquery';
@@ -11,6 +11,7 @@ import { MediaFacadeService } from 'src/app/facade/facade_services/media-facade.
 import { MediaDetails, MediaDuration, PlBlMdDetails, PlaylistMaster } from 'src/app/models/media/PlaylistMaster';
 import { Router } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CmMediaModalComponent } from 'src/app/widget/cm-media-modal/cm-media-modal.component';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -71,6 +72,11 @@ export class PlaylistConfigureComponent {
   plid: number = 0;
   seqData: any[] = [];
   dataSource: MediaDetails[];
+  dataSource1 = [
+    { id: 1, name: "Angular", price: "45.00" },
+    { id: 2, name: "React Js", price: "30.00" },
+    { id: 3, name: "Vue Js", price: "20.00" }
+  ];
   plBlData: any[] = [];
   searchText: string = "";
   alignlist: any = [];
@@ -140,7 +146,8 @@ export class PlaylistConfigureComponent {
     private fb: FormBuilder,
     private global: Globals,
     private toast: ToastrService,
-    private _media: MediaFacadeService
+    private _media: MediaFacadeService,
+    private modalService: NgbModal,
   ) { config.seconds = true; config.spinners = false; this.global.CurrentPage = "Playlist Configuration" }
 
   name = 'Angular';
@@ -256,11 +263,50 @@ export class PlaylistConfigureComponent {
   prev() {
 
   }
-  BackToList() { }
-  ResetForm(step: number) {
-
+  BackToList() {
+    this.router.navigate(['medias/playlist-creation']);
+  }
+  ResetForm(form: number) {
+    if (form == 0)
+      this.router.navigate(['medias/playlist-creation']);
+    else if (form == 1) {
+      this.form.reset();
+    }
+    else if (form == 2) {
+      //this.nodeDetails = [];
+      this.heighttxt = this.form.controls["height"].value;
+        this.widthtxt = this.form.controls["width"].value;
+        var _master = new PlaylistMaster();
+        _master.id = 0;
+        _master.isActive = true;
+        _master.createdBy = this.global.UserCode;
+        _master.height = this.form.controls["height"].value;
+        _master.width = this.form.controls["width"].value;
+        _master.playlistName = this.form.controls["playlistName"].value;
+        _master.status = 0;
+        this.nodeHeight = 50;
+        this.nodeWidth = 50;
+        this.nodeTop = 0;
+        this.nodeLeft = 0;
+        this.nodeDetails[0].maxheight = this.heighttxt;
+        this.nodeDetails[0].maxWidth = this.widthtxt;
+        this.nodeDetails[0].height = 50;
+        this.nodeDetails[0].width = 50;
+    }
+    else if (form == 3) {
+      this.mainMediaDetails.forEach(element => {
+        element.isChecked = false;
+      });
+      this.mainTextDetails.forEach(element => {
+        element.isChecked = false;
+      });
+    }
+    else if (form == 4) {
+      this.dataSource = [];
+    }
   }
   addNewBlock() {
+    this.stepper.to(2);
     var maxId = Math.max.apply(
       Math,
       this.nodeDetails.map(function (o: any) {
@@ -291,6 +337,13 @@ export class PlaylistConfigureComponent {
 
     this.currentBlock = this.currentBlock + 1;
     this.manageAllignment();
+  }
+
+  addNewMedia() {
+    this.getMediaDetails();
+    this.stepper.to(3);
+    this.textDetails = this.mainTextDetails;
+    this.mediaDetails = this.mainMediaDetails;
   }
 
   manageAllignment() {
@@ -416,17 +469,26 @@ export class PlaylistConfigureComponent {
   }
 
   Search() {
+
     let _d: any[] = [];
     this.mainMediaDetails.forEach(ele => {
-      if (ele.fileName.includes(this.searchText))
+      let _data = this.selectedMedia.find(x => x.id == ele.id);
+      if (_data == undefined)
+        ele.isChecked = false;
+      if (ele.fileName.toLocaleLowerCase().includes(this.searchText.toLocaleLowerCase())) {
         _d.push(ele);
+      }
     });
     this.mediaDetails = _d;
 
     _d = [];
     this.mainTextDetails.forEach(ele => {
-      if (ele.textContent.includes(this.searchText))
+      let _data = this.selectedMedia.find(x => x.id == ele.id);
+      if (_data == undefined)
+        ele.isChecked = false;
+      if (ele.textContent.toLocaleLowerCase().includes(this.searchText.toLocaleLowerCase())) {
         _d.push(ele);
+      }
     });
     this.textDetails = _d;
   }
@@ -436,18 +498,34 @@ export class PlaylistConfigureComponent {
       if (_data.fileType.toLocaleLowerCase() == "video" && event.currentTarget.checked == true) {
         var _mPath = new MediaDuration();
         _mPath.path = _data.filePath;
+        _data.isChecked = true;
         this._media.getVideoDuration(_mPath).subscribe(res => {
           _data.duration = Math.round(res);
           this.selectedMedia.push(_data);
         });
       }
       else if (event.currentTarget.checked == false) {
+        _data.isChecked = false;
         for (var i = 0; i < this.selectedMedia.length; i++) {
           if (this.selectedMedia[i].id == _data.id)
             this.selectedMedia.splice(i, 1);
         }
       }
       else {
+        _data.isChecked = true;
+        this.selectedMedia.push(_data);
+      }
+    }
+    else {
+      if (event.currentTarget.checked == false) {
+        _data.isChecked = false;
+        for (var i = 0; i < this.selectedMedia.length; i++) {
+          if (this.selectedMedia[i].id == _data.id)
+            this.selectedMedia.splice(i, 1);
+        }
+      }
+      else {
+        _data.isChecked = true;
         this.selectedMedia.push(_data);
       }
     }
@@ -497,5 +575,33 @@ export class PlaylistConfigureComponent {
       this.partyDetails = res.data;
     });
   }
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.dataSource, event.previousIndex, event.currentIndex);
+  }
+
+  RemoveFromDt(_data: any) {
+    for (var i = 0; i < this.dataSource.length; i++) {
+      if (this.selectedMedia[i].id == _data.id)
+        this.selectedMedia.splice(i, 1);
+    }
+  }
+
+  ViewMedia(_data:any) {
+    if(_data.textContent != undefined && _data.textContent != "") {
+      let _inputData = {"filePath":_data.fileName,"fileType":"Text","uploadSetId":_data.uploadSetId}; 
+      const modalRef = this.modalService.open(CmMediaModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
+        let _reqdata = { "action": "view", urls: [], modalType: "playlistcreation", content: _inputData };
+        modalRef.componentInstance.data = _reqdata; 
+    }
+    else {
+      let _inputData = {"filePath":_data.filePath,"fileType":"Media","uploadSetId":_data.uploadSetId};
+      const modalRef = this.modalService.open(CmMediaModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
+        let _reqdata = { "action": "view", urls: [], modalType: "playlistcreation", content: _inputData };
+        modalRef.componentInstance.data = _reqdata;
+    }
+    
+  }
 }
+
+
 

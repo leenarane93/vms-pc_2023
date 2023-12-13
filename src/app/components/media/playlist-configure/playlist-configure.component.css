@@ -562,3 +562,7 @@ textarea {
 .show>.btn-info.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(85, 164, 252, 0.5);
 }
+
+.tab4 {
+  tab-size: 8;
+}

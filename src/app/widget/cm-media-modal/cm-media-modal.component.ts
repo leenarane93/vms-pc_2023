@@ -14,20 +14,20 @@ export class CmMediaModalComponent implements OnInit {
   isImage: boolean = false;
   isText: boolean = false;
   imgData: string;
-  mediaType:string = "";
+  mediaType: string = "";
   @Input() data: any;
-  viewData:any[]=[];
+  viewData: any[] = [];
   type: string = "Media Upload";
   constructor(private _mediaFacade: MediaFacadeService,
     private _toast: ToastrService,
-    private modal:NgbModal) {
+    private modal: NgbModal) {
 
   }
   ngOnInit() {
-    this.mediaType =this.data.content.mediaType;
+    this.mediaType = this.data.content.mediaType;
     if (this.data.modalType == "mediaupload") {
       let _uploadSetId = this.data.content.uploadSetId;
-      if(this.mediaType != "Text") {
+      if (this.mediaType != "Text") {
         this._mediaFacade.getMediaByUsID(_uploadSetId).subscribe(res => {
           if (res == undefined || res == null)
             this._toast.error("Something is wrong, Please contact sytem administration", "Error", { positionClass: "toast-right-bottom" });
@@ -49,25 +49,53 @@ export class CmMediaModalComponent implements OnInit {
           }
         })
       }
-      
+
+    }
+    else if (this.data.modalType == "playlistcreation") {
+      this.mediaType = this.data.content.fileType;
+      let plData = { "filePath": this.data.content.filePath, "fileType": this.data.content.fileType }
+      this.viewData.push(plData);
+
     }
   }
 
-  passBack(){
+  passBack() {
     this.modal.dismissAll();
   }
-  ViewMedia(filepath:string,type:string) {
-    let data = {"mediaPath":filepath,"mediaType":type};
-    this._mediaFacade.getMediaString(data).subscribe(res=>{
-      if(res != null) {
-        this.isViewMedia = true;
-        this.isImage = true;
-        this.imgData = res;
+  ViewMedia(filepath: string, type: string) {
+    if (this.data.modalType == "mediaupload") {
+      let data = { "mediaPath": filepath, "mediaType": type };
+      this._mediaFacade.getMediaString(data).subscribe(res => {
+        if (res != null) {
+          this.isViewMedia = true;
+          this.isImage = true;
+          this.imgData = res;
+        }
+        else {
+          this._toast.error("Something is wrong, Please contact sytem administration", "Error", { positionClass: "toast-right-bottom" });
+        }
+      })
+    }
+    if (this.data.modalType == "playlistcreation") {
+      if(this.data.content.fileType == "Text") {
+        let data = { "mediaPath": this.data.content.filePath, "mediaType": type };
+        this._mediaFacade.getMediaString(data).subscribe(res => {
+          if (res != null) {
+            this.isViewMedia = true;
+            this.isImage = true;
+            this.imgData = res;
+          }
+          else {
+            this._toast.error("Something is wrong, Please contact sytem administration", "Error", { positionClass: "toast-right-bottom" });
+          }
+        })
       }
       else {
-        this._toast.error("Something is wrong, Please contact sytem administration", "Error", { positionClass: "toast-right-bottom" });
+        this.isViewMedia = true;
+        this.isImage = true;
+        this.imgData = this.data.content.filePath;
       }
-    })
+    }
   }
 
 } 

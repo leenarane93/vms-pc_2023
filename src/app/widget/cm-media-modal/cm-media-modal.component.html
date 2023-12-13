@@ -15,29 +15,56 @@
                 Action
             </th>
         </tr>
-        <tr *ngFor="let media of viewData">
-            <div class="row spacing" *ngIf="mediaType == 'Media'">
-                <div class="col-md-9">
-                    {{media.fileName}}
+        <tbody *ngIf="data.modalType == 'mediaupload'">
+            <tr *ngFor="let media of viewData" >
+                <div class="row spacing" *ngIf="mediaType == 'Media'">
+                    <div class="col-md-9">
+                        {{media.fileName}}
+                    </div>
+                    <div class="col-md-3 text-right">
+                        <button tooltip="Click to View" placement="top" delay="500" type="button"
+                            class="btn btn-inverse-primary btn-sm" (click)="ViewMedia(media.filePath, media.fileType)">View
+                            File</button>
+                    </div>
                 </div>
-                <div class="col-md-3 text-right">
-                    <button tooltip="Click to View" placement="top" delay="500" type="button"
-                        class="btn btn-inverse-primary btn-sm" (click)="ViewMedia(media.filePath, media.fileType)">View
-                        File</button>
+                
+                <div class="row spacing" *ngIf="mediaType == 'Text'">
+                    <div class="col-md-9">
+                        {{media.textContent}}
+                    </div>
+                    <div class="col-md-3 text-right">
+                        <button tooltip="Click to View" placement="top" delay="500" type="button"
+                            class="btn btn-inverse-primary btn-sm" (click)="ViewMedia(media.fileName, 'Image')">View
+                            File</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="row spacing" *ngIf="mediaType == 'Text'">
-                <div class="col-md-9">
-                    {{media.textContent}}
+            </tr>
+        </tbody>
+        <tbody *ngIf="data.modalType == 'playlistcreation'">
+            <tr *ngFor="let media of viewData" >
+                <div class="row spacing" *ngIf="mediaType == 'Media'">
+                    <div class="col-md-9">
+                        {{media.fileName}}
+                    </div>
+                    <div class="col-md-3 text-right">
+                        <button tooltip="Click to View" placement="top" delay="500" type="button"
+                            class="btn btn-inverse-primary btn-sm" (click)="ViewMedia(media.filePath, media.fileType)">View
+                            File</button>
+                    </div>
                 </div>
-                <div class="col-md-3 text-right">
-                    <button tooltip="Click to View" placement="top" delay="500" type="button"
-                        class="btn btn-inverse-primary btn-sm" (click)="ViewMedia(media.fileName, 'Image')">View
-                        File</button>
+                
+                <div class="row spacing" *ngIf="mediaType == 'Text'">
+                    <div class="col-md-9">
+                        {{media.textContent}}
+                    </div>
+                    <div class="col-md-3 text-right">
+                        <button tooltip="Click to View" placement="top" delay="500" type="button"
+                            class="btn btn-inverse-primary btn-sm" (click)="ViewMedia(media.fileName, 'Image')">View
+                            File</button>
+                    </div>
                 </div>
-            </div>
-        </tr>
+            </tr>
+        </tbody>
     </table>
     <div class="row">
         <div class="col-md-6">
@@ -54,7 +81,7 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="isViewMedia" class="onlyBgImg">
+            <div *ngIf="isViewMedia && (isImage == false)" class="onlyBgImg">
                 <div class="col-12 mt-5 pr-1 pl-1">
                     <div ngClass="col-12 px-xl-1'">
                         <ng-template #tableListVms>
