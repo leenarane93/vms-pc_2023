@@ -12,31 +12,31 @@
   <div id="stepper1" class="bs-stepper card">
     <div class="bs-stepper-header">
       <div class="step" data-target="#test-l-1">
-        <button class="step-trigger">
+        <button class="step-trigger" disabled>
           <span class="bs-stepper-circle">1</span>
           <span class="bs-stepper-label">Playlist Info.</span>
         </button>
       </div>
       <div class="step" data-target="#test-l-2">
-        <button class="step-trigger">
+        <button class="step-trigger" disabled>
           <span class="bs-stepper-circle">2</span>
           <span class="bs-stepper-label">Block Configuration</span>
         </button>
       </div>
       <div class="step" data-target="#test-l-3">
-        <button class="step-trigger">
+        <button class="step-trigger" disabled>
           <span class="bs-stepper-circle">3</span>
           <span class="bs-stepper-label">Media Selection</span>
         </button>
       </div>
       <div class="step" data-target="#test-l-4">
-        <button class="step-trigger">
+        <button class="step-trigger" disabled>
           <span class="bs-stepper-circle">4</span>
           <span class="bs-stepper-label">Media Management</span>
         </button>
       </div>
       <div class="step" data-target="#test-l-3">
-        <button class="step-trigger">
+        <button class="step-trigger" disabled>
           <span class="bs-stepper-circle">5</span>
           <span class="bs-stepper-label">Finish</span>
         </button>
@@ -310,7 +310,7 @@
                 <button type="button" class="btn btn-warning mt-5" (click)="addNewBlock()">Add Block</button>&nbsp;&nbsp;
                 <button type="button" class="btn btn-warning mt-5" (click)="addNewMedia()">Add Media</button>&nbsp;&nbsp;
                 <button type="button" class="btn btn-danger mt-5" (click)="ResetForm(4)">Reset</button>&nbsp;&nbsp;
-                <button type="button" class="btn btn-success mt-5">Submit</button>
+                <button type="button" class="btn btn-success mt-5" (click)="StepNext(3)">Submit</button>
               </div>
             </div>
           </div>

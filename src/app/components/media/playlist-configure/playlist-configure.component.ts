@@ -240,6 +240,9 @@ export class PlaylistConfigureComponent {
       else
         this.toast.error("Media not selected", "Error", { positionClass: "toast-bottom-right" });
     }
+    else if(step == 3){
+      console.log(this.plBlData);
+    }
   }
 
   ValidationCheck(step: number) {
@@ -550,8 +553,8 @@ export class PlaylistConfigureComponent {
       this.dataSource[i].seqNo = i + 1;
       _pl.blId = this.dataSource[i].block;
       _pl.duration = this.dataSource[i].duration;
-      _pl.effectIn = this.dataSource[i].eIn;
-      _pl.effectOut = this.dataSource[i].eOut;
+      _pl.effectIn = 0;
+      _pl.effectOut = 0;
       _pl.mdId = this.dataSource[i].id;
       _pl.partyId = this.dataSource[i].party;
       _pl.tarrifId = this.dataSource[i].tarrif;
@@ -577,6 +580,7 @@ export class PlaylistConfigureComponent {
   }
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.dataSource, event.previousIndex, event.currentIndex);
+    this.changeSequence();
   }
 
   RemoveFromDt(_data: any) {
@@ -588,7 +592,7 @@ export class PlaylistConfigureComponent {
 
   ViewMedia(_data:any) {
     if(_data.textContent != undefined && _data.textContent != "") {
-      let _inputData = {"filePath":_data.fileName,"fileType":"Text","uploadSetId":_data.uploadSetId}; 
+      let _inputData = {"filePath":_data.fileName,"fileType":"Media","uploadSetId":_data.uploadSetId}; 
       const modalRef = this.modalService.open(CmMediaModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
         let _reqdata = { "action": "view", urls: [], modalType: "playlistcreation", content: _inputData };
         modalRef.componentInstance.data = _reqdata; 
