@@ -169,7 +169,8 @@
 
           </div>
           <div class="col-lg-8 text-lg-right text-right buttonsdiv my-4 my-lg-0">
-            <button type="button" class="btn btn-danger mt-5" (click)="ResetForm(2)">Reset</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-danger mt-5"
+              (click)="ResetForm(2)">Reset</button>&nbsp;&nbsp;&nbsp;&nbsp;
             <button type="button" class="btn btn-primary mt-5" [disabled]="isCollide"
               (click)="StepNext(1)">Next</button>
           </div>
@@ -209,8 +210,8 @@
                       </button>
                     </div>
                     <div class="col-md-6">
-                      <input tooltip="Check to select" class="form-check-input" (change)="MediaCheck(m, $event,0)" type="checkbox" [checked]="m.isChecked"
-                        id="defaultCheck1">
+                      <input tooltip="Check to select" class="form-check-input" (change)="MediaCheck(m, $event,0)"
+                        type="checkbox" [checked]="m.isChecked" id="defaultCheck1">
                     </div>
                   </div>
                 </td>
@@ -234,25 +235,28 @@
               <tr *ngFor="let t of textDetails" class="tr-dsn">
                 <td>{{t.id}}</td>
                 <td>{{t.textContent}}</td>
-                <td><div class="row">
-                  <div class="col-md-6">
-                    <button tooltip="Click to view" placement="top" delay="500" type="button"
-                      class="btn btn-inverse-primary btn-sm" (click)="ViewMedia(t)">
-                      <i class="icon-eye"></i>
-                    </button>
+                <td>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <button tooltip="Click to view" placement="top" delay="500" type="button"
+                        class="btn btn-inverse-primary btn-sm" (click)="ViewMedia(t)">
+                        <i class="icon-eye"></i>
+                      </button>
+                    </div>
+                    <div class="col-md-6">
+                      <input tooltip="Check to select" class="form-check-input" (change)="MediaCheck(t, $event,1)"
+                        type="checkbox" [checked]="t.isChecked" id="defaultCheck1">
+                    </div>
                   </div>
-                  <div class="col-md-6">
-                    <input tooltip="Check to select" class="form-check-input" (change)="MediaCheck(t, $event,1)" type="checkbox" [checked]="t.isChecked"
-                      id="defaultCheck1">
-                  </div>
-                </div></td>
+                </td>
               </tr>
             </table>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12 text-right">
-            <button type="button" class="btn btn-danger mt-5" (click)="ResetForm(3)">Reset</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-danger mt-5"
+              (click)="ResetForm(3)">Reset</button>&nbsp;&nbsp;&nbsp;&nbsp;
             <button type="button" class="btn btn-primary mt-5" (click)="StepNext(2)">Next</button>
           </div>
         </div>
@@ -282,8 +286,10 @@
                 <tr cdkDrag cdkDragLockAxis="y" *ngFor="let m of dataSource; let i=index;">
                   <td cdkDragHandle>{{i+1}}</td>
                   <td cdkDragHandle>{{m.fileName}}</td>
-                  <td cdkDragHandle><input type="text" class="form-control" placeholder="Block Number" value="1" disabled="true" /></td>
-                  <td cdkDragHandle><input type="text" class="form-control" placeholder="Duration" value="100" disabled="true" /></td>
+                  <td cdkDragHandle><input type="text" class="form-control" placeholder="Block Number"
+                      value="{{m.block}}" disabled="true" /></td>
+                  <td cdkDragHandle><input type="text" class="form-control" placeholder="Duration"
+                      value="{{m.duration}}" disabled="true" /></td>
                   <td cdkDragHandle><select class="form-control-sm">
                       <option value="0">Select Party</option>
                       <option *ngFor="let prt of partyDetails" value="prt.id">{{prt.partyName}}</option>
@@ -292,23 +298,24 @@
                       <option value="0">Select Tarrif</option>
                       <option *ngFor="let trf of tarrifDetails" value="trf.id">{{trf.tarrifType}}</option>
                     </select></td>
-                    <td cdkDragHandle>
-                      <button type="button"
-                      class="btn btn-inverse-primary btn-sm" (click)="RemoveFromDt(m)">
+                  <td cdkDragHandle>
+                    <button type="button" class="btn btn-inverse-primary btn-sm" (click)="RemoveFromDt(m)">
                       <i class="icon-trash"></i>
                     </button>
-                    </td>
-                    <div *cdkDragPreview matchSize="true" class="container dragdrop-placeholder">
-                      {{m.fileName}}
-                    </div>
+                  </td>
+                  <div *cdkDragPreview matchSize="true" class="container dragdrop-placeholder">
+                    {{m.fileName}}
+                  </div>
                 </tr>
               </tbody>
             </table>
 
             <div class="row">
               <div class="col-md-12 text-right">
-                <button type="button" class="btn btn-warning mt-5" (click)="addNewBlock()">Add Block</button>&nbsp;&nbsp;
-                <button type="button" class="btn btn-warning mt-5" (click)="addNewMedia()">Add Media</button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-warning mt-5" (click)="addNewBlock()">Add
+                  Block</button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-warning mt-5" (click)="addNewMedia()">Add
+                  Media</button>&nbsp;&nbsp;
                 <button type="button" class="btn btn-danger mt-5" (click)="ResetForm(4)">Reset</button>&nbsp;&nbsp;
                 <button type="button" class="btn btn-success mt-5" (click)="StepNext(3)">Submit</button>
               </div>

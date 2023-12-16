@@ -51,4 +51,4 @@ export class MediaDetails {
     duration: number;
     selected: boolean;
     isNew: boolean;
-  }
+}

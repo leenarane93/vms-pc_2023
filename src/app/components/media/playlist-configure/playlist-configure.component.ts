@@ -85,7 +85,7 @@ export class PlaylistConfigureComponent {
   nodeHeight: number;
   nodeWidth: number;
   widthtxt: number = 500;
-  currentBlock: any;
+  currentBlock: number = 1;
   heighttxt: number = 500;
   nodeDetails: any = [
     {
@@ -240,7 +240,7 @@ export class PlaylistConfigureComponent {
       else
         this.toast.error("Media not selected", "Error", { positionClass: "toast-bottom-right" });
     }
-    else if(step == 3){
+    else if (step == 3) {
       console.log(this.plBlData);
     }
   }
@@ -278,23 +278,23 @@ export class PlaylistConfigureComponent {
     else if (form == 2) {
       //this.nodeDetails = [];
       this.heighttxt = this.form.controls["height"].value;
-        this.widthtxt = this.form.controls["width"].value;
-        var _master = new PlaylistMaster();
-        _master.id = 0;
-        _master.isActive = true;
-        _master.createdBy = this.global.UserCode;
-        _master.height = this.form.controls["height"].value;
-        _master.width = this.form.controls["width"].value;
-        _master.playlistName = this.form.controls["playlistName"].value;
-        _master.status = 0;
-        this.nodeHeight = 50;
-        this.nodeWidth = 50;
-        this.nodeTop = 0;
-        this.nodeLeft = 0;
-        this.nodeDetails[0].maxheight = this.heighttxt;
-        this.nodeDetails[0].maxWidth = this.widthtxt;
-        this.nodeDetails[0].height = 50;
-        this.nodeDetails[0].width = 50;
+      this.widthtxt = this.form.controls["width"].value;
+      var _master = new PlaylistMaster();
+      _master.id = 0;
+      _master.isActive = true;
+      _master.createdBy = this.global.UserCode;
+      _master.height = this.form.controls["height"].value;
+      _master.width = this.form.controls["width"].value;
+      _master.playlistName = this.form.controls["playlistName"].value;
+      _master.status = 0;
+      this.nodeHeight = 50;
+      this.nodeWidth = 50;
+      this.nodeTop = 0;
+      this.nodeLeft = 0;
+      this.nodeDetails[0].maxheight = this.heighttxt;
+      this.nodeDetails[0].maxWidth = this.widthtxt;
+      this.nodeDetails[0].height = 50;
+      this.nodeDetails[0].width = 50;
     }
     else if (form == 3) {
       this.mainMediaDetails.forEach(element => {
@@ -504,6 +504,7 @@ export class PlaylistConfigureComponent {
         _data.isChecked = true;
         this._media.getVideoDuration(_mPath).subscribe(res => {
           _data.duration = Math.round(res);
+          _data.block = this.currentBlock;
           this.selectedMedia.push(_data);
         });
       }
@@ -516,6 +517,7 @@ export class PlaylistConfigureComponent {
       }
       else {
         _data.isChecked = true;
+        _data.block = this.currentBlock;
         this.selectedMedia.push(_data);
       }
     }
@@ -529,6 +531,7 @@ export class PlaylistConfigureComponent {
       }
       else {
         _data.isChecked = true;
+        _data.block = this.currentBlock;
         this.selectedMedia.push(_data);
       }
     }
@@ -590,20 +593,20 @@ export class PlaylistConfigureComponent {
     }
   }
 
-  ViewMedia(_data:any) {
-    if(_data.textContent != undefined && _data.textContent != "") {
-      let _inputData = {"filePath":_data.fileName,"fileType":"Media","uploadSetId":_data.uploadSetId}; 
+  ViewMedia(_data: any) {
+    if (_data.textContent != undefined && _data.textContent != "") {
+      let _inputData = { "filePath": _data.fileName, "fileType": "Media", "uploadSetId": _data.uploadSetId };
       const modalRef = this.modalService.open(CmMediaModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
-        let _reqdata = { "action": "view", urls: [], modalType: "playlistcreation", content: _inputData };
-        modalRef.componentInstance.data = _reqdata; 
+      let _reqdata = { "action": "view", urls: [], modalType: "playlistcreation", content: _inputData };
+      modalRef.componentInstance.data = _reqdata;
     }
     else {
-      let _inputData = {"filePath":_data.filePath,"fileType":"Media","uploadSetId":_data.uploadSetId};
+      let _inputData = { "filePath": _data.filePath, "fileType": "Media", "uploadSetId": _data.uploadSetId };
       const modalRef = this.modalService.open(CmMediaModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
-        let _reqdata = { "action": "view", urls: [], modalType: "playlistcreation", content: _inputData };
-        modalRef.componentInstance.data = _reqdata;
+      let _reqdata = { "action": "view", urls: [], modalType: "playlistcreation", content: _inputData };
+      modalRef.componentInstance.data = _reqdata;
     }
-    
+
   }
 }
 
