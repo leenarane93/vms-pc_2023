@@ -1,6 +1,6 @@
     {
-        "api_url": "https://172.19.32.139:442/",
-        "swagger_url":"https://172.19.32.139:442/user_api/swagger" ,
+        "api_url": "https://172.19.32.161:442/",
+        "swagger_url": "https://172.19.32.161:442/user_api/swagger",
         "config_unit": [
             {
                 "key": "admin",
