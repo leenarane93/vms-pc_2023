@@ -59,4 +59,7 @@ export class MediaFacadeService {
   getTarrifData(data: any) {
     return this._adminFacade.getTarrifs(data);
   }
+  addPlaylistMedia(data: any,type :number) {
+    return this._playlistService.addPlaylistMedia(data,type);
+  }
 }

@@ -23,4 +23,7 @@ export class PlaylistService {
   GetVideoDurationFromAPI(path:any) {
     return this._httpService._postMethod(path,"User_API/api/User/GetMediaDurationFromUser");
   }
+  addPlaylistMedia(data: any,type : number) {
+    return this._httpService._postMethod(data, 'Media_API/api/PlaylistMedia/PostPlaylistMedia?type='+type);
+  }
 }

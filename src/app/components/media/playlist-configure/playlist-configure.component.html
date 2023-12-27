@@ -288,15 +288,15 @@
                   <td cdkDragHandle>{{m.fileName}}</td>
                   <td cdkDragHandle><input type="text" class="form-control" placeholder="Block Number"
                       value="{{m.block}}" disabled="true" /></td>
-                  <td cdkDragHandle><input type="text" class="form-control" placeholder="Duration"
-                      value="{{m.duration}}" disabled="true" /></td>
-                  <td cdkDragHandle><select class="form-control-sm">
+                  <td cdkDragHandle><input type="number" class="form-control" placeholder="Duration"
+                      value ="{{m.duration}}" [disabled]="m.fileType == 'Video'" #duration (keyup)="onDuration(duration.value,m)"/></td>
+                  <td cdkDragHandle><select class="form-control-sm" (change)="PartyChange(m, $event)">
                       <option value="0">Select Party</option>
-                      <option *ngFor="let prt of partyDetails" value="prt.id">{{prt.partyName}}</option>
+                      <option *ngFor="let prt of partyDetails" [value]="prt.id">{{prt.partyName}}</option>
                     </select></td>
-                  <td cdkDragHandle><select class="form-control-sm">
+                  <td cdkDragHandle><select class="form-control-sm" (change)="TarrifChange(m, $event)">
                       <option value="0">Select Tarrif</option>
-                      <option *ngFor="let trf of tarrifDetails" value="trf.id">{{trf.tarrifType}}</option>
+                      <option *ngFor="let trf of tarrifDetails" [value]="trf.id">{{trf.tarrifType}}</option>
                     </select></td>
                   <td cdkDragHandle>
                     <button type="button" class="btn btn-inverse-primary btn-sm" (click)="RemoveFromDt(m)">

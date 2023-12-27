@@ -72,11 +72,6 @@ export class PlaylistConfigureComponent {
   plid: number = 0;
   seqData: any[] = [];
   dataSource: MediaDetails[];
-  dataSource1 = [
-    { id: 1, name: "Angular", price: "45.00" },
-    { id: 2, name: "React Js", price: "30.00" },
-    { id: 3, name: "Vue Js", price: "20.00" }
-  ];
   plBlData: any[] = [];
   searchText: string = "";
   alignlist: any = [];
@@ -214,16 +209,16 @@ export class PlaylistConfigureComponent {
         this.nodeDetails[0].maxWidth = this.widthtxt;
         this.nodeDetails[0].height = 50;
         this.nodeDetails[0].width = 50;
-        // this._media.addPlaylistMaster(_master).subscribe(res=>{
-        //   if(res != null && res != 0) {
-        //     this.toast.success("Saved Successfully");
-        //     this.form.reset();
-        //     this.plid = res;
-        //     //this.router.navigate(['medias/playlist-creation']);
-        //   } else {
-        //     this.toast.error("An error occured while processing your request.","Error",{positionClass:"toast-botton-right"});
-        //   }
-        // })
+        this._media.addPlaylistMaster(_master).subscribe(res=>{
+          if(res != null && res != 0) {
+            this.toast.success("Saved Successfully");
+            this.form.reset();
+            this.plid = res;
+            //this.router.navigate(['medias/playlist-creation']);
+          } else {
+            this.toast.error("An error occured while processing your request.","Error",{positionClass:"toast-botton-right"});
+          }
+        });
         this.stepper.next();
       }
     }
@@ -241,7 +236,18 @@ export class PlaylistConfigureComponent {
         this.toast.error("Media not selected", "Error", { positionClass: "toast-bottom-right" });
     }
     else if (step == 3) {
-      console.log(this.plBlData);
+      this.changeSequence();
+      var r = this.ValidationCheck(3);
+      if(r) {
+        let type = 0;
+        if(this.isCopy == true)
+          type = 1;
+        this._media.addPlaylistMedia(this.plBlData,type).subscribe(res=>{
+          if(res != undefined && res != null && res.length != 0) {
+            this.toast.success("Saved Successfully.");
+          }
+        });
+      }
     }
   }
 
@@ -256,6 +262,12 @@ export class PlaylistConfigureComponent {
       }
       else if (height < 50 || width < 50) {
         this.toast.error("Height and Width values should be more than 50.", "Error", { positionClass: "toast-bottom-right" });
+        return false;
+      }
+    }
+    if(step == 3) {
+      if(this.plBlData.length == 0) {
+        this.toast.error("Data not found.", "Error", { positionClass: "toast-bottom-right" });
         return false;
       }
     }
@@ -568,6 +580,72 @@ export class PlaylistConfigureComponent {
     }
   }
 
+  TarrifChange(ele:any, val:any) {
+    if (this.dataSource.length > 0) {
+      var d = this.dataSource.filter((x) => x.id == ele.id);
+      if (d.length > 0) {
+        this.updatePlBlData(ele, 6, val.target.value);
+      } else {
+        this.addAndUpdatePlBlData(ele, 6, val.target.value);
+      }
+    }
+  }
+  PartyChange(ele:any, val:any) {
+    if (this.dataSource.length > 0) {
+      var d = this.dataSource.filter((x) => x.id == ele.id);
+      if (d.length > 0) {
+        this.updatePlBlData(ele, 5, val.target.value);
+      } else {
+        this.addAndUpdatePlBlData(ele, 5, val.target.value);
+      }
+    }
+  }
+
+  updatePlBlData(ele:any, type:any, val:any) {
+    this.dataSource.forEach((eleDta) => {
+      if (eleDta.id == ele.id) {
+        if (type == 1) {
+          eleDta.block = val;
+        } else if (type == 2) {
+          eleDta.duration = val;
+        } else if (type == 3) {
+          eleDta.eIn = val;
+        } else if (type == 4) {
+          eleDta.eOut = val;
+        } else if (type == 5) {
+          eleDta.party = val;
+        } else if (type == 6) {
+          eleDta.tarrif = val;
+        }
+      }
+    });
+    console.log(this.plBlData);
+  }
+  addAndUpdatePlBlData(ele:any, type:any, val:any) {
+    console.log("Before add : " + this.plBlData);
+    if (type == 1) {
+      ele.blId = val;
+      this.plBlData.push(ele);
+    } else if (type == 2) {
+      ele.duration = val;
+      this.plBlData.push(ele);
+    } else if (type == 3) {
+      ele.effectIn = val;
+      this.plBlData.push(ele);
+    } else if (type == 4) {
+      ele.effectOut = val;
+      this.plBlData.push(ele);
+    } else if (type == 5) {
+      ele.partyId = val;
+      this.plBlData.push(ele);
+    } else if (type == 6) {
+      ele.tarrifId = val;
+      this.plBlData.push(ele);
+    }
+
+    console.log("After add : " + this.plBlData);
+  }
+
   GetTarrifDetails() {
     let _data = { "currentPage": "0", "pageSize": "0", "startId": "0", "searchItem": null };
     this._media.getTarrifData(_data).subscribe(res => {
@@ -607,6 +685,14 @@ export class PlaylistConfigureComponent {
       modalRef.componentInstance.data = _reqdata;
     }
 
+  }
+
+  onDuration(val:any,ele:any) {
+    this.dataSource.forEach((eleDta) => {
+      if (eleDta.id == ele.id) {
+          eleDta.duration = val;
+      }
+    });
   }
 }
 
