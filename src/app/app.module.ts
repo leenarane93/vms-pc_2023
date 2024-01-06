@@ -65,6 +65,7 @@ import { CmMediaModalComponent } from './widget/cm-media-modal/cm-media-modal.co
 import { AngularDraggableModule } from 'angular2-draggable';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CdkTableModule } from "@angular/cdk/table";
+import { MediaAuditComponent } from './components/media/media-audit/media-audit.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -105,7 +106,8 @@ import { CdkTableModule } from "@angular/cdk/table";
     PlaylistConfigureComponent,
     CmTooltipComponent,
     TooltipDirective,
-    CmMediaModalComponent
+    CmMediaModalComponent,
+    MediaAuditComponent
   ],
   imports: [
     FormsModule,
