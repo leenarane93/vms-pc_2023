@@ -842,6 +842,8 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
           if (params['isCopy'] == 'true') {
             this.isCopy = true;
             this.isView = false;
+            this.form.controls["height"].disable();
+            this.form.controls["width"].disable();
             console.log("IsCopy True")
           }
           else if (params['isCopy'] == 'false') {
