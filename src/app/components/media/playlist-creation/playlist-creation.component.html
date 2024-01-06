@@ -13,7 +13,7 @@
             <div class="col-md-12 ">
                 <app-cm-table [headArr]="headerArr" [gridArr]="listOfPlaylist" [totalRecords]="totalRecords"
                     [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)" [btnArray]="btnArray"
-                    [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)" link="users/add-user"
+                    (btnAction)="ButtonAction($event)" [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)" link="users/add-user"
                     fieldName="id" (search)="onPageSearch($event)" (searchWithId)="SearchWithId($event)"></app-cm-table>
             </div>
         </div>

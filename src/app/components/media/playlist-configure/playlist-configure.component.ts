@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Injectable, Input, Output, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Injectable, Input, OnDestroy, Output, Renderer2, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModal, NgbTimeStruct, NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
@@ -12,6 +12,11 @@ import { MediaDetails, MediaDuration, PlBlMdDetails, PlaylistMaster } from 'src/
 import { Router } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CmMediaModalComponent } from 'src/app/widget/cm-media-modal/cm-media-modal.component';
+import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
+import { BlockDetails } from 'src/app/models/media/BlockDetails';
+import { ConfirmationDialogService } from 'src/app/facade/services/confirmation-dialog.service';
+import { ActivatedRoute } from '@angular/router';
+//import 'rxjs/add/operator/filter';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -65,7 +70,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   templateUrl: './playlist-configure.component.html',
   styleUrls: ['./playlist-configure.component.css']
 })
-export class PlaylistConfigureComponent {
+export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
   tarrifDetails: any[] = [];
   partyDetails: any[] = [];
   @ViewChild("table", { static: false }) table: any;
@@ -82,18 +87,7 @@ export class PlaylistConfigureComponent {
   widthtxt: number = 500;
   currentBlock: number = 1;
   heighttxt: number = 500;
-  nodeDetails: any = [
-    {
-      id: 1,
-      width: 50,
-      height: 50,
-      maxheight: 0,
-      maxWidth: 0,
-      left: 0,
-      top: 0,
-      selected: false,
-    },
-  ];
+  nodeDetails: any = [];
   isCollide: boolean = false;
   active = 1;
   submitted = false;
@@ -134,16 +128,19 @@ export class PlaylistConfigureComponent {
   selectedMedia: any[] = [];
   constructor(public activeModal: NgbActiveModal,
     public router: Router,
-    private ngbCalendar: NgbCalendar,
-    private renderer: Renderer2,
-    private dateAdapter: NgbDateAdapter<string>,
+    public route: ActivatedRoute,
     private config: NgbTimepickerConfig,
     private fb: FormBuilder,
     private global: Globals,
     private toast: ToastrService,
     private _media: MediaFacadeService,
     private modalService: NgbModal,
+    private _common: CommonFacadeService,
   ) { config.seconds = true; config.spinners = false; this.global.CurrentPage = "Playlist Configuration" }
+
+  ngAfterViewInit(): void {
+
+  }
 
   name = 'Angular';
 
@@ -174,17 +171,17 @@ export class PlaylistConfigureComponent {
   }
   get f() { return this.form.controls; }
   ngOnInit() {
+    this.isView = false;
     this.form = this.fb.group({
       playlistName: ['', Validators.required],
       height: ['', Validators.required],
       width: ['', Validators.required]
     });
-
     this.stepper = new Stepper(document.querySelector('#stepper1') as HTMLElement, {
       linear: false,
       animation: true
     });
-
+    this.CheckOperationType();
     this.GetTarrifDetails();
     this.GetPartyDetails();
   }
@@ -201,56 +198,181 @@ export class PlaylistConfigureComponent {
         _master.width = this.form.controls["width"].value;
         _master.playlistName = this.form.controls["playlistName"].value;
         _master.status = 0;
-        this.nodeHeight = 50;
-        this.nodeWidth = 50;
-        this.nodeTop = 0;
-        this.nodeLeft = 0;
-        this.nodeDetails[0].maxheight = this.heighttxt;
-        this.nodeDetails[0].maxWidth = this.widthtxt;
-        this.nodeDetails[0].height = 50;
-        this.nodeDetails[0].width = 50;
-        this._media.addPlaylistMaster(_master).subscribe(res=>{
-          if(res != null && res != 0) {
-            this.toast.success("Saved Successfully");
-            this.form.reset();
-            this.plid = res;
-            //this.router.navigate(['medias/playlist-creation']);
-          } else {
-            this.toast.error("An error occured while processing your request.","Error",{positionClass:"toast-botton-right"});
+
+        if (this.isView != true) {
+          if (this.isCopy != true) {
+            let node = {
+              id: 1,
+              maxheight: this.heighttxt,
+              maxwidth: this.widthtxt,
+              height: 0,
+              width: 0,
+              left: 0,
+              top: 0
+            }
+            this.nodeDetails.push(node);
+            this.nodeHeight = 50;
+            this.nodeWidth = 50;
+            this.nodeTop = 0;
+            this.nodeLeft = 0;
+            this.nodeDetails[0].maxheight = this.heighttxt;
+            this.nodeDetails[0].maxWidth = this.widthtxt;
+            this.nodeDetails[0].height = 50;
+            this.nodeDetails[0].width = 50;
           }
-        });
-        this.stepper.next();
+          this._media.addPlaylistMaster(_master).subscribe(res => {
+            if (res != null && res != 0) {
+              this.toast.success("Saved Successfully");
+              this.form.reset();
+              this.plid = res;
+              //this.router.navigate(['medias/playlist-creation']);
+            } else {
+              this.toast.error("An error occured while processing your request.", "Error", { positionClass: "toast-botton-right" });
+            }
+          });
+        }
+        if(this.isCopy == true) {
+          this.GetplBlData();
+          this.stepper.to(4);
+        }
+        else 
+          this.stepper.next();
       }
     }
     else if (step == 1) {
-      this.getMediaDetails();
+      if (this.isView == true) {
+        this._media.getSelectedMedia(this.plid).subscribe(res => {
+          this.selectedMedia = [];
+          this.textDetails = [];
+          res.forEach((element: any) => {
+            if (element != null) {
+              var _ele = {
+                id: element.id,
+                fileName: element.fileName,
+                isChecked: true
+              }
+              this.mediaDetails.push(_ele);
+            }
+          });
+
+          this._media.getSelectedText(this.plid).subscribe(res => {
+            this.selectedMedia = [];
+            res.forEach((element: any) => {
+              if (element != null) {
+                var _ele = {
+                  id: element.id,
+                  textContent: element.textContent,
+                  isChecked: true
+                }
+                this.textDetails.push(_ele);
+              }
+            });
+          });
+        });
+      } else {
+
+        this.getMediaDetails();
+      }
       this.stepper.next();
     }
     else if (step == 2) {
-      if (this.selectedMedia.length > 0) {
-        this.stepper.next();
-        this.dataSource = this.selectedMedia;
-        console.log(this.dataSource);
+      if (this.isView == true) {
+        this.dataSource = [];
+        this.GetplBlData();
       }
-      else
-        this.toast.error("Media not selected", "Error", { positionClass: "toast-bottom-right" });
+      else {
+        if (this.selectedMedia.length > 0) {
+          if(this.isCopy == true) {
+            this.selectedMedia.forEach(ele => {
+              this.dataSource.push(ele);
+            });
+          }
+          else 
+            this.dataSource = this.selectedMedia;
+          console.log(this.dataSource);
+        }
+        else
+          this.toast.error("Media not selected", "Error", { positionClass: "toast-bottom-right" });
+      }
+
+      this.stepper.next();
     }
     else if (step == 3) {
-      this.changeSequence();
-      var r = this.ValidationCheck(3);
-      if(r) {
-        let type = 0;
-        if(this.isCopy == true)
-          type = 1;
-        this._media.addPlaylistMedia(this.plBlData,type).subscribe(res=>{
-          if(res != undefined && res != null && res.length != 0) {
-            this.toast.success("Saved Successfully.");
-          }
-        });
+      if (this.isView != true) {
+        if (this.nodeDetails.length > 0) {
+          var data: BlockDetails[] = [];
+          this.nodeDetails.forEach(
+            (node: any) => {
+              let block = new BlockDetails();
+              block.blockNo = node.id;
+              block.height =
+                Math.round(node.height) < 0 ? 0 : Math.round(node.height);
+              block.id = 0;
+              block.blLeft =
+                Math.round(node.left) < 0 ? 0 : Math.round(node.left);
+              block.playlistid = this.plid;
+              block.blTop = Math.round(node.top) < 0 ? 0 : Math.round(node.top);
+              block.width =
+                Math.round(node.width) < 0 ? 0 : Math.round(node.width);
+              data.push(block);
+            });
+          this._media.addBlockDetails(data).subscribe(res => {
+            if (res != undefined && res != null) {
+              console.log("Block Saved Successfully.");
+              this.changeSequence();
+              var r = this.ValidationCheck(3);
+              if (r) {
+                let type = 0;
+                if (this.isCopy == true)
+                  type = 1;
+                this.plBlData = [];
+                for (var i = 0; i < this.dataSource.length; i++) {
+                  let _pl = new PlBlMdDetails();
+                  this.dataSource[i].seqNo = i + 1;
+                  _pl.blId = this.dataSource[i].block;
+                  _pl.duration = this.dataSource[i].duration;
+                  _pl.effectIn = 0;
+                  _pl.effectOut = 0;
+                  _pl.mdId = this.dataSource[i].id;
+                  _pl.partyId = this.dataSource[i].party;
+                  _pl.tarrifId = this.dataSource[i].tarrif;
+                  _pl.plId = this.plid;
+                  _pl.sequenceNo = this.dataSource[i].seqNo;
+                  _pl.mdType = this.dataSource[i].mdType;
+                  _pl.mediaName = this.plid + "_" + this.dataSource[i].seqNo + ".avi";
+                  this.plBlData.push(_pl);
+                }
+                this._media.addPlaylistMedia(this.plBlData, type).subscribe(res => {
+                  if (res != undefined && res != null && res.length != 0) {
+                    this.toast.success("Saved Successfully.");
+                    this.router.navigate(['medias/playlist-creation']);
+                  }
+                });
+              }
+            }
+            else {
+              console.log(res);
+            }
+          })
+        }
       }
     }
   }
 
+  GetplBlData(){
+    this.dataSource =[];
+    this._media.getPlBlData(this.plid).subscribe(res => {
+      if (res != null) {
+        res.forEach((ele: any) => {
+          ele.block = ele.blId;
+          ele.fileName = ele.mediaName;
+          ele.party = ele.partyId;
+          ele.tarrif = ele.tarrifId;
+          this.dataSource.push(ele);
+        });
+      }
+    })
+  }
   ValidationCheck(step: number) {
     if (step == 0) {
       let val = this.form.controls["playlistName"].value;
@@ -265,8 +387,8 @@ export class PlaylistConfigureComponent {
         return false;
       }
     }
-    if(step == 3) {
-      if(this.plBlData.length == 0) {
+    if (step == 3) {
+      if (this.plBlData.length == 0) {
         this.toast.error("Data not found.", "Error", { positionClass: "toast-bottom-right" });
         return false;
       }
@@ -289,14 +411,14 @@ export class PlaylistConfigureComponent {
     }
     else if (form == 2) {
       //this.nodeDetails = [];
-      this.heighttxt = this.form.controls["height"].value;
-      this.widthtxt = this.form.controls["width"].value;
+      // this.heighttxt = this.form.controls["height"].value;
+      // this.widthtxt = this.form.controls["width"].value;
       var _master = new PlaylistMaster();
       _master.id = 0;
       _master.isActive = true;
       _master.createdBy = this.global.UserCode;
-      _master.height = this.form.controls["height"].value;
-      _master.width = this.form.controls["width"].value;
+      _master.height = this.heighttxt;
+      _master.width = this.widthtxt;
       _master.playlistName = this.form.controls["playlistName"].value;
       _master.status = 0;
       this.nodeHeight = 50;
@@ -514,6 +636,7 @@ export class PlaylistConfigureComponent {
         var _mPath = new MediaDuration();
         _mPath.path = _data.filePath;
         _data.isChecked = true;
+        _data.mdType = "Media";
         this._media.getVideoDuration(_mPath).subscribe(res => {
           _data.duration = Math.round(res);
           _data.block = this.currentBlock;
@@ -529,6 +652,7 @@ export class PlaylistConfigureComponent {
       }
       else {
         _data.isChecked = true;
+        _data.mdType = "Media";
         _data.block = this.currentBlock;
         this.selectedMedia.push(_data);
       }
@@ -542,12 +666,15 @@ export class PlaylistConfigureComponent {
         }
       }
       else {
+        _data.mdType = "Text";
         _data.isChecked = true;
         _data.block = this.currentBlock;
+        _data.fileType = "Text";
         this.selectedMedia.push(_data);
       }
     }
   }
+
 
   dropTable(event: CdkDragDrop<any[]>) {
     var r = 1;//this.FormValidation();
@@ -580,7 +707,7 @@ export class PlaylistConfigureComponent {
     }
   }
 
-  TarrifChange(ele:any, val:any) {
+  TarrifChange(ele: any, val: any) {
     if (this.dataSource.length > 0) {
       var d = this.dataSource.filter((x) => x.id == ele.id);
       if (d.length > 0) {
@@ -590,7 +717,7 @@ export class PlaylistConfigureComponent {
       }
     }
   }
-  PartyChange(ele:any, val:any) {
+  PartyChange(ele: any, val: any) {
     if (this.dataSource.length > 0) {
       var d = this.dataSource.filter((x) => x.id == ele.id);
       if (d.length > 0) {
@@ -601,7 +728,7 @@ export class PlaylistConfigureComponent {
     }
   }
 
-  updatePlBlData(ele:any, type:any, val:any) {
+  updatePlBlData(ele: any, type: any, val: any) {
     this.dataSource.forEach((eleDta) => {
       if (eleDta.id == ele.id) {
         if (type == 1) {
@@ -621,7 +748,7 @@ export class PlaylistConfigureComponent {
     });
     console.log(this.plBlData);
   }
-  addAndUpdatePlBlData(ele:any, type:any, val:any) {
+  addAndUpdatePlBlData(ele: any, type: any, val: any) {
     console.log("Before add : " + this.plBlData);
     if (type == 1) {
       ele.blId = val;
@@ -666,8 +793,8 @@ export class PlaylistConfigureComponent {
 
   RemoveFromDt(_data: any) {
     for (var i = 0; i < this.dataSource.length; i++) {
-      if (this.selectedMedia[i].id == _data.id)
-        this.selectedMedia.splice(i, 1);
+      if (this.dataSource[i].id == _data.id)
+        this.dataSource.splice(i, 1);
     }
   }
 
@@ -687,12 +814,65 @@ export class PlaylistConfigureComponent {
 
   }
 
-  onDuration(val:any,ele:any) {
+  onDuration(val: any, ele: any) {
     this.dataSource.forEach((eleDta) => {
       if (eleDta.id == ele.id) {
-          eleDta.duration = val;
+        eleDta.duration = val;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this._common.setSession("playlistData", null);
+  }
+  isJsonString(str: string) {
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  CheckOperationType() {
+    var data = this._common.getSession("playlistData");
+    if (data?.includes(":") == true) {
+      this.route.queryParams
+        .subscribe(params => {
+          if (params['isCopy'] == 'true') {
+            this.isCopy = true;
+            this.isView = false;
+            console.log("IsCopy True")
+          }
+          else if (params['isCopy'] == 'false') {
+            this.isCopy = false;
+            this.isView = true;
+            console.log("IsCopy False")
+          }
+        }
+        );
+      let _json = JSON.parse(data);
+      this.plid = _json.id;
+      this.form.patchValue({ playlistName: _json.playlistName, height: _json.height, width: _json.width })
+      this.heighttxt = _json.height;
+      this.widthtxt = _json.width;
+      this._media.getBlockDetailsByPlID(this.plid).subscribe(res => {
+        if (res != undefined) {
+          res.forEach((ele: any) => {
+            let node = {
+              id: ele.blockNo,
+              height: ele.height,
+              width: ele.width,
+              left: ele.blLeft,
+              top: ele.blTop
+            }
+            this.nodeDetails.push(node);
+          });
+
+          console.log(this.nodeDetails);
+        }
+      });
+    }
   }
 }
 

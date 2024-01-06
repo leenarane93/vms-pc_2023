@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { HttpService } from '../common/http.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,9 @@ export class PlaylistService {
   addPlaylistMaster(data: any) {
     return this._httpService._postMethod(data, 'media_api/api/PlaylistMaster/PostPlaylistMaster');
   }
+  updatePlaylistMaster(data: any) {
+    return this._httpService._postMethod(data, 'media_api/api/PlaylistMaster/UpdatePlaylistMaster');
+  }
   getAllMediaDetails(){
     return this._httpService._getMethod("Media_API/api/MediaMaster/GetAllMediaDetailsForBlocks");
   }
@@ -25,5 +29,21 @@ export class PlaylistService {
   }
   addPlaylistMedia(data: any,type : number) {
     return this._httpService._postMethod(data, 'Media_API/api/PlaylistMedia/PostPlaylistMedia?type='+type);
+  }
+  AddBlockDetails(body:any){
+    return this._httpService._postMethod(body,"Media_API/api/BlockDetails/AddBlockDetails");
+  }
+  GetBlockDetailsByPlid(plid:number) {
+    return this._httpService._getMethod("media_api/api/BlockDetails/GetBlockDetailsByPlid?plid="+plid);
+  }
+  GetSelectedMediaData(plid:number){
+    return this._httpService._getMethod("Media_API/api/MediaMaster/GetMediaByPl?plid=" + plid);
+  }
+  GetSelectedTextData(plid:any) {
+    return this._httpService._getMethod("Media_API/api/MediaMaster/GetTextMediaByPl?plid=" + plid);
+  }
+
+  GetPlBlData(plid:number){
+    return this._httpService._getMethod("media_api/api/PlaylistMedia/GetPlaylistMediaByPlid?plid=" + plid);
   }
 }

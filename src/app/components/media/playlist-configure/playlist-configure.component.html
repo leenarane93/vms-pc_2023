@@ -87,10 +87,10 @@
           <div style="overflow: auto" class="col-lg-6 text-lg-right text-right buttonsdiv my-4 my-lg-0">
             <div *ngIf="isView || isCopy" class="container-resize drag-boundary" [style.height.px]="heighttxt"
               [style.width.px]="widthtxt" [ngClass]="{
-                                  'top-b': !edge?.top,
-                                  'bottom-b': !edge?.bottom,
-                                  'left-b': !edge?.left,
-                                  'right-b': !edge?.right,
+                                  'top-b': !edge.top,
+                                  'bottom-b': !edge.bottom,
+                                  'left-b': !edge.left,
+                                  'right-b': !edge.right,
                                   disableDiv: isView || isCopy
                                 }" #myBounds>
               <div *ngFor="let node of nodeDetails" ngResizable ngDraggable (movingOffset)="onMoving($event, node.id)"
@@ -107,10 +107,10 @@
 
             <div *ngIf="!isView && !isCopy" class="container-resize drag-boundary" [style.height.px]="heighttxt"
               [style.width.px]="widthtxt" [ngClass]="{
-                                  'top-b': !edge?.top,
-                                  'bottom-b': !edge?.bottom,
-                                  'left-b': !edge?.left,
-                                  'right-b': !edge?.right,
+                                  'top-b': !edge.top,
+                                  'bottom-b': !edge.bottom,
+                                  'left-b': !edge.left,
+                                  'right-b': !edge.right,
                                   disableDiv: isView
                                 }" #myBounds>
               <div *ngFor="let node of nodeDetails" ngResizable ngDraggable (movingOffset)="onMoving($event, node.id)"
@@ -289,17 +289,18 @@
                   <td cdkDragHandle><input type="text" class="form-control" placeholder="Block Number"
                       value="{{m.block}}" disabled="true" /></td>
                   <td cdkDragHandle><input type="number" class="form-control" placeholder="Duration"
-                      value ="{{m.duration}}" [disabled]="m.fileType == 'Video'" #duration (keyup)="onDuration(duration.value,m)"/></td>
-                  <td cdkDragHandle><select class="form-control-sm" (change)="PartyChange(m, $event)">
+                      value="{{m.duration}}" [disabled]="m.fileType == 'Video' || m.fileType == undefined" #duration
+                      (keyup)="onDuration(duration.value,m)" /></td>
+                  <td cdkDragHandle><select class="form-control-sm" (change)="PartyChange(m, $event)"  [(ngModel)]="m.party">
                       <option value="0">Select Party</option>
                       <option *ngFor="let prt of partyDetails" [value]="prt.id">{{prt.partyName}}</option>
                     </select></td>
-                  <td cdkDragHandle><select class="form-control-sm" (change)="TarrifChange(m, $event)">
+                  <td cdkDragHandle><select class="form-control-sm" (change)="TarrifChange(m, $event)" [(ngModel)]="m.tarrif">
                       <option value="0">Select Tarrif</option>
                       <option *ngFor="let trf of tarrifDetails" [value]="trf.id">{{trf.tarrifType}}</option>
                     </select></td>
                   <td cdkDragHandle>
-                    <button type="button" class="btn btn-inverse-primary btn-sm" (click)="RemoveFromDt(m)">
+                    <button type="button" class="btn btn-inverse-primary btn-sm" [disabled]="isView" (click)="RemoveFromDt(m)">
                       <i class="icon-trash"></i>
                     </button>
                   </td>
@@ -312,12 +313,12 @@
 
             <div class="row">
               <div class="col-md-12 text-right">
-                <button type="button" class="btn btn-warning mt-5" (click)="addNewBlock()">Add
+                <button type="button"  [disabled]="isView || isCopy" class="btn btn-warning mt-5" (click)="addNewBlock()">Add
                   Block</button>&nbsp;&nbsp;
-                <button type="button" class="btn btn-warning mt-5" (click)="addNewMedia()">Add
+                <button type="button"  [disabled]="isView" class="btn btn-warning mt-5" (click)="addNewMedia()">Add
                   Media</button>&nbsp;&nbsp;
-                <button type="button" class="btn btn-danger mt-5" (click)="ResetForm(4)">Reset</button>&nbsp;&nbsp;
-                <button type="button" class="btn btn-success mt-5" (click)="StepNext(3)">Submit</button>
+                <button type="button" [disabled]="isView" class="btn btn-danger mt-5" (click)="ResetForm(4)">Reset</button>&nbsp;&nbsp;
+                <button type="button" [disabled]="isView" class="btn btn-success mt-5" (click)="StepNext(3)">Submit</button>
               </div>
             </div>
           </div>

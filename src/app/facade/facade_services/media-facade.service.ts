@@ -43,6 +43,9 @@ export class MediaFacadeService {
   addPlaylistMaster(data: any) {
     return this._playlistService.addPlaylistMaster(data);
   }
+  updatePlaylistMaster(data: any) {
+    return this._playlistService.updatePlaylistMaster(data);
+  }
   getAllMediaDetails() {
     return this._playlistService.getAllMediaDetails();
   }
@@ -61,5 +64,20 @@ export class MediaFacadeService {
   }
   addPlaylistMedia(data: any,type :number) {
     return this._playlistService.addPlaylistMedia(data,type);
+  }
+  addBlockDetails(data: any) {
+    return this._playlistService.AddBlockDetails(data);
+  }
+  getBlockDetailsByPlID(plid:number){
+    return this._playlistService.GetBlockDetailsByPlid(plid);
+  }
+  getSelectedMedia(plid:number){
+    return this._playlistService.GetSelectedMediaData(plid);
+  }
+  getSelectedText(plid:number){
+    return this._playlistService.GetSelectedTextData(plid);
+  }
+  getPlBlData(plid:number){
+    return this._playlistService.GetPlBlData(plid);
   }
 }
