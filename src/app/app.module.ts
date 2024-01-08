@@ -66,6 +66,9 @@ import { AngularDraggableModule } from 'angular2-draggable';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CdkTableModule } from "@angular/cdk/table";
 import { MediaAuditComponent } from './components/media/media-audit/media-audit.component';
+import {TabsModule} from 'ngx-bootstrap/tabs';
+import { DatePipe } from '@angular/common';
+import { CmMdAuditComponent } from './widget/cm-md-audit/cm-md-audit.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -107,7 +110,8 @@ import { MediaAuditComponent } from './components/media/media-audit/media-audit.
     CmTooltipComponent,
     TooltipDirective,
     CmMediaModalComponent,
-    MediaAuditComponent
+    MediaAuditComponent,
+    CmMdAuditComponent,
   ],
   imports: [
     FormsModule,
@@ -123,6 +127,7 @@ import { MediaAuditComponent } from './components/media/media-audit/media-audit.
       preserveScroll: true
     }),
     NgbModule,
+    TabsModule.forRoot(),
     NgChartsModule,
     LeafletModule,
     NgxPaginationModule,
@@ -137,6 +142,7 @@ import { MediaAuditComponent } from './components/media/media-audit/media-audit.
   exports: [TooltipDirective],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  DatePipe,
     NgbActiveModal,
     JwtHelperService, ConfirmationDialogService,
   { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }, Globals],

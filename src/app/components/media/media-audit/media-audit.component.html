@@ -1,1 +1,45 @@
-<p>media-audit works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="row">
+            <div class="col-md-12 ">
+
+                <tabset #tabset>
+                    <tab heading="Pending" (selectTab)="OnTabChange(0)">
+                        <app-cm-table [headArr]="headerArr" [gridArr]="listOfMediaUploadPending" [totalRecords]="totalRecords"
+                        [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)"
+                        [btnArray]="btnArray" (btnAction)="ButtonAction($event)" [collectionSize]="totalRecords"
+                        (recordPerPage)="onRecordPageChange($event)" link="users/add-user" fieldName="id"
+                        (search)="onPageSearch($event)" (searchWithId)="SearchWithId($event)"></app-cm-table>
+                    </tab>
+
+                    <tab heading="Approved" (selectTab)="OnTabChange(1)">
+                        <app-cm-table [headArr]="headerArr" [gridArr]="listOfMediaUploadApproved" [totalRecords]="totalRecords"
+                        [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)"
+                        [btnArray]="btnArray" (btnAction)="ButtonAction($event)" [collectionSize]="totalRecords"
+                        (recordPerPage)="onRecordPageChange($event)" link="users/add-user" fieldName="id"
+                        (search)="onPageSearch($event)" (searchWithId)="SearchWithId($event)"></app-cm-table>
+                    </tab>
+
+                    <tab heading="Rejected" (selectTab)="OnTabChange(2)">
+                        <app-cm-table [headArr]="headerArr" [gridArr]="listOfMediaUploadRejected" [totalRecords]="totalRecords"
+                        [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)"
+                        [btnArray]="btnArray" (btnAction)="ButtonAction($event)" [collectionSize]="totalRecords"
+                        (recordPerPage)="onRecordPageChange($event)" link="users/add-user" fieldName="id"
+                        (search)="onPageSearch($event)" (searchWithId)="SearchWithId($event)"></app-cm-table>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<ng-template #cmmodal let-modal>
+    <app-cm-modal></app-cm-modal>
+</ng-template>

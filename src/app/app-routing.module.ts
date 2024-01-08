@@ -26,6 +26,7 @@ import { AddUserComponent } from './components/user/user/add-user/add-user.compo
 import { MediaUploadComponent } from './components/media/media-upload/media-upload.component';
 import { PlaylistCreationComponent } from './components/media/playlist-creation/playlist-creation.component';
 import { PlaylistConfigureComponent } from './components/media/playlist-configure/playlist-configure.component';
+import { MediaAuditComponent } from './components/media/media-audit/media-audit.component';
 
 const routes: Routes = [
   {
@@ -186,6 +187,12 @@ const routes: Routes = [
     path: "medias/playlist-configure",
     component: PlaylistConfigureComponent,
     data: { title: 'Playlist Configuration' },
+    canActivate: [AuthGuradService]
+  },
+  {
+    path: "audit/media-audit",
+    component: MediaAuditComponent,
+    data: { title: 'Media Audit' },
     canActivate: [AuthGuradService]
   },
 ];

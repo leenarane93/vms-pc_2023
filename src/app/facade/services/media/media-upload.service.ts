@@ -37,4 +37,7 @@ export class MediaUploadService {
   addTextDetails(data:any) {
     return this._httpService._postMethod(data,"media_api/api/MediaUpload/AddTextDetails");
   }
+  getMediaUploadDetails(data:any) {
+    return this._httpService._postMethod(data,"media_api/api/MediaMaster/GetMediaUploadDetails");
+  }
 }

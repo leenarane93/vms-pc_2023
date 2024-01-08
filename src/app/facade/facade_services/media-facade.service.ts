@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { MediaUploadService } from '../services/media/media-upload.service';
 import { PlaylistService } from '../services/media/playlist.service';
 import { AdminFacadeService } from './admin-facade.service';
+import { MediaAuditService } from '../services/media/media-audit.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class MediaFacadeService {
 
   constructor(private _mediaUploadService: MediaUploadService,
     private _playlistService: PlaylistService,
-    private _adminFacade: AdminFacadeService) { }
+    private _adminFacade: AdminFacadeService,
+    private _mediaAudit : MediaAuditService) { }
   getMediaUploadDetails(data: any) {
     return this._mediaUploadService.getuploaddetails(data);
   }
@@ -79,5 +81,14 @@ export class MediaFacadeService {
   }
   getPlBlData(plid:number){
     return this._playlistService.GetPlBlData(plid);
+  }
+  getMediaUpload(data:any) {
+    return this._mediaUploadService.getMediaUploadDetails(data);
+  }
+  getMediaBySetID(data:any) {
+    return this._mediaUploadService.getMediaByUploadSetId(data);
+  }
+  updateMediaSetDetails(data: any) {
+    return this._mediaAudit.updateMediaSetDetails(data);
   }
 }
