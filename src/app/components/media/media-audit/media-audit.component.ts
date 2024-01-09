@@ -18,7 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 export class MediaAuditComponent implements OnInit {
   searchText!: string;
   page: any;
-  tabno:number;
+  tabno: number;
   listOfMediaUpload: any;
   listOfMediaUploadPending: any;
   listOfMediaUploadApproved: any;
@@ -46,9 +46,9 @@ export class MediaAuditComponent implements OnInit {
     private global: Globals,
     private _router: Router,
     private mediaFacade: MediaFacadeService,
-    private confirmationDialogService:ConfirmationDialogService,
+    private confirmationDialogService: ConfirmationDialogService,
     public datepipe: DatePipe,
-    private toast:ToastrService,
+    private toast: ToastrService,
     public modalService: NgbModal) {
     this.global.CurrentPage = "Media Audit";
   }
@@ -61,7 +61,7 @@ export class MediaAuditComponent implements OnInit {
     this._request.pageSize = this.recordPerPage;
     this._request.startId = this.startId;
     this._request.searchItem = this.searchText;
-    this.mediaFacade.getMediaUpload(this._request,this.tabno).subscribe(data => {
+    this.mediaFacade.getMediaUpload(this._request, this.tabno).subscribe(data => {
       if (data != null) {
         this.listOfMediaUpload = data.data;
         this.listOfMediaUpload.forEach((element: any) => {
@@ -95,8 +95,8 @@ export class MediaAuditComponent implements OnInit {
   }
 
   OnTabChange(status: number) {
-      this.tabno = status
-      this.getMediaDetails();
+    this.tabno = status
+    this.getMediaDetails();
   }
 
   //Common Functionalities
@@ -129,6 +129,8 @@ export class MediaAuditComponent implements OnInit {
     if (actiondata.action == "view") {
       const modalRef = this.modalService.open(CmMdAuditComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
       modalRef.componentInstance.data = actiondata.data;
+      modalRef.componentInstance.playlistAudit = false;
+      modalRef.componentInstance.mediaAudit = true;
       modalRef.componentInstance.passEntry.subscribe((receivedEntry: any) => {
         this.getMediaDetails();
       })
@@ -138,7 +140,7 @@ export class MediaAuditComponent implements OnInit {
     }
   }
 
-  DeleteMediaSet(uploadSet : any) {
+  DeleteMediaSet(uploadSet: any) {
     this.confirmationDialogService.confirm('Please confirm..', 'Do you really want to remove this Upload Set... ?')
       .then((confirmed) => { if (confirmed == true) this.RemoveMediaSet(uploadSet) })
       .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
@@ -155,8 +157,8 @@ export class MediaAuditComponent implements OnInit {
     _uploadDetails.remarks = "";
     _uploadDetails.status = uploadSet.status;
     _uploadDetails.uploadSetId = uploadSet.uploadSetId;
-    this.mediaFacade.updateMediaUpload(_uploadDetails).subscribe(res=>{
-      if(res != null && res != 0) {
+    this.mediaFacade.updateMediaUpload(_uploadDetails).subscribe(res => {
+      if (res != null && res != 0) {
         this.toast.success("Removed Successfully.");
         this.getMediaDetails();
       }

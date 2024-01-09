@@ -48,7 +48,7 @@ export class PlaylistAuditComponent implements OnInit {
     private _router: Router,
     private mediaFacade: MediaFacadeService,
     private adminFacade: AdminFacadeService,
-    private confirmationDialogService:ConfirmationDialogService,
+    private confirmationDialogService: ConfirmationDialogService,
     public datepipe: DatePipe,
     private toast: ToastrService,
     public modalService: NgbModal) {
@@ -93,7 +93,7 @@ export class PlaylistAuditComponent implements OnInit {
 
   getPlaylistByStatus(status: number) {
     if (status == 1 || status == 2) {
-      this.listOfPlaylistPending = this.listOfPlaylist.filter((x: any) =>( x.status == 1 || x.status == 2));
+      this.listOfPlaylistPending = this.listOfPlaylist.filter((x: any) => (x.status == 1 || x.status == 2));
     } else if (status == 2) {
       this.listOfPlaylistApproved = this.listOfPlaylist.filter((x: any) => x.status == 2);
     } else if (status == 3) {
@@ -134,6 +134,8 @@ export class PlaylistAuditComponent implements OnInit {
       } else {
         const modalRef = this.modalService.open(CmMdAuditComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
         modalRef.componentInstance.data = actiondata.data;
+        modalRef.componentInstance.playlistAudit = true;
+        modalRef.componentInstance.mediaAudit = false;
         modalRef.componentInstance.passEntry.subscribe((receivedEntry: any) => {
           this.getPlaylistData();
         })
@@ -152,8 +154,8 @@ export class PlaylistAuditComponent implements OnInit {
   RemovePlaylist(playlistData: any) {
     playlistData.isDeleted = true;
     playlistData.modifiedBy = this.global.UserCode;
-    this.mediaFacade.updatePlaylistData(playlistData).subscribe(res=>{
-      if(res != null && res != 0) {
+    this.mediaFacade.updatePlaylistData(playlistData).subscribe(res => {
+      if (res != null && res != 0) {
         this.toast.success("Saved Successfully.");
         this.getPlaylistData();
       }

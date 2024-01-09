@@ -5,59 +5,110 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-
-<div class="card">
-    <table class="table table-striped table-bordered table-sm row-border hover" style="width: 100%;">
-        <tr>
-            <th>
-                File Name
-            </th>
-            <th>
-                File Type
-            </th>
-            <th>
-                Action
-            </th>
-        </tr>
-        <tbody>
-            <tr *ngFor="let row of medias">
-                <td> {{row.fileName}}</td>
-                <td> {{row.fileType}}</td>
-                <td> <button class="btn btn-primary" (click)="ViewMedia(row)">
-                        View/Play
-                    </button> </td>
+<div *ngIf="mediaAudit">
+    <div class="card">
+        <table class="table table-striped table-bordered table-sm row-border hover" style="width: 100%;">
+            <tr>
+                <th>
+                    File Name
+                </th>
+                <th>
+                    File Type
+                </th>
+                <th>
+                    Action
+                </th>
             </tr>
-        </tbody>
-    </table>
-</div>
-<div class="card">
-    <div class="row">
-        <div *ngIf="isImg" class="col-md-12">
-            <img src="{{imgSrc}}" height="400" width="600">
+            <tbody>
+                <tr *ngFor="let row of medias">
+                    <td> {{row.fileName}}</td>
+                    <td> {{row.fileType}}</td>
+                    <td> <button class="btn btn-primary" (click)="ViewMedia(row)">
+                            View/Play
+                        </button> </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <div class="row">
+            <div *ngIf="isImg" class="col-md-12">
+                <img src="{{imgSrc}}" height="400" width="600">
+            </div>
+            <div *ngIf="isVdo" class="col-md-12">
+                <video id="my_video_1" controls (click)="toggleVideo()" #videoPlayer>
+                    <source src="{{ vdoUrl }}" type="video/mp4" />
+                    Browser not supported
+                </video>
+            </div>
         </div>
-        <div *ngIf="isVdo" class="col-md-12">
-            <video id="my_video_1" controls (click)="toggleVideo()" #videoPlayer>
-                <source src="{{ vdoUrl }}" type="video/mp4" />
-                Browser not supported
-              </video>
+    </div>
+
+    <div class="card">
+        <div class="row">
+            <div class="col-md-10 text-right">
+                <textarea placeholder="Remarks" [(ngModel)]="remarks" style="width: 400px;"></textarea>
+            </div>
+            <div class="col-md-1 text-right">
+                <button class="btn btn-success" (click)="Operation(1)">
+                    Approve
+                </button>
+            </div>
+            <div class="col-md-1 text-right">
+                <button class="btn btn-danger" (click)="Operation(0)">
+                    Reject
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="card">
-    <div class="row">
-        <div class="col-md-10 text-right">
-            <textarea placeholder="Remarks" [(ngModel)]="remarks" style="width: 400px;"></textarea>
+<div *ngIf="playlistAudit">
+    <div class="card">
+        <table class="table table-striped table-bordered table-sm row-border hover" style="width: 100%;">
+            <tr>
+                <th>
+                    Playlist Name
+                </th>
+            </tr>
+            <tbody>
+                <tr *ngFor="let row of medias">
+                    <td> {{row.playlistName}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <div class="row">
+            <div *ngIf="isImg" class="col-md-12">
+                <img src="{{imgSrc}}" height="400" width="600">
+            </div>
+            <div *ngIf="isVdo" class="col-md-12">
+                <video id="my_video_1" controls (click)="toggleVideo()" #videoPlayer>
+                    <source src="{{ vdoUrl }}" type="video/mp4" />
+                    Browser not supported
+                </video>
+            </div>
         </div>
-        <div class="col-md-1 text-right">
-            <button class="btn btn-success" (click)="Operation(1)">
-                Approve
-            </button>
-        </div>
-        <div class="col-md-1 text-right">
-            <button class="btn btn-danger" (click)="Operation(0)">
-                Reject
-            </button>
+    </div>
+
+    <div class="card">
+        <div class="row">
+            <div class="col-md-10 text-right">
+                <textarea placeholder="Remarks" [(ngModel)]="remarks" style="width: 400px;"></textarea>
+            </div>
+            <div class="col-md-1 text-right">
+                <button class="btn btn-success" (click)="Operation(1)">
+                    Approve
+                </button>
+            </div>
+            <div class="col-md-1 text-right">
+                <button class="btn btn-danger" (click)="Operation(0)">
+                    Reject
+                </button>
+            </div>
         </div>
     </div>
 </div>

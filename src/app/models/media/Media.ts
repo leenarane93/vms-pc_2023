@@ -49,3 +49,14 @@ export class TextDetails {
   status: string;
   modifiedBy: string;
 }
+
+export class MediaDet {
+  sequence: number;
+  mediaName: string;
+  mediaPath: string;
+}
+
+export class BlockWiseMedia {
+  blId: number;
+  medias: MediaDet[];
+}

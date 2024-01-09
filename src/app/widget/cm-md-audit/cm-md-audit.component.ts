@@ -15,13 +15,15 @@ export class CmMdAuditComponent implements OnInit {
   @ViewChild("videoPlayer", { static: false }) videoplayer: ElementRef;
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
   @Input() data: any;
+  @Input() playlistAudit: boolean = false;
+  @Input() mediaAudit: boolean = false;
   type: string = "Media Audit";
   medias: any[] = [];
   imgSrc: string;
-  isImg : boolean = false;
+  isImg: boolean = false;
   isVdo: boolean = false;
   remarks: string;
-  vdoUrl :string;
+  vdoUrl: string;
   constructor(private _mediaFacade: MediaFacadeService,
     private _toast: ToastrService,
     private modal: NgbModal,
@@ -76,7 +78,7 @@ export class CmMdAuditComponent implements OnInit {
     }
   }
 
-  updateData(status:number){
+  updateData(status: number) {
     var data = this.medias.filter(
       (x: any) => x.uploadSetId == this.data.uploadSetId
     );
@@ -109,4 +111,5 @@ export class CmMdAuditComponent implements OnInit {
   toggleVideo() {
     this.videoplayer.nativeElement.play();
   }
+
 }
