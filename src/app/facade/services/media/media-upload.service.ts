@@ -11,7 +11,7 @@ export class MediaUploadService {
     private _http: HttpClient) { }
 
   getuploaddetails(data: any) {
-    return this._httpService._postMethod(data, 'media_API/api/MediaMaster/GetMediaUploadDetails');
+    return this._httpService._postMethod(data, 'media_API/api/MediaMaster/GetMediaUploadDetails?type=3');
   }
   UploadMediaDetails(data: any) {
     return this._httpService._postMethod(data, 'media_API/api/MediaUpload/AddMediaDetails');
@@ -37,7 +37,7 @@ export class MediaUploadService {
   addTextDetails(data:any) {
     return this._httpService._postMethod(data,"media_api/api/MediaUpload/AddTextDetails");
   }
-  getMediaUploadDetails(data:any) {
-    return this._httpService._postMethod(data,"media_api/api/MediaMaster/GetMediaUploadDetails");
+  getMediaUploadDetails(data:any,status:number) {
+    return this._httpService._postMethod(data,"media_api/api/MediaMaster/GetMediaUploadDetails?type="+status);
   }
 }

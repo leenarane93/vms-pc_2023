@@ -69,6 +69,7 @@ import { MediaAuditComponent } from './components/media/media-audit/media-audit.
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import { DatePipe } from '@angular/common';
 import { CmMdAuditComponent } from './widget/cm-md-audit/cm-md-audit.component';
+import { PlaylistAuditComponent } from './components/media/playlist-audit/playlist-audit.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -112,6 +113,7 @@ import { CmMdAuditComponent } from './widget/cm-md-audit/cm-md-audit.component';
     CmMediaModalComponent,
     MediaAuditComponent,
     CmMdAuditComponent,
+    PlaylistAuditComponent,
   ],
   imports: [
     FormsModule,

@@ -27,6 +27,7 @@ import { MediaUploadComponent } from './components/media/media-upload/media-uplo
 import { PlaylistCreationComponent } from './components/media/playlist-creation/playlist-creation.component';
 import { PlaylistConfigureComponent } from './components/media/playlist-configure/playlist-configure.component';
 import { MediaAuditComponent } from './components/media/media-audit/media-audit.component';
+import { PlaylistAuditComponent } from './components/media/playlist-audit/playlist-audit.component';
 
 const routes: Routes = [
   {
@@ -193,6 +194,12 @@ const routes: Routes = [
     path: "audit/media-audit",
     component: MediaAuditComponent,
     data: { title: 'Media Audit' },
+    canActivate: [AuthGuradService]
+  },
+  {
+    path: "audit/playlist-audit",
+    component: PlaylistAuditComponent,
+    data: { title: 'Playlist Audit' },
     canActivate: [AuthGuradService]
   },
 ];

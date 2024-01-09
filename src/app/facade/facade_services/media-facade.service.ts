@@ -82,13 +82,16 @@ export class MediaFacadeService {
   getPlBlData(plid:number){
     return this._playlistService.GetPlBlData(plid);
   }
-  getMediaUpload(data:any) {
-    return this._mediaUploadService.getMediaUploadDetails(data);
+  getMediaUpload(data:any,status:number) {
+    return this._mediaUploadService.getMediaUploadDetails(data,status);
   }
   getMediaBySetID(data:any) {
     return this._mediaUploadService.getMediaByUploadSetId(data);
   }
   updateMediaSetDetails(data: any) {
     return this._mediaAudit.updateMediaSetDetails(data);
+  }
+  updatePlaylistData(data:any){
+    return this._playlistService.updatePlaylistMaster(data);
   }
 }
