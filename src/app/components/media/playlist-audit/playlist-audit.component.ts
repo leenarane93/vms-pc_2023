@@ -7,6 +7,7 @@ import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.
 import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 import { MediaFacadeService } from 'src/app/facade/facade_services/media-facade.service';
 import { ConfirmationDialogService } from 'src/app/facade/services/confirmation-dialog.service';
+import { BlData, PlaylistAuditMedias } from 'src/app/models/media/PlAudit';
 import { InputRequest } from 'src/app/models/request/inputReq';
 import { Globals } from 'src/app/utils/global';
 import { CmMdAuditComponent } from 'src/app/widget/cm-md-audit/cm-md-audit.component';
@@ -106,7 +107,7 @@ export class PlaylistAuditComponent implements OnInit {
     this._request.pageSize = this.recordPerPage;
     this.pager = pager;
     this.startId = (this.pager - 1) * this.recordPerPage;
-    //this.getPlaylistData();
+    this.getPlaylistData();
   }
 
   onRecordPageChange(recordPerPage: number) {
@@ -115,12 +116,12 @@ export class PlaylistAuditComponent implements OnInit {
     this.recordPerPage = recordPerPage;
     this.startId = 0;
     this.pager = 1;
-    //this.getPlaylistData();
+    this.getPlaylistData();
   }
 
   onPageSearch(search: string) {
     this.searchText = search;
-    //this.getPlaylistData();
+    this.getPlaylistData();
   }
 
   SearchWithId(_searchItem: any) {
@@ -132,13 +133,41 @@ export class PlaylistAuditComponent implements OnInit {
       if (actiondata.data.status == 1) {
         this.toast.error("Preview not available, Please check after sometime.");
       } else {
-        const modalRef = this.modalService.open(CmMdAuditComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
-        modalRef.componentInstance.data = actiondata.data;
-        modalRef.componentInstance.playlistAudit = true;
-        modalRef.componentInstance.mediaAudit = false;
-        modalRef.componentInstance.passEntry.subscribe((receivedEntry: any) => {
-          this.getPlaylistData();
-        })
+        this.mediaFacade.getBlockDetailsByPlID(actiondata.data.id).subscribe(res => {
+          if (res != null) {
+            var _blocks = res;
+            let plAudit: PlaylistAuditMedias[] = [];
+            let d: PlaylistAuditMedias;
+            let bl: BlData[] = [];
+            _blocks.forEach((blRes: any) => {
+              let oneBl = new BlData();
+              oneBl.plId = actiondata.data.id;
+              oneBl.blId = blRes.id;
+              oneBl.height = blRes.height;
+              oneBl.width = blRes.width;
+              oneBl.left = blRes.blLeft;
+              oneBl.top = blRes.blTop;
+              oneBl.seq = 1;
+              bl.push(oneBl);
+            });
+            d = {
+              blocks: bl,
+              plHeight: actiondata.data.height,
+              plWidth: actiondata.data.width,
+              plMaster: actiondata.data,
+              checkedUpd: true,
+            };
+
+            const modalRef = this.modalService.open(CmMdAuditComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
+            modalRef.componentInstance.data = d;
+            modalRef.componentInstance.playlistAudit = true;
+            modalRef.componentInstance.mediaAudit = false;
+            modalRef.componentInstance.passEntry.subscribe((receivedEntry: any) => {
+              this.getPlaylistData();
+            })
+          }
+        });
+
       }
     }
     else if (actiondata.action == 'remove') {

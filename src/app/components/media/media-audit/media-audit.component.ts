@@ -104,7 +104,7 @@ export class MediaAuditComponent implements OnInit {
     this._request.pageSize = this.recordPerPage;
     this.pager = pager;
     this.startId = (this.pager - 1) * this.recordPerPage;
-    //this.getPlaylistData();
+    this.getMediaDetails();
   }
 
   onRecordPageChange(recordPerPage: number) {
@@ -113,12 +113,12 @@ export class MediaAuditComponent implements OnInit {
     this.recordPerPage = recordPerPage;
     this.startId = 0;
     this.pager = 1;
-    //this.getPlaylistData();
+    this.getMediaDetails();
   }
 
   onPageSearch(search: string) {
     this.searchText = search;
-    //this.getPlaylistData();
+    this.getMediaDetails();
   }
 
   SearchWithId(_searchItem: any) {

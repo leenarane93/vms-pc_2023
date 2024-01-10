@@ -13,4 +13,8 @@ export class PlAuditService {
     updatePlaylistData(body:any){
       return this._httpService._postMethod(body,"Media_API/api/PlaylistMaster/UpdatePlaylistMaster");
     }
+    GetMediaByBlockWise(plid:number) {
+      return this._httpService._getMethod("Media_API/api/PlaylistMedia/GetPlMediaBlockWise?plid="+plid);
+    }
+    
 }

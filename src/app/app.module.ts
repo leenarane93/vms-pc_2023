@@ -70,6 +70,12 @@ import {TabsModule} from 'ngx-bootstrap/tabs';
 import { DatePipe } from '@angular/common';
 import { CmMdAuditComponent } from './widget/cm-md-audit/cm-md-audit.component';
 import { PlaylistAuditComponent } from './components/media/playlist-audit/playlist-audit.component';
+
+import {VgCoreModule} from '@videogular/ngx-videogular/core';
+import {VgControlsModule} from '@videogular/ngx-videogular/controls';
+import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
+import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -125,6 +131,10 @@ import { PlaylistAuditComponent } from './components/media/playlist-audit/playli
     StoreModule.forRoot({}, {}),
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule,
     BackButtonDisableModule.forRoot({
       preserveScroll: true
     }),

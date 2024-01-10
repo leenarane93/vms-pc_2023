@@ -3,10 +3,14 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start:dev": "ng serve",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "build-prod": "ng build --prod --base-href",
+    "build-test": "ng build --configuration=test --base-href",
+    "build-dev": "ng build --configuration=development --base-href",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -29,6 +33,7 @@
     "@popperjs/core": "^2.11.8",
     "@rxweb/reactive-form-validators": "^13.0.1",
     "@types/crypto-js": "^4.1.2",
+    "@videogular/ngx-videogular": "^8.0.0",
     "ag-grid-community": "^30.2.0",
     "angular-datatables": "^16.0.0",
     "angular-disable-browser-back-button": "^2.0.0",
@@ -68,6 +73,7 @@
     "@angular-devkit/build-angular": "^16.1.8",
     "@angular/cli": "~16.1.8",
     "@angular/compiler-cli": "^16.1.0",
+    "@types/core-js": "^2.5.8",
     "@types/datatables.net": "^1.10.26",
     "@types/jasmine": "~4.3.0",
     "@types/jquery": "^3.5.18",

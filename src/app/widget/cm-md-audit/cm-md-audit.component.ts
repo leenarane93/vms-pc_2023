@@ -5,6 +5,8 @@ import { MediaFacadeService } from 'src/app/facade/facade_services/media-facade.
 import { MediaDetails } from 'src/app/models/media/Media';
 import { MediaUpload } from 'src/app/models/media/MediaUpload';
 import { Globals } from 'src/app/utils/global';
+import { VgApiService } from '@videogular/ngx-videogular/core';
+import { BlData, PlaylistAuditMedias } from 'src/app/models/media/PlAudit';
 
 @Component({
   selector: 'app-cm-md-audit',
@@ -17,24 +19,67 @@ export class CmMdAuditComponent implements OnInit {
   @Input() data: any;
   @Input() playlistAudit: boolean = false;
   @Input() mediaAudit: boolean = false;
+  screenHeight: number;
+  screenWidth: number;
   type: string = "Media Audit";
   medias: any[] = [];
   imgSrc: string;
   isImg: boolean = false;
-  isVdo: boolean = false;
+  isVdo: boolean = true;
   remarks: string;
   vdoUrl: string;
+  api: VgApiService;
+  videoItems: any[] = [];
+  plName:string = "";
+  blocks: any;
+  // [
+  //   {
+  //     name: 'Video one',
+  //     src: 'https://www.youtube.com/watch?v=YQqajBxeEkI',
+  //     type: 'video/mp4'
+  //   },
+  //   {
+  //     name: 'Video two',
+  //     src: 'https://www.youtube.com/watch?v=48tmgeVS1mg',
+  //     type: 'video/mp4'
+  //   },
+  //   {
+  //     name: 'Video three',
+  //     src: 'https://www.youtube.com/watch?v=JjDjDvNgkFo',
+  //     type: 'video/mp4'
+  //   }
+  // ];
+  activeIndex = 0;
+  currentVideo = this.videoItems[this.activeIndex];
+
   constructor(private _mediaFacade: MediaFacadeService,
     private _toast: ToastrService,
     private modal: NgbModal,
     private global: Globals) {
-
+    
   }
   ngOnInit(): void {
-    console.log(this.data);
-    this.getMediaUploadBySetID();
+    if (this.mediaAudit)
+      this.getMediaUploadBySetID();
+    else if (this.playlistAudit){
+      this.getMediaListBlockWise(this.data.blocks);
+      this.plName = this.data.plMaster.playlistName;
+    }
   }
-
+  getMediaListBlockWise(blocks: any) {
+    this.blocks = blocks;
+    this.isVdo =true;
+    this._mediaFacade.GetMediaBlockWise(this.data.plMaster.id).subscribe(res => {
+      if (res != null) {
+        console.log(res);
+        for (var i = 0; i < blocks.length; i++) {
+          if ((blocks[i].blId = res[i].blId)) {
+            blocks[i].src = res[i].medias[0].mediaPath;
+          }
+        }
+      }
+    })
+  }
   getMediaUploadBySetID() {
     this._mediaFacade.getMediaBySetID(this.data.uploadSetId).subscribe(res => {
       if (res != null && res != undefined) {
@@ -111,5 +156,27 @@ export class CmMdAuditComponent implements OnInit {
   toggleVideo() {
     this.videoplayer.nativeElement.play();
   }
+
+  //Video Player 
+  videoPlayerInit(data: any) {
+    this.data = data;
+    this.data.getDefaultMedia().subscriptions.loadedMetadata.subscribe(this.initVdo.bind(this));
+    this.data.getDefaultMedia().subscriptions.ended.subscribe(this.nextVideo.bind(this));
+  }
+  nextVideo() {
+    this.activeIndex++;
+    if (this.activeIndex === this.videoItems.length) {
+      this.activeIndex = 0;
+    }
+    this.currentVideo = this.videoItems[this.activeIndex];
+  }
+  initVdo() {
+    this.data.play();
+  }
+  startPlaylistVdo(item: any, index: number) {
+    this.activeIndex = index;
+    this.currentVideo = item;
+  }
+
 
 }

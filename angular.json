@@ -30,7 +30,8 @@
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/datatables.net-dt/css/jquery.dataTables.css",
               "./node_modules/leaflet/dist/leaflet.css",
-              "./node_modules/angular2-draggable/css/resizable.min.css"
+              "./node_modules/angular2-draggable/css/resizable.min.css",
+              "node_modules/@videogular/ngx-videogular/fonts/videogular.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
@@ -46,12 +47,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "150kb",
+                  "maximumError": "150kb"
                 }
               ],
               "outputHashing": "all"
@@ -68,7 +69,14 @@
           "defaultConfiguration": "production"
         },
         "serve": {
+          
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "src/proxy.conf.json",
+            "ssl": false,
+            "sslCert": "ssl/server.crt",
+            "sslKey": "ssl/server.key"
+          },
           "configurations": {
             "production": {
               "browserTarget": "vms-pc:build:production"
