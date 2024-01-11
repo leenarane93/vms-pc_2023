@@ -75,6 +75,8 @@ import {VgCoreModule} from '@videogular/ngx-videogular/core';
 import {VgControlsModule} from '@videogular/ngx-videogular/controls';
 import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
 import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
+import { PublishOperationsComponent } from './components/publish/publish-operations/publish-operations.component';
+import { CmMultiselectAutoCompltComponent } from './widget/cm-multiselect-auto-complt/cm-multiselect-auto-complt.component';
 
 @NgModule({
   declarations: [
@@ -120,6 +122,8 @@ import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
     MediaAuditComponent,
     CmMdAuditComponent,
     PlaylistAuditComponent,
+    PublishOperationsComponent,
+    CmMultiselectAutoCompltComponent,
   ],
   imports: [
     FormsModule,

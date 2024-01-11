@@ -95,10 +95,10 @@ export class PlaylistAuditComponent implements OnInit {
   getPlaylistByStatus(status: number) {
     if (status == 1 || status == 2) {
       this.listOfPlaylistPending = this.listOfPlaylist.filter((x: any) => (x.status == 1 || x.status == 2));
-    } else if (status == 2) {
-      this.listOfPlaylistApproved = this.listOfPlaylist.filter((x: any) => x.status == 2);
     } else if (status == 3) {
-      this.listOfPlaylistRejected = this.listOfPlaylist.filter((x: any) => x.status == 3);
+      this.listOfPlaylistApproved = this.listOfPlaylist.filter((x: any) => x.status == 3);
+    } else if (status == 4) {
+      this.listOfPlaylistRejected = this.listOfPlaylist.filter((x: any) => x.status == 4);
     }
   }
 

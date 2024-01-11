@@ -1,0 +1,48 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12" style="padding: 25px;">
+            <button class="btn btn-primary" (click)="BackToList()">
+                <!-- <span class="spinner-border spinner-border-sm me-1" ></span> -->
+                <i class="icon-arrow-left"></i>
+                Back To List
+            </button>
+        </div>
+    </div>
+
+    <div id="stepper1" class="bs-stepper card">
+        <div class="bs-stepper-header">
+            <div class="step" data-target="#test-l-1">
+                <button class="step-trigger" disabled>
+                    <span class="bs-stepper-circle">1</span>
+                    <span class="bs-stepper-label">Zone & VMS</span>
+                </button>
+            </div>
+            <div class="step" data-target="#test-l-2">
+                <button class="step-trigger" disabled>
+                    <span class="bs-stepper-circle">2</span>
+                    <span class="bs-stepper-label">Playlist</span>
+                </button>
+            </div>
+            <div class="step" data-target="#test-l-3">
+                <button class="step-trigger" disabled>
+                    <span class="bs-stepper-circle">3</span>
+                    <span class="bs-stepper-label">Time Configuration</span>
+                </button>
+            </div>
+
+        </div>
+        <div class="bs-stepper-content">
+            <div id="test-l-1" class="content">
+                Zone / VMS Selection
+            </div>
+            <div id="test-l-2" class="content mb-1">
+                Playlist Selection
+            </div>
+            <div id="test-l-3" class="content text-center">
+                Time Management
+            </div>
+        </div>
+    </div>
+
+</div>

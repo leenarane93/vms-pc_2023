@@ -17,6 +17,7 @@ export class CmMdAuditComponent implements OnInit {
   @ViewChild("videoPlayer", { static: false }) videoplayer: ElementRef;
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
   @Input() data: any;
+  playlistData:any;
   @Input() playlistAudit: boolean = false;
   @Input() mediaAudit: boolean = false;
   screenHeight: number;
@@ -30,25 +31,8 @@ export class CmMdAuditComponent implements OnInit {
   vdoUrl: string;
   api: VgApiService;
   videoItems: any[] = [];
-  plName:string = "";
+  plName: string = "";
   blocks: any;
-  // [
-  //   {
-  //     name: 'Video one',
-  //     src: 'https://www.youtube.com/watch?v=YQqajBxeEkI',
-  //     type: 'video/mp4'
-  //   },
-  //   {
-  //     name: 'Video two',
-  //     src: 'https://www.youtube.com/watch?v=48tmgeVS1mg',
-  //     type: 'video/mp4'
-  //   },
-  //   {
-  //     name: 'Video three',
-  //     src: 'https://www.youtube.com/watch?v=JjDjDvNgkFo',
-  //     type: 'video/mp4'
-  //   }
-  // ];
   activeIndex = 0;
   currentVideo = this.videoItems[this.activeIndex];
 
@@ -56,19 +40,20 @@ export class CmMdAuditComponent implements OnInit {
     private _toast: ToastrService,
     private modal: NgbModal,
     private global: Globals) {
-    
+
   }
   ngOnInit(): void {
     if (this.mediaAudit)
       this.getMediaUploadBySetID();
-    else if (this.playlistAudit){
+    else if (this.playlistAudit) {
       this.getMediaListBlockWise(this.data.blocks);
       this.plName = this.data.plMaster.playlistName;
+      this.playlistData = this.data;
     }
   }
   getMediaListBlockWise(blocks: any) {
     this.blocks = blocks;
-    this.isVdo =true;
+    this.isVdo = true;
     this._mediaFacade.GetMediaBlockWise(this.data.plMaster.id).subscribe(res => {
       if (res != null) {
         console.log(res);
@@ -124,30 +109,12 @@ export class CmMdAuditComponent implements OnInit {
   }
 
   updateData(status: number) {
-    var data = this.medias.filter(
-      (x: any) => x.uploadSetId == this.data.uploadSetId
-    );
-    let _uploadDetails = new MediaUpload();
-    _uploadDetails.createdBy = this.data.uploadedBy;
-    _uploadDetails.createdDate = this.data.createdDate;
-    _uploadDetails.id = this.data.id;
-    _uploadDetails.isDeleted =
-      this.data.isDeleted == undefined ||
-        this.data.isDeleted == null
-        ? false
-        : this.data.isDeleted;
-    _uploadDetails.modifiedBy = this.global.UserCode;
-    _uploadDetails.modifiedDate = new Date();
-    _uploadDetails.remarks = this.remarks;
-    _uploadDetails.status = status;
-    _uploadDetails.uploadSetId = this.data.uploadSetId;
-    this._mediaFacade.updateMediaSetDetails(_uploadDetails).subscribe(res => {
-      if (res != null && res == 1) {
-        this._toast.success("Successfully Updated.", "Success");
-        this.passEntry.emit("Success");
-        this.modal.dismissAll();
-      }
-    })
+    if (this.playlistAudit) {
+      this.UpdatePlaylistMaster(status);
+    }
+    else {
+      this.UpdateUploadSet(status);
+    }
   }
   passBack() {
     this.passEntry.emit("Success");
@@ -178,5 +145,58 @@ export class CmMdAuditComponent implements OnInit {
     this.currentVideo = item;
   }
 
+  UpdatePlaylistMaster(status: number) {
+    if (status == 1) {
+      this.playlistData.plMaster.modifiedBy = this.global.UserCode;
+      this.playlistData.plMaster.status = 3;
+      this.playlistData.plMaster.remarks = this.remarks;
+    } else if (status == 2) {
+      this.playlistData.plMaster.modifiedBy = this.global.UserCode;
+      this.playlistData.plMaster.status = 4;
+      this.playlistData.plMaster.remarks = this.remarks;
+    }
+    this._mediaFacade.updatePlaylistMaster(this.playlistData.plMaster).subscribe(
+      (res:any) => {
+        if (res != null) {
+          this._toast.success("Playlist updated successfully");
+          this.passBack();
+        } else {
+          this._toast.error("Something went wrong");
+        }
+      },
+      (err) => {
+        console.log(err);
+        this._toast.error(
+          "An error occured while processong your request, please contact system administrator."
+        );
+      }
+    );
+  }
 
+  UpdateUploadSet(status: number) {
+    var data = this.medias.filter(
+      (x: any) => x.uploadSetId == this.data.uploadSetId
+    );
+    let _uploadDetails = new MediaUpload();
+    _uploadDetails.createdBy = this.data.uploadedBy;
+    _uploadDetails.createdDate = this.data.createdDate;
+    _uploadDetails.id = this.data.id;
+    _uploadDetails.isDeleted =
+      this.data.isDeleted == undefined ||
+        this.data.isDeleted == null
+        ? false
+        : this.data.isDeleted;
+    _uploadDetails.modifiedBy = this.global.UserCode;
+    _uploadDetails.modifiedDate = new Date();
+    _uploadDetails.remarks = this.remarks;
+    _uploadDetails.status = status;
+    _uploadDetails.uploadSetId = this.data.uploadSetId;
+    this._mediaFacade.updateMediaSetDetails(_uploadDetails).subscribe(res => {
+      if (res != null && res == 1) {
+        this._toast.success("Successfully Updated.", "Success");
+        this.passEntry.emit("Success");
+        this.modal.dismissAll();
+      }
+    })
+  }
 }
