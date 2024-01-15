@@ -2,10 +2,8 @@
 
     <div class="row">
         <div class="col-md-12" style="padding: 25px;">
-            <button class="btn btn-primary" (click)="BackToList()">
-                <!-- <span class="spinner-border spinner-border-sm me-1" ></span> -->
-                <i class="icon-arrow-left"></i>
-                Back To List
+            <button class="btn btn-primary text-right" (click)="BackToList()">
+                Publish Status
             </button>
         </div>
     </div>
@@ -34,10 +32,36 @@
         </div>
         <div class="bs-stepper-content">
             <div id="test-l-1" class="content">
-                Zone / VMS Selection
+                <div class="row">
+                    <div class="col-md-6">
+                        <cm-multiselect-auto-complt [inputData]="_inputZoneData" [label]="label1"
+                            [dropdownSettings]="dropdownSettings" (selectedItem)="getSelectedZone($event,1)" 
+                            (deSelectedItem)="getSelectedZone($event,0)"></cm-multiselect-auto-complt>
+                    </div>
+                    <div class="col-md-6" *ngIf="_inputVmsData != undefined">
+                        <cm-multiselect-auto-complt [inputData]="_inputVmsData" [label]="label2"
+                            [dropdownSettings]="dropdownSettingsVms" (selectedItem)="getSelectedVms($event,1)"
+                            (deSelectedItem)="getSelectedVms($event,0)"></cm-multiselect-auto-complt>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-right" style="padding: 10px;">
+                        <button class="btn btn-primary" (click)="StepNext(1)">
+                            <i class="icon-arrow-right"></i>
+                            Next
+                        </button>
+                    </div>
+                </div>
             </div>
             <div id="test-l-2" class="content mb-1">
-                Playlist Selection
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <app-cm-table [headArr]="headerArr" [gridArr]="filteredPlaylist" [totalRecords]="totalRecords"
+                            [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)"
+                            [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)" link="users/add-user"
+                            fieldName="id" (search)="onPageSearch($event)" (checked)="checked($event,1)" (notChecked)="checked($event,0)"></app-cm-table>
+                    </div>
+                </div>
             </div>
             <div id="test-l-3" class="content text-center">
                 Time Management

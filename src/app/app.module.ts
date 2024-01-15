@@ -70,13 +70,14 @@ import {TabsModule} from 'ngx-bootstrap/tabs';
 import { DatePipe } from '@angular/common';
 import { CmMdAuditComponent } from './widget/cm-md-audit/cm-md-audit.component';
 import { PlaylistAuditComponent } from './components/media/playlist-audit/playlist-audit.component';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 import {VgCoreModule} from '@videogular/ngx-videogular/core';
 import {VgControlsModule} from '@videogular/ngx-videogular/controls';
 import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
 import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
 import { PublishOperationsComponent } from './components/publish/publish-operations/publish-operations.component';
 import { CmMultiselectAutoCompltComponent } from './widget/cm-multiselect-auto-complt/cm-multiselect-auto-complt.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -153,7 +154,8 @@ import { CmMultiselectAutoCompltComponent } from './widget/cm-multiselect-auto-c
     DataTablesModule,
     AngularDraggableModule,
     DragDropModule,
-    CdkTableModule
+    CdkTableModule,
+    NgMultiSelectDropDownModule 
   ],
   exports: [TooltipDirective],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },

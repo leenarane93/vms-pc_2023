@@ -27,6 +27,8 @@ export class CmTableComponent {
   filteredData: any = [];
   activePage: number = 0;
   @Output() btnAction = new EventEmitter<any>();
+  @Output() checked = new EventEmitter<any>();
+  @Output() notChecked = new EventEmitter<any>();
   constructor(private router: Router) {
 
   }
@@ -55,8 +57,14 @@ export class CmTableComponent {
       this.searchWithId.emit(item);
     //this.router.navigate([this.link]);
   }
-  GoToBtnAction(action:any,data:any) {
-    let _sendData = {"action":action.action,"data":data};
+  GoToBtnAction(action: any, data: any) {
+    let _sendData = { "action": action.action, "data": data };
     this.btnAction.emit(_sendData);
+  }
+  Checked(eve: any, data: any) {
+    if (eve.target.checked == true)
+      this.checked.emit(data);
+    else
+      this.notChecked.emit(data);
   }
 }

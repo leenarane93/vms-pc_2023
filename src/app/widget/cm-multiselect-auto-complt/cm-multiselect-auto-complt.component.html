@@ -1,1 +1,13 @@
-<p>cm-multiselect-auto-complt works!</p>
+<div class="card">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group row" style="padding: 10px;">
+                <div class="col-md-4">
+                    <label for="">{{label}}</label>
+                    <ng-multiselect-dropdown name="zones" (onSelectAll)="selectAll($event,1)" [settings]="dropdownSettings" [data]="inputData.data"
+                        [disabled]="inputData.disabled" (onSelect)="onItemSelect($event,1)" (onDeSelectAll)="selectAll($event,0)" (onDeSelect)="onItemSelect($event,0)">
+                    </ng-multiselect-dropdown>
+                </div>
+            </div>
+        </div>
+    </div>
