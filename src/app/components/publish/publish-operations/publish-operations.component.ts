@@ -39,6 +39,9 @@ export class PublishOperationsComponent implements OnInit {
     { "Head": "Playlist Name", "FieldName": "playlistName", "type": "string" },
     { "Head": "Selection", "FieldName": "checkbox", "type": "checkbox" }
   ];
+  fromTimeArr = {
+    "inputDatetimeFormat" : "dd-MM-yyyy HH:mm:ss",
+  }
   constructor(private global: Globals,
     private _publish: PublishFacadeService,
     private _toast: ToastrService) {

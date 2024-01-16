@@ -18,39 +18,19 @@ import { noop } from 'rxjs';
     }
   ]
 })
-export class CmDatetimepickerComponent implements ControlValueAccessor, OnInit, AfterViewInit {
-  @Input()
-  dateString: string;
-  timePickerContent:any;
-  @Input()
-  inputDatetimeFormat = 'M/d/yyyy H:mm:ss';
-  @Input()
-  hourStep = 1;
-  @Input()
-  minuteStep = 15;
-  @Input()
-  secondStep = 30;
-  @Input()
-  seconds = true;
-
-  @Input()
-  disabled = false;
-
-   showTimePickerToggle = false;
-
-  datetime: DateTimeModel = new DateTimeModel();
-  firstTimeAssign = true;
-
-  @ViewChild(NgbDatepicker)
-  dp: NgbDatepicker;
-
-  @ViewChild(NgbPopover)
-  popover: NgbPopover;
-
-  onTouched: () => void = noop;
-  onChange: (_: any) => void = noop;
-
-  ngControl: NgControl;
+export class CmDatetimepickerComponent implements OnInit, AfterViewInit {
+  @Input() type: string = 'from';
+  @Input() inputDatetimeFormat = 'M/d/yyyy H:mm:ss';
+  @Input() fromYear: any;
+  @Input() toYear: any;
+  months: any;
+  years: any[] = [];
+  days: any[] = [];
+  totalYearsCount: number = 0;
+  daysCount: number = 31;
+  hours:any[]=[];
+  minutes:any[]=[];
+  selectedHour:any;
 
   constructor(private config: NgbPopoverConfig, private inj: Injector) {
     config.autoClose = 'outside';
@@ -58,105 +38,29 @@ export class CmDatetimepickerComponent implements ControlValueAccessor, OnInit, 
   }
 
   ngOnInit(): void {
-    this.ngControl = this.inj.get(NgControl);
+    let _monthsArr = [{"monthName":"January","value":1},{"monthName":"February","value":2},{"monthName":"March","value":3},
+    {"monthName":"April","value":4},{"monthName":"May","value":5},{"monthName":"June","value":6},{"monthName":"July","value":7},
+    {"monthName":"August","value":8},{"monthName":"September","value":9},{"monthName":"October","value":10},{"monthName":"November","value":11},
+    {"monthName":"December","value":12}];
+    this.months = _monthsArr;
+    this.totalYearsCount = this.toYear - this.fromYear;
+    let currentYear = this.fromYear;
+    for (var i = 0; i < this.totalYearsCount; i++) {
+      this.years.push(Number(this.fromYear) + i);
+    }
+
+    for (var i = 0; i < 31; i++) {
+      this.days.push(i + 1);
+    }
+    for (var i = 0; i < 24; i++) {
+      this.hours.push(i + 1);
+    }
+    for (var i = 0; i < 60; i++) {
+      this.minutes.push(i);
+    }
   }
 
   ngAfterViewInit(): void {
-    this.popover.hidden.subscribe($event => {
-      this.showTimePickerToggle = false;
-    });
-  }
 
-  writeValue(newModel: string) {
-    if (newModel) {
-      this.datetime = Object.assign(this.datetime, DateTimeModel.fromLocalString(newModel));
-      this.dateString = newModel;
-      this.setDateStringModel();
-    } else {
-      this.datetime = new DateTimeModel();
-    }
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  toggleDateTimeState($event:any) {
-    this.showTimePickerToggle = !this.showTimePickerToggle;
-    $event.stopPropagation();
-  }
-
-  setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-  }
-
-  onInputChange($event: any) {
-    const value = $event.target.value;
-    const dt = DateTimeModel.fromLocalString(value);
-
-    if (dt) {
-      this.datetime = dt;
-      this.setDateStringModel();
-    } else if (value.trim() === '') {
-      this.datetime = new DateTimeModel();
-      this.dateString = '';
-      this.onChange(this.dateString);
-    } else {
-      this.onChange(value);
-    }
-  }
-
-  onDateChange($event: any | NgbDateStruct) {
-    if ($event.year) {
-      $event = `${$event.year}-${$event.month}-${$event.day}`
-    }
-
-    const date = DateTimeModel.fromLocalString($event);
-
-    if (!date) {
-      this.dateString = this.dateString;
-      return;
-    }
-
-    if (!this.datetime) {
-      this.datetime = date;
-    }
-
-    this.datetime.year = date.year;
-    this.datetime.month = date.month;
-    this.datetime.day = date.day;
-
-    this.dp.navigateTo({ year: this.datetime.year, month: this.datetime.month });
-    console.log('test');
-    this.setDateStringModel();
-  }
-
-  onTimeChange(event: NgbTimeStruct) {
-    this.datetime.hour = event.hour;
-    this.datetime.minute = event.minute;
-    this.datetime.second = event.second;
-
-    this.setDateStringModel();
-  }
-
-  setDateStringModel() {
-    this.dateString = this.datetime.toString();
-
-    if (!this.firstTimeAssign) {
-      this.onChange(this.dateString);
-    } else {
-      // Skip very first assignment to null done by Angular
-      if (this.dateString !== null) {
-        this.firstTimeAssign = false;
-      }
-    }
-  }
-
-  inputBlur($event:any) {
-    this.onTouched();
   }
 }

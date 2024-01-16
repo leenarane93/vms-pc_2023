@@ -1,30 +1,55 @@
-<div class="input-group mr-2">
-    <input [ngClass]="ngControl?.valid ? 'ng-valid' : 'ng-invalid'" class="form-control" (blur)="inputBlur($event)" [ngModel]="dateString | date:inputDatetimeFormat" (change)="onInputChange($event)" [disabled]='disabled' />
+<div class="row">
+    <div class="col-md-12">
+        <div class="btn-group" style="padding:5px;" ngbDropdown role="group"
+            aria-label="Button group with nested dropdown">
+            <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                <option selected value="0">--Select Year--</option>
+                <option value="{{i}}" *ngFor="let i of years">{{i}}</option>
+            </select>
+        </div>
+        <div class="btn-group" style="padding:5px;" ngbDropdown role="group"
+            aria-label="Button group with nested dropdown">
+            <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                <option selected value="0">--Select Month--</option>
+                <option *ngFor="let m of months" value="{{m.value}}">{{m.monthName}}</option>
+            </select>
+        </div>
 
-    <div class="input-group-append">
-        <button class="btn btn-outline-secondary" [ngbPopover]="calendarContent" [disabled]='disabled' type="button">
-            <i class="icon-eye"></i>
-        </button>
+        <div class="btn-group" style="padding:5px;" ngbDropdown role="group"
+            aria-label="Button group with nested dropdown">
+            <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                <option selected value="0">--Select Day--</option>
+                <option *ngFor="let d of days" value="{{d}}">{{d}}</option>
+            </select>
+        </div>
+
+        <label>Time : </label>
+        <div class="btn-group" style="padding:5px;" ngbDropdown role="group"
+            aria-label="Button group with nested dropdown">
+            <input type="text" class="form-control" placeholder="HH:mm:ss (24 Hours)" />
+        </div>
+        <!-- <div class="btn-group" style="padding:5px;" ngbDropdown role="group"
+            aria-label="Button group with nested dropdown">
+            <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                <option selected value="0">--Select Hour--</option>
+                <option *ngFor="let h of hours" value="{{h}}">{{h}}</option>
+            </select>
+        </div>
+
+        <div class="btn-group" style="padding:5px;" ngbDropdown role="group"
+            aria-label="Button group with nested dropdown">
+            <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                <option selected value="0">--Select Minute--</option>
+                <option *ngFor="let mn of minutes" value="{{mn}}">{{mn}}</option>
+            </select>
+        </div>
+
+        <div class="btn-group" style="padding:5px;" ngbDropdown role="group"
+            aria-label="Button group with nested dropdown">
+            <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                <option selected value="0">--Select Second--</option>
+                <option *ngFor="let sc of minutes" value="{{sc}}">{{sc}}</option>
+            </select>
+        </div> -->
     </div>
 </div>
-
-<ng-template #calendarContent>
-    <div >
-        <div *ngIf="!showTimePickerToggle" >
-            <ngb-datepicker #dp name="datepicker" [ngModel]="datetime"  (ngModelChange)="onDateChange($event)"></ngb-datepicker>
-            <button class="btn btn-block btn-outline-secondary" [disabled]="!datetime?.day" [ngbPopover]="timePickerContent" type="button" (click)="toggleDateTimeState($event)">
-                <i class="icon-eye"></i>
-            </button>
-        </div>
-        <div *ngIf="showTimePickerToggle" >
-                <button class="btn btn-block btn-outline-secondary" [ngbPopover]="calendarContent" type="button" (click)="toggleDateTimeState($event)">
-                    <i class="bi bi-calendar"></i>
-                </button>
-            <div class="mt-auto">
-            <ngb-timepicker #tp name="timepicker" [ngModel]="datetime" (ngModelChange)="onTimeChange($event)" [seconds]="seconds"
-            [hourStep]="hourStep" [minuteStep]="minuteStep" [secondStep]="secondStep"></ngb-timepicker>
-            </div>
-        </div>
-    </div>
-</ng-template>
-

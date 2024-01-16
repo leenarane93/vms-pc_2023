@@ -79,6 +79,8 @@ import { PublishOperationsComponent } from './components/publish/publish-operati
 import { CmMultiselectAutoCompltComponent } from './widget/cm-multiselect-auto-complt/cm-multiselect-auto-complt.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { CmDatetimepickerComponent } from './widget/cm-datetimepicker/cm-datetimepicker.component';
+import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons';
+import { allIcons } from 'ngx-bootstrap-icons';
 
 @NgModule({
   declarations: [
@@ -157,7 +159,8 @@ import { CmDatetimepickerComponent } from './widget/cm-datetimepicker/cm-datetim
     AngularDraggableModule,
     DragDropModule,
     CdkTableModule,
-    NgMultiSelectDropDownModule 
+    NgMultiSelectDropDownModule,
+    NgxBootstrapIconsModule.pick(allIcons)
   ],
   exports: [TooltipDirective],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },

@@ -80,9 +80,15 @@
             </div>
             <div id="test-l-3" class="content text-center">
                 <div class="row">
-                    <div class="col-md-6">
-                        <label>Global From : </label>
-                        <cm-datetimepicker></cm-datetimepicker>
+                    <div class="col-md-12 float-center">
+                        <label>Publish From : </label>
+                        <cm-datetimepicker (inputDatetimeFormat)="fromTimeArr.inputDatetimeFormat" type="from" fromYear="2024" toYear="2030"></cm-datetimepicker>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 float-center">
+                        <label>Publish To : </label>
+                        <cm-datetimepicker (inputDatetimeFormat)="fromTimeArr.inputDatetimeFormat" type="to" fromYear="2024" toYear="2030"></cm-datetimepicker>
                     </div>
                 </div>
             </div>
