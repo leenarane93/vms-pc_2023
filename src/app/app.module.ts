@@ -78,6 +78,7 @@ import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
 import { PublishOperationsComponent } from './components/publish/publish-operations/publish-operations.component';
 import { CmMultiselectAutoCompltComponent } from './widget/cm-multiselect-auto-complt/cm-multiselect-auto-complt.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { CmDatetimepickerComponent } from './widget/cm-datetimepicker/cm-datetimepicker.component';
 
 @NgModule({
   declarations: [
@@ -125,6 +126,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     PlaylistAuditComponent,
     PublishOperationsComponent,
     CmMultiselectAutoCompltComponent,
+    CmDatetimepickerComponent,
   ],
   imports: [
     FormsModule,

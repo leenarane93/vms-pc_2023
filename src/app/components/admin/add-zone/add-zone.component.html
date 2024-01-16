@@ -1,18 +1,17 @@
-<div class="container" #scroll>
-    <div class="row">
-        <div class="col-md-12" style="padding: 25px;">
-            <button class="btn btn-primary" (click)="BackToList()">
+<div class="p-4"   #scroll>
+<div class="row">
+    <div class="col-xl-12 col-md-12 grid-margin">
+
+            <button class="btn btn-primary btn-rounded mb-1" (click)="BackToList()">
                 <!-- <span class="spinner-border spinner-border-sm me-1" ></span> -->
                 <i class="icon-arrow-left"></i>
                 Back To List
             </button>
-        </div>
-    </div>
-    <div class="card card-css">
-        <div class="row">
-            <div class="col-md-12">
+
+    <div class="card">
+       <div class="card-body">
                 <form *ngIf="!loading" [formGroup]="form" (ngSubmit)="onSubmit()">
-                    <div class="modal-body">
+                    
                         <div class="row">
                             <div class="mb-3 col">
                                 <label class="form-label">Zone Name*</label>
@@ -36,7 +35,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="mb-3 col" style="padding-top: 40px;">
+                            <div class="mb-1 col">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label class="form-label">Status*</label>
@@ -58,25 +57,23 @@
                                 </div>
                             </div>                            
                         </div>
-                    </div>
+
 
                 </form>
             </div>
-        </div>
+            
     </div>
-    <div class="card card-css">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="bg-dark pl-2 pr-2 filterArea" id="filterArea">
+    <div class="card">
+        <div class="card-body p-2 pb-3">
+                <!-- <div class="bg-dark pl-2 pr-2 filterArea" id="filterArea">
                     <div class="row">
                     </div>
-                </div>
-                <div style="height:500px;">
+                </div> -->
+                <div style="height:500px; padding-bottom: 20px;">
                     <app-cm-leaflet (latLng)="GetLatLong($event)" [zoneId]="this.id" [btnDisabled]="btnDis"></app-cm-leaflet>
                 </div>
             </div>
-        </div>
         
     </div>
 
-</div>
+</div></div></div>

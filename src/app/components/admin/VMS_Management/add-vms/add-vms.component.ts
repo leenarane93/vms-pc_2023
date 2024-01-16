@@ -11,7 +11,7 @@ import { InputRequest } from 'src/app/models/request/inputReq';
 import { Globals } from 'src/app/utils/global';
 import { getErrorMsg } from 'src/app/utils/utils';
 import { CmMapBoxComponent } from 'src/app/widget/cm-map-box/cm-map-box.component';
-
+declare let $: any;
 
 @Component({
   selector: 'app-add-vms',
@@ -24,6 +24,10 @@ export class AddVmsComponent implements OnInit {
   brightness: number = 130;
   vmsOn: boolean = false;
   active: boolean = false;
+  range:any;
+  tooltip:any;
+  setValue:any;
+  newPosition:any;
   loading: boolean = false;
   submitting: boolean = false;
   zones: any[] = [];
@@ -47,6 +51,29 @@ export class AddVmsComponent implements OnInit {
   ngOnInit(): void {
     let data = this.commonFacade.getSession("ModelShow");
     this.FillForm(data == null ? "" : JSON.parse(data));
+
+
+
+    $(document).ready(() => {
+      this.range = document.getElementById("range"),
+      this.tooltip = document.getElementById("tooltip"),
+      this.setValue = () => {
+        const newValue = Number(
+            ((this.range.value - this.range.min) * 100) / (this.range.max - this.range.min)
+          ),
+          newPosition = 16 - newValue * 0.32;
+       this.tooltip.innerHTML = `<span>${this.range.value}</span>`;
+       this.brightness = this.range.value;
+        this.tooltip.style.left = `calc(${newValue}% + (${newPosition}px))`;
+        document.documentElement.style.setProperty(
+          "--range-progress",
+          `calc(${newValue}% + (${newPosition}px))`
+        );
+      };
+    document.addEventListener("DOMContentLoaded", this.setValue);
+    this.range.addEventListener("input", this.setValue);
+    }); 
+    
   }
   get f() { return this.form.controls; }
 
@@ -207,4 +234,7 @@ export class AddVmsComponent implements OnInit {
     this.AddVmsMaster(1);
     this.router.navigate(['masters/vms-master']);
   }
+
+
+  
 }

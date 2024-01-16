@@ -1,18 +1,16 @@
-<div class="container">
+<div class="p-4">
     <div class="row">
-        <div class="col-md-12" style="padding: 25px;">
-            <button class="btn btn-primary" (click)="BackToList()">
+        <div class="col-md-12 grid-margin col-xl-12 ">
+            <button class="btn btn-primary btn-rounded mb-1" (click)="BackToList()">
                 <!-- <span class="spinner-border spinner-border-sm me-1" ></span> -->
                 <i class="icon-arrow-left"></i>
                 Back To List
             </button>
-        </div>
-    </div>
-    <div class="card card-css">
-        <div class="row">
-            <div class="col-md-12">
+        
+    <div class="card">
+       
                 <form *ngIf="!loading" [formGroup]="form" (ngSubmit)="onSubmit()">
-                    <div class="modal-body">
+                    <div class="card-body">
                         <div class="row">
                             <div class="mb-3 col">
                                 <label class="form-label">VMS ID*</label>
@@ -98,9 +96,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-4 col">
+                            <div class="mb-3 col">
                                 <label class="form-label">Location*</label>
-                                <div class="form-group col-md-4 pt-2 text-primary text-center">
+                                <div class="text-primary">
                                     <a class="btn btn-outline-primary btn-icon-text" (click)="OpenZoneMap()"
                                         style="width: 200px;"><i class="fa fa-map-marker"></i> Check on Map </a>
 
@@ -129,7 +127,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-3 col" style="padding-top: 40px;">
+                            <div class="mb-3 col">
+                                <label class="form-label">Status</label> <br/>
                                 <label class="switch active">
                                     <input type="checkbox" formControlName="isActive" [(ngModel)]="active">
                                     <div class="slider round"></div>
@@ -155,40 +154,37 @@
 
                             </div>
                             <div class="form-group col-md-4 text-center">
+                                
                                 <label class="switch onOff">
                                     <input type="checkbox" formControlName="vmson" [(ngModel)]="vmsOn">
                                     <div class="slider round"></div>
                                 </label>
                             </div>
                         </div>
-                        <div class="row">
+            </div>
+                       
+                        <div class="card-footer bg-light p-2 text-right">
 
-                        </div>
-                        <div class="row">
-
-                            <div class="col-md-1" style="padding:10px">
-                                <button [disabled]="!form.valid" type="button" class="btn btn-success" (click)="onSubmit()">
+                           
+                                <button [disabled]="!form.valid" type="button" class="btn btn-primary mr-2" (click)="onSubmit()">
                                     <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
                                     Submit
                                 </button>
-                            </div>
-                            <div class="col-md-1" style="padding:10px">
-                                <button [disabled]="!form.valid" class="btn btn-warning">
+                          
+                                <button [disabled]="!form.valid" class="btn btn-secondary">
                                     <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
                                     Reset
                                 </button>
-                            </div>
-                            <div class="col-md-1" style="padding:10px" *ngIf="id!=0">
-                                <button type="button" class="btn btn-danger" (click)="DeleteVMS()">
+                            
+                                <button type="button" class="btn btn-danger ml-2" (click)="DeleteVMS()"  *ngIf="id!=0">
                                     <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
                                     Delete
                                 </button>
-                            </div>
+                            
                         </div>
-                    </div>
-
+                    
                 </form>
-            </div>
         </div>
     </div>
+</div>
 </div>

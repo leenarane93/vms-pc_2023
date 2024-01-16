@@ -1,7 +1,7 @@
 <div class="p-4">
     <div class="row mb-3">
 
-        <div class="col-xl-12  grid-margin stretch-card">
+        <div class="col-xl-12 stretch-card">
 
             <div class="card border-0  pb-0">
                 <div class="form">
@@ -17,7 +17,7 @@
                                     <div>
                                         <h4>Upload Media Files - Add Images or Videos </h4>
                                         <hr>
-                                        <hr>
+
                                         <h5>Upload Set ID : {{uploadSetId}} </h5>
 
                                         <input type="file" #InputVar class="form-control file-upload-primary"
@@ -171,16 +171,22 @@
                 </div>
             </div>
 
-        </div>
-        <div class="row">
-            <div class="col-md-12 ">
+</div></div>
+
+<div class="row mb-3">
+            <div class="col-xl-12 stretch-card" id="listView">
+                <div class="card  border-0">
+                  <div class="card-body p-2 bgTable" style="border-radius: 0 0;">                      
+                    
                 <app-cm-table [headArr]="headerArr" [gridArr]="listOfMediaSet" [totalRecords]="totalRecords"
                     [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)" [btnArray]="btnArray"
                     [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)"
                     link="masters/add-party" fieldName="id" (search)="onPageSearch($event)"
                     (btnAction)="ButtonAction($event)" (searchWithId)="SearchWithId($event)"></app-cm-table>
-            </div>
+            
         </div>
 
     </div>
+</div>
+</div>
 </div>

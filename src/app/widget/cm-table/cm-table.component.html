@@ -21,7 +21,7 @@
             <input tooltip="Check to select" class="form-check-input" (change)="Checked($event,item)"
             type="checkbox" id="defaultCheck1">
           </span>
-          <span *ngIf="head.FieldName == 'checkbox' && btnArray.length > 0"><button *ngFor="let btn of btnArray" tooltip="Click to change" placement="top" delay="500" type="button" class="btn btn-inverse-primary btn-sm" (click)="GoToBtnAction(btn,item)">
+          <span *ngIf="head.FieldName == 'actions' && btnArray.length > 0"><button *ngFor="let btn of btnArray" tooltip="Click to change" placement="top" delay="500" type="button" class="btn btn-inverse-primary btn-sm" (click)="GoToBtnAction(btn,item)">
             <i [class]="btn.icon"></i>
           </button></span>
         </td>

@@ -174,9 +174,15 @@ export class PublishOperationsComponent implements OnInit {
             this._toast.error("Something went wrong");
           }
         })
-        this.selectedPlaylist=[];
+        this.selectedPlaylist = [];
         this.stepper.next();
       }
+    }
+    else if (step == 2) {
+      if (this.selectedPlaylist.length == 0)
+        this._toast.error("Please select playlist.");
+      else
+        this.stepper.next();
     }
   }
   stepperValidation(step: number) {
@@ -217,7 +223,7 @@ export class PublishOperationsComponent implements OnInit {
     this.searchText = search;
     this.filteredPlaylist = [];
     this.playlistList.forEach(element => {
-      if(element.playlistName.includes(search)) {
+      if (element.playlistName.includes(search)) {
         this.filteredPlaylist.push(element);
       }
     });
@@ -229,7 +235,7 @@ export class PublishOperationsComponent implements OnInit {
     }
     else {
       var idx = this.selectedPlaylist.find(x => x.id == _data.id);
-      this.selectedPlaylist.splice(idx,1);
+      this.selectedPlaylist.splice(idx, 1);
     }
   }
 

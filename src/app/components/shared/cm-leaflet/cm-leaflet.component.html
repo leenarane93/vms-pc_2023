@@ -19,14 +19,12 @@
 </head>
 
 {{btnDisabled}}
+
+        <div class="map mb-1" #map id="map" style="width: 100%; height: 450px;"></div>
+  
 <div class="row">
-    <div class="col-md-12">
-        <div class="map" #map id="map" style="width: 100%; height: 450px;"></div>
-    </div>
-</div>
-<div class="row card-css">
     <div class="mb-3 col text-center" id="bottom"  >
-        <button class="btn btn-success" [disabled]="btnDisabled" (click)="SubmitCoordinates()">
+        <button class="btn btn-primary" [disabled]="btnDisabled" (click)="SubmitCoordinates()">
             Submit
         </button>
     </div>

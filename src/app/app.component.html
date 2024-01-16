@@ -1,17 +1,15 @@
 <div class="container-scroller">
-  <div class="row">
-    <div class="row">
-      <div class="col-md-12">
+  
         <app-header *ngIf="loggedIn"></app-header>
-      </div>
-    </div>
+      
     <div class="row">
       <div class="col-md-12">
-        <div class="container-fluid page-body-wrapper p-0">
+        <div class="container-fluid page-body-wrapper p-0" style="position: relative;">
           <app-sidebar *ngIf="loggedIn"></app-sidebar>
-          <div class="main-panel gradient-custom-2 aniamteBg main-div" style="position: relative;">
-            <div class="grid"></div>
-            <div class="bgGrid" style="width:100%; display:block;position:absolute; z-index: 4; height:100%; top:1"></div>
+          <div class="grid"></div>
+          <div class="bgGrid" style="width:100%; display:block;position:absolute; z-index: 4; height:100vh; top:1"></div>
+          <div class="main-panel gradient-custom-2 aniamteBg main-div" >
+
             <div class="content-wrapper p-0" style="position: relative;z-index: 4; background: transparent;">
               <router-outlet></router-outlet>
               <app-loader></app-loader>
@@ -24,4 +22,3 @@
     </div>
   
   </div>
-</div>
