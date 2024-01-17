@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnInit, ViewChild } from '@angular/core';
 
 import Stepper from 'bs-stepper';
 import { ToastrService } from 'ngx-toastr';
@@ -6,6 +6,10 @@ import { PublishFacadeService } from 'src/app/facade/facade_services/publish-fac
 import { CommonSelectList } from 'src/app/models/common/cmSelectList';
 import { InputRequest } from 'src/app/models/request/inputReq';
 import { Globals } from 'src/app/utils/global';
+import { NgbTimeStruct, NgbDateStruct, NgbPopoverConfig, NgbPopover, NgbDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import { noop } from 'rxjs';
+import { NgControl } from '@angular/forms';
+import { DateTimeModel } from 'src/app/models/DateTimeModel';
 
 @Component({
   selector: 'app-publish-operations',
@@ -34,6 +38,8 @@ export class PublishOperationsComponent implements OnInit {
   playlistList: any[] = [];
   selectedPlaylist: any[] = [];
   filteredPlaylist: any[] = [];
+  selectedDate:any;
+  ngControl:any;
   headerArr = [
     { "Head": "ID", "FieldName": "id", "type": "number" },
     { "Head": "Playlist Name", "FieldName": "playlistName", "type": "string" },
@@ -44,7 +50,8 @@ export class PublishOperationsComponent implements OnInit {
   }
   constructor(private global: Globals,
     private _publish: PublishFacadeService,
-    private _toast: ToastrService) {
+    private _toast: ToastrService,
+    private config: NgbPopoverConfig, private inj: Injector) {
     this.global.CurrentPage = "Publish Operations";
     this.dropdownSettings = {
       singleSelection: false,
@@ -65,6 +72,9 @@ export class PublishOperationsComponent implements OnInit {
       itemsShowLimit: 5,
       allowSearchFilter: true,
     };
+
+      config.autoClose = 'outside';
+      config.placement = 'auto';
   }
   BackToList() { }
   ngOnInit(): void {
@@ -242,5 +252,137 @@ export class PublishOperationsComponent implements OnInit {
     }
   }
 
+
+  //Changes for datetime picker
+  @Input()
+  dateString: string;
+
+  @Input()
+  inputDatetimeFormat = 'M/d/yyyy H:mm:ss';
+  @Input()
+  hourStep = 1;
+  @Input()
+  minuteStep = 15;
+  @Input()
+  secondStep = 30;
+  @Input()
+  seconds = true;
+
+  @Input()
+  disabled = false;
+
+  showTimePickerToggle = false;
+
+   datetime: DateTimeModel = new DateTimeModel();
+   firstTimeAssign = true;
+
+  @ViewChild(NgbDatepicker)
+  dp: NgbDatepicker;
+
+  @ViewChild(NgbPopover)
+  popover: NgbPopover;
+  timePickerContent:any;
+  private onTouched: () => void = noop;
+  private onChange: (_: any) => void = noop;
+
+
+  ngAfterViewInit(): void {
+      this.popover.hidden.subscribe($event => {
+          this.showTimePickerToggle = false;
+      });
+  }
+
+  writeValue(newModel: string) {
+      if (newModel) {
+          this.datetime = Object.assign(this.datetime, DateTimeModel.fromLocalString(newModel));
+          this.dateString = newModel;
+          this.setDateStringModel();
+      } else {
+          this.datetime = new DateTimeModel();
+      }
+  }
+
+  registerOnChange(fn: any): void {
+      this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+      this.onTouched = fn;
+  }
+
+  toggleDateTimeState($event:any) {
+      this.showTimePickerToggle = !this.showTimePickerToggle;
+      $event.stopPropagation();
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+      this.disabled = isDisabled;
+  }
+
+  onInputChange($event: any) {
+      const value = $event.target.value;
+      const dt = DateTimeModel.fromLocalString(value);
+
+      if (dt) {
+          this.datetime = dt;
+          this.setDateStringModel();
+      } else if (value.trim() === '') {
+          this.datetime = new DateTimeModel();
+          this.dateString = '';
+          this.onChange(this.dateString);
+      } else {
+            this.onChange(value);
+      }
+  }
+
+  onDateChange($event: any) {        
+      if ($event.year){
+        $event = `${$event.year}-${$event.month}-${$event.day}`
+      }
+
+      const date = DateTimeModel.fromLocalString($event);
+ 
+      if (!date) {
+          this.dateString = this.dateString;
+          return;
+      }
+
+      if (!this.datetime) {
+          this.datetime = date;
+      }
+
+      this.datetime.year = date.year;
+      this.datetime.month = date.month;
+      this.datetime.day = date.day;
+
+      this.dp.navigateTo({ year: this.datetime.year, month: this.datetime.month });
+      console.log('test');
+      this.setDateStringModel();
+  }
+
+  onTimeChange(event: NgbTimeStruct) {
+      this.datetime.hour = event.hour;
+      this.datetime.minute = event.minute;
+      this.datetime.second = event.second;
+
+      this.setDateStringModel();
+  }
+
+  setDateStringModel() {
+      this.dateString = this.datetime.toString();
+
+      if (!this.firstTimeAssign) {
+          this.onChange(this.dateString);
+      } else {
+          // Skip very first assignment to null done by Angular
+          if (this.dateString !== null) {
+              this.firstTimeAssign = false;
+          }
+      }
+  }
+
+  inputBlur($event:any) {
+      this.onTouched();
+  }
 
 }

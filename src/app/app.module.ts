@@ -61,6 +61,7 @@ import { PlaylistCreationComponent } from './components/media/playlist-creation/
 import { PlaylistConfigureComponent } from './components/media/playlist-configure/playlist-configure.component';
 import { CmTooltipComponent } from './widget/cm-tooltip/cm-tooltip.component';
 import { TooltipDirective } from './interceptor/interceptors/tooltip.directive';
+import { BlockCopyPasteDirective } from './interceptor/interceptors/copypaste.directive';
 import { CmMediaModalComponent } from './widget/cm-media-modal/cm-media-modal.component';
 import { AngularDraggableModule } from 'angular2-draggable';
 import {DragDropModule} from '@angular/cdk/drag-drop';
@@ -122,6 +123,7 @@ import { allIcons } from 'ngx-bootstrap-icons';
     PlaylistConfigureComponent,
     CmTooltipComponent,
     TooltipDirective,
+    BlockCopyPasteDirective,
     CmMediaModalComponent,
     MediaAuditComponent,
     CmMdAuditComponent,
@@ -160,9 +162,9 @@ import { allIcons } from 'ngx-bootstrap-icons';
     DragDropModule,
     CdkTableModule,
     NgMultiSelectDropDownModule,
-    NgxBootstrapIconsModule.pick(allIcons)
+    NgxBootstrapIconsModule.pick(allIcons),
   ],
-  exports: [TooltipDirective],
+  exports: [TooltipDirective,BlockCopyPasteDirective],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   DatePipe,

@@ -26,7 +26,7 @@
         <label>Time : </label>
         <div class="btn-group" style="padding:5px;" ngbDropdown role="group"
             aria-label="Button group with nested dropdown">
-            <input type="text" class="form-control" placeholder="HH:mm:ss (24 Hours)" />
+            <input type="text" class="form-control" appBlockCopyPaste (keypress)="ValidateTime($event)" [(ngModel)]="timeText" placeholder="HH:mm:ss (24 Hours)" />
         </div>
         <!-- <div class="btn-group" style="padding:5px;" ngbDropdown role="group"
             aria-label="Button group with nested dropdown">
