@@ -1,0 +1,205 @@
+<div class="p-4">
+    <div class="row mb-3" >
+                             
+        <div class="col-xl-12  grid-margin stretch-card">
+         
+            <div class="card border-0  pb-0">
+                
+               <div class="card-header bgTable pb-0">
+                <ul class="nav nav-tabs mb-0 border-0 mt-1 nav-pills nav-fill" id="pills-tab" role="tablist" ngbNav #mediaStatus="ngbNav" [(activeId)]="activetab">
+                    <li class="nav-item" [ngbNavItem]="1">
+                    <a class="nav-link text-center " data-toggle="pill" href="#Created" role="tab" aria-controls="media-upload" aria-selected="true" ngbNavLink> <i class="icon-file-add"></i> Created</a>
+                    
+                    <ng-template ngbNavContent>
+                       
+                        <div class="table-responsive">
+                            <table class="table table-striped text-center mb-0 table-light table-hover"  datatable [dtOptions]="dtOptions">
+                              <thead>
+                                <tr>
+                                    <th style="width:100px;text-align: left!important;"><input type="checkbox" [(ngModel)]="select_all" (ngModelChange)="onSelectAll($event)"/> <strong> Select All</strong> </th>
+                                    <th style="text-align: left!important;" > Sr. No.</th>
+                                                                      
+                                    <th style="text-align: left!important;" > VMS id</th>
+                                    <th style="width:200px;text-align: left!important;" > VMS Name</th>
+                                    <th style="text-align: left!important;" >  Playlist ID</th>
+                                    <th style="text-align: left!important;" >  From Time</th>
+                                    <th style="text-align: left!important;" >  To Time</th>
+                                    <!-- <th style="text-align: left!important;" >  Action</th> -->
+                                    </tr>
+                                  </thead>
+                                    <tbody>
+                                     
+                                      <tr *ngFor="let d of data" >
+                                          <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected"/></td>
+                                          <td class="text-left">{{d.serialNo}}</td>
+                                         
+                                          <td class="text-left">{{d.vmsId}}</td>
+                                          <td class="text-left p-3" style=" padding: 0px!important;"><span class="rounded-circle  p-2 bgTable text-white border-1 border-primary m-2 text-center d-inline-block" ><i class="icon-video"></i> </span> {{d.vmsId}} - {{d.description}}</td>
+                                          <td class="text-left">{{d.vmsId}}</td>
+                                          <td class="text-left">{{d.createdDate}}</td>
+                                          <td class="text-left">{{d.modifiedDate}}</td>
+                                          </tr>
+                                          </tbody>
+                                          </table>
+                                          </div>
+                                     
+                    </ng-template>
+                </li>
+                
+                    <li class="nav-item" [ngbNavItem]="2">
+                        
+                    <a class="nav-link text-center "  data-toggle="pill" href="#Sending" role="tab" aria-controls="text-content" aria-selected="false" ngbNavLink> <i class="icon-outbox"></i> Sending</a>
+                    <ng-template ngbNavContent>
+                        <div class="table-responsive">
+                            <table class="table table-striped text-center mb-0 table-light table-hover"  datatable [dtOptions]="dtOptions">
+                              <thead>
+                                <tr>
+                                    <th style="width:100px;text-align: left!important;"><input type="checkbox" [(ngModel)]="select_all" (ngModelChange)="onSelectAll($event)"/> <strong> Select All</strong> </th>
+                                    <th style="text-align: left!important;" > Sr. No.</th>
+                                                                      
+                                    <th style="text-align: left!important;" > VMS id</th>
+                                    <th style="width:180px;text-align: left!important;" > VMS Name</th>
+                                    <th style="text-align: left!important;" >  Playlist ID</th>
+                                    <th style="text-align: left!important;" >  From Time</th>
+                                    <th style="text-align: left!important;" >  To Time</th>
+                                    <!-- <th style="text-align: left!important;" >  Action</th> -->
+                                    </tr>
+                                  </thead>
+                                    <tbody>
+                                     
+                                      <tr *ngFor="let d of data" >
+                                          <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected"/></td>
+                                          <td class="text-left">{{d.serialNo}}</td>
+                                         
+                                          <td class="text-left">{{d.vmsId}}</td>
+                                          <td class="text-left p-3" style=" padding: 0px!important;"><span class="rounded-circle  p-2 bgTable text-white border-1 border-primary m-2 text-center d-inline-block" ><i class="icon-video"></i> </span> {{d.vmsId}} - {{d.description}}</td>
+                                          <td class="text-left">{{d.vmsId}}</td>
+                                          <td class="text-left">{{d.createdDate}}</td>
+                                          <td class="text-left">{{d.modifiedDate}}</td>
+                                          </tr>
+                                          </tbody>
+                                          </table>
+                                          </div>
+                    </ng-template>
+                </li>
+                    <li class="nav-item" [ngbNavItem]="3">
+                        
+                    <a class="nav-link text-center "  data-toggle="pill" href="#Running" role="tab" aria-controls="text-content" aria-selected="false" ngbNavLink> <i class="icon-video"></i> Running</a>
+                    <ng-template ngbNavContent>
+                        <div class="table-responsive">
+                            <table class="table table-striped text-center mb-0 table-light table-hover"  datatable [dtOptions]="dtOptions">
+                              <thead>
+                                <tr>
+                                    <th style="width:100px;text-align: left!important;"><input type="checkbox" [(ngModel)]="select_all" (ngModelChange)="onSelectAll($event)"/> <strong> Select All</strong> </th>
+                                    <th style="text-align: left!important;" > Sr. No.</th>
+                                                                      
+                                    <th style="text-align: left!important;" > VMS id</th>
+                                    <th style="width:180px;text-align: left!important;" > VMS Name</th>
+                                    <th style="text-align: left!important;" >  Playlist ID</th>
+                                    <th style="text-align: left!important;" >  From Time</th>
+                                    <th style="text-align: left!important;" >  To Time</th>
+                                    <!-- <th style="text-align: left!important;" >  Action</th> -->
+                                    </tr>
+                                  </thead>
+                                    <tbody>
+                                     
+                                      <tr *ngFor="let d of data" >
+                                          <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected"/></td>
+                                          <td class="text-left">{{d.serialNo}}</td>
+                                         
+                                          <td class="text-left">{{d.vmsId}}</td>
+                                          <td class="text-left p-3" style=" padding: 0px!important;"><span class="rounded-circle  p-2 bgTable text-white border-1 border-primary m-2 text-center d-inline-block" ><i class="icon-video"></i> </span> {{d.vmsId}} - {{d.description}}</td>
+                                          <td class="text-left">{{d.vmsId}}</td>
+                                          <td class="text-left">{{d.createdDate}}</td>
+                                          <td class="text-left">{{d.modifiedDate}}</td>
+                                          </tr>
+                                          </tbody>
+                                          </table>
+                                          </div>
+                    </ng-template>
+                </li>
+                    <li class="nav-item" [ngbNavItem]="4">
+                        
+                    <a class="nav-link text-center "  data-toggle="pill" href="#Completed" role="tab" aria-controls="text-content" aria-selected="false" ngbNavLink> <i class="icon-check"></i> Completed</a>
+                    <ng-template ngbNavContent>
+                        <div class="table-responsive">
+                            <table class="table table-striped text-center mb-0 table-light table-hover"  datatable [dtOptions]="dtOptions">
+                              <thead>
+                                <tr>
+                                    <th style="width:100px;text-align: left!important;"><input type="checkbox" [(ngModel)]="select_all" (ngModelChange)="onSelectAll($event)"/> <strong> Select All</strong> </th>
+                                    <th style="text-align: left!important;" > Sr. No.</th>
+                                                                      
+                                    <th style="text-align: left!important;" > VMS id</th>
+                                    <th style="width:180px;text-align: left!important;" > VMS Name</th>
+                                    <th style="text-align: left!important;" >  Playlist ID</th>
+                                    <th style="text-align: left!important;" >  From Time</th>
+                                    <th style="text-align: left!important;" >  To Time</th>
+                                    <!-- <th style="text-align: left!important;" >  Action</th> -->
+                                    </tr>
+                                  </thead>
+                                    <tbody>
+                                     
+                                      <tr *ngFor="let d of data" >
+                                          <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected"/></td>
+                                          <td class="text-left">{{d.serialNo}}</td>
+                                         
+                                          <td class="text-left">{{d.vmsId}}</td>
+                                          <td class="text-left p-3" style=" padding: 0px!important;"><span class="rounded-circle  p-2 bgTable text-white border-1 border-primary m-2 text-center d-inline-block" ><i class="icon-video"></i> </span> {{d.vmsId}} - {{d.description}}</td>
+                                          <td class="text-left">{{d.vmsId}}</td>
+                                          <td class="text-left">{{d.createdDate}}</td>
+                                          <td class="text-left">{{d.modifiedDate}}</td>
+                                          </tr>
+                                          </tbody>
+                                          </table>
+                                          </div>
+                    </ng-template>
+                </li>
+                    <li class="nav-item" [ngbNavItem]="5">
+                        
+                    <a class="nav-link text-center "  data-toggle="pill" href="#Report-Generated" role="tab" aria-controls="text-content" aria-selected="false" ngbNavLink> <i class="icon-paper"></i> Report Generated</a>
+                    <ng-template ngbNavContent>
+                        <div class="table-responsive">
+                            <table class="table table-striped text-center mb-0 table-light table-hover"  datatable [dtOptions]="dtOptions">
+                              <thead>
+                                <tr>
+                                    <th style="width:100px;text-align: left!important;"><input type="checkbox" [(ngModel)]="select_all" (ngModelChange)="onSelectAll($event)"/> <strong> Select All</strong> </th>
+                                    <th style="text-align: left!important;" > Sr. No.</th>
+                                                                      
+                                    <th style="text-align: left!important;" > VMS id</th>
+                                    <th style="width:180px;text-align: left!important;" > VMS Name</th>
+                                    <th style="text-align: left!important;" >  Playlist ID</th>
+                                    <th style="text-align: left!important;" >  From Time</th>
+                                    <th style="text-align: left!important;" >  To Time</th>
+                                    <!-- <th style="text-align: left!important;" >  Action</th> -->
+                                    </tr>
+                                  </thead>
+                                    <tbody>
+                                     
+                                      <tr *ngFor="let d of data" >
+                                          <td class="p-3"><input type="checkbox" [(ngModel)]="d.is_selected"/></td>
+                                          <td class="text-left">{{d.serialNo}}</td>
+                                         
+                                          <td class="text-left">{{d.vmsId}}</td>
+                                          <td class="text-left p-3" style=" padding: 0px!important;"><span class="rounded-circle  p-2 bgTable text-white border-1 border-primary m-2 text-center d-inline-block" ><i class="icon-video"></i> </span> {{d.vmsId}} - {{d.description}}</td>
+                                          <td class="text-left">{{d.vmsId}}</td>
+                                          <td class="text-left">{{d.createdDate}}</td>
+                                          <td class="text-left">{{d.modifiedDate}}</td>
+                                          </tr>
+                                          </tbody>
+                                          </table>
+                                          </div>
+                    </ng-template>
+                </li>
+                
+            </ul>
+            </div>
+            <div [ngbNavOutlet]="mediaStatus" class="p-2 bgTable" style="border-top-right-radius: 0!important; border-top-left-radius:0!important;"></div>
+
+            <!-- <div class="card-footer bg-light text-right">
+           
+                <button type="button" class="btn btn-secondary" >Reset All</button>
+              </div> -->
+              </div>
+              </div>
+              </div>
+              </div>

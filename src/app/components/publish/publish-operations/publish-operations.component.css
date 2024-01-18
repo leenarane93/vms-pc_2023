@@ -566,3 +566,18 @@ textarea {
 .tab4 {
   tab-size: 8;
 }
+
+
+.form-horizontal {
+  width:500px;
+}
+
+
+.datetime-picker-dropdown > li.date-picker-menu div > table .btn-default {
+ border: 0;
+}
+
+::ng-deep .ngb-tp-input-container button{display: none;}
+::ng-deep .ngb-tp-input-container .ngb-tp-input{margin-top: 5px;}
+::ng-deep .bs-stepper .step-trigger.disabled, .bs-stepper .step-trigger:disabled{opacity: 1;}
+::ng-deep .border-primary{border-color:#b71ec5!important}

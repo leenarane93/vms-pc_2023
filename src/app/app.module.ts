@@ -82,6 +82,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { CmDatetimepickerComponent } from './widget/cm-datetimepicker/cm-datetimepicker.component';
 import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons';
 import { allIcons } from 'ngx-bootstrap-icons';
+import { PublishStatusComponent } from './components/publish/publish-status/publish-status.component';
 
 @NgModule({
   declarations: [
@@ -131,6 +132,7 @@ import { allIcons } from 'ngx-bootstrap-icons';
     PublishOperationsComponent,
     CmMultiselectAutoCompltComponent,
     CmDatetimepickerComponent,
+    PublishStatusComponent,
   ],
   imports: [
     FormsModule,
