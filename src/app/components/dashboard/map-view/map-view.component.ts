@@ -7,6 +7,8 @@ import TileLayer from 'ol/layer/Tile';
 import {icon, latLng, LeafletMouseEvent, Map, MapOptions, marker, tileLayer} from 'leaflet';
 import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 import { Globals } from 'src/app/utils/global';
+import { InputRequest } from 'src/app/models/request/inputReq';
+import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
 
 @Component({
   selector: 'app-map-view',
@@ -15,10 +17,17 @@ import { Globals } from 'src/app/utils/global';
 })
 export class MapViewComponent {
   public map !: Map;
+  listOfZones: any;
+  totalPages: number = 1;
+  pager: number = 1;
+  totalRecords!: number;
+  recordPerPage: number = 10;
+  startId!: number;
   listView:boolean =true;
   buttonName:any = 'fa fa-list';
   viewName:any = 'View List';
   hide: any;
+  _request: any = new InputRequest();
   options = {
     layers: [
         tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
@@ -26,10 +35,12 @@ export class MapViewComponent {
     zoom: 8,
     center: latLng(22.29985,73.19555)
 };
+  searchText: any;
   constructor(
     public modalService: NgbModal,
     private _commonFacade:CommonFacadeService,
-    private global : Globals){
+    private global : Globals,
+    private adminFacade : AdminFacadeService) {
       this.global.CurrentPage = "Map View";
     }
  
@@ -47,6 +58,7 @@ export class MapViewComponent {
   //     zoom: 2,maxZoom: 18, 
   //   }),
   // });
+  this.getZoneData();
  }
 
  openModal() {
@@ -103,6 +115,19 @@ ngOnDestroy() {
   $('.content-wrapper').addClass('p-0');
   //this.modalService.dismissAll(PublishModalComponent);
 
+}
+
+
+getZoneData() {
+    this._request.currentPage = this.pager;
+    this._request.pageSize = this.recordPerPage;
+    this._request.startId = this.startId;
+    this._request.searchItem = this.searchText;
+  this.adminFacade.getZones(this._request).subscribe(data => {
+    if(data != undefined && data != null) {
+      this.listOfZones = data.data;
+    }
+  });
 }
 
 }

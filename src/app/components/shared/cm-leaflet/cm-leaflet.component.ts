@@ -53,15 +53,15 @@ export class CmLeafletComponent implements AfterViewInit {
 	@Output() latLng = new EventEmitter<any[]>();
 	markers!: any[];
 	drawnItems: any;
-	@Input() zoneId: number = 0;
+	@Input() zoneId: number[] = [];
 	@Input() btnDisabled: boolean = false;
 	datachild: any;
 	isAddFieldTask!: boolean;
 	isSave!: boolean;
-	@Output() markerCoords =new EventEmitter<any[]>();
+	@Output() markerCoords = new EventEmitter<any[]>();
 	constructor(private adminFacade: AdminFacadeService,
-				private toast: ToastrService,
-				private cdr:ChangeDetectorRef) {
+		private toast: ToastrService,
+		private cdr: ChangeDetectorRef) {
 	}
 	ngAfterViewInit(): void {
 		this.cdr.detectChanges();
@@ -79,24 +79,30 @@ export class CmLeafletComponent implements AfterViewInit {
 		});
 	}
 	CheckCoordinates() {
-		if (this.zoneId != 0) {
-			this.adminFacade.getZoneCoordinates(this.zoneId).subscribe(res => {
-				let cordsArr: any[] = [];
-				res.forEach((ele: any) => {
-					let lat = Number(ele.latitude);
-					let long = Number(ele.longitude);
-					let cords = [lat, long];
-					cordsArr.push(cords);
+		let cordsArr: any[] = [];
+		this.zoneId.forEach(element => {
+			if (element != 0) {
+				this.adminFacade.getZoneCoordinates(element).subscribe(res => {
+					res.forEach((ele: any) => {
+						let lat = Number(ele.latitude);
+						let long = Number(ele.longitude);
+						let cords = [lat, long];
+						cordsArr.push(cords);
+					});		
 				});
-
-				this.polygon = [{ "type": "Polygon", "coordinates": [cordsArr] }];
-				this.InItMap();
-			});
-		}
-		else
+			}
+		});
+		
+		if(this.polygon.length > 0) {
 			this.InItMap();
+		}
+		
 	}
-
+	checkZoneCoords(count:number,len:number,coords : any) {
+		if(count == len) {
+			this.polygon = [{ "type": "Polygon", "coordinates": [coords] }];
+		}
+	}
 	InItMap() {
 		this.map = L.map('map',).setView([this.lat, this.lon], this.zoom);
 		//L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
@@ -165,16 +171,16 @@ export class CmLeafletComponent implements AfterViewInit {
 		this.map.addControl(drawControl);
 
 		var app = this;
-		if(this.mapType == "vms") {
+		if (this.mapType == "vms") {
 			this.map.on('click', (e: any) => {
 				var popLocation = e.latlng;
-	
+
 				let val = this.isMarkerInsidePolygon(popLocation.lat, popLocation.lng, this.polygon);
 				console.log(val);
-				if(val == true)
+				if (val == true)
 					this.ProvideMarker(popLocation);
 				else {
-					this.toast.error("Selected location is outside of zone area.","Error", {
+					this.toast.error("Selected location is outside of zone area.", "Error", {
 						positionClass: 'toast-bottom-right'
 					})
 				}
@@ -260,7 +266,7 @@ export class CmLeafletComponent implements AfterViewInit {
 		return inside;
 	};
 
-	ProvideMarker(loc:any){
+	ProvideMarker(loc: any) {
 		this.markerCoords.emit(loc);
 	}
 }

@@ -23,7 +23,7 @@ const markerIcon = L.icon({
   styleUrls: ['./cm-map-box.component.css']
 })
 export class CmMapBoxComponent implements OnInit {
-  @Input() zoneId:number = 0;
+  @Input() zoneId:number[] = [];
 	isAddFieldTask!: boolean;
   @Output() emitService = new EventEmitter();
   constructor(private activeModal:NgbActiveModal){}

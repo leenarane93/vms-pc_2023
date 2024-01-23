@@ -25,6 +25,7 @@ export class AddZoneComponent implements OnInit {
   long: number = 0;
   active: boolean = false;
   id: number = 0;
+  ids:any[]=[];
   btnSaveName!:string;
   //   options = {
   //     layers: [
@@ -44,8 +45,10 @@ export class AddZoneComponent implements OnInit {
     this.BuildForm();
   }
   ngOnInit(): void {
+    this.ids =[];
     this.btnSaveName = "Configured Co-Ordinates";
     this.id = 0;
+    this.ids.push(this.id);
     let data = this.common.getSession("ModelShow");
     this.FillForm(data == null ? "" : JSON.parse(data));
   }
@@ -75,10 +78,12 @@ export class AddZoneComponent implements OnInit {
 
   }
   ViewMap() {
+    this.ids = [];
     this.isMap = true;
     this.scroller.scrollToAnchor("bottom");
     let _zoneMaster = new ZoneMaster();
     _zoneMaster.id = this.id;
+    this.ids.push(this.id);
     _zoneMaster.zoneName = this.form.controls.zoneName.value;
     _zoneMaster.description = this.form.controls.description.value;
     _zoneMaster.createdBy = this.global.UserCode;
@@ -111,6 +116,7 @@ export class AddZoneComponent implements OnInit {
     if (data != "") {
       this.btnDis =true;
       this.id = data.id;
+      this.ids.push(this.id);
       if (data.isActive == "Active")
         this.active = true;
       else
@@ -129,6 +135,7 @@ export class AddZoneComponent implements OnInit {
   }
   clearForm() {
     this.id = 0;
+    this.ids.push(0);
     this.form.reset();
     this.form.controls["isActive"].setValue(false);
   }
@@ -146,6 +153,7 @@ export class AddZoneComponent implements OnInit {
         var _zoneCoord = new ZoneCoords();
         _zoneCoord.id = 0;
         _zoneCoord.zoneId = this.id;
+        this.ids.push(this.id);
         _zoneCoord.latitude = ele.lng;
         _zoneCoord.longitude = ele.lat;
         _zoneCoords.push(_zoneCoord);

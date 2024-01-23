@@ -4,14 +4,10 @@
         <div class="col-xl-12  grid-margin stretch-card">
 
             <div class="card pb-0 border-0">
-
-
                 <div class="card-header">
-
                     <button class="btn btn-primary text-right" (click)="BackToList()">
                         Publish Status
                     </button>
-
                 </div>
 
                 <div id="stepper1" class="bs-stepper card">
@@ -34,7 +30,6 @@
                                 <span class="bs-stepper-label">Time Configuration</span>
                             </button>
                         </div>
-
                     </div>
                     <div class="bs-stepper-content">
                         <div id="test-l-1" class="content">
@@ -84,16 +79,14 @@
                             <div class="row">
                                 <div class="col-md-1"></div>
                                 <label class="col-md-2 text-right mt-2">Publish From : </label>
-                                <cm-datetimepicker (inputDatetimeFormat)="fromTimeArr.inputDatetimeFormat" type="from"
-                                    fromYear="2024" toYear="2030" class="col-md-8"></cm-datetimepicker>
-
+                                <cm-datetimepicker [inputData]="fromTimeArr" type="from" fromYear="2020" toYear="2030"
+                                    class="col-md-8" (selectedTime)="GetTime($event,0)"></cm-datetimepicker>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-md-1"></div>
                                 <label class="col-md-2 text-right mt-2">Publish To : </label>
-                                <cm-datetimepicker (inputDatetimeFormat)="fromTimeArr.inputDatetimeFormat" type="to"
-                                    fromYear="2024" toYear="2030" class="col-md-8"></cm-datetimepicker>
-
+                                <cm-datetimepicker (inputData)="fromTimeArr" type="to" fromYear="2024" toYear="2030"
+                                    class="col-md-8" (selectedTime)="GetTime($event,1)"></cm-datetimepicker>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
@@ -111,23 +104,22 @@
                                                 <td>
                                                     <div class="input-group col-6 float-left">
                                                         <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
-                                                            [(ngModel)]="model" [minDate]="minDate" ngbDatepicker #d="ngbDatepicker" />
+                                                            [(ngModel)]="model" [minDate]="minDate" ngbDatepicker
+                                                            #d="ngbDatepicker" />
                                                         <button class="btn btn-outline-primary border-primary"
                                                             (click)="d.toggle()" type="button">
                                                             <i class="fa fa-calendar"></i></button>
-
                                                     </div>
                                                     <ngb-timepicker [seconds]="true" class="col-6 float-left" />
                                                 </td>
                                                 <td>
                                                     <div class="input-group col-6 float-left">
                                                         <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
-                                                            [(ngModel)]="model" [minDate]="minDate" ngbDatepicker #d="ngbDatepicker" />
+                                                            [(ngModel)]="model" [minDate]="minDate" ngbDatepicker
+                                                            #d="ngbDatepicker" />
                                                         <button class="btn btn-outline-primary border-primary"
                                                             (click)="d.toggle()" type="button">
                                                             <i class="fa fa-calendar"></i></button>
-
-
                                                     </div>
                                                     <ngb-timepicker [seconds]="true" class="col-6 float-left" />
                                                 </td>
@@ -141,7 +133,7 @@
                                             </button>
                                         </div>
                                         <div class="col-md-2 text-center">
-                                            <button class="btn btn-primary" (click)="StepPrev(2)">
+                                            <button class="btn btn-primary" (click)="ValidateAndSubmit()">
                                                 Submit
                                             </button>
                                         </div>

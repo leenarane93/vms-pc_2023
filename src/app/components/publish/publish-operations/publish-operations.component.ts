@@ -8,8 +8,9 @@ import { InputRequest } from 'src/app/models/request/inputReq';
 import { Globals } from 'src/app/utils/global';
 import { NgbTimeStruct, NgbDateStruct, NgbPopoverConfig, NgbPopover, NgbDatepicker, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { noop } from 'rxjs';
-import { NgControl } from '@angular/forms';
+import { FormBuilder, NgControl, Validators } from '@angular/forms';
 import { DateTimeModel } from 'src/app/models/DateTimeModel';
+import { PublishMaster } from 'src/app/models/publish/publishmaster';
 
 @Component({
   selector: 'app-publish-operations',
@@ -45,6 +46,8 @@ export class PublishOperationsComponent implements OnInit {
   filteredPlaylist: any[] = [];
   selectedDate: any;
   ngControl: any;
+  publishMaster: any[] = [];
+  form: any;
   headerArr = [
     { "Head": "ID", "FieldName": "id", "type": "number" },
     { "Head": "Playlist Name", "FieldName": "playlistName", "type": "string" },
@@ -52,11 +55,19 @@ export class PublishOperationsComponent implements OnInit {
   ];
   fromTimeArr = {
     "inputDatetimeFormat": "dd-MM-yyyy HH:mm:ss",
+    "yearDisabled": false,
+    "monthDisabled": true,
+    "dayDisabled": true,
+    "timeDisabled": true
   }
+
   constructor(private global: Globals,
     private _publish: PublishFacadeService,
     private _toast: ToastrService,
-    private config: NgbPopoverConfig, private inj: Injector) {
+    private config: NgbPopoverConfig,
+    private inj: Injector,
+    private fb: FormBuilder
+  ) {
     this.global.CurrentPage = "Publish Operations";
     this.dropdownSettings = {
       singleSelection: false,
@@ -80,6 +91,16 @@ export class PublishOperationsComponent implements OnInit {
 
     config.autoClose = 'outside';
     config.placement = 'auto';
+
+    this.form = this.fb.group({
+      playlist: this.fb.array([])
+    })
+  }
+  getErrorMessage(_controlName: any, _controlLable: any, _isPattern: boolean = false, _msg: string) {
+    //return getErrorMsg(this.form, _controlName, _controlLable, _isPattern, _msg);
+  }
+  addPlaylist(plid:number) {
+    
   }
   BackToList() { }
   ngOnInit(): void {
@@ -90,7 +111,7 @@ export class PublishOperationsComponent implements OnInit {
     this.GetAllZoneDetails();
     let _date = new Date();
     let _day = _date.getUTCDate();
-    let _mon = _date.getMonth()+1;
+    let _mon = _date.getMonth() + 1;
     let _year = _date.getFullYear();
     this.minDate = {
       year: _year,
@@ -276,6 +297,34 @@ export class PublishOperationsComponent implements OnInit {
     else {
       var idx = this.selectedPlaylist.find(x => x.id == _data.id);
       this.selectedPlaylist.splice(idx, 1);
+    }
+  }
+
+  ValidateAndSubmit() {
+
+  }
+  GetTime(eve: any, type: number) {
+    let _publish = new PublishMaster;
+    let _date = new Date();
+    var _day = eve.controls["selectedDayG"].value;
+    var _month = eve.controls["selectedMonthG"].value;
+    var _year = eve.controls["selectedYearG"].value;
+    var _time = eve.controls["selectedTimeG"].value;
+    if (_date.getUTCDate() >= _day && (_date.getMonth() + 1) >= _month && _date.getFullYear() >= _year) {
+      if (type == 0) {
+        _publish.createdby = this.global.UserCode;
+        _publish.id = 0;
+        _publish.fromtime = _year + "-" + _month + "-" + _day + " " + _time;
+        _publish.isactive = true;
+      }
+      else if (type == 1) {
+        _publish.totime = _year + "-" + _month + "-" + _day + " " + _time;
+        let _fromDate = new Date(_publish.fromtime);
+        let _toDate = new Date(_publish.fromtime);
+        if (_fromDate >= _toDate) {
+          this._toast.error("Invalid date selected.");
+        }
+      }
     }
   }
 }
