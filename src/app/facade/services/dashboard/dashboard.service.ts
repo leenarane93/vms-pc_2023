@@ -14,4 +14,12 @@ export class DashboardService {
     getDashboardChartData(){
       return this._httpService._getMethod('dashboard_api/api/Dashboard/GetDashboardCharts');
     }
+
+    getVmsStatusData(status:any,zone:any) {
+      return this._httpService._getMethod('publish_api/api/PublishDetails/GetVMSStatusData?status='+status+'&zoneid='+zone);
+    }
+
+    getListViewData(){
+      return this._httpService._getMethod('dashboard_api/api/Dashboard/GetDashboarListView');
+    }
 }

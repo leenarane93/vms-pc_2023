@@ -68,7 +68,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CdkTableModule } from "@angular/cdk/table";
 import { MediaAuditComponent } from './components/media/media-audit/media-audit.component';
 import {TabsModule} from 'ngx-bootstrap/tabs';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { CmMdAuditComponent } from './widget/cm-md-audit/cm-md-audit.component';
 import { PlaylistAuditComponent } from './components/media/playlist-audit/playlist-audit.component';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -83,6 +83,7 @@ import { CmDatetimepickerComponent } from './widget/cm-datetimepicker/cm-datetim
 import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons';
 import { allIcons } from 'ngx-bootstrap-icons';
 import { PublishStatusComponent } from './components/publish/publish-status/publish-status.component';
+import { ListViewComponent } from './components/dashboard/list-view/list-view.component';
 
 @NgModule({
   declarations: [
@@ -133,8 +134,10 @@ import { PublishStatusComponent } from './components/publish/publish-status/publ
     CmMultiselectAutoCompltComponent,
     CmDatetimepickerComponent,
     PublishStatusComponent,
+    ListViewComponent,
   ],
   imports: [
+    CommonModule,
     FormsModule,
     BrowserModule,
     AppRoutingModule,

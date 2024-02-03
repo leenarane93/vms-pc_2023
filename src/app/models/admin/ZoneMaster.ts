@@ -11,4 +11,5 @@ export class ZoneCoords {
     zoneId!:number;
     latitude!:number;
     longitude!:number;
+    seqNo :number;
 }

@@ -88,4 +88,8 @@ export class AdminService {
     return this._httpService._postMethod(_data,'Administration_API/api/VMSMaster/RemoveMedia');
   }
 
+  getZoneCoordsByZoneIds(_data:any) {
+    return this._httpService._postMethod(_data,'administration_api/api/ZoneMaster/GetZoneCoordsByZoneIds');
+  }
+
 }

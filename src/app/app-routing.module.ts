@@ -30,6 +30,7 @@ import { MediaAuditComponent } from './components/media/media-audit/media-audit.
 import { PlaylistAuditComponent } from './components/media/playlist-audit/playlist-audit.component';
 import { PublishOperationsComponent } from './components/publish/publish-operations/publish-operations.component';
 import { PublishStatusComponent } from './components/publish/publish-status/publish-status.component';
+import { ListViewComponent } from './components/dashboard/list-view/list-view.component';
 
 const routes: Routes = [
   {
@@ -95,6 +96,12 @@ const routes: Routes = [
     path: 'map-view',
     component: MapViewComponent,
     data: { title: 'Map View' },
+    canActivate: [AuthGuradService]
+  },
+  {
+    path: 'dashboard/list-view',
+    component: ListViewComponent,
+    data: { title: 'List View' },
     canActivate: [AuthGuradService]
   },
   {

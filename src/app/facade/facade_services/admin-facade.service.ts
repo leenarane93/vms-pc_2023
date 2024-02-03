@@ -36,6 +36,9 @@ export class AdminFacadeService {
   getZoneCoordinates(_data: any) {
     return this._adminService.getZoneCoordinates(_data);
   }
+  getZoneCoordinatesByZoneIds(_data: any) {
+    return this._adminService.getZoneCoordsByZoneIds(_data);
+  }
   addZoneCoordinates(_data: any) {
     return this._adminService.addZoneCoordinates(_data);
   }

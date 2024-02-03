@@ -2,11 +2,13 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { event } from 'jquery';
 
+declare var ol: any;
 // when the docs use an import:
 declare const L: any; // --> Works
 import 'leaflet-draw';
 import { ToastrService } from 'ngx-toastr';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
+import { DashboardFacadeService } from 'src/app/facade/facade_services/dashboard-facade.service';
 const myStyle = {
 	"color": "green",
 	"weight": 5,
@@ -41,8 +43,14 @@ L.Marker.prototype.options.icon = markerIcon;
 })
 export class CmLeafletComponent implements AfterViewInit {
 	name = "Angular";
+	markerSource: any;
+	markerStyle: any;
 	@Input() mapType: string = "";
+	@Input() type: string;
+	@Input() selectedZone: any;
+	@Input() selectedStatus: any;
 	layers: any;
+	vmsData: any;
 	map: any;
 	lat: number = 0;
 	lon: number = 0;
@@ -53,7 +61,9 @@ export class CmLeafletComponent implements AfterViewInit {
 	@Output() latLng = new EventEmitter<any[]>();
 	markers!: any[];
 	drawnItems: any;
-	@Input() zoneId: number[] = [];
+	@Input() zoneId: number = 0;
+	@Input() status:number = 0;
+	@Input() selectedFilter:any;
 	@Input() btnDisabled: boolean = false;
 	datachild: any;
 	isAddFieldTask!: boolean;
@@ -61,6 +71,7 @@ export class CmLeafletComponent implements AfterViewInit {
 	@Output() markerCoords = new EventEmitter<any[]>();
 	constructor(private adminFacade: AdminFacadeService,
 		private toast: ToastrService,
+		private dashboardFacade: DashboardFacadeService,
 		private cdr: ChangeDetectorRef) {
 	}
 	ngAfterViewInit(): void {
@@ -79,32 +90,106 @@ export class CmLeafletComponent implements AfterViewInit {
 		});
 	}
 	CheckCoordinates() {
-		let cordsArr: any[] = [];
-		this.zoneId.forEach(element => {
-			if (element != 0) {
-				this.adminFacade.getZoneCoordinates(element).subscribe(res => {
+		if (this.type == "zone") {
+			if (this.zoneId != 0) {
+				this.adminFacade.getZoneCoordinates(this.zoneId).subscribe(res => {
+					let cordsArr: any[] = [];
 					res.forEach((ele: any) => {
 						let lat = Number(ele.latitude);
 						let long = Number(ele.longitude);
 						let cords = [lat, long];
 						cordsArr.push(cords);
-					});		
+					});
+
+					this.polygon = [{ "type": "Polygon", "coordinates": [cordsArr] }];
+					this.InItMap(this.type);
 				});
 			}
-		});
-		
-		if(this.polygon.length > 0) {
-			this.InItMap();
+			else
+				this.InItMap(this.type);
 		}
-		
-	}
-	checkZoneCoords(count:number,len:number,coords : any) {
-		if(count == len) {
-			this.polygon = [{ "type": "Polygon", "coordinates": [coords] }];
+		else if (this.type == "map") {
+			var _data = [1, 2, 3];
+			this.adminFacade.getZoneCoordinatesByZoneIds(_data).subscribe(res => {
+				if (res != null) {
+					if (res.length > 0) {
+						let cordsArr: any[] = [];
+						var currentZone = 0;
+						res.forEach((ele: any) => {
+							if (currentZone != 0 && ele.zoneId != currentZone) {
+								let _arr = { "type": "Polygon", "coordinates": [cordsArr] };
+								//cordsArr.push(_arr);
+								this.polygon.push(_arr);
+								cordsArr = [];
+							}
+							currentZone = ele.zoneId;
+							let lat = Number(ele.latitude);
+							let long = Number(ele.longitude);
+							let cords = [lat, long];
+							cordsArr.push(cords);
+							if (ele.id == res.find((x: any) => x.id == 22).id) {
+								let _arr = { "type": "Polygon", "coordinates": [cordsArr] };
+								this.polygon.push(_arr);
+							}
+						});
+						//this.polygon = cordsArr;
+						//this.getVMSStatusData();
+						this.InItMap(this.type);
+					}
+				}
+			})
 		}
 	}
-	InItMap() {
+
+	getVMSStatusData(filters?:any) {
+		if(this.markers != undefined && this.markers.length > 0) {
+			for(let i=0;i<this.markers.length;i++) {
+				this.map.removeLayer(this.markers[i]);			  
+			}
+		} 
+		if(filters != undefined) {
+			this.selectedStatus = filters[0].status;
+			this.selectedZone = filters[0].zone;
+		}
+		var dashStatus = this.selectedStatus;
+		var dashZone = this.selectedZone;
+		if (dashStatus == undefined) dashStatus = "0";
+		if (dashZone == undefined) dashZone = "0";
+		this.dashboardFacade.getVmsStatusData(dashStatus, dashZone).subscribe(
+			(res) => {
+				this.vmsData = res;
+				this.markers = [];
+				this.vmsData.forEach((e: any) => {
+					var iconFeatures = [];
+					if (e.active == 1) {
+						let icon = L.icon({
+							iconUrl: 'assets/images/icon-green.png',
+							iconSize: [38, 45], // size of the icon
+							shadowSize: [50, 64], // size of the shadow
+						})
+						var marker = L.marker([e.latitude, e.longitude], { icon: icon }).addTo(this.map);
+						this.markers.push(marker);
+					} else {
+						let icon = L.icon({
+							iconUrl: 'assets/images/icon-red.png',
+							iconSize: [38,45], // size of the icon
+							shadowSize: [50, 64], // size of the shadow
+						})
+						var marker = L.marker([e.latitude, e.longitude], { icon: icon }).addTo(this.map);
+						this.markers.push(marker);
+					}
+				});
+			},
+			(err) => {
+				console.log(err);
+			}
+		);
+	}
+
+	InItMap(type:string) {
 		this.map = L.map('map',).setView([this.lat, this.lon], this.zoom);
+		if(type == "map")
+			this.getVMSStatusData();
 		//L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
 
 		const baselayers = {
@@ -118,9 +203,6 @@ export class CmLeafletComponent implements AfterViewInit {
 		L.control.layers(baselayers, overlays).addTo(this.map);
 
 		baselayers["openstreetmap"].addTo(this.map);
-
-
-
 
 		this.drawnItems = new L.FeatureGroup();
 
@@ -248,6 +330,9 @@ export class CmLeafletComponent implements AfterViewInit {
 
 	isMarkerInsidePolygon(lat: any, lng: any, poly: any) {
 		var x = lat, y = lng;
+		if (poly.length == 0) {
+			return true;
+		}
 		var polyPoints = poly[0].coordinates[0];
 		var inside = false;
 		for (var i = 0, j = polyPoints.length - 1; i < polyPoints.length; j = i++) {
@@ -268,5 +353,9 @@ export class CmLeafletComponent implements AfterViewInit {
 
 	ProvideMarker(loc: any) {
 		this.markerCoords.emit(loc);
+	}
+
+	addMarker(code: any, lat: any, lng: any) {
+
 	}
 }
