@@ -12,6 +12,7 @@ import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.
 import { Subject } from 'rxjs';
 import { CmLeafletComponent } from '../../shared/cm-leaflet/cm-leaflet.component';
 import { Router } from '@angular/router';
+import { CmEmergencyComponent } from 'src/app/widget/cm-emergency/cm-emergency.component';
 const myStyle = {
 	"color": "green",
 	"weight": 5,
@@ -93,16 +94,16 @@ export class MapViewComponent {
   }
 
   openModal() {
-    // const modalRef = this.modalService.open(PublishModalComponent,  { windowClass: 'rounded-7', size: 'xl' });
+    const modalRef = this.modalService.open(CmEmergencyComponent,  { windowClass: 'rounded-7', size: 'xl' });
 
-    // modalRef.result.then((result) => {
-    //   if (result) {
-    //     console.log(result);
-    //   }
-    // });
-    // modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
-    //   console.log(receivedEntry);
-    // })
+    modalRef.result.then((result) => {
+      if (result) {
+        console.log(result);
+      }
+    });
+    modalRef.componentInstance.passEntry.subscribe((receivedEntry:any) => {
+      console.log(receivedEntry);
+    })
   }
 
 

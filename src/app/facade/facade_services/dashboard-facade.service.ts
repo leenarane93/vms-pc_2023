@@ -13,4 +13,8 @@ export class DashboardFacadeService {
   getListViewData() {
     return this._dashboardService.getListViewData();
   }
+
+  AddEmergencyData(_data:any){
+    return this._dashboardService.addEmergencyData(_data);
+  }
 }

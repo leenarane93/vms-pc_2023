@@ -19,13 +19,13 @@ export class ListViewComponent {
 
   ngOnInit(): void {
 
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 8,
-      lengthMenu: [[8, 10, 25, 50, -1], [8, 10, 25, 50, "All"]],
-      processing: true,
-      // dom: 'Bfltip',
-    }
+    // this.dtOptions = {
+    //   pagingType: 'full_numbers',
+    //   pageLength: 8,
+    //   lengthMenu: [[8, 10, 25, 50, -1], [8, 10, 25, 50, "All"]],
+    //   processing: true,
+    //   // dom: 'Bfltip',
+    // }
 
     this.getListViewData();
   }

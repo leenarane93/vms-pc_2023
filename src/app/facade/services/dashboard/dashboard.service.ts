@@ -22,4 +22,8 @@ export class DashboardService {
     getListViewData(){
       return this._httpService._getMethod('dashboard_api/api/Dashboard/GetDashboarListView');
     }
+
+    addEmergencyData(_data:any) {
+      return this._httpService._postMethod(_data,'Publish_API/api/PublishDetails/AddEmergencyAlert');
+    }
 }

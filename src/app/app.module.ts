@@ -84,6 +84,7 @@ import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons';
 import { allIcons } from 'ngx-bootstrap-icons';
 import { PublishStatusComponent } from './components/publish/publish-status/publish-status.component';
 import { ListViewComponent } from './components/dashboard/list-view/list-view.component';
+import { CmEmergencyComponent } from './widget/cm-emergency/cm-emergency.component';
 
 @NgModule({
   declarations: [
@@ -135,6 +136,7 @@ import { ListViewComponent } from './components/dashboard/list-view/list-view.co
     CmDatetimepickerComponent,
     PublishStatusComponent,
     ListViewComponent,
+    CmEmergencyComponent,
   ],
   imports: [
     CommonModule,
