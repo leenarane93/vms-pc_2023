@@ -85,6 +85,7 @@ import { allIcons } from 'ngx-bootstrap-icons';
 import { PublishStatusComponent } from './components/publish/publish-status/publish-status.component';
 import { ListViewComponent } from './components/dashboard/list-view/list-view.component';
 import { CmEmergencyComponent } from './widget/cm-emergency/cm-emergency.component';
+import { NetworkReportComponent } from './components/reports/network-report/network-report.component';
 
 @NgModule({
   declarations: [
@@ -137,6 +138,7 @@ import { CmEmergencyComponent } from './widget/cm-emergency/cm-emergency.compone
     PublishStatusComponent,
     ListViewComponent,
     CmEmergencyComponent,
+    NetworkReportComponent,
   ],
   imports: [
     CommonModule,

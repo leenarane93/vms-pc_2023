@@ -16,4 +16,7 @@ export class PublishFacadeService {
   getPlaylistMasterData() {
     return this._publishService.getPlaylistMasterData();
   }
+  addPublishDetails(_data:any) {
+    return this._publishService.AddPublishDetails(_data);
+  }
 }

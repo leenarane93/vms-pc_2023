@@ -31,6 +31,7 @@ import { PlaylistAuditComponent } from './components/media/playlist-audit/playli
 import { PublishOperationsComponent } from './components/publish/publish-operations/publish-operations.component';
 import { PublishStatusComponent } from './components/publish/publish-status/publish-status.component';
 import { ListViewComponent } from './components/dashboard/list-view/list-view.component';
+import { NetworkReportComponent } from './components/reports/network-report/network-report.component';
 
 const routes: Routes = [
   {
@@ -227,6 +228,12 @@ const routes: Routes = [
     path: "publish/media-status", 
     component: PublishStatusComponent,
     data: { title: 'Publish Status' },
+    canActivate: [AuthGuradService]
+  },
+  { 
+    path: "reports/network-report", 
+    component: NetworkReportComponent,
+    data: { title: 'Network Report' },
     canActivate: [AuthGuradService]
   },
 ];

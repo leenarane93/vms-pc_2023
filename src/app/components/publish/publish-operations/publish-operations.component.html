@@ -2,149 +2,177 @@
     <div class="row mb-3">
 
         <div class="col-xl-12  grid-margin stretch-card">
-
-            <div class="card pb-0 border-0">
-                <div class="card-header">
-                    <button class="btn btn-primary text-right" (click)="BackToList()">
-                        Publish Status
-                    </button>
-                </div>
-
-                <div id="stepper1" class="bs-stepper card">
-                    <div class="bs-stepper-header">
-                        <div class="step" data-target="#test-l-1">
-                            <button class="step-trigger" disabled>
-                                <span class="bs-stepper-circle">1</span>
-                                <span class="bs-stepper-label">Zone & VMS</span>
-                            </button>
-                        </div>
-                        <div class="step" data-target="#test-l-2">
-                            <button class="step-trigger" disabled>
-                                <span class="bs-stepper-circle">2</span>
-                                <span class="bs-stepper-label">Playlist</span>
-                            </button>
-                        </div>
-                        <div class="step" data-target="#test-l-3">
-                            <button class="step-trigger" disabled>
-                                <span class="bs-stepper-circle">3</span>
-                                <span class="bs-stepper-label">Time Configuration</span>
-                            </button>
+            <form [formGroup]="form" style="width: 100%;">
+                <div class="card pb-0 border-0">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6 text-left">
+                                <button class="btn btn-primary" (click)="BackToList(0)">
+                                    Publish Status
+                                </button>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <button class="btn btn-danger" (click)="BackToList(1)">
+                                    Reset
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="bs-stepper-content">
-                        <div id="test-l-1" class="content">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <cm-multiselect-auto-complt [inputData]="_inputZoneData" [label]="label1"
-                                        [dropdownSettings]="dropdownSettings" (selectedItem)="getSelectedZone($event,1)"
-                                        (deSelectedItem)="getSelectedZone($event,0)"></cm-multiselect-auto-complt>
-                                </div>
-                                <div class="col-md-6" *ngIf="_inputVmsData != undefined">
-                                    <cm-multiselect-auto-complt [inputData]="_inputVmsData" [label]="label2"
-                                        [dropdownSettings]="dropdownSettingsVms"
-                                        (selectedItem)="getSelectedVms($event,1)"
-                                        (deSelectedItem)="getSelectedVms($event,0)"></cm-multiselect-auto-complt>
-                                </div>
+
+                    <div id="stepper1" class="bs-stepper card">
+                        <div class="bs-stepper-header">
+                            <div class="step" data-target="#test-l-1">
+                                <button class="step-trigger" disabled>
+                                    <span class="bs-stepper-circle">1</span>
+                                    <span class="bs-stepper-label">Zone & VMS</span>
+                                </button>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12 text-right" style="padding: 10px;">
-                                    <button class="btn btn-primary" (click)="StepNext(1)">
-                                        <i class="icon-arrow-right"></i>
-                                        Next
-                                    </button>
-                                </div>
+                            <div class="step" data-target="#test-l-2">
+                                <button class="step-trigger" disabled>
+                                    <span class="bs-stepper-circle">2</span>
+                                    <span class="bs-stepper-label">Playlist</span>
+                                </button>
+                            </div>
+                            <div class="step" data-target="#test-l-3">
+                                <button class="step-trigger" disabled>
+                                    <span class="bs-stepper-circle">3</span>
+                                    <span class="bs-stepper-label">Time Configuration</span>
+                                </button>
                             </div>
                         </div>
-                        <div id="test-l-2" class="content mb-1">
-                            <div class="row">
-                                <div class="col-md-12 ">
-                                    <app-cm-table [headArr]="headerArr" [gridArr]="filteredPlaylist"
-                                        [totalRecords]="totalRecords" [totalPages]="totalPages"
-                                        [perPage]="recordPerPage" (pager)="onPager($event)"
-                                        [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)"
-                                        link="users/add-user" fieldName="id" (search)="onPageSearch($event)"
-                                        (checked)="checked($event,1)" (notChecked)="checked($event,0)"></app-cm-table>
+                        <div class="bs-stepper-content">
+                            <div id="test-l-1" class="content">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <cm-multiselect-auto-complt [inputData]="_inputZoneData" [label]="label1"
+                                            [dropdownSettings]="dropdownSettings"
+                                            (selectedItem)="getSelectedZone($event,1)"
+                                            (deSelectedItem)="getSelectedZone($event,0)"></cm-multiselect-auto-complt>
+                                    </div>
+                                    <div class="col-md-6" *ngIf="_inputVmsData != undefined">
+                                        <cm-multiselect-auto-complt [inputData]="_inputVmsData" [label]="label2"
+                                            [dropdownSettings]="dropdownSettingsVms"
+                                            (selectedItem)="getSelectedVms($event,1)"
+                                            (deSelectedItem)="getSelectedVms($event,0)"></cm-multiselect-auto-complt>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-right" style="padding: 10px;">
+                                        <button class="btn btn-primary" (click)="StepNext(1)">
+                                            <i class="icon-arrow-right"></i>
+                                            Next
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12 text-right">
-                                    <button class="btn btn-primary" (click)="StepNext(2)">
-                                        <i class="icon-arrow-right"></i>
-                                        Next
-                                    </button>
+                            <div id="test-l-2" class="content mb-1">
+                                <div class="row">
+                                    <div class="col-md-12 ">
+                                        <app-cm-table [headArr]="headerArr" [gridArr]="filteredPlaylist"
+                                            [totalRecords]="totalRecords" [totalPages]="totalPages"
+                                            [perPage]="recordPerPage" (pager)="onPager($event)"
+                                            [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)"
+                                            link="users/add-user" fieldName="id" (search)="onPageSearch($event)"
+                                            (checked)="checked($event,1)"
+                                            (notChecked)="checked($event,0)"></app-cm-table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-right">
+                                        <button class="btn btn-primary" (click)="StepNext(2)">
+                                            <i class="icon-arrow-right"></i>
+                                            Next
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div id="test-l-3" class="content">
-                            <div class="row">
-                                <div class="col-md-1"></div>
-                                <label class="col-md-2 text-right mt-2">Publish From : </label>
-                                <cm-datetimepicker [inputData]="fromTimeArr" type="from" fromYear="2020" toYear="2030"
-                                    class="col-md-8" (selectedTime)="GetTime($event,0)"></cm-datetimepicker>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-md-1"></div>
-                                <label class="col-md-2 text-right mt-2">Publish To : </label>
-                                <cm-datetimepicker (inputData)="fromTimeArr" type="to" fromYear="2024" toYear="2030"
-                                    class="col-md-8" (selectedTime)="GetTime($event,1)"></cm-datetimepicker>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <table class="table table-striped table-bordered table-sm row-border hover">
-                                        <thead class="table-dark">
-                                            <tr>
-                                                <th class="text-center">Playlist Name</th>
-                                                <th class="text-center">From Time</th>
-                                                <th class="text-center">To Time</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let pl of selectedPlaylist">
-                                                <td class="text-center"> {{pl.playlistName}} </td>
-                                                <td>
-                                                    <div class="input-group col-6 float-left">
-                                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
-                                                            [(ngModel)]="model" [minDate]="minDate" ngbDatepicker
-                                                            #d="ngbDatepicker" />
-                                                        <button class="btn btn-outline-primary border-primary"
-                                                            (click)="d.toggle()" type="button">
-                                                            <i class="fa fa-calendar"></i></button>
-                                                    </div>
-                                                    <ngb-timepicker [seconds]="true" class="col-6 float-left" />
-                                                </td>
-                                                <td>
-                                                    <div class="input-group col-6 float-left">
-                                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
-                                                            [(ngModel)]="model" [minDate]="minDate" ngbDatepicker
-                                                            #d="ngbDatepicker" />
-                                                        <button class="btn btn-outline-primary border-primary"
-                                                            (click)="d.toggle()" type="button">
-                                                            <i class="fa fa-calendar"></i></button>
-                                                    </div>
-                                                    <ngb-timepicker [seconds]="true" class="col-6 float-left" />
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="row">
-                                        <div class="col-md-10 text-right">
-                                            <button class="btn btn-primary" (click)="StepPrev(2)">
-                                                Add Playlist
-                                            </button>
-                                        </div>
-                                        <div class="col-md-2 text-center">
-                                            <button class="btn btn-primary" (click)="ValidateAndSubmit()">
-                                                Submit
-                                            </button>
+                            <div id="test-l-3" class="content">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-right mt-2">Publish From : </label>
+                                    <cm-datetimepicker [inputData]="fromTimeArr" type="from" fromYear="2020"
+                                        toYear="2030" class="col-md-8"
+                                        (selectedTime)="GetTime($event,0)"></cm-datetimepicker>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 text-right mt-2">Publish To : </label>
+                                    <cm-datetimepicker (inputData)="fromTimeArr" type="to" fromYear="2024" toYear="2030"
+                                        class="col-md-8" (selectedTime)="GetTime($event,1)"></cm-datetimepicker>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-striped table-bordered table-sm row-border hover">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th class="text-center">Playlist Name</th>
+                                                    <th class="text-center">From Time</th>
+                                                    <th class="text-center">To Time</th>
+                                                </tr>
+                                            </thead>
+                                            <div formArrayName="items"
+                                                *ngFor="let item of form.get('items').controls; let i = index;">
+                                                <div [formGroupName]="i">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <input type="text" [disabled]="true"
+                                                                    formControlName="playlistName" class="form-control"
+                                                                    value="{{selectedPlaylist[i].playlistName}}" />
+                                                            </td>
+                                                            <td>
+                                                                <div class="input-group col-6 float-left">
+                                                                    <input formControlName="fromDate"
+                                                                        class="form-control" placeholder="yyyy-mm-dd"
+                                                                        name="dp" [minDate]="minDate" ngbDatepicker
+                                                                        #dFromDate="ngbDatepicker" />
+                                                                    <button
+                                                                        class="btn btn-outline-primary border-primary"
+                                                                        (click)="dFromDate.toggle()" type="button">
+                                                                        <i class="fa fa-calendar"></i></button>
+                                                                </div>
+                                                                <ngb-timepicker formControlName="fromTime"
+                                                                    [seconds]="true" class="col-6 float-left" />
+                                                            </td>
+                                                            <td>
+                                                                <div class="input-group col-6 float-left">
+                                                                    <input formControlName="toDate" class="form-control"
+                                                                        placeholder="yyyy-mm-dd" name="dp"
+                                                                        [minDate]="minDate" ngbDatepicker
+                                                                        #dToDate="ngbDatepicker" />
+                                                                    <button
+                                                                        class="btn btn-outline-primary border-primary"
+                                                                        (click)="dToDate.toggle()" type="button">
+                                                                        <i class="fa fa-calendar"></i></button>
+                                                                </div>
+                                                                <ngb-timepicker formControlName="toTime"
+                                                                    [seconds]="true" class="col-6 float-left" />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </div>
+                                            </div>
+                                        </table>
+                                        <div class="row">
+                                            <div class="col-md-10 text-right">
+                                                <button class="btn btn-primary" (click)="StepPrev(2)">
+                                                    Add Playlist
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 text-center">
+                                                <button class="btn btn-primary" (click)="ValidateAndSubmit()">
+                                                    Submit
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

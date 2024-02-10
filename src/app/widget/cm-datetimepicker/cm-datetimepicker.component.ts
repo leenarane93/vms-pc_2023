@@ -21,7 +21,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class CmDatetimepickerComponent implements OnInit, AfterViewInit {
   @Input() type: string = 'from';
-  @Input() inputData : any;
+  @Input() inputData: any;
   @Input() fromYear: any;
   @Input() toYear: any;
   @Output() selectedTime = new EventEmitter();
@@ -35,14 +35,14 @@ export class CmDatetimepickerComponent implements OnInit, AfterViewInit {
   minutes: any[] = [];
   selectedHour: any;
   timeForm: any = [];
-  isFormValidate :boolean = false;
+  isFormValidate: boolean = false;
 
   constructor(private config: NgbPopoverConfig,
     private inj: Injector,
-    private toast: ToastrService,private formBuilder:FormBuilder) {
+    private toast: ToastrService, private formBuilder: FormBuilder) {
     config.autoClose = 'outside';
     config.placement = 'auto';
-    
+
     this.BuildForm();
   }
 
@@ -50,14 +50,14 @@ export class CmDatetimepickerComponent implements OnInit, AfterViewInit {
   get f() { return this.timeForm.controls; }
   BuildForm() {
     this.timeForm = this.formBuilder.group({
-      selectedYearG: [{value: '0', disabled: false}, [Validators.required]],
-      selectedMonthG: [{value: '', disabled: true}, [Validators.required]],
-      selectedDayG: [{value: '', disabled: true}, [Validators.required]],
-      selectedTimeG: [{value: '', disabled: true}, [Validators.required]],
+      selectedYearG: [{ value: '0', disabled: false }, [Validators.required]],
+      selectedMonthG: [{ value: '', disabled: true }, [Validators.required]],
+      selectedDayG: [{ value: '', disabled: true }, [Validators.required]],
+      selectedTimeG: [{ value: '', disabled: true }, [Validators.required]],
     });
   }
   ngOnInit(): void {
-    
+
     let _monthsArr = [{ "monthName": "January", "value": 1 }, { "monthName": "February", "value": 2 }, { "monthName": "March", "value": 3 },
     { "monthName": "April", "value": 4 }, { "monthName": "May", "value": 5 }, { "monthName": "June", "value": 6 }, { "monthName": "July", "value": 7 },
     { "monthName": "August", "value": 8 }, { "monthName": "September", "value": 9 }, { "monthName": "October", "value": 10 }, { "monthName": "November", "value": 11 },
@@ -70,7 +70,10 @@ export class CmDatetimepickerComponent implements OnInit, AfterViewInit {
     }
 
     for (var i = 0; i < 31; i++) {
-      this.days.push(i + 1);
+      if (i < 9)
+        this.days.push("0" + (i + 1));
+      else
+        this.days.push((i + 1));
     }
     for (var i = 0; i < 24; i++) {
       this.hours.push(i + 1);
@@ -92,34 +95,34 @@ export class CmDatetimepickerComponent implements OnInit, AfterViewInit {
         if (this.timeText != undefined && this.timeText.length == 2) {
           if (this.timeText > '23') {
             this.toast.error("Hours should be less than 24");
-            this.isFormValidate =false;
+            this.isFormValidate = false;
             return false;
           }
           this.timeText = this.timeText + ":";
-          this.timeForm.patchValue({ selectedTimeG: this.timeText});
+          this.timeForm.patchValue({ selectedTimeG: this.timeText });
         }
         else if (this.timeText != undefined && this.timeText.length == 5) {
           let _value = this.timeText.substr(3, 2);
           if (_value > '59') {
             this.toast.error("Minutes should be less than 60");
-            this.isFormValidate =false;
+            this.isFormValidate = false;
             return false;
           }
           this.timeText = this.timeText + ":";
-          this.timeForm.patchValue({ selectedTimeG: this.timeText});
+          this.timeForm.patchValue({ selectedTimeG: this.timeText });
         }
         else if (this.timeText != undefined && this.timeText.length == 7) {
           let _value = this.timeText.substr(6, 1);
           _value = _value + c;
           if (_value > '59') {
             this.toast.error("Seconds should be less than 60");
-            this.isFormValidate =false;
+            this.isFormValidate = false;
             return false;
           }
         }
         return true;
       } else {
-        this.isFormValidate =false;
+        this.isFormValidate = false;
         return false;
       }
     }
@@ -128,56 +131,56 @@ export class CmDatetimepickerComponent implements OnInit, AfterViewInit {
   }
 
   ValidateAndSubmit() {
-    if(this.timeForm.valid) {
+    if (this.timeForm.valid) {
       this.selectedTime.emit(this.timeForm);
     }
   }
-  ChangeDate(type:number) {
-    var _date=new Date();
+  ChangeDate(type: number) {
+    var _date = new Date();
     let _currentYear = _date.getUTCFullYear();
     let _currentMonth = _date.getUTCMonth() + 1;
     let _currentDay = _date.getUTCDate()
     let _selectedYear = this.timeForm.controls["selectedYearG"].value;
     let _selectedMonth = this.timeForm.controls["selectedMonthG"].value;
     let _selectedDay = this.timeForm.controls["selectedDayG"].value;
-    if(type == 0) {
-      if(_currentYear != 0 && _selectedYear >= _currentYear) {
-        this.DisabledControls("selectedMonthG",false);
-      } 
+    if (type == 0) {
+      if (_currentYear != 0 && _selectedYear >= _currentYear) {
+        this.DisabledControls("selectedMonthG", false);
+      }
       else {
-        this.DisabledControls("selectedMonthG",true);
-        this.DisabledControls("selectedDayG",true);
-        this.DisabledControls("selectedTimeG",true);
+        this.DisabledControls("selectedMonthG", true);
+        this.DisabledControls("selectedDayG", true);
+        this.DisabledControls("selectedTimeG", true);
         this.toast.error("Invalid Year Selected");
       }
     }
-    else if(type == 1) {
-      if(_currentMonth != 0 && _selectedYear >= _currentYear && _currentMonth <= _selectedMonth) {
-        this.DisabledControls("selectedDayG",false);
+    else if (type == 1) {
+      if (_currentMonth != 0 && _selectedYear >= _currentYear && _currentMonth <= _selectedMonth) {
+        this.DisabledControls("selectedDayG", false);
       } else {
-        this.DisabledControls("selectedMonthG",true);
-        this.DisabledControls("selectedDayG",true);
-        this.DisabledControls("selectedTimeG",true);
+        this.DisabledControls("selectedMonthG", true);
+        this.DisabledControls("selectedDayG", true);
+        this.DisabledControls("selectedTimeG", true);
         this.toast.error("Invalid Month Selected");
       }
     }
-    else if(type == 2) {
-      if(_currentDay != 0 && _selectedYear >= _currentYear && ((_currentMonth < _selectedMonth) ||(_currentMonth == _selectedMonth && _currentDay <= _selectedDay))) {
-        this.DisabledControls("selectedTimeG",false);
+    else if (type == 2) {
+      if (_currentDay != 0 && _selectedYear >= _currentYear && ((_currentMonth < _selectedMonth) || (_currentMonth == _selectedMonth && _currentDay <= _selectedDay))) {
+        this.DisabledControls("selectedTimeG", false);
       } else {
-        this.DisabledControls("selectedDayG",true,1);
-        this.DisabledControls("selectedTimeG",true);
+        this.DisabledControls("selectedDayG", true, 1);
+        this.DisabledControls("selectedTimeG", true);
         this.toast.error("Invalid Day Selected");
       }
     }
   }
 
-  DisabledControls(_formControl:string,disable : boolean,val?:any){
+  DisabledControls(_formControl: string, disable: boolean, val?: any) {
     const ctrl = this.timeForm.get(_formControl);
-    if(val == 1) {
+    if (val == 1) {
       ctrl.patchValue(0);
     }
-    else if(disable == false) {
+    else if (disable == false) {
       ctrl.enable();
       ctrl.patchValue(0);
     } else {

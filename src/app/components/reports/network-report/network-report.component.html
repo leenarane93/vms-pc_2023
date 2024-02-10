@@ -1,0 +1,55 @@
+<div class="container" style="padding-top: 50px;">
+    <div class="card" style="padding-top: 15px;">
+        <div class="row">
+            <div class="col-md-3">
+                <cm-multiselect-auto-complt [inputData]="_inputVmsData" [label]="label1"
+                    [dropdownSettings]="dropdownSettingsVms" (selectedItem)="getSelectedVms($event,1)"
+                    (deSelectedItem)="getSelectedVms($event,0)"></cm-multiselect-auto-complt>
+            </div>
+            <div class="col-md-3">
+                <label>Network Status</label>
+                <select class="form-control" [(ngModel)]="selectedStatus">
+                    <option value="0">All</option>
+                    <option value="1">Online</option>
+                    <option value="2">Offline</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group col-6 float-left">
+                    <label>From Date</label>
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
+                        [(ngModel)]="model" [minDate]="minDate" ngbDatepicker
+                        #d="ngbDatepicker" />
+                    <button class="btn btn-outline-primary border-primary"
+                        (click)="d.toggle()" type="button">
+                        <i class="fa fa-calendar"></i></button>
+                </div>
+                
+                <div class="input-group col-6 float-left">
+                    <label>To Date</label>
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
+                        [(ngModel)]="model" [minDate]="minDate" ngbDatepicker
+                        #d="ngbDatepicker" />
+                    <button class="btn btn-outline-primary border-primary"
+                        (click)="d.toggle()" type="button">
+                        <i class="fa fa-calendar"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="row text-right">
+            <div class="col-md-12">
+                <button class="btn btn-primary" (click)="ActionSubmit()">
+                    Submit
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <app-cm-table [headArr]="headerArr" [gridArr]="listOfData" [totalRecords]="totalRecords"
+                [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)"
+                [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)"
+                fieldName="id" (search)="onPageSearch($event)"></app-cm-table>
+            </div>
+        </div>
+    </div>
+</div>

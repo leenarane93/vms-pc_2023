@@ -8,9 +8,11 @@ import { InputRequest } from 'src/app/models/request/inputReq';
 import { Globals } from 'src/app/utils/global';
 import { NgbTimeStruct, NgbDateStruct, NgbPopoverConfig, NgbPopover, NgbDatepicker, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { noop } from 'rxjs';
-import { FormBuilder, NgControl, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, NgControl, Validators } from '@angular/forms';
 import { DateTimeModel } from 'src/app/models/DateTimeModel';
 import { PublishMaster } from 'src/app/models/publish/publishmaster';
+import { publishDetails, publishTime } from 'src/app/models/publish/PublishDetails';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-publish-operations',
@@ -48,6 +50,10 @@ export class PublishOperationsComponent implements OnInit {
   ngControl: any;
   publishMaster: any[] = [];
   form: any;
+  items: any;
+  globalFrom: any;
+  globalTo: any;
+  _publishMaster: any;
   headerArr = [
     { "Head": "ID", "FieldName": "id", "type": "number" },
     { "Head": "Playlist Name", "FieldName": "playlistName", "type": "string" },
@@ -66,7 +72,8 @@ export class PublishOperationsComponent implements OnInit {
     private _toast: ToastrService,
     private config: NgbPopoverConfig,
     private inj: Injector,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {
     this.global.CurrentPage = "Publish Operations";
     this.dropdownSettings = {
@@ -74,7 +81,7 @@ export class PublishOperationsComponent implements OnInit {
       idField: 'value',
       textField: 'displayName',
       selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
+      unSelectAllText: 'DeSelect All',
       itemsShowLimit: 5,
       allowSearchFilter: true,
     };
@@ -84,7 +91,7 @@ export class PublishOperationsComponent implements OnInit {
       idField: 'value',
       textField: 'displayName',
       selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
+      unSelectAllText: 'DeSelect All',
       itemsShowLimit: 5,
       allowSearchFilter: true,
     };
@@ -93,16 +100,42 @@ export class PublishOperationsComponent implements OnInit {
     config.placement = 'auto';
 
     this.form = this.fb.group({
-      playlist: this.fb.array([])
+      items: this.fb.array([])
     })
+  }
+  createItem(): FormGroup {
+    return this.fb.group({
+      playlistName: [{ value: '', disabled: true }],
+      plid: '',
+      fromDate: '',
+      toDate: '',
+      fromTime: '',
+      toTime: ''
+    });
   }
   getErrorMessage(_controlName: any, _controlLable: any, _isPattern: boolean = false, _msg: string) {
     //return getErrorMsg(this.form, _controlName, _controlLable, _isPattern, _msg);
   }
-  addPlaylist(plid:number) {
-    
+  addPlaylist(plid: number) {
+
   }
-  BackToList() { }
+  resetStepper() {
+    this.GetAllZoneDetails();
+    this.selectedPlaylist = [];
+    this.selectedZones = [];
+    this.selectedVMS = [];
+    this.stepper.to(1);
+  }
+  BackToList(type:number) {
+    if(type == 0) {
+      this.router.navigate(['publish/media-status']);
+    } else if(type == 1) {
+      this.resetStepper();
+    }
+   }
+  BuildForm() {
+
+  }
   ngOnInit(): void {
     this.stepper = new Stepper(document.querySelector('#stepper1') as HTMLElement, {
       linear: false,
@@ -175,7 +208,7 @@ export class PublishOperationsComponent implements OnInit {
         res.forEach((ele: any) => {
           var _commonSelect = new CommonSelectList();
           _commonSelect.displayName = ele.description;
-          _commonSelect.value = ele.vmsId;
+          _commonSelect.value = ele.id;
           commonList.push(_commonSelect);
         });
         let _data = {
@@ -242,8 +275,23 @@ export class PublishOperationsComponent implements OnInit {
     else if (step == 2) {
       if (this.selectedPlaylist.length == 0)
         this._toast.error("Please select playlist.");
-      else
+      else {
+        this.items = this.form.get('items') as FormArray;
+        var _itemLen = this.items.length;
+        var len = this.selectedPlaylist.length;
+        for (var i = 0; i < len; i++) {
+          if (i > _itemLen - 1)
+            this.items.push(this.createItem());
+        }
+        _itemLen = this.items.length;
+        for (var j = 0; j < _itemLen; j++) {
+          this.items.at(j).patchValue({
+            plid: this.selectedPlaylist[j].id,
+            playlistName: this.selectedPlaylist[j].playlistName
+          });
+        }
         this.stepper.next();
+      }
     }
   }
   stepperValidation(step: number) {
@@ -301,30 +349,84 @@ export class PublishOperationsComponent implements OnInit {
   }
 
   ValidateAndSubmit() {
+    try {
+      var _pubTime = new publishDetails();
+      _pubTime.zones = this.selectedZones;
+      _pubTime.vms = this.selectedVMS;
+      _pubTime.username = this.global.UserCode;
+      _pubTime.pubFrom = this._publishMaster.fromtime;
+      _pubTime.pubTo = this._publishMaster.totime;
+      let _playTime: publishTime[] = [];
+      if (this.form.value.items.length > 0) {
+        var seq = 0;
+        this.form.value.items.forEach((ele: any) => {
+          seq++;
+          let _play = new publishTime();
+          _play.sequence = seq;
+          _play.plId = ele.plid;
+          _play.endDate = "" + ele.toDate.year + "-" + ("0" + ele.toDate.month).slice(-2) + "-" + ("0" + ele.toDate.day).slice(-2) + " "+ ("0" + ele.fromTime.hour).slice(-2) + ":" + ("0" + ele.fromTime.minute).slice(-2) + ":" + ("0" + ele.fromTime.second).slice(-2) + "";
+          _play.startDate = "" + ele.fromDate.year + "-" + ("0" + ele.fromDate.month).slice(-2) + "-" + ("0" + ele.fromDate.day).slice(-2) + " "+ ("0" + ele.toTime.hour).slice(-2) + ":" + ("0" + ele.toTime.minute).slice(-2) + ":" + ("0" + ele.toTime.second).slice(-2) + "";
+          _play.startTime = "" + ele.toDate.year + "-" + ("0" + ele.toDate.month).slice(-2) + "-" + ("0" + ele.toDate.day).slice(-2) + " "+ ("0" + ele.fromTime.hour).slice(-2) + ":" + ("0" + ele.fromTime.minute).slice(-2) + ":" + ("0" + ele.fromTime.second).slice(-2) + "";
+          _play.endTime = "" + ele.fromDate.year + "-" + ("0" + ele.fromDate.month).slice(-2) + "-" + ("0" + ele.fromDate.day).slice(-2) + " "+ ("0" + ele.toTime.hour).slice(-2) + ":" + ("0" + ele.toTime.minute).slice(-2) + ":" + ("0" + ele.toTime.second).slice(-2) + "";
+          _playTime.push(_play);
+        });
+        _pubTime.pubTime = _playTime;
+        let globalFromDate = new Date(_pubTime.pubFrom);
+        let globalToDate = new Date(_pubTime.pubTo);
+        if (globalToDate < globalFromDate) {
+          this._toast.error("Publish end date should not be greater than from date.");
+          return false;
+        }
+        this._publish.addPublishDetails(_pubTime).subscribe(res => {
+          if (res != null && res != undefined) {
+            if (res != 0) {
+              this._toast.success("Publish saved successfully.");
+              //this.router.navigate(['publish/media-status']);
+            } else {
+              this._toast.error("Something went wrong.");
+            }
+          }
+        })
+      } else {
+        this._toast.error("Playlist time not selected");
+      }
+      return true;
+    }
+    catch (err: any) {
+      this._toast.error(err);
+      return false;
+    }
 
   }
   GetTime(eve: any, type: number) {
-    let _publish = new PublishMaster;
+    
     let _date = new Date();
-    var _day = eve.controls["selectedDayG"].value;
-    var _month = eve.controls["selectedMonthG"].value;
+    var _day = ("0" + eve.controls["selectedDayG"].value).slice(-2);
+    var _month = ("0" + eve.controls["selectedMonthG"].value).slice(-2);
     var _year = eve.controls["selectedYearG"].value;
     var _time = eve.controls["selectedTimeG"].value;
-    if (_date.getUTCDate() >= _day && (_date.getMonth() + 1) >= _month && _date.getFullYear() >= _year) {
-      if (type == 0) {
-        _publish.createdby = this.global.UserCode;
-        _publish.id = 0;
-        _publish.fromtime = _year + "-" + _month + "-" + _day + " " + _time;
-        _publish.isactive = true;
+
+    if (type == 0) {
+      this._publishMaster = new PublishMaster();
+      if (_date.getUTCDate() >= Number(_day) && (_date.getMonth() + 1) >= Number(_month) && _date.getFullYear() >= _year) {
+        this._publishMaster.createdby = this.global.UserCode;
+        this._publishMaster.id = 0;
+        this._publishMaster.fromtime = _year + "-" + _month + "-" + _day + " " + _time;
+        this._publishMaster.isactive = true;
       }
-      else if (type == 1) {
-        _publish.totime = _year + "-" + _month + "-" + _day + " " + _time;
-        let _fromDate = new Date(_publish.fromtime);
-        let _toDate = new Date(_publish.fromtime);
+      else
+        this._toast.error("Invalid date selected.");
+    }
+    else if (type == 1) {
+      if (_date.getUTCDate() <= Number(_day) && (_date.getMonth() + 1) <= Number(_month) && _date.getFullYear() <= _year) {
+        this._publishMaster.totime = _year + "-" + _month + "-" + _day + " " + _time;
+        let _fromDate = new Date(this._publishMaster.fromtime);
+        let _toDate = new Date(this._publishMaster.totime);
         if (_fromDate >= _toDate) {
           this._toast.error("Invalid date selected.");
         }
-      }
+      } else
+        this._toast.error("Invalid date selected.");
     }
   }
 }
