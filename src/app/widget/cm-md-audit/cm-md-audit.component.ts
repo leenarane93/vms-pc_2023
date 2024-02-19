@@ -33,6 +33,7 @@ export class CmMdAuditComponent implements OnInit {
   videoItems: any[] = [];
   plName: string = "";
   blocks: any;
+  blockWise:any;
   activeIndex = 0;
   currentVideo = this.videoItems[this.activeIndex];
 
@@ -43,6 +44,7 @@ export class CmMdAuditComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    this.isVdo = false;
     if (this.mediaAudit)
       this.getMediaUploadBySetID();
     else if (this.playlistAudit) {
@@ -56,7 +58,7 @@ export class CmMdAuditComponent implements OnInit {
     this.isVdo = true;
     this._mediaFacade.GetMediaBlockWise(this.data.plMaster.id).subscribe(res => {
       if (res != null) {
-        console.log(res);
+        //console.log(res);
         for (var i = 0; i < blocks.length; i++) {
           if ((blocks[i].blId = res[i].blId)) {
             blocks[i].src = res[i].medias[0].mediaPath;
@@ -192,11 +194,25 @@ export class CmMdAuditComponent implements OnInit {
     _uploadDetails.status = status;
     _uploadDetails.uploadSetId = this.data.uploadSetId;
     this._mediaFacade.updateMediaSetDetails(_uploadDetails).subscribe(res => {
-      if (res != null && res == 1) {
+      if (res != null && res != 0) {
         this._toast.success("Successfully Updated.", "Success");
         this.passEntry.emit("Success");
         this.modal.dismissAll();
       }
     })
+  }
+
+  alertEndVideo(node:any, blk:any) {
+    debugger;
+    if (this.blockWise.length > node.seq) {
+      node.src = this.blockWise[blk.blId - 1].medias[node.seq].mediaPath;
+      node.seq = node.seq + 1;
+      console.log(node.src);
+    } else if (this.blockWise[0].medias.length > node.seq) {
+      node.src = this.blockWise[blk.blId - 1].medias[node.seq].mediaPath;
+      node.seq = node.seq + 1;
+      console.log(node.src);
+    }
+    //this.toast.error("Error : " + JSON.stringify(node));
   }
 }

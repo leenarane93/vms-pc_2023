@@ -44,7 +44,7 @@
     "bootstrap-icons": "^1.11.3",
     "bs-stepper": "^1.7.0",
     "chart.js": "^4.4.0",
-    "crypto-js": "^4.1.1",
+    "crypto-js": "^4.2.0",
     "datatables.net-bs": "^1.13.6",
     "datatables.net-dt": "^1.13.6",
     "jquery": "^3.7.1",

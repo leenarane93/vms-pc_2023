@@ -33,7 +33,7 @@ export class MediaAuditComponent implements OnInit {
   headerArr = [
     { "Head": "ID", "FieldName": "id", "type": "number" },
     { "Head": "Upload Set ID", "FieldName": "uploadSetId", "type": "string" },
-    { "Head": "Created Date", "FieldName": "createdDate", "type": "string" },
+    { "Head": "Created Date", "FieldName": "uploadedDate", "type": "string" },
     { "Head": "Uploaded By", "FieldName": "uploadedBy", "type": "string" },
     { "Head": "Audited By", "FieldName": "modifiedBy", "type": "string" },
     { "Head": "Actions", "FieldName": "actions", "type": "button" }
@@ -68,7 +68,7 @@ export class MediaAuditComponent implements OnInit {
           if (element.createdDate != null) {
             var _d = new Date(element.createdDate);
             var _dateStr = this.datepipe.transform(_d, "dd-MM-yyyy HH:mm:ss");
-            element.createdDate = _dateStr;
+            element.uploadedDate = _dateStr;
           }
         });
         var _length = data.totalRecords / this.recordPerPage;

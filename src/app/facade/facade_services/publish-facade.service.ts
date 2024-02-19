@@ -19,4 +19,8 @@ export class PublishFacadeService {
   addPublishDetails(_data:any) {
     return this._publishService.AddPublishDetails(_data);
   }
+  getPlaylistStatusData() {
+    return this._publishService.getPlaylistStatusData();
+  }
+
 }

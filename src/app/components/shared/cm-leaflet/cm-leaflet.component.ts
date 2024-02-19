@@ -6,6 +6,7 @@ declare var ol: any;
 // when the docs use an import:
 declare const L: any; // --> Works
 import 'leaflet-draw';
+import { icon1CircleFill } from 'ngx-bootstrap-icons';
 import { ToastrService } from 'ngx-toastr';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
 import { DashboardFacadeService } from 'src/app/facade/facade_services/dashboard-facade.service';
@@ -165,17 +166,29 @@ export class CmLeafletComponent implements AfterViewInit {
 						let icon = L.icon({
 							iconUrl: 'assets/images/icon-green.png',
 							iconSize: [38, 45], // size of the icon
-							shadowSize: [50, 64], // size of the shadow
+							iconAnchor: [16, 37],
+							popupAnchor: [0, -28],
 						})
+						const customPopup = `<p><i class="icon-circle-check"></i> Vadodara West<br></p>` 
+   						const customOptions = {'className' : 'custom-popup' }
+    
 						var marker = L.marker([e.latitude, e.longitude], { icon: icon }).addTo(this.map);
+						marker.bindPopup(customPopup,customOptions).on('mouseover', function () { marker.openPopup()});
 						this.markers.push(marker);
+						
+
 					} else {
 						let icon = L.icon({
 							iconUrl: 'assets/images/icon-red.png',
 							iconSize: [38,45], // size of the icon
-							shadowSize: [50, 64], // size of the shadow
+							iconAnchor: [16, 37],
+							popupAnchor: [0, -28],
 						})
+						const customPopup = `<p><i class="icon-circle-cross"></i> VMS 1<br></p>` 
+   						const customOptions = {'className' : 'custom-popup' }
+    
 						var marker = L.marker([e.latitude, e.longitude], { icon: icon }).addTo(this.map);
+						marker.bindPopup(customPopup,customOptions).on('mouseover', function () { marker.openPopup()});
 						this.markers.push(marker);
 					}
 				});

@@ -7,6 +7,7 @@
 </div>
 
 <div class="card">
+    <div class="card-body">
     <div class="row">
         <div class="col-md-4">
             <cm-multiselect-auto-complt [inputData]="_inputVmsData" [label]="label1"
@@ -20,19 +21,23 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="mb-3">
-                <label for="formFile" class="form-label">Duration</label>
+            <div class="row">
+                <div class="col-md-4">
+                <label for="formFile" class="form-label w-100">Duration </label>
                 <select class="form-control-sm" [(ngModel)]="unitType">
                     <option value="second">Seconds</option>
                     <option value="minute">Minutes</option>
                     <option value="hour">Hours</option>
                     <option value="day">Days</option>
                 </select>
-                <br />
-                <input type="text" class="form-control-sm" [(ngModel)]="unitValue" placeholder="Duration Unit">
-            </div>
+           </div>
+            <div class="col-md-8">
+                <label for="formFile" class="form-label w-100">&nbsp; </label>
+                <input type="text" class="form-control" [(ngModel)]="unitValue" placeholder="Duration Unit">
+            </div></div>
         </div>
-    </div>
+    </div></div>
+    <div class="card-footer">
     <div class="row">
         <div class="col-md-12 text-right">
             <button class="btn btn-primary" (click)="SaveEmergencyData()">
@@ -40,4 +45,4 @@
             </button>
         </div>
     </div>
-</div>
+</div></div>

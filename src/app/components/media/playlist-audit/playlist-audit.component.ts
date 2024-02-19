@@ -35,7 +35,7 @@ export class PlaylistAuditComponent implements OnInit {
   headerArr = [
     { "Head": "ID", "FieldName": "id", "type": "number" },
     { "Head": "Playlist Name", "FieldName": "playlistName", "type": "string" },
-    { "Head": "Created Date", "FieldName": "createdDate", "type": "string" },
+    { "Head": "Created Date", "FieldName": "createdDateFrm", "type": "string" },
     { "Head": "Created By", "FieldName": "createdBy", "type": "string" },
     { "Head": "Preview", "FieldName": "preview", "type": "string" },
     { "Head": "Audited By", "FieldName": "modifiedBy", "type": "string" },
@@ -72,7 +72,7 @@ export class PlaylistAuditComponent implements OnInit {
           if (element.createdDate != null) {
             var _d = new Date(element.createdDate);
             var _dateStr = this.datepipe.transform(_d, "dd-MM-yyyy HH:mm:ss");
-            element.createdDate = _dateStr;
+            element.createdDateFrm = _dateStr;
             if (element.status == 1)
               element.preview = "Not Available";
             else

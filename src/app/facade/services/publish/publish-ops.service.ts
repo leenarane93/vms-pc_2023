@@ -26,4 +26,8 @@ export class PublishOpsService {
   AddPublishDetails(_data:any) {
     return this._httpService._postMethod(_data, 'Publish_API/api/PublishDetails/AddPublishDetails');
   }
+
+  getPlaylistStatusData() {
+    return this._httpService._getMethod("publish_api/api/PublishDetails/GetPlaylstStatusData");
+  }
 }

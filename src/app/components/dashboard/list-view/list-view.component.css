@@ -10,6 +10,7 @@ label.badge { display: inline-block;}
   background-color: #6710f7!important;
   color: white;
   font-size: 15px;
+  white-space:nowrap;
 }
 .bgTable table th , .bgTable table td  {border-top: 1px solid #e4e6f636;}
 .bgTable table th  {border-bottom: 1px solid #e4e6f636;}

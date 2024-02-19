@@ -120,6 +120,8 @@ export class PublishOperationsComponent implements OnInit {
 
   }
   resetStepper() {
+    this._inputZoneData = [];
+    this._inputVmsData = [];
     this.GetAllZoneDetails();
     this.selectedPlaylist = [];
     this.selectedZones = [];
@@ -364,10 +366,10 @@ export class PublishOperationsComponent implements OnInit {
           let _play = new publishTime();
           _play.sequence = seq;
           _play.plId = ele.plid;
-          _play.endDate = "" + ele.toDate.year + "-" + ("0" + ele.toDate.month).slice(-2) + "-" + ("0" + ele.toDate.day).slice(-2) + " "+ ("0" + ele.fromTime.hour).slice(-2) + ":" + ("0" + ele.fromTime.minute).slice(-2) + ":" + ("0" + ele.fromTime.second).slice(-2) + "";
-          _play.startDate = "" + ele.fromDate.year + "-" + ("0" + ele.fromDate.month).slice(-2) + "-" + ("0" + ele.fromDate.day).slice(-2) + " "+ ("0" + ele.toTime.hour).slice(-2) + ":" + ("0" + ele.toTime.minute).slice(-2) + ":" + ("0" + ele.toTime.second).slice(-2) + "";
-          _play.startTime = "" + ele.toDate.year + "-" + ("0" + ele.toDate.month).slice(-2) + "-" + ("0" + ele.toDate.day).slice(-2) + " "+ ("0" + ele.fromTime.hour).slice(-2) + ":" + ("0" + ele.fromTime.minute).slice(-2) + ":" + ("0" + ele.fromTime.second).slice(-2) + "";
-          _play.endTime = "" + ele.fromDate.year + "-" + ("0" + ele.fromDate.month).slice(-2) + "-" + ("0" + ele.fromDate.day).slice(-2) + " "+ ("0" + ele.toTime.hour).slice(-2) + ":" + ("0" + ele.toTime.minute).slice(-2) + ":" + ("0" + ele.toTime.second).slice(-2) + "";
+          _play.endDate = "" + ele.toDate.year + "-" + ("0" + ele.toDate.month).slice(-2) + "-" + ("0" + ele.toDate.day).slice(-2) + " "+ ("0" + ele.toTime.hour).slice(-2) + ":" + ("0" + ele.toTime.minute).slice(-2) + ":" + ("0" + ele.toTime.second).slice(-2) + "";
+          _play.startDate = "" + ele.fromDate.year + "-" + ("0" + ele.fromDate.month).slice(-2) + "-" + ("0" + ele.fromDate.day).slice(-2) + " "+ ("0" + ele.fromTime.hour).slice(-2) + ":" + ("0" + ele.fromTime.minute).slice(-2) + ":" + ("0" + ele.fromTime.second).slice(-2) + "";
+          _play.startTime = "" + ele.fromDate.year + "-" + ("0" + ele.fromDate.month).slice(-2) + "-" + ("0" + ele.fromDate.day).slice(-2) + " "+ ("0" + ele.fromTime.hour).slice(-2) + ":" + ("0" + ele.fromTime.minute).slice(-2) + ":" + ("0" + ele.fromTime.second).slice(-2) + "";
+          _play.endTime = "" + ele.toDate.year + "-" + ("0" + ele.toDate.month).slice(-2) + "-" + ("0" + ele.toDate.day).slice(-2) + " "+ ("0" + ele.toTime.hour).slice(-2) + ":" + ("0" + ele.toTime.minute).slice(-2) + ":" + ("0" + ele.toTime.second).slice(-2) + "";
           _playTime.push(_play);
         });
         _pubTime.pubTime = _playTime;
@@ -381,7 +383,7 @@ export class PublishOperationsComponent implements OnInit {
           if (res != null && res != undefined) {
             if (res != 0) {
               this._toast.success("Publish saved successfully.");
-              //this.router.navigate(['publish/media-status']);
+              this.router.navigate(['publish/media-status']);
             } else {
               this._toast.error("Something went wrong.");
             }

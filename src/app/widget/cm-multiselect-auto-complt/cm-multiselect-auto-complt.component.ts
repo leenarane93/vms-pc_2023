@@ -1,4 +1,5 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
@@ -12,23 +13,33 @@ export class CmMultiselectAutoCompltComponent implements OnInit {
   @Input() label: string;
   @Output() selectedItem = new EventEmitter<any>();
   @Output() deSelectedItem = new EventEmitter<any>();
-  constructor() { }
+  @Input() notifyIsReset: () => void;
+  @ViewChild('zones') multiSelect: any;
+  form: any;
+  selectedItems: any[] = [];
+  constructor(private fb: FormBuilder) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.form = this.fb.group({
+      zones: [this.selectedItems]
+    });
+  }
 
   onMaterialGroupChange(event: any) {
     console.log(event);
   }
   onItemSelect(item: any, type: number) {
-    if(type == 1)
+    if (type == 1)
       this.selectedItem.emit(item);
-    else 
+    else
       this.deSelectedItem.emit(item);
   }
   selectAll(item: any, type: number) {
-    if(type == 1)
+    if (type == 1)
       this.selectedItem.emit(item);
-    else 
+    else {
       this.deSelectedItem.emit(item);
+    }
   }
+
 }
