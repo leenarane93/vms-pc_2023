@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
 import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
+import { ConfirmationDialogService } from 'src/app/facade/services/confirmation-dialog.service';
 import { ZoneCoords, ZoneMaster } from 'src/app/models/admin/ZoneMaster';
 import { Globals } from 'src/app/utils/global';
 import { getErrorMsg } from 'src/app/utils/utils';
@@ -39,6 +40,7 @@ export class AddZoneComponent implements OnInit {
     private scroller: ViewportScroller,
     private toast: ToastrService,
     private adminFacade: AdminFacadeService,
+    private confirmationDialogService:ConfirmationDialogService,
     private common: CommonFacadeService) {
     this.global.CurrentPage = "Add Zone";
     this.BuildForm();
@@ -161,6 +163,35 @@ export class AddZoneComponent implements OnInit {
         else {
           this.toast.success("Saved Successfully.");
           this.router.navigate(['masters/zone-master']);
+        }
+      })
+    }
+  }
+  DeleteZone() {
+    this.confirmationDialogService.confirm('Please confirm..', 'Do you really want to remove this zone... ?')
+    .then((confirmed) => {if(confirmed == true) this.RemoveZone()})
+    .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
+  }
+  RemoveZone(){
+    this.AddUpdateZone(1);
+  }
+
+  AddUpdateZone(type?:any){
+    let _zone = new ZoneMaster();
+    if (this.id != 0)
+    _zone.id = this.id;
+    _zone.zoneName = this.form.controls.zoneName.value;
+    _zone.description = this.form.controls.description.value;
+    _zone.modifiedBy = this.global.UserCode;
+    if(type == 1)
+    _zone.isDeleted = true;
+    if (this.id != 0) {
+      this.adminFacade.updateZoneMaster(_zone).subscribe(r => {
+        if (r == 0) {
+          this.toast.error("Error occured while saving data");
+        } else {
+          this.toast.success("Updated successfully.");
+          this.clearForm();
         }
       })
     }

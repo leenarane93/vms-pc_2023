@@ -108,6 +108,7 @@
                                                     <th class="text-center">Playlist Name</th>
                                                     <th class="text-center">From Time</th>
                                                     <th class="text-center">To Time</th>
+                                                    <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <div formArrayName="items"
@@ -147,6 +148,13 @@
                                                                 </div>
                                                                 <ngb-timepicker formControlName="toTime"
                                                                     [seconds]="true" class="col-6 float-left" />
+                                                            </td>
+                                                            <td>
+                                                                <div class="col-md-2 text-center">
+                                                                    <button class="btn btn-danger" (click)="RemovePlaylist(selectedPlaylist[i])">
+                                                                        Delete
+                                                                    </button>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                     </tbody>

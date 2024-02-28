@@ -39,9 +39,8 @@
                 <img src="{{imgSrc}}" height="400" width="600">
             </div>
             <div *ngIf="isVdo" class="col-md-12">
-                <video id="my_video_1" controls (click)="toggleVideo()" #videoPlayer>
-                    <source src="{{ vdoUrl }}" type="video/mp4" />
-                    Browser not supported
+                <video id="my_video_1" controls (click)="toggleVideo()" #videoPlayer style="width: 288px;height: 320px;"
+                autoplay loop muted playsinline="true" webkit-playsinline="true"  [src]="vdoUrl" type="video/mp4">
                 </video>
             </div>
         </div>
@@ -94,50 +93,13 @@
                 <div *ngFor="let node of blocks; let i" class="resizable-widget node-cls"
                     [style.height.px]="node.height" [style.width.px]="node.width" [style.left.px]="node.left"
                     [style.top.px]="node.top">
-                    <!-- <vg-player (onPlayerReady)="videoPlayerInit($event)">
-                        <vg-overlay-play></vg-overlay-play>
-                        <vg-buffering></vg-buffering>
-                        <video #media [vgMedia]="$any(media)" autoplay [src]="node.src" id="singleVideo" preload="auto"
-                            crossorigin>
-                        </video>
-                    </vg-player>
-                    <ul class="player-list">
-                        <li *ngFor="let vdo of videoItems; let $index = index" (click)="startPlaylistVdo(vdo, $index)"
-                            [class.selected]="vdo === currentVideo">
-                            {{ vdo.name }}
-                        </li>
-                    </ul> -->
-                    <vg-player (onPlayerReady)="videoPlayerInit($event)">
-                        <vg-overlay-play></vg-overlay-play>
-                        <vg-buffering></vg-buffering>
-                        <vg-scrub-bar>
-                          <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-                          <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
-                        </vg-scrub-bar>
-                        <vg-controls>
-                          <vg-play-pause></vg-play-pause>
-                          <vg-playback-button></vg-playback-button>
-                          <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-                          <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
-                          <vg-mute></vg-mute>
-                          <vg-volume></vg-volume>
-                          <vg-fullscreen></vg-fullscreen>
-                        </vg-controls>
-                        <video #media [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo" preload="auto" crossorigin>
-                        </video>
-                      </vg-player>
-                      <ul class="player-list">
-                        <li *ngFor="let vdo of videoItems; let $index = index"
-                          (click)="startPlaylistVdo(vdo, $index)" [class.selected]="vdo === currentVideo">
-                          {{ vdo.name }}
-                        </li>
-                      </ul>
-                    <!-- <video width="100%" height="100%" autoplay (onended)="alertEndVideo(node, i)"
-                        src="http://localhost/mediaLists/Playlists/1/1/1_1.mp4"></video>
-                    <video width="100%" height="100%" (onended)="alertEndVideo(node, i)"
-                        src="http://localhost/mediaLists/Playlists/1/1/1_2.mp4"></video>
-                    <video width="100%" height="100%" (onended)="alertEndVideo(node, i)"
-                        src="http://localhost/mediaLists/Playlists/1/1/1_3.mp4"></video> -->
+                    <video
+                    width="100%"
+                    height="100%"
+                    autoplay
+                    on-ended="alertEndVideo(node, i)"
+                    [src]="node.src"
+                  ></video>
                 </div>
             </div>
         </div>
@@ -161,3 +123,6 @@
         </div>
     </div>
 </div>
+
+
+

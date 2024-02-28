@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
 import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
+import { ConfirmationDialogService } from 'src/app/facade/services/confirmation-dialog.service';
 import { PartyMaster } from 'src/app/models/admin/PartyMaster';
 import { Globals } from 'src/app/utils/global';
 import { getErrorMsg } from 'src/app/utils/utils';
@@ -25,6 +26,7 @@ export class AddPartyComponent implements OnInit {
     private formBuilder: FormBuilder,
     private _facade: AdminFacadeService,
     private _common: CommonFacadeService,
+    private confirmationDialogService:ConfirmationDialogService,
     private toast: ToastrService,
     private actRoutes: ActivatedRoute) {
     this.global.CurrentPage = "Add Party";
@@ -114,5 +116,40 @@ export class AddPartyComponent implements OnInit {
   }
   BackToList() {
     this.router.navigate(['masters/party-master']);
+  }
+
+  DeleteParty() {
+    this.confirmationDialogService.confirm('Please confirm..', 'Do you really want to remove this zone... ?')
+    .then((confirmed) => {if(confirmed == true) this.RemoveParty()})
+    .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
+  }
+  RemoveParty(){
+    this.AddUpdateParty(1);
+  }
+  AddUpdateParty(type?:any){
+    let _partyData = new PartyMaster();
+    if (this.id != 0)
+    _partyData.id = this.id;
+    _partyData.partyCode = this.form.controls.partyCode.value;
+    _partyData.partyName = this.form.controls.partyName.value;
+    _partyData.description = this.form.controls.description.value;
+    _partyData.contactNo = this.form.controls.contactNumber.value;
+    _partyData.zipCode = this.form.controls.zipCode.value;
+    _partyData.address = this.form.controls.address.value;
+    _partyData.gstinNo = this.form.controls.gstinNumber.value;
+    _partyData.isActive = this.active;
+    _partyData.createdBy = this.global.UserCode;
+    if(type == 1)
+    _partyData.isDeleted = true;
+    if (this.id != 0) {
+      this._facade.updateParty(_partyData).subscribe(r => {
+        if (r == 0) {
+          this.toast.error("Error occured while saving data");
+        } else {
+          this.toast.success("Updated successfully.");
+          this.clearForm();
+        }
+      })
+    }
   }
 }

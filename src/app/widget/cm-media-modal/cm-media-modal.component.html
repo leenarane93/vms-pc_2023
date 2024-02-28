@@ -48,7 +48,7 @@
         </tbody>
         <tbody *ngIf="data.modalType == 'playlistcreation'">
             <tr *ngFor="let media of viewData" >
-                <td  *ngIf="mediaType == 'Media'" colspan="2">
+                <td  *ngIf="mediaType == 'Image' || mediaType == 'Video'" colspan="2">
                 <div class="row">
                     <div class="col-md-9">
                         {{media.fileName}}
@@ -92,13 +92,17 @@
             <div *ngIf="isViewMedia && (isImage == false)" class="onlyBgImg">
                 <div class="col-12 mt-5 pr-1 pl-1">
                     <div ngClass="col-12 px-xl-1'">
-                        <ng-template #tableListVms>
-                            <div class="chartsdiv pt-3">
-                                <img [src]="imgData" alt="image at full size" height="300px" width="300px"
-                                    style="overflow: auto" />
-                            </div>
-                        </ng-template>
-                        <ng-container *ngTemplateOutlet="tableListVms"></ng-container>
+                        <div class="chartsdiv pt-3">
+                            <!-- <img [src]="imgData" alt="image at full size" height="300px" width="300px"
+                                style="overflow: auto" /> -->
+
+                                <video
+                                width="100%"
+                                height="100%"
+                                autoplay
+                                [src]="imgData"
+                              ></video>
+                        </div>
                     </div>
                 </div>
             </div>

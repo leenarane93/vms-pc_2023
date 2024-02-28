@@ -7,6 +7,7 @@ import { MediaUpload } from 'src/app/models/media/MediaUpload';
 import { Globals } from 'src/app/utils/global';
 import { VgApiService } from '@videogular/ngx-videogular/core';
 import { BlData, PlaylistAuditMedias } from 'src/app/models/media/PlAudit';
+import { mediaAudit } from 'src/app/models/media/PlaylistMaster';
 
 @Component({
   selector: 'app-cm-md-audit',
@@ -59,32 +60,57 @@ export class CmMdAuditComponent implements OnInit {
     this._mediaFacade.GetMediaBlockWise(this.data.plMaster.id).subscribe(res => {
       if (res != null) {
         //console.log(res);
+        this.blockWise = res;
         for (var i = 0; i < blocks.length; i++) {
           if ((blocks[i].blId = res[i].blId)) {
             blocks[i].src = res[i].medias[0].mediaPath;
           }
+          // if ((blocks[i].blId= this.blockWise[i].blId)) {
+          //   this.videoItems.blocks[i].src =
+          //     this.blockWise[i].medias[0].mediaPath;
+          // }
         }
       }
     })
   }
   getMediaUploadBySetID() {
-    this._mediaFacade.getMediaBySetID(this.data.uploadSetId).subscribe(res => {
-      if (res != null && res != undefined) {
-        this.medias = res;
-      }
-      else {
-        this._toast.error("Something went wrong, Please contact administrator.", "Error", { positionClass: "toast-botton-right" });
-      }
-    })
+    if(this.data.mediaType != "Text") {
+      this._mediaFacade.getMediaBySetID(this.data.uploadSetId).subscribe(res => {
+        if (res != null && res != undefined) {
+          this.medias = res;
+        }
+        else {
+          this._toast.error("Something went wrong, Please contact administrator.", "Error", { positionClass: "toast-botton-right" });
+        }
+      })
+    } else {
+      this._mediaFacade.getTextByUsID(this.data.uploadSetId).subscribe(res => {
+        if (res != null && res != undefined) {
+          this.medias = res;
+        }
+        else {
+          this._toast.error("Something went wrong, Please contact administrator.", "Error", { positionClass: "toast-botton-right" });
+        }
+      })
+    }
+    
   }
   ViewMedia(row: any) {
-    var _data = {
-      mediaPath: row.filePath,
-      mediaType: row.fileType
+    var _data = new mediaAudit();
+    if(this.data.mediaType == "Text")  {
+      _data = {
+        mediaPath: row.fileName,
+        mediaType: "Image"
+      }
+    } else {
+      _data = {
+        mediaPath: row.filePath,
+        mediaType: row.fileType
+      }
     }
     this._mediaFacade.getMediaString(_data).subscribe(res => {
       if (res != null && res != undefined) {
-        if (row.fileType == "Image") {
+        if (row.fileType == "Image" || this.data.mediaType == "Text" ) {
           this.isImg = true;
           this.imgSrc = res;
         }
@@ -203,7 +229,7 @@ export class CmMdAuditComponent implements OnInit {
   }
 
   alertEndVideo(node:any, blk:any) {
-    debugger;
+    console.log("Node : "+node + " Block : "+blk);
     if (this.blockWise.length > node.seq) {
       node.src = this.blockWise[blk.blId - 1].medias[node.seq].mediaPath;
       node.seq = node.seq + 1;

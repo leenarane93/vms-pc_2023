@@ -30,4 +30,8 @@ export class PublishOpsService {
   getPlaylistStatusData() {
     return this._httpService._getMethod("publish_api/api/PublishDetails/GetPlaylstStatusData");
   }
+
+  removePublishDetails(data:any) {
+    return this._httpService._postMethod(data,"publish_api/api/PublishDetails/DeletePlaylist");
+  }
 }

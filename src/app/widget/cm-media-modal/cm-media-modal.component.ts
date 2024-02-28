@@ -53,7 +53,7 @@ export class CmMediaModalComponent implements OnInit {
     }
     else if (this.data.modalType == "playlistcreation") {
       this.mediaType = this.data.content.fileType;
-      let plData = { "filePath": this.data.content.filePath, "fileType": this.data.content.fileType }
+      let plData = { "fileName":this.data.content.fileName,"filePath": this.data.content.filePath, "fileType": this.data.content.fileType }
       this.viewData.push(plData);
 
     }
@@ -68,7 +68,10 @@ export class CmMediaModalComponent implements OnInit {
       this._mediaFacade.getMediaString(data).subscribe(res => {
         if (res != null) {
           this.isViewMedia = true;
-          this.isImage = true;
+          if (type == "Video")
+            this.isImage = false;
+          else
+            this.isImage = true;
           this.imgData = res;
         }
         else {
@@ -77,7 +80,7 @@ export class CmMediaModalComponent implements OnInit {
       })
     }
     if (this.data.modalType == "playlistcreation") {
-      if(this.data.content.fileType == "Text") {
+      if (this.data.content.fileType == "Text") {
         let data = { "mediaPath": this.data.content.filePath, "mediaType": type };
         this._mediaFacade.getMediaString(data).subscribe(res => {
           if (res != null) {
@@ -90,9 +93,16 @@ export class CmMediaModalComponent implements OnInit {
           }
         })
       }
-      else {
+      else if (this.data.content.fileType == "Image"){
         this.isViewMedia = true;
         this.isImage = true;
+        this.isVideo = false;
+        this.imgData = this.data.content.filePath;
+      }
+      else if (this.data.content.fileType == "Video"){
+        this.isViewMedia = true;
+        this.isImage = false;
+        this.isVideo = true;
         this.imgData = this.data.content.filePath;
       }
     }

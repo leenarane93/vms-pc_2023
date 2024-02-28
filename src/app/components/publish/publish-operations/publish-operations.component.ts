@@ -128,13 +128,13 @@ export class PublishOperationsComponent implements OnInit {
     this.selectedVMS = [];
     this.stepper.to(1);
   }
-  BackToList(type:number) {
-    if(type == 0) {
+  BackToList(type: number) {
+    if (type == 0) {
       this.router.navigate(['publish/media-status']);
-    } else if(type == 1) {
+    } else if (type == 1) {
       this.resetStepper();
     }
-   }
+  }
   BuildForm() {
 
   }
@@ -366,10 +366,10 @@ export class PublishOperationsComponent implements OnInit {
           let _play = new publishTime();
           _play.sequence = seq;
           _play.plId = ele.plid;
-          _play.endDate = "" + ele.toDate.year + "-" + ("0" + ele.toDate.month).slice(-2) + "-" + ("0" + ele.toDate.day).slice(-2) + " "+ ("0" + ele.toTime.hour).slice(-2) + ":" + ("0" + ele.toTime.minute).slice(-2) + ":" + ("0" + ele.toTime.second).slice(-2) + "";
-          _play.startDate = "" + ele.fromDate.year + "-" + ("0" + ele.fromDate.month).slice(-2) + "-" + ("0" + ele.fromDate.day).slice(-2) + " "+ ("0" + ele.fromTime.hour).slice(-2) + ":" + ("0" + ele.fromTime.minute).slice(-2) + ":" + ("0" + ele.fromTime.second).slice(-2) + "";
-          _play.startTime = "" + ele.fromDate.year + "-" + ("0" + ele.fromDate.month).slice(-2) + "-" + ("0" + ele.fromDate.day).slice(-2) + " "+ ("0" + ele.fromTime.hour).slice(-2) + ":" + ("0" + ele.fromTime.minute).slice(-2) + ":" + ("0" + ele.fromTime.second).slice(-2) + "";
-          _play.endTime = "" + ele.toDate.year + "-" + ("0" + ele.toDate.month).slice(-2) + "-" + ("0" + ele.toDate.day).slice(-2) + " "+ ("0" + ele.toTime.hour).slice(-2) + ":" + ("0" + ele.toTime.minute).slice(-2) + ":" + ("0" + ele.toTime.second).slice(-2) + "";
+          _play.endDate = "" + ele.toDate.year + "-" + ("0" + ele.toDate.month).slice(-2) + "-" + ("0" + ele.toDate.day).slice(-2) + " " + ("0" + ele.toTime.hour).slice(-2) + ":" + ("0" + ele.toTime.minute).slice(-2) + ":" + ("0" + ele.toTime.second).slice(-2) + "";
+          _play.startDate = "" + ele.fromDate.year + "-" + ("0" + ele.fromDate.month).slice(-2) + "-" + ("0" + ele.fromDate.day).slice(-2) + " " + ("0" + ele.fromTime.hour).slice(-2) + ":" + ("0" + ele.fromTime.minute).slice(-2) + ":" + ("0" + ele.fromTime.second).slice(-2) + "";
+          _play.startTime = "" + ele.fromDate.year + "-" + ("0" + ele.fromDate.month).slice(-2) + "-" + ("0" + ele.fromDate.day).slice(-2) + " " + ("0" + ele.fromTime.hour).slice(-2) + ":" + ("0" + ele.fromTime.minute).slice(-2) + ":" + ("0" + ele.fromTime.second).slice(-2) + "";
+          _play.endTime = "" + ele.toDate.year + "-" + ("0" + ele.toDate.month).slice(-2) + "-" + ("0" + ele.toDate.day).slice(-2) + " " + ("0" + ele.toTime.hour).slice(-2) + ":" + ("0" + ele.toTime.minute).slice(-2) + ":" + ("0" + ele.toTime.second).slice(-2) + "";
           _playTime.push(_play);
         });
         _pubTime.pubTime = _playTime;
@@ -401,7 +401,7 @@ export class PublishOperationsComponent implements OnInit {
 
   }
   GetTime(eve: any, type: number) {
-    
+
     let _date = new Date();
     var _day = ("0" + eve.controls["selectedDayG"].value).slice(-2);
     var _month = ("0" + eve.controls["selectedMonthG"].value).slice(-2);
@@ -430,5 +430,13 @@ export class PublishOperationsComponent implements OnInit {
       } else
         this._toast.error("Invalid date selected.");
     }
+  }
+  RemovePlaylist(item: any) {
+    var len = 0;
+    this.selectedPlaylist.forEach(element => {
+      if (element.id == item.id)
+        this.selectedPlaylist.slice(len, 1);
+      len = len + 1;
+    });
   }
 }

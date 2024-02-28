@@ -4,6 +4,8 @@ export class ZoneMaster{
     description !: string;
     isActive !: boolean;
     createdBy!:string;
+    modifiedBy!:string;
+    isDeleted:boolean;
 }
 
 export class ZoneCoords {

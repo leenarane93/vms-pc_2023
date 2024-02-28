@@ -800,13 +800,13 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
 
   ViewMedia(_data: any) {
     if (_data.textContent != undefined && _data.textContent != "") {
-      let _inputData = { "filePath": _data.fileName, "fileType": "Media", "uploadSetId": _data.uploadSetId };
+      let _inputData = { "filePath": _data.filePath,"fileName":_data.fileName,modalType:"playlistcreation", mediaType:"playlistcreation","fileType": _data.fileType, "uploadSetId": _data.uploadSetId };
       const modalRef = this.modalService.open(CmMediaModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
       let _reqdata = { "action": "view", urls: [], modalType: "playlistcreation", content: _inputData };
       modalRef.componentInstance.data = _reqdata;
     }
     else {
-      let _inputData = { "filePath": _data.filePath, "fileType": "Media", "uploadSetId": _data.uploadSetId };
+      let _inputData = { "filePath": _data.filePath,"fileName":_data.fileName,modalType:"playlistcreation",mediaType:"playlistcreation", "fileType": _data.fileType, "uploadSetId": _data.uploadSetId };
       const modalRef = this.modalService.open(CmMediaModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
       let _reqdata = { "action": "view", urls: [], modalType: "playlistcreation", content: _inputData };
       modalRef.componentInstance.data = _reqdata;

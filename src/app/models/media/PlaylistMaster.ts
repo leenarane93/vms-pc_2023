@@ -53,3 +53,8 @@ export class MediaDetails {
     isNew: boolean;
     mdType: string;
 }
+
+export class mediaAudit {
+    mediaType:string;
+    mediaPath:string;
+}

@@ -86,6 +86,7 @@ import { PublishStatusComponent } from './components/publish/publish-status/publ
 import { ListViewComponent } from './components/dashboard/list-view/list-view.component';
 import { CmEmergencyComponent } from './widget/cm-emergency/cm-emergency.component';
 import { NetworkReportComponent } from './components/reports/network-report/network-report.component';
+import { SocketFacadeService } from './facade/facade_services/socket-facade.service';
 
 @NgModule({
   declarations: [
@@ -179,7 +180,7 @@ import { NetworkReportComponent } from './components/reports/network-report/netw
   DatePipe,
     NgbActiveModal,
     JwtHelperService, ConfirmationDialogService,
-  { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }, Globals],
+  { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }, Globals,SocketFacadeService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -22,5 +22,7 @@ export class PublishFacadeService {
   getPlaylistStatusData() {
     return this._publishService.getPlaylistStatusData();
   }
-
+  removePublishDetails(_data:any) {
+    return this._publishService.removePublishDetails(_data);
+  }
 }

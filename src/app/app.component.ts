@@ -6,6 +6,9 @@ import { Router } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
 import { SessionService } from './facade/services/common/session.service';
 import { CommonFacadeService } from './facade/facade_services/common-facade.service';
+import {SocketFacadeService} from './facade/facade_services/socket-facade.service';
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,12 +16,16 @@ import { CommonFacadeService } from './facade/facade_services/common-facade.serv
 })
 export class AppComponent implements OnInit {
   title = 'vms-pc';
+  message:string;
+  messages:any[]=[];
   config$!:Observable<any>;
   user!:User;
   loggedIn:boolean=false;
+  secretCode:any;
   constructor(private _facadeService:UserFacadeService,
               private _router: Router,
-              private _commonFacade:CommonFacadeService
+              private _commonFacade:CommonFacadeService,
+              private chatService: SocketFacadeService
               ){ 
     console.log(this.loggedIn);
     this._facadeService.isLoggedin.subscribe(x => {
@@ -34,4 +41,5 @@ export class AppComponent implements OnInit {
     this._commonFacade.setSwaggerUrl();
     //this._facadeService.getConfigDetails();
   }
+
 }
