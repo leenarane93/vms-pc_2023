@@ -87,6 +87,7 @@ import { ListViewComponent } from './components/dashboard/list-view/list-view.co
 import { CmEmergencyComponent } from './widget/cm-emergency/cm-emergency.component';
 import { NetworkReportComponent } from './components/reports/network-report/network-report.component';
 import { SocketFacadeService } from './facade/facade_services/socket-facade.service';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -172,6 +173,7 @@ import { SocketFacadeService } from './facade/facade_services/socket-facade.serv
     DragDropModule,
     CdkTableModule,
     NgMultiSelectDropDownModule,
+    ToastModule,
     NgxBootstrapIconsModule.pick(allIcons),
   ],
   exports: [TooltipDirective,BlockCopyPasteDirective],

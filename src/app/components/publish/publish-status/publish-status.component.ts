@@ -19,8 +19,8 @@ export class PublishStatusComponent implements OnInit {
   dtSendingPublish: any[] = [];
   dtRunningPublish: any[] = [];
   savedItems: any[];
-  messageList:any[]=[];
-  newMessage:string;
+  messageList: any[] = [];
+  newMessage: string;
   select_all = false;
   selection = new SelectionModel<Element>(true, []);
 
@@ -31,32 +31,19 @@ export class PublishStatusComponent implements OnInit {
     private httpClient: HttpClient,
     private global: Globals,
     private publish: PublishFacadeService,
-    private _toast:ToastrService,
-    private chatService:SocketFacadeService
+    private _toast: ToastrService,
+    private chatService: SocketFacadeService
   ) {
     this.global.CurrentPage = "Publish Status";
   }
 
-  ngOnInit(): void {this.sendMessage();
+  ngOnInit(): void {
+    ;
     this.GetPublishStatusData();
-    this.getMessages();
     // this.chatService.createEventSource().subscribe(res=>{
     //   console.log(res);
     // });
     this.chatService.createEventSource();
-  }
-
-  getMessages(){
-    // this.chatService.getNewMessage().subscribe((message: string) => {
-    //   this.messageList.push(message);
-    //   console.log(this.messageList);
-    // })
-  }
-
-  sendMessage() {
-    this.newMessage = 'Hello World !!!';
-    this.newMessage = '';
-    this.getMessages();
   }
 
   GetPublishStatusData() {
@@ -97,24 +84,24 @@ export class PublishStatusComponent implements OnInit {
     this.GetPublishStatusData();
   }
 
-  RemovePublish(data:any,type:number) {
-    if(data != undefined) {
+  RemovePublish(data: any, type: number) {
+    if (data != undefined) {
       let _request = {
         "type": "",
         "plId": data.playlistId,
         "pubId": data.pubId,
         "vmsId": data.vmsId
       }
-      this.publish.removePublishDetails(_request).subscribe(res=> {
-        if(res != null) {
-          if(res == 1){
+      this.publish.removePublishDetails(_request).subscribe(res => {
+        if (res != null) {
+          if (res == 1) {
             this._toast.success("Published removed successfully.");
             this.GetPublishStatusData();
-          } else 
+          } else
             this._toast.error("Something went wrong.");
-        } else 
+        } else
           this._toast.error("An error occured while processing request.");
       });
-     }
+    }
   }
 }

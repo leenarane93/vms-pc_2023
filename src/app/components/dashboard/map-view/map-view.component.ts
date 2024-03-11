@@ -186,10 +186,6 @@ export class MapViewComponent {
     L.control.layers(baselayers, overlays).addTo(this.map);
 
     baselayers["openstreetmap"].addTo(this.map);
-
-
-
-
     this.drawnItems = new L.FeatureGroup();
 
     this.map.addLayer(this.drawnItems);

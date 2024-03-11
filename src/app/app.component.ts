@@ -7,6 +7,9 @@ import { LocationStrategy } from '@angular/common';
 import { SessionService } from './facade/services/common/session.service';
 import { CommonFacadeService } from './facade/facade_services/common-facade.service';
 import {SocketFacadeService} from './facade/facade_services/socket-facade.service';
+import { HubConnection,HubConnectionBuilder  } from '@microsoft/signalr';
+import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environment';
 
 
 @Component({
@@ -16,6 +19,7 @@ import {SocketFacadeService} from './facade/facade_services/socket-facade.servic
 })
 export class AppComponent implements OnInit {
   title = 'vms-pc';
+  public _hubConnecton: HubConnection;
   message:string;
   messages:any[]=[];
   config$!:Observable<any>;
@@ -25,7 +29,8 @@ export class AppComponent implements OnInit {
   constructor(private _facadeService:UserFacadeService,
               private _router: Router,
               private _commonFacade:CommonFacadeService,
-              private chatService: SocketFacadeService
+              private chatService: SocketFacadeService,
+              private _toast:ToastrService
               ){ 
     console.log(this.loggedIn);
     this._facadeService.isLoggedin.subscribe(x => {
@@ -40,6 +45,26 @@ export class AppComponent implements OnInit {
     this.user = this._facadeService.user;
     this._commonFacade.setSwaggerUrl();
     //this._facadeService.getConfigDetails();
+
+
+    this._hubConnecton = new HubConnectionBuilder().withUrl(environment.SSE_Url).build();
+    this._hubConnecton
+      .start()
+      .then(() => console.log('Connection started!'))
+      .catch(err => console.log('Error while establishing connection :('));
+
+    this._hubConnecton.on('BroadcastMessage', (type: string, payload: string) => {
+      //this.messages.push({ severity: type, summary: payload });
+      console.log("Type : "+type + " ----- Message : "+payload);
+      if(type == "success") 
+        this._toast.success(payload,"Success");
+      else if(type == "error")
+        this._toast.error(payload,"Error");
+      else if(type == "warning")
+        this._toast.warning(payload,"Warning");
+      else if(type == "notify")
+        this._toast.info(payload,"Info");
+    });
   }
 
 }

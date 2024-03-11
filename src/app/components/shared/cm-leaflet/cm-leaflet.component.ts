@@ -169,11 +169,18 @@ export class CmLeafletComponent implements AfterViewInit {
 							iconAnchor: [16, 37],
 							popupAnchor: [0, -28],
 						})
-						const customPopup = `<p><i class="icon-circle-check"></i> Vadodara West<br></p>` 
+						const customPopup = `<p><img src="https://picsum.photos/200/300" height=150 width=200 /></p>
+											 <p><i class="icon-circle-check"></i> VMS ID : ` + e.vmsId + `<br></p>
+											 <p><i class="icon-circle-check"></i> Description : `+ e.description + `<br></p>
+											 <p><i class="icon-circle-check"></i> IP Address : `+ e.ipAddress + `<br></p>
+											 <p><i class="icon-circle-check"></i> Height : `+ e.height + `<br></p>
+											 <p><i class="icon-circle-check"></i> Width : `+ e.width + `<br></p>
+											 <p><i class="icon-circle-check"></i> Latitude : `+ e.latitude + `<br></p>
+											 <p><i class="icon-circle-check"></i> Longitude : `+ e.longitude + `<br></p>`
    						const customOptions = {'className' : 'custom-popup' }
     
 						var marker = L.marker([e.latitude, e.longitude], { icon: icon }).addTo(this.map);
-						marker.bindPopup(customPopup,customOptions).on('mouseover', function () { marker.openPopup()});
+						marker.bindPopup(customPopup,customOptions).on('click', function () { marker.openPopup()});
 						this.markers.push(marker);
 						
 
@@ -184,11 +191,18 @@ export class CmLeafletComponent implements AfterViewInit {
 							iconAnchor: [16, 37],
 							popupAnchor: [0, -28],
 						})
-						const customPopup = `<p><i class="icon-circle-cross"></i> VMS 1<br></p>` 
+						const customPopup = `<p><img src="https://picsum.photos/200/300" height=150 width=200 /></p>
+											 <p><i class="icon-circle-check"></i> VMS ID : ` + e.vmsId + `<br></p>
+											 <p><i class="icon-circle-check"></i> Description : `+ e.description + `<br></p>
+											 <p><i class="icon-circle-check"></i> IP Address : `+ e.ipAddress + `<br></p>
+											 <p><i class="icon-circle-check"></i> Height : `+ e.height + `<br></p>
+											 <p><i class="icon-circle-check"></i> Width : `+ e.width + `<br></p>
+											 <p><i class="icon-circle-check"></i> Latitude : `+ e.latitude + `<br></p>
+											 <p><i class="icon-circle-check"></i> Longitude : `+ e.longitude + `<br></p>`
    						const customOptions = {'className' : 'custom-popup' }
     
 						var marker = L.marker([e.latitude, e.longitude], { icon: icon }).addTo(this.map);
-						marker.bindPopup(customPopup,customOptions).on('mouseover', function () { marker.openPopup()});
+						marker.bindPopup(customPopup,customOptions).on('click', function () { marker.openPopup()});
 						this.markers.push(marker);
 					}
 				});

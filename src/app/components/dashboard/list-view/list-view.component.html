@@ -27,10 +27,10 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let ls of listViewData;">
-                <td> {{ls.srNo}} </td>
+              <tr *ngFor="let ls of listViewData; let i = index">
+                <td> {{i+1}} </td>
                 <td> {{ls.vmsId}} </td>
-                <td> {{ls.description}} </td>
+                <td> {{ls.vmsDescription}} </td>
                 <td> {{ls.zoneName}} </td>
                 <td> {{ls.ipAddress}} </td>
                 <td> {{ls.playingPlaylist}} </td>

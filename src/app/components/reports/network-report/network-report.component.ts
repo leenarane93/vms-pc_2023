@@ -1,7 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
+import { ReportFacadeService } from 'src/app/facade/facade_services/report-facade.service';
 import { CommonSelectList } from 'src/app/models/common/cmSelectList';
+import { NetworkReport } from 'src/app/models/reports/networkreport';
 import { InputRequest } from 'src/app/models/request/inputReq';
 import { Globals } from 'src/app/utils/global';
 
@@ -13,31 +17,35 @@ import { Globals } from 'src/app/utils/global';
 export class NetworkReportComponent implements OnInit {
   _request: any = new InputRequest();
   imgData: any;
-  minDate:any;
-  selectedStatus:number;
-  model: NgbDateStruct;
+  minDate: any;
+  selectedStatus: number;
+  modelFromDate: NgbDateStruct;
+  modelToDate: NgbDateStruct;
   unitType: string = "second";
   unitValue: any;
   pager: number = 0;
   recordPerPage: number = 10000;
   startId: number = 0;
-  searchText:string= "";
-  _inputVmsData:any;
-  dropdownSettingsVms:any;
-  label1:string = "Select Controller";
-  listOfData:any;
+  searchText: string = "";
+  _inputVmsData: any;
+  dropdownSettingsVms: any;
+  label1: string = "Select Controller";
+  listOfData: any;
   totalPages: number = 1;
   totalRecords!: number;
+  vmsIds: any[] = [];
   headerArr = [
     { "Head": "Device ID", "FieldName": "vmsid", "type": "string" },
     { "Head": "Device Name", "FieldName": "description", "type": "string" },
-    { "Head": "Status", "FieldName": "networkStatus", "type": "boolean" },
+    { "Head": "Status", "FieldName": "statusStr", "type": "string" },
     { "Head": "Date/Time", "FieldName": "networkTime", "type": "string" },
   ];
   constructor(
-    private global:Globals,
-    private adminFacade:AdminFacadeService,
-  ){
+    private global: Globals,
+    private adminFacade: AdminFacadeService,
+    private _toast: ToastrService,
+    private _reportService: ReportFacadeService
+  ) {
     this.global.CurrentPage = "Network Report";
     this.dropdownSettingsVms = {
       singleSelection: false,
@@ -87,8 +95,41 @@ export class NetworkReportComponent implements OnInit {
     });
   }
 
-  getSelectedVms(eve:any,type:any) {
-
+  getSelectedVms(eve: any, type: any) {
+    if (eve.length > 0) {
+      if (type == 1) {
+        eve.forEach((vms: any) => {
+          this.vmsIds.push(vms.value);
+        });
+      }
+      else {
+        eve.forEach((ele: any) => {
+          var idx = 0;
+          this.vmsIds.forEach(element => {
+            if (element == ele.value) {
+              this.vmsIds.splice(idx, 1);
+            }
+            idx++;
+          });
+        });
+      }
+    }
+    else if (eve.length == 0)
+      this.vmsIds = [];
+    else {
+      if (type == 1)
+        this.vmsIds.push(eve.value);
+      else {
+        var idx = 0;
+        this.vmsIds.forEach(element => {
+          if (element == eve.value) {
+            this.vmsIds.splice(idx, 1);
+          }
+          idx++;
+        });
+      }
+    }
+    console.log(this.vmsIds);
   }
 
   onPager(pager: number) {
@@ -112,8 +153,35 @@ export class NetworkReportComponent implements OnInit {
     this.searchText = search;
     //this.getParties();
   }
-  
-  ActionSubmit(){
-    
+
+  ActionSubmit() {
+    let _reportRequest = new NetworkReport();
+    _reportRequest.currentPage = this.pager;
+    _reportRequest.pageSize = this._request.pageSize;
+    _reportRequest.startId = this.startId;
+    _reportRequest.fromDate = this.modelFromDate.year + "-" + this.modelFromDate.month + "-" + this.modelFromDate.day + " 00:00:00";
+    _reportRequest.toDate = this.modelToDate.year + "-" + this.modelToDate.month + "-" + this.modelToDate.day + " 00:00:00";
+    _reportRequest.username = this.global.UserCode;
+    _reportRequest.networkStatus = this.selectedStatus;
+    if (this.vmsIds.length > 0) {
+      _reportRequest.vmsId = this.vmsIds;
+      this._reportService.GetNetworkDetailsRpt(_reportRequest).subscribe(res => {
+        if (res != null) {
+          res.data.forEach((d:any) => {
+            var datePipe = new DatePipe("en-US");
+            d.networkTime = datePipe.transform(d.networkTime, 'dd-MM-yyyy HH:mm:ss');
+            if(d.status == 0)
+              d.statusStr = "Disconnected";
+            else 
+              d.statusStr = "Connected";
+          });
+          this.listOfData = res.data;
+        } else {
+          this._toast.error("Something went wrong.");
+        }
+      })
+    }
+    else
+      this._toast.error("Controller not selected.");
   }
 }
