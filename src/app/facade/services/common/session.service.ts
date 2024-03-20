@@ -17,4 +17,11 @@ export class SessionService {
   _removeSessionValue(_key: string) {
     sessionStorage.removeItem(_key);
   }
+
+  getnetworkreportXview() {
+    return sessionStorage.getItem("networkReportViewX");
+  }
+  setNetworkReportXlsPath(data:any) {
+    sessionStorage.setItem("networkReportViewX", data);
+  }
 }

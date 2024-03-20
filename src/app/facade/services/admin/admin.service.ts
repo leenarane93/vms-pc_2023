@@ -80,16 +80,19 @@ export class AdminService {
   updateTarrifMasterData(_data: any) {
     return this._httpService._postMethod(_data, 'Administration_API/api/Tarrif/PutTarrifMaster');
   }
-  
+
   getMediaClearance() {
     return this._httpService._getMethod('Administration_API/api/VMSMaster/GetMediaSentData');
   }
-  mediaClearance(_data:any) {
-    return this._httpService._postMethod(_data,'Administration_API/api/VMSMaster/RemoveMedia');
+  mediaClearance(_data: any) {
+    return this._httpService._postMethod(_data, 'Administration_API/api/VMSMaster/RemoveMedia');
   }
 
-  getZoneCoordsByZoneIds(_data:any) {
-    return this._httpService._postMethod(_data,'administration_api/api/ZoneMaster/GetZoneCoordsByZoneIds');
+  getZoneCoordsByZoneIds(_data: any) {
+    return this._httpService._postMethod(_data, 'administration_api/api/ZoneMaster/GetZoneCoordsByZoneIds');
   }
 
+  ValidateGSTINNumber(number: any, id: number) {
+    return this._httpService._getMethod('Administration_API/api/PartyMaster/ValidateGSTINNumber?gstno=' + number + '&id=' + id);
+  }
 }

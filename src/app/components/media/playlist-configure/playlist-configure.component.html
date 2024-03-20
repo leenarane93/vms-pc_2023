@@ -47,7 +47,7 @@
           <div class="row">
             <div class="col-md-3">
               <label class="form-label">Playlist Name*</label>
-              <input type="text" formControlName="playlistName" class="form-control" placeholder="Playlist Name"
+              <input type="text" (focusout)="ValidatePlaylistName(null)" formControlName="playlistName" class="form-control" placeholder="Playlist Name"
                 [ngClass]="{ 'is-invalid': f['playlistName'].touched && f['playlistName'].errors, 'is-valid': f['playlistName'].valid }" />
               <div *ngIf="f['playlistName'].touched && f['playlistName'].errors" class="invalid-feedback">
                 <div>{{getErrorMessage('playlistName','Playlist Name',true,"Invalid data available in Playlist Name")}}
@@ -72,9 +72,16 @@
               </div>
             </div>
           </div>
+          <br>
+          <br>
           <div class="row">
-           
-            <div class="col-md-12 text-right">
+            <div class="col-md-3">
+              <label class="switch active">
+                <input type="checkbox" formControlName="isActive" [(ngModel)]="isActive" (change)="ActiveStatusChange()">
+                <div class="slider round"></div>
+              </label>
+            </div>
+            <div class="col-md-9 text-right">
               <hr class="dashed">
               <button type="button" [disabled]="!form.valid" class="btn bgTable text-white btn-sm"
                 (click)="StepNext(0)">Next <i class="icon-arrow-right"></i></button>

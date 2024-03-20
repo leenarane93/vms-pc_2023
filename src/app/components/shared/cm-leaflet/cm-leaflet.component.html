@@ -21,7 +21,7 @@
   
 <div class="row">
     <div class="mb-3 col text-center" id="bottom">
-        <button class="btn btn-primary" [disabled]="layers != undefined && layers.length == 0 " (click)="SubmitCoordinates()">
+        <button class="btn btn-primary" *ngIf="this.type == 'zone' && btnDisabled != true" [disabled]="layers != undefined && layers.length == 0 " (click)="SubmitCoordinates()">
             Submit
         </button>
     </div>

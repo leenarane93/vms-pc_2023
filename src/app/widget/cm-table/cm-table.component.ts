@@ -17,6 +17,7 @@ export class CmTableComponent {
   @Output() recordPerPage = new EventEmitter<number>();
   @Input() headArr: any[] = [];
   @Input() link!: string;
+  @Input() isSearchBox: boolean = true;
   @Input() fieldName!: string;
   @Input() gridArr: any[] = [];
   @Input() totalRecords!: number;

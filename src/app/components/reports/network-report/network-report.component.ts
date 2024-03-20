@@ -4,6 +4,7 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
 import { ReportFacadeService } from 'src/app/facade/facade_services/report-facade.service';
+import { SessionService } from 'src/app/facade/services/common/session.service';
 import { CommonSelectList } from 'src/app/models/common/cmSelectList';
 import { NetworkReport } from 'src/app/models/reports/networkreport';
 import { InputRequest } from 'src/app/models/request/inputReq';
@@ -24,7 +25,7 @@ export class NetworkReportComponent implements OnInit {
   unitType: string = "second";
   unitValue: any;
   pager: number = 0;
-  recordPerPage: number = 10000;
+  recordPerPage: number = 10;
   startId: number = 0;
   searchText: string = "";
   _inputVmsData: any;
@@ -35,16 +36,18 @@ export class NetworkReportComponent implements OnInit {
   totalRecords!: number;
   vmsIds: any[] = [];
   headerArr = [
-    { "Head": "Device ID", "FieldName": "vmsid", "type": "string" },
-    { "Head": "Device Name", "FieldName": "description", "type": "string" },
+    { "Head": "Device ID", "FieldName": "vmsCode", "type": "string" },
+    { "Head": "Device Name", "FieldName": "vmsName", "type": "string" },
     { "Head": "Status", "FieldName": "statusStr", "type": "string" },
     { "Head": "Date/Time", "FieldName": "networkTime", "type": "string" },
   ];
+  xlsReportPath:any;
   constructor(
     private global: Globals,
     private adminFacade: AdminFacadeService,
     private _toast: ToastrService,
-    private _reportService: ReportFacadeService
+    private _reportService: ReportFacadeService,
+    private _sessionService:SessionService
   ) {
     this.global.CurrentPage = "Network Report";
     this.dropdownSettingsVms = {
@@ -68,6 +71,7 @@ export class NetworkReportComponent implements OnInit {
       month: _mon,
       day: _day
     }
+    this.xlsReportPath = this._sessionService.getnetworkreportXview();
   }
 
 
@@ -136,7 +140,7 @@ export class NetworkReportComponent implements OnInit {
     this._request.pageSize = this.recordPerPage;
     this.pager = pager;
     this.startId = (this.pager - 1) * this.recordPerPage;
-    //this.getParties();
+    this.ActionSubmit(0);
   }
 
   onRecordPageChange(recordPerPage: number) {
@@ -146,15 +150,15 @@ export class NetworkReportComponent implements OnInit {
     this.startId = 0;
     this.pager = 1;
     console.log(this.recordPerPage);
-    //this.getParties();
+    this.ActionSubmit(0);
   }
 
   onPageSearch(search: string) {
     this.searchText = search;
-    //this.getParties();
+    this.ActionSubmit(0);
   }
 
-  ActionSubmit() {
+  ActionSubmit(type:number) {
     let _reportRequest = new NetworkReport();
     _reportRequest.currentPage = this.pager;
     _reportRequest.pageSize = this._request.pageSize;
@@ -165,21 +169,49 @@ export class NetworkReportComponent implements OnInit {
     _reportRequest.networkStatus = this.selectedStatus;
     if (this.vmsIds.length > 0) {
       _reportRequest.vmsId = this.vmsIds;
-      this._reportService.GetNetworkDetailsRpt(_reportRequest).subscribe(res => {
-        if (res != null) {
-          res.data.forEach((d:any) => {
-            var datePipe = new DatePipe("en-US");
-            d.networkTime = datePipe.transform(d.networkTime, 'dd-MM-yyyy HH:mm:ss');
-            if(d.status == 0)
-              d.statusStr = "Disconnected";
-            else 
-              d.statusStr = "Connected";
-          });
-          this.listOfData = res.data;
-        } else {
-          this._toast.error("Something went wrong.");
-        }
-      })
+      if(type == 0) {
+        this._reportService.GetNetworkDetailsRpt(_reportRequest).subscribe(res => {
+          if (res != null) {
+            if(res.data.length > 0 ){
+              res.data.forEach((d:any) => {
+                var datePipe = new DatePipe("en-US");
+                d.networkTime = datePipe.transform(d.networkTime, 'dd-MM-yyyy HH:mm:ss');
+                if(d.status == 0)
+                  d.statusStr = "Disconnected";
+                else 
+                  d.statusStr = "Connected";
+              });
+              this.listOfData = res.data;
+              var _length = res.totalRecords / this.recordPerPage;
+              if (_length > Math.floor(_length) && Math.floor(_length) != 0)
+                this.totalRecords = this.recordPerPage * (_length);
+              else if (Math.floor(_length) == 0)
+                this.totalRecords = 10;
+              else
+                this.totalRecords = res.totalRecords;
+              this.totalPages = this.totalRecords / this.pager;
+            } else {
+              this.listOfData = [];
+              this._toast.error("No Records Found");
+            }
+            
+          } else {
+            this._toast.error("Something went wrong.");
+          }
+        })
+      } else {
+        this._reportService.ExpNetworkDetailsRpt(_reportRequest).subscribe(res => {
+          if (res != null) {
+            if(type == 1)
+              window.open(this.xlsReportPath + "Network_Report.pdf");
+            if(type == 2)
+              window.open(this.xlsReportPath + "Network_Report.xls");
+          } else {
+            this._toast.error("Something went wrong.");
+          }
+        })
+      }
+     
     }
     else
       this._toast.error("Controller not selected.");

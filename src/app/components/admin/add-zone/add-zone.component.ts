@@ -192,6 +192,7 @@ export class AddZoneComponent implements OnInit {
         } else {
           this.toast.success("Updated successfully.");
           this.clearForm();
+          this.router.navigate(['masters/zone-master']);
         }
       })
     }

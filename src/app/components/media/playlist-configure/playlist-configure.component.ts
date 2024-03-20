@@ -72,6 +72,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 })
 export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
   tarrifDetails: any[] = [];
+  status: number = 0;
   partyDetails: any[] = [];
   @ViewChild("table", { static: false }) table: any;
   plid: number = 0;
@@ -90,6 +91,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
   nodeDetails: any = [];
   isCollide: boolean = false;
   active = 1;
+  isActive: boolean = false;
   submitted = false;
   isCompleted = false;
   model2!: string;
@@ -175,7 +177,8 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
     this.form = this.fb.group({
       playlistName: ['', Validators.required],
       height: ['', Validators.required],
-      width: ['', Validators.required]
+      width: ['', Validators.required],
+      isActive: [false, Validators.required],
     });
     this.stepper = new Stepper(document.querySelector('#stepper1') as HTMLElement, {
       linear: false,
@@ -192,7 +195,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
         this.widthtxt = this.form.controls["width"].value;
         var _master = new PlaylistMaster();
         _master.id = 0;
-        _master.isActive = true;
+        _master.isActive = this.form.controls["isActive"].value;
         _master.createdBy = this.global.UserCode;
         _master.height = this.form.controls["height"].value;
         _master.width = this.form.controls["width"].value;
@@ -220,22 +223,12 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
             this.nodeDetails[0].height = 50;
             this.nodeDetails[0].width = 50;
           }
-          this._media.addPlaylistMaster(_master).subscribe(res => {
-            if (res != null && res != 0) {
-              this.toast.success("Saved Successfully");
-              this.form.reset();
-              this.plid = res;
-              //this.router.navigate(['medias/playlist-creation']);
-            } else {
-              this.toast.error("An error occured while processing your request.", "Error", { positionClass: "toast-botton-right" });
-            }
-          });
+          this.ValidatePlaylistName(_master);
         }
-        if(this.isCopy == true) {
+        if (this.isCopy == true) {
           this.GetplBlData();
-          this.stepper.to(4);
         }
-        else 
+        else
           this.stepper.next();
       }
     }
@@ -282,12 +275,12 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
       }
       else {
         if (this.selectedMedia.length > 0) {
-          if(this.isCopy == true) {
+          if (this.isCopy == true) {
             this.selectedMedia.forEach(ele => {
               this.dataSource.push(ele);
             });
           }
-          else 
+          else
             this.dataSource = this.selectedMedia;
           console.log(this.dataSource);
         }
@@ -359,8 +352,8 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  GetplBlData(){
-    this.dataSource =[];
+  GetplBlData() {
+    this.dataSource = [];
     this._media.getPlBlData(this.plid).subscribe(res => {
       if (res != null) {
         res.forEach((ele: any) => {
@@ -800,13 +793,13 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
 
   ViewMedia(_data: any) {
     if (_data.textContent != undefined && _data.textContent != "") {
-      let _inputData = { "filePath": _data.filePath,"fileName":_data.fileName,modalType:"playlistcreation", mediaType:"playlistcreation","fileType": _data.fileType, "uploadSetId": _data.uploadSetId };
+      let _inputData = { "filePath": _data.filePath, "fileName": _data.fileName, modalType: "playlistcreation", mediaType: "playlistcreation", "fileType": _data.fileType, "uploadSetId": _data.uploadSetId };
       const modalRef = this.modalService.open(CmMediaModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
       let _reqdata = { "action": "view", urls: [], modalType: "playlistcreation", content: _inputData };
       modalRef.componentInstance.data = _reqdata;
     }
     else {
-      let _inputData = { "filePath": _data.filePath,"fileName":_data.fileName,modalType:"playlistcreation",mediaType:"playlistcreation", "fileType": _data.fileType, "uploadSetId": _data.uploadSetId };
+      let _inputData = { "filePath": _data.filePath, "fileName": _data.fileName, modalType: "playlistcreation", mediaType: "playlistcreation", "fileType": _data.fileType, "uploadSetId": _data.uploadSetId };
       const modalRef = this.modalService.open(CmMediaModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
       let _reqdata = { "action": "view", urls: [], modalType: "playlistcreation", content: _inputData };
       modalRef.componentInstance.data = _reqdata;
@@ -839,6 +832,8 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
     if (data?.includes(":") == true) {
       this.route.queryParams
         .subscribe(params => {
+          this.status = params['status'];
+          this.plid = params['plid'];
           if (params['isCopy'] == 'true') {
             this.isCopy = true;
             this.isView = false;
@@ -855,7 +850,12 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
         );
       let _json = JSON.parse(data);
       this.plid = _json.id;
-      this.form.patchValue({ playlistName: _json.playlistName, height: _json.height, width: _json.width })
+      let isAct = false;
+      if (_json.isActive == 'Active') {
+        isAct = true;
+        this.isActive = true;
+      }
+      this.form.patchValue({ playlistName: _json.playlistName, height: _json.height, width: _json.width, isActive: isAct })
       this.heighttxt = _json.height;
       this.widthtxt = _json.width;
       this._media.getBlockDetailsByPlID(this.plid).subscribe(res => {
@@ -875,6 +875,55 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
         }
       });
     }
+  }
+
+  ActiveStatusChange() {
+    var _master = new PlaylistMaster();
+    _master.id = 0;
+    _master.isActive = this.form.controls["isActive"].value;
+    _master.createdBy = this.global.UserCode;
+    _master.height = this.form.controls["height"].value;
+    _master.width = this.form.controls["width"].value;
+    _master.playlistName = this.form.controls["playlistName"].value;
+    _master.status = this.status;
+    _master.id = this.plid;
+    this._media.updatePlaylistData(_master).subscribe(res => {
+      if (res != null && res != 0) {
+        this.toast.success("Updated Successfully");
+        this.plid = res;
+        //this.router.navigate(['medias/playlist-creation']);
+      } else {
+        this.toast.error("An error occured while processing your request.", "Error", { positionClass: "toast-botton-right" });
+      }
+    });
+  }
+
+  ValidatePlaylistName(_master: any) {
+    let plName = this.form.controls["playlistName"].value;
+    this._media.ValidatePlaylistName(plName).subscribe(res => {
+      if (res == 1) {
+        this.toast.error("Playlist Name already exists.", "Error", { positionClass: "toast-botton-right" });
+        this.form.patchValue({
+          playlistName: ""
+        });
+      }
+      else {
+        if (_master != null && _master != undefined) {
+          this._media.addPlaylistMaster(_master).subscribe(res => {
+            if (res != null && res != 0) {
+              this.toast.success("Saved Successfully");
+              this.form.reset();
+              this.plid = res;
+              this.stepper.to(4);
+              //this.router.navigate(['medias/playlist-creation']);
+            } else {
+              this.toast.error("An error occured while processing your request.", "Error", { positionClass: "toast-botton-right" });
+            }
+          });
+        }
+
+      }
+    })
   }
 }
 

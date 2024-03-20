@@ -88,6 +88,7 @@ import { CmEmergencyComponent } from './widget/cm-emergency/cm-emergency.compone
 import { NetworkReportComponent } from './components/reports/network-report/network-report.component';
 import { SocketFacadeService } from './facade/facade_services/socket-facade.service';
 import { ToastModule } from 'primeng/toast';
+import { PlaylistReportComponent } from './components/reports/playlist-report/playlist-report.component';
 
 @NgModule({
   declarations: [
@@ -141,6 +142,7 @@ import { ToastModule } from 'primeng/toast';
     ListViewComponent,
     CmEmergencyComponent,
     NetworkReportComponent,
+    PlaylistReportComponent,
   ],
   imports: [
     CommonModule,

@@ -43,7 +43,7 @@ export class AddPartyComponent implements OnInit {
       partyCode: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9]*$")]],
       partyName: ['', [Validators.required, Validators.pattern("^[A-Za-z][A-Za-z ]*$")]],
       description: ['', [Validators.required,Validators.pattern("[A-Za-z][A-Za-z ]*$")]],
-      contactNumber: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+      contactNumber: ['', [Validators.required, Validators.pattern("^[0-9]*$"), Validators.maxLength(10),Validators.minLength(10)]],
       address: ['', [Validators.required,Validators.pattern("[A-Za-z0-9][A-Za-z0-9/-: ]*$")]],
       zipCode: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       gstinNumber: ['', [Validators.required, Validators.pattern("^[A-Za-z0-9]*$")]],
@@ -151,5 +151,38 @@ export class AddPartyComponent implements OnInit {
         }
       })
     }
+  }
+
+  ValidateGSTINNumber() {
+    let gstInNo = this.form.controls["gstinNumber"].value;
+    let regex = new RegExp("^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$", "i");
+    let match = regex.test(gstInNo);
+    if (match) {
+        var gstNo = gstInNo;
+        if (gstNo != "" && gstNo != undefined && gstNo != null) {
+          this._facade.validateGSTINNumber(gstNo,this.id).subscribe(
+            (x) => {
+              if (x == 0) {
+                this.toast.error(
+                  "GSTIN Number : " + gstNo + " already in use."
+                );
+                this.form.patchValue({ gstinNumber: ""});
+              } else if (x == 2) {
+                this.toast.error("Something went wrong.");
+              }
+            },
+            (err) => {
+              this.toast.error(
+                "An error occured while handling request, please contact system administrator."
+              );
+            }
+          );
+        }
+    }
+    else {
+      this.toast.error("Invalid value in GSTIN number.");
+      this.form.patchValue({ gstinNumber: ""});
+    }
+
   }
 }

@@ -80,7 +80,7 @@
                             <div class="mb-3 col">
                                 <label class="form-label">GSTIN Number*</label>
                                 <input type="text" class="form-control form-control-sm" placeholder="GSTIN Number"
-                                    id='gstinNumber' formControlName="gstinNumber" maxlength="15"
+                                    id='gstinNumber' formControlName="gstinNumber" maxlength="15" (focusout)="ValidateGSTINNumber()"
                                     [ngClass]="{ 'is-invalid': f['gstinNumber'].touched && f['gstinNumber'].errors, 'is-valid': f['gstinNumber'].valid }"  />
                                 <div *ngIf="f['gstinNumber'].touched && f['gstinNumber'].errors" class="invalid-feedback">
                                     <div>{{getErrorMessage('gstinNumber','GSTIN Number',true,"Invalid data available in GSTIN Number")}}

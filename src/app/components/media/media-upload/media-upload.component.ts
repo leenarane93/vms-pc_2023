@@ -126,21 +126,24 @@ export class MediaUploadComponent implements OnInit {
   Validations() {
     let res = true;
     if (this.active == 1) {
-      if (this.selectedFiles.length > 0) {
-        for (var i = 0; i < this.selectedFiles.length; i++) {
-          if (this.selectedFiles[i].type.includes('image') || this.selectedFiles[i].type.includes('video')) {
+      if(this.selectedFiles != undefined) {
 
+        if (this.selectedFiles.length > 0) {
+          for (var i = 0; i < this.selectedFiles.length; i++) {
+            if (this.selectedFiles[i].type.includes('image') || this.selectedFiles[i].type.includes('video')) {
+  
+            }
+            else {
+              res = false;
+              break;
+            }
           }
-          else {
-            res = false;
-            break;
+          if (res == false) {
+            this.toast.error("Only image/video files are allowed.", "Error", { positionClass: "toast-bottom-right" });
+            return res;
           }
+  
         }
-        if (res == false) {
-          this.toast.error("Only image/video files are allowed.", "Error", { positionClass: "toast-bottom-right" });
-          return res;
-        }
-
       }
       else {
         this.toast.error("Files not selected", "Error", { positionClass: "toast-bottom-right" });
@@ -150,22 +153,25 @@ export class MediaUploadComponent implements OnInit {
     return res;
   }
   AddMediaUpload() {
-    var formData = new FormData();
-    formData.append("uploadsetid", this.uploadSetId.toString());
-    formData.append("userCode", this.global.UserCode);
-    let fileList = this.files;
-    for (var i = 0; i < fileList.length; i++) {
-      formData.append("files.files", fileList[i]);
+    if(this.files.length > 0) {
+      var formData = new FormData();
+      formData.append("uploadsetid", this.uploadSetId.toString());
+      formData.append("userCode", this.global.UserCode);
+      let fileList = this.files;
+      for (var i = 0; i < fileList.length; i++) {
+        formData.append("files.files", fileList[i]);
+      }
+      this._mediaFacade.uploadMedia(formData).subscribe(res => {
+        if (res != 0 || res != undefined) {
+          this.toast.success("Saved Successfully");
+          this.Reset(1);
+        }
+        else {
+          this.toast.error("Something went wrong", "Error", { positionClass: "toast-bottom-right" });
+        }
+      })
     }
-    this._mediaFacade.uploadMedia(formData).subscribe(res => {
-      if (res != 0 || res != undefined) {
-        this.toast.success("Saved Successfully");
-        this.Reset(1);
-      }
-      else {
-        this.toast.error("Something went wrong", "Error", { positionClass: "toast-bottom-right" });
-      }
-    })
+    
   }
   RemoveFile(idx: number) {
     this.selectedFiles.slice(idx, 1);
@@ -220,7 +226,7 @@ export class MediaUploadComponent implements OnInit {
     this._request.startId = this.startId;
     this._request.searchItem = this.searchText;
 
-    this._mediaFacade.getMediaUploadDetails(this._request).subscribe(res => {
+    this._mediaFacade.getMediaUpload(this._request,3).subscribe(res => {
       if (res != null && res != undefined) {
         res.data.forEach((ele: any) => {
           if (ele.status == 0) {

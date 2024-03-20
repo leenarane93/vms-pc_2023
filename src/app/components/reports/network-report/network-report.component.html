@@ -38,17 +38,23 @@
         </div>
         <div class="row text-right">
             <div class="col-md-12">
-                <button class="btn btn-primary" (click)="ActionSubmit()">
+                <button class="btn btn-primary" (click)="ActionSubmit(0)">
                     Submit
+                </button>
+                <button *ngIf="listOfData != undefined" class="btn btn-secondary" (click)="ActionSubmit(1)">
+                    PDF
+                </button>
+                <button *ngIf="listOfData != undefined" class="btn btn-secondary" (click)="ActionSubmit(2)">
+                    Excel
                 </button>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
+        <div class="row" *ngIf="listOfData != undefined">
+            <div class="col-md-12" *ngIf="listOfData.length > 0">
                 <app-cm-table [headArr]="headerArr" [gridArr]="listOfData" [totalRecords]="totalRecords"
-                [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)"
+                [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)" 
                 [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)"
-                fieldName="id" (search)="onPageSearch($event)"></app-cm-table>
+                fieldName="id" (search)="onPageSearch($event)" [isSearchBox]="false"></app-cm-table>
             </div>
         </div>
     </div>

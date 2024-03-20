@@ -18,32 +18,36 @@ export class PlaylistService {
   updatePlaylistMaster(data: any) {
     return this._httpService._postMethod(data, 'media_api/api/PlaylistMaster/UpdatePlaylistMaster');
   }
-  getAllMediaDetails(){
+  getAllMediaDetails() {
     return this._httpService._getMethod("Media_API/api/MediaMaster/GetAllMediaDetailsForBlocks");
   }
-  getAllTextDetails(){
+  getAllTextDetails() {
     return this._httpService._getMethod("Media_API/api/MediaMaster/GetAllTextDetails");
   }
-  GetVideoDurationFromAPI(path:any) {
-    return this._httpService._postMethod(path,"User_API/api/User/GetMediaDurationFromUser");
+  GetVideoDurationFromAPI(path: any) {
+    return this._httpService._postMethod(path, "User_API/api/User/GetMediaDurationFromUser");
   }
-  addPlaylistMedia(data: any,type : number) {
-    return this._httpService._postMethod(data, 'Media_API/api/PlaylistMedia/PostPlaylistMedia?type='+type);
+  addPlaylistMedia(data: any, type: number) {
+    return this._httpService._postMethod(data, 'Media_API/api/PlaylistMedia/PostPlaylistMedia?type=' + type);
   }
-  AddBlockDetails(body:any){
-    return this._httpService._postMethod(body,"Media_API/api/BlockDetails/AddBlockDetails");
+  AddBlockDetails(body: any) {
+    return this._httpService._postMethod(body, "Media_API/api/BlockDetails/AddBlockDetails");
   }
-  GetBlockDetailsByPlid(plid:number) {
-    return this._httpService._getMethod("media_api/api/BlockDetails/GetBlockDetailsByPlid?plid="+plid);
+  GetBlockDetailsByPlid(plid: number) {
+    return this._httpService._getMethod("media_api/api/BlockDetails/GetBlockDetailsByPlid?plid=" + plid);
   }
-  GetSelectedMediaData(plid:number){
+  GetSelectedMediaData(plid: number) {
     return this._httpService._getMethod("Media_API/api/MediaMaster/GetMediaByPl?plid=" + plid);
   }
-  GetSelectedTextData(plid:any) {
+  GetSelectedTextData(plid: any) {
     return this._httpService._getMethod("Media_API/api/MediaMaster/GetTextMediaByPl?plid=" + plid);
   }
 
-  GetPlBlData(plid:number){
+  GetPlBlData(plid: number) {
     return this._httpService._getMethod("media_api/api/PlaylistMedia/GetPlaylistMediaByPlid?plid=" + plid);
+  }
+
+  ValidatePlaylistName(plName: string) {
+    return this._httpService._getMethod("media_api/api/PlaylistMaster/ValidatePlaylistName?plName=" + plName);
   }
 }

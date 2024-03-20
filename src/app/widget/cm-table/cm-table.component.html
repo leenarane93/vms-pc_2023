@@ -1,5 +1,5 @@
 <div class="text-center w-100">
-  <input class="form-control col-8 float-right mt-2 mb-2" type="text" [(ngModel)]="searchText" (input)="Search()"
+  <input class="form-control col-8 float-right mt-2 mb-2" *ngIf="isSearchBox" type="text" [(ngModel)]="searchText" (input)="Search()"
     placeholder="Search Here" />
   <table class="table table-striped table-bordered table-sm row-border hover" id="datatableexample">
     <thead class="table-dark">
@@ -10,7 +10,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let item of gridArr;let sr=index" (click)="ShowForm(item)">
-        <td title="Click to View/Edit/Remove">{{sr+1}}</td>
+        <td>{{sr+1}}</td>
         <td *ngFor="let head of headArr">
           <span *ngIf="head.FieldName != 'isActive' && head.FieldName != 'actions' && head.FieldName != 'statusText' && head.type != 'datetime'" >{{item[head.FieldName]}}</span>
           <span *ngIf="head.FieldName != 'isActive' && head.FieldName != 'actions' && head.FieldName != 'statusText' && head.type == 'datetime'" >{{item[head.FieldName] | date:'dd-MM-YYYY HH:mm:ss'}}</span>
@@ -21,7 +21,7 @@
             <input  class="form-check-input" (change)="Checked($event,item)"
             type="checkbox" id="defaultCheck1">
           </span>
-          <span *ngIf="head.FieldName == 'actions' && btnArray.length > 0"><button *ngFor="let btn of btnArray" tooltip="Click to change" placement="top" delay="500" type="button" class="btn btn-inverse-primary btn-sm" (click)="GoToBtnAction(btn,item)">
+          <span *ngIf="head.FieldName == 'actions' && btnArray.length > 0"><button *ngFor="let btn of btnArray" type="button" class="btn btn-inverse-primary btn-sm" (click)="GoToBtnAction(btn,item)">
             <i [class]="btn.icon"></i>
           </button></span>
         </td>

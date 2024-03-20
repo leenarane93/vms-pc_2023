@@ -99,4 +99,7 @@ export class MediaFacadeService {
   GetMediaBlockWise(plId:number) {
     return this._plAudit.GetMediaByBlockWise(plId);
   }
+  ValidatePlaylistName(plName:string) {
+    return this._playlistService.ValidatePlaylistName(plName);
+  }
 }

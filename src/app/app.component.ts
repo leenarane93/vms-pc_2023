@@ -47,24 +47,24 @@ export class AppComponent implements OnInit {
     //this._facadeService.getConfigDetails();
 
 
-    this._hubConnecton = new HubConnectionBuilder().withUrl(environment.SSE_Url).build();
-    this._hubConnecton
-      .start()
-      .then(() => console.log('Connection started!'))
-      .catch(err => console.log('Error while establishing connection :('));
+    // this._hubConnecton = new HubConnectionBuilder().withUrl(environment.SSE_Url).build();
+    // this._hubConnecton
+    //   .start()
+    //   .then(() => console.log('Connection started!'))
+    //   .catch(err => console.log('Error while establishing connection :('));
 
-    this._hubConnecton.on('BroadcastMessage', (type: string, payload: string) => {
-      //this.messages.push({ severity: type, summary: payload });
-      console.log("Type : "+type + " ----- Message : "+payload);
-      if(type == "success") 
-        this._toast.success(payload,"Success");
-      else if(type == "error")
-        this._toast.error(payload,"Error");
-      else if(type == "warning")
-        this._toast.warning(payload,"Warning");
-      else if(type == "notify")
-        this._toast.info(payload,"Info");
-    });
+    // this._hubConnecton.on('BroadcastMessage', (type: string, payload: string) => {
+    //   //this.messages.push({ severity: type, summary: payload });
+    //   console.log("Type : "+type + " ----- Message : "+payload);
+    //   if(type == "success") 
+    //     this._toast.success(payload,"Success");
+    //   else if(type == "error")
+    //     this._toast.error(payload,"Error");
+    //   else if(type == "warning")
+    //     this._toast.warning(payload,"Warning");
+    //   else if(type == "notify")
+    //     this._toast.info(payload,"Info");
+    // });
   }
 
 }

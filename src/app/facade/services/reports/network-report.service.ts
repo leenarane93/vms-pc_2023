@@ -11,4 +11,8 @@ export class NetworkReportService {
   getNetworkDetailsRpt(_data:any){
     return this._httpService._postMethod(_data,"Reports_API/api/report/getnetworkReport");
   }
+  expNetworkDetailsRpt(_data:any){
+    return this._httpService._postMethod(_data,"Reports_API/api/report/getnetworkReportExport");
+  }
+  
 }

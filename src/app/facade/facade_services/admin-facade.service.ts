@@ -79,7 +79,11 @@ export class AdminFacadeService {
     return this._adminService.mediaClearance(_data);
   }
 
-  getPlaylistMasterData(data:any) {
-    return this._plService.getPlaylistData(data);
+  getPlaylistMasterData(data:any,type:number) {
+    return this._plService.getPlaylistData(data,type);
+  }
+
+  validateGSTINNumber(number:any,id:number) {
+    return this._adminService.ValidateGSTINNumber(number,id);
   }
 }

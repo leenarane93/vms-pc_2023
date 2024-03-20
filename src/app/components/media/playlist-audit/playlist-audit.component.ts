@@ -20,7 +20,7 @@ import { CmMdAuditComponent } from 'src/app/widget/cm-md-audit/cm-md-audit.compo
 export class PlaylistAuditComponent implements OnInit {
   searchText!: string;
   page: any;
-  tabno: number;
+  tabno: number =0;
   listOfPlaylist: any;
   listOfPlaylistPending: any;
   listOfPlaylistApproved: any;
@@ -56,7 +56,7 @@ export class PlaylistAuditComponent implements OnInit {
     this.global.CurrentPage = "Playlist Audit";
   }
   ngOnInit(): void {
-    this.tabno = 1;
+    this.tabno = 0;
     this.getPlaylistData();
   }
 
@@ -65,7 +65,7 @@ export class PlaylistAuditComponent implements OnInit {
     this._request.pageSize = this.recordPerPage;
     this._request.startId = this.startId;
     this._request.searchItem = this.searchText;
-    this.adminFacade.getPlaylistMasterData(this._request).subscribe(res => {
+    this.adminFacade.getPlaylistMasterData(this._request, this.tabno).subscribe(res => {
       if (res != undefined && res != null) {
         this.listOfPlaylist = res.data;
         this.listOfPlaylist.forEach((element: any) => {
@@ -87,7 +87,12 @@ export class PlaylistAuditComponent implements OnInit {
         else
           this.totalRecords = res.totalRecords;
         this.totalPages = this.totalRecords / this.pager;
-        this.getPlaylistByStatus(this.tabno);
+        if (this.tabno == 0)
+          this.getPlaylistByStatus(1);
+        else if (this.tabno == 1)
+          this.getPlaylistByStatus(3);
+        else if (this.tabno == 2)
+          this.getPlaylistByStatus(4);
       }
     })
   }

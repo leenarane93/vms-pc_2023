@@ -11,4 +11,7 @@ export class ReportFacadeService {
   GetNetworkDetailsRpt(_data:any){
     return this._network.getNetworkDetailsRpt(_data);
   }
+  ExpNetworkDetailsRpt(_data:any){
+    return this._network.expNetworkDetailsRpt(_data);
+  }
 }

@@ -25,6 +25,7 @@ export class HttpService {
       this._sessionService._setSessionValue("config_data",this._configData$);
       this._api_url = _config.api_url;
       this._sessionService._setSessionValue("swagger_url",_config.swaggerUrl);
+      this._sessionService.setNetworkReportXlsPath(_config.networkReportPath);
     })
   }
 

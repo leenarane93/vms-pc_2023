@@ -13,7 +13,7 @@
                     </div>
 
                     <tabset #tabset>
-                        <tab heading="Pending" (selectTab)="OnTabChange(1)">
+                        <tab heading="Pending" (selectTab)="OnTabChange(0)">
                             <app-cm-table [headArr]="headerArr" [gridArr]="listOfPlaylistPending"
                                 [totalRecords]="totalRecords" [totalPages]="totalPages" [perPage]="recordPerPage"
                                 (pager)="onPager($event)" [btnArray]="btnArray" (btnAction)="ButtonAction($event)"
@@ -22,7 +22,7 @@
                                 (searchWithId)="SearchWithId($event)"></app-cm-table>
                         </tab>
 
-                        <tab heading="Approved" (selectTab)="OnTabChange(3)">
+                        <tab heading="Approved" (selectTab)="OnTabChange(1)">
                             <app-cm-table [headArr]="headerArr" [gridArr]="listOfPlaylistApproved"
                                 [totalRecords]="totalRecords" [totalPages]="totalPages" [perPage]="recordPerPage"
                                 (pager)="onPager($event)" [btnArray]="btnArray" (btnAction)="ButtonAction($event)"
@@ -31,7 +31,7 @@
                                 (searchWithId)="SearchWithId($event)"></app-cm-table>
                         </tab>
 
-                        <tab heading="Rejected" (selectTab)="OnTabChange(4)">
+                        <tab heading="Rejected" (selectTab)="OnTabChange(2)">
                             <app-cm-table [headArr]="headerArr" [gridArr]="listOfPlaylistRejected"
                                 [totalRecords]="totalRecords" [totalPages]="totalPages" [perPage]="recordPerPage"
                                 (pager)="onPager($event)" [btnArray]="btnArray" (btnAction)="ButtonAction($event)"

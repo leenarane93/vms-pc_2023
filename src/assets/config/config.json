@@ -1,6 +1,7 @@
     {
         "api_url": "https://172.19.32.161:442/",
         "swagger_url": "https://172.19.32.161:442/user_api/swagger",
+        "networkReportPath" : "https://172.19.32.161:442/MediaLists/",
         "config_unit": [
             {
                 "key": "admin",

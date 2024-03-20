@@ -24,7 +24,7 @@ export class PlaylistCreationComponent {
     { "Head": "Height", "FieldName": "height", "type": "string" },
     { "Head": "Width", "FieldName": "width", "type": "string" },
     { "Head": "Uploaded By", "FieldName": "createdBy", "type": "string" },
-    { "Head": "Audited By", "FieldName": "auditedBy", "type": "string" },
+    { "Head": "Audited By", "FieldName": "modifiedBy", "type": "string" },
     { "Head": "Status", "FieldName": "isActive", "type": "boolean" },
     { "Head": "Actions", "FieldName": "actions", "type": "button" }
   ];
@@ -64,7 +64,7 @@ export class PlaylistCreationComponent {
     this._request.pageSize = this.recordPerPage;
     this._request.startId = this.startId;
     this._request.searchItem = this.searchText;
-    this.adminFacade.getPlaylistMasterData(this._request).subscribe(data => {
+    this.adminFacade.getPlaylistMasterData(this._request,4).subscribe(data => {
       if (data != null || data != undefined) {
         this.listOfPlaylist = data.data;
         var _length = data.totalRecords / this.recordPerPage;
@@ -121,7 +121,7 @@ export class PlaylistCreationComponent {
   ButtonAction(actiondata: any) {
     if (actiondata.action == 'view') {
       this._commonFacade.setSession("playlistData", JSON.stringify(actiondata.data));
-      this._router.navigate(['medias/playlist-configure'],{queryParams:{ isCopy: false }});
+      this._router.navigate(['medias/playlist-configure'],{queryParams:{ isCopy: false, status: actiondata.data.status, plid:actiondata.data.plid }});
     }
     else if (actiondata.action == 'remove') {
       this.DeletePlaylist(actiondata.data);
@@ -151,7 +151,7 @@ export class PlaylistCreationComponent {
 
   CopyPlaylist(data: any) {
     this._commonFacade.setSession("playlistData", JSON.stringify(data));
-    this._router.navigate(['medias/playlist-configure'],{queryParams:{ isCopy: true }});
+    this._router.navigate(['medias/playlist-configure'],{queryParams:{ isCopy: true, status: data.status, plid:data.plid }});
   }
 
 }
