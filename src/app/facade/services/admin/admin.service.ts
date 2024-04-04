@@ -95,4 +95,12 @@ export class AdminService {
   ValidateGSTINNumber(number: any, id: number) {
     return this._httpService._getMethod('Administration_API/api/PartyMaster/ValidateGSTINNumber?gstno=' + number + '&id=' + id);
   }
+
+  ValidateVMSID(vmsId: string, id: number) {
+    return this._httpService._getMethod('Administration_API/api/VMSMaster/ValidateVMSID?vmsid=' + vmsId + '&id=' + id);
+  }
+
+  ValidateIPAddress(ipAdd: string, id: number) {
+    return this._httpService._getMethod('Administration_API/api/VMSMaster/ValidateIPAddress?ipAdd=' + ipAdd + '&id=' + id);
+  }
 }

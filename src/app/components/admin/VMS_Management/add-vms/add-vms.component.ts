@@ -235,6 +235,30 @@ export class AddVmsComponent implements OnInit {
     this.router.navigate(['masters/vms-master']);
   }
 
+  ValidateVMSID(){
+    let vmsid = this.form.controls["vmsId"].value;
+    if(vmsid != undefined && vmsid !="") {
+      this.adminFacade.ValidateVMSId(vmsid,this.id).subscribe(res =>{ 
+        if(res ==0 ) {
+          this.form.patchValue({ vmsId: ""});
+          this.toaster.error("VMSID already in use.");
+        }
+      })
+    }
+  }
+
+  ValidateIPAddress(){
+    let ipadd = this.form.controls["ipAddress"].value;
+    if(ipadd != undefined && ipadd !="") {
+      this.adminFacade.ValidateIPAddress(ipadd,this.id).subscribe(res =>{ 
+        if(res ==0 ) {
+          this.form.patchValue({ ipAddress: ""});
+          this.toaster.error("IP Address already in use.");
+        }
+      })
+    }
+  }
+
 
   
 }

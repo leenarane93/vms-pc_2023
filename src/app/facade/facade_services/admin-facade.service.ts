@@ -86,4 +86,12 @@ export class AdminFacadeService {
   validateGSTINNumber(number:any,id:number) {
     return this._adminService.ValidateGSTINNumber(number,id);
   }
+  
+  ValidateVMSId(vmsid:string, id :number) {
+    return this._adminService.ValidateVMSID(vmsid,id);
+  }
+
+  ValidateIPAddress(ipAdd:string, id :number) {
+    return this._adminService.ValidateIPAddress(ipAdd,id);
+  }
 }

@@ -1,6 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { DataTableDirective } from 'angular-datatables';
 import { ToastrService } from 'ngx-toastr';
 import { PublishFacadeService } from 'src/app/facade/facade_services/publish-facade.service';
@@ -32,6 +33,7 @@ export class PublishStatusComponent implements OnInit {
     private global: Globals,
     private publish: PublishFacadeService,
     private _toast: ToastrService,
+    private router:Router,
     private chatService: SocketFacadeService
   ) {
     this.global.CurrentPage = "Publish Status";
@@ -71,7 +73,7 @@ export class PublishStatusComponent implements OnInit {
           ele.toTime = _toDay.padStart(2, '0') + "-" + _toMonth.padStart(2, '0') + "-" + _toYear + " " + _toHrs.padStart(2, '0') + ":" + _toMins.padStart(2, '0') + ":" + _toSecs.padStart(2, '0');
           if (ele.status == 0) {
             this.dtCreatedPublish.push(ele);
-          } else if (ele.status == 1) {
+          } else if (ele.status == 1 || ele.status == 0 ) {
             this.dtSendingPublish.push(ele);
           } else if (ele.status == 2) {
             this.dtRunningPublish.push(ele);
@@ -83,7 +85,9 @@ export class PublishStatusComponent implements OnInit {
   ReloadPublishStatus() {
     this.GetPublishStatusData();
   }
-
+  ReloadPublishOps() {
+    this.router.navigate(['publish/publish-operation']);
+  }
   RemovePublish(data: any, type: number) {
     if (data != undefined) {
       let _request = {

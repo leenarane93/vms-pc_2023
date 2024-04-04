@@ -1,5 +1,10 @@
-<div class="container" style="padding-top: 50px;">
-    <div class="card" style="padding-top: 15px;">
+<div class="p-4">
+    <div class="row">
+    <div class="col-xl-12 col-md-12 grid-margin">
+    
+        <div class="card">
+           <div class="card-body">
+   
         <div class="row">
             <div class="col-md-3">
                 <cm-multiselect-auto-complt [inputData]="_inputVmsData" [label]="label1"
@@ -14,9 +19,10 @@
                     <option value="2">Offline</option>
                 </select>
             </div>
-            <div class="col-md-6">
-                <div class="input-group col-6 float-left">
-                    <label>From Date</label>
+            <div class="col-md-3">
+                <label>From Date</label>
+                <div class="input-group">
+                   
                     <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
                         [(ngModel)]="modelFromDate" [minDate]="minDate" ngbDatepicker
                         #d1="ngbDatepicker" />
@@ -24,9 +30,11 @@
                         (click)="d1.toggle()" type="button">
                         <i class="fa fa-calendar"></i></button>
                 </div>
-                
-                <div class="input-group col-6 float-left">
+                </div>
+                <div class="col-md-3">
                     <label>To Date</label>
+                <div class="input-group">
+                  
                     <input class="form-control" placeholder="yyyy-mm-dd" name="dp2"
                         [(ngModel)]="modelToDate" [minDate]="minDate" ngbDatepicker
                         #d2="ngbDatepicker" />
@@ -37,15 +45,15 @@
             </div>
         </div>
         <div class="row text-right">
-            <div class="col-md-12">
-                <button class="btn btn-primary" (click)="ActionSubmit(0)">
+            <div class="col-md-12 mb-1">
+                <button class="btn btn-primary mr-1" (click)="ActionSubmit(0)">
                     Submit
                 </button>
-                <button *ngIf="listOfData != undefined" class="btn btn-secondary" (click)="ActionSubmit(1)">
-                    PDF
+                <button *ngIf="listOfData != undefined" class="btn btn-danger mr-1" (click)="ActionSubmit(1)">
+                  <i class="fa fa-file-pdf-o"></i>  PDF
                 </button>
-                <button *ngIf="listOfData != undefined" class="btn btn-secondary" (click)="ActionSubmit(2)">
-                    Excel
+                <button *ngIf="listOfData != undefined" class="btn btn-success" (click)="ActionSubmit(2)">
+                    <i class="fa fa-file-excel-o"></i> Excel
                 </button>
             </div>
         </div>
@@ -58,4 +66,7 @@
             </div>
         </div>
     </div>
+</div>
+</div>
+</div>
 </div>

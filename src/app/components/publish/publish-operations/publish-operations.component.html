@@ -111,11 +111,10 @@
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
-                                            <div formArrayName="items"
-                                                *ngFor="let item of form.get('items').controls; let i = index;">
-                                                <div [formGroupName]="i">
-                                                    <tbody>
-                                                        <tr>
+                                           
+                                                    <tbody formArrayName="items"
+                                                    *ngFor="let item of form.get('items').controls; let i = index;">
+                                                        <tr [formGroupName]="i">
                                                             <td class="text-center">
                                                                 <input type="text" [disabled]="true"
                                                                     formControlName="playlistName" class="form-control"
@@ -151,23 +150,21 @@
                                                             </td>
                                                             <td>
                                                                 <div class="col-md-2 text-center">
-                                                                    <button class="btn btn-danger" (click)="RemovePlaylist(selectedPlaylist[i])">
-                                                                        Delete
+                                                                    <button class="btn btn-danger btn-rounded" (click)="RemovePlaylist(selectedPlaylist[i])">
+                                                                        <i class="fa fa-trash"></i>
                                                                     </button>
                                                                 </div>
                                                             </td>
                                                         </tr>
                                                     </tbody>
-                                                </div>
-                                            </div>
+                                               
                                         </table>
                                         <div class="row">
-                                            <div class="col-md-10 text-right">
-                                                <button class="btn btn-primary" (click)="StepPrev(2)">
-                                                    Add Playlist
+                                            <div class="col-md-12 text-right">
+                                                <button class="btn btn-primary mr-1" (click)="StepPrev(2)">
+                                                   <i class="fa fa-plus-circle"></i> Add Playlist
                                                 </button>
-                                            </div>
-                                            <div class="col-md-2 text-center">
+                                            
                                                 <button class="btn btn-primary" (click)="ValidateAndSubmit()">
                                                     Submit
                                                 </button>

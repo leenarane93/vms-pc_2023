@@ -70,6 +70,16 @@ export class CmLeafletComponent implements AfterViewInit {
 	isAddFieldTask!: boolean;
 	isSave!: boolean;
 	@Output() markerCoords = new EventEmitter<any[]>();
+	markerIcon = {
+		icon: L.icon({
+		  iconSize: [25, 41],
+		  iconAnchor: [10, 41],
+		  popupAnchor: [2, -40],
+		  // specify the path here
+		  iconUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png",
+		  shadowUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-shadow.png"
+		})
+	  };
 	constructor(private adminFacade: AdminFacadeService,
 		private toast: ToastrService,
 		private dashboardFacade: DashboardFacadeService,
@@ -88,6 +98,10 @@ export class CmLeafletComponent implements AfterViewInit {
 			this.zoom = zooms.prmvalue;
 			//this.InItMap();
 			this.CheckCoordinates();
+			this.map.on("click", (e:any) => {
+				console.log(e.latlng); // get the coordinates
+				L.marker([e.latlng.lat, e.latlng.lng], this.markerIcon).addTo(this.map); // add the marker onclick
+			  });
 		});
 	}
 	CheckCoordinates() {
@@ -140,6 +154,28 @@ export class CmLeafletComponent implements AfterViewInit {
 				}
 			})
 		}
+		else if(this.type == "vms") {
+			if (this.zoneId != 0) {
+				this.adminFacade.getZoneCoordinates(this.zoneId).subscribe(res => {
+					let cordsArr: any[] = [];
+					res.forEach((ele: any) => {
+						let lat = Number(ele.latitude);
+						let long = Number(ele.longitude);
+						let cords = [lat, long];
+						cordsArr.push(cords);
+					});
+
+					this.polygon = [{ "type": "Polygon", "coordinates": [cordsArr] }];
+					this.InItMap(this.type);
+				});
+			}
+			else
+				this.InItMap(this.type);
+		}
+	}
+
+	getClickCoords(e:any) {
+		
 	}
 
 	getVMSStatusData(filters?:any) {
@@ -300,7 +336,7 @@ export class CmLeafletComponent implements AfterViewInit {
 				layer = e.layer;
 
 			if (type === 'marker') {
-				layer.bindPopup('A popup!');
+				if(this.type == "vms")
 				console.log(layer.getLatLng());
 			}
 			else {

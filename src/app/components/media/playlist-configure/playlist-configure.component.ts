@@ -226,6 +226,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
           this.ValidatePlaylistName(_master);
         }
         if (this.isCopy == true) {
+          this.ValidatePlaylistName(_master);
           this.GetplBlData();
         }
         else
@@ -914,7 +915,10 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
               this.toast.success("Saved Successfully");
               this.form.reset();
               this.plid = res;
-              this.stepper.to(4);
+              if(this.isCopy == true)
+                this.stepper.to(4);
+              // else 
+              //   this.stepper.next();
               //this.router.navigate(['medias/playlist-creation']);
             } else {
               this.toast.error("An error occured while processing your request.", "Error", { positionClass: "toast-botton-right" });

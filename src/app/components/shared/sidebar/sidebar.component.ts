@@ -1,3 +1,4 @@
+import * as $ from 'jquery';
 import { Component } from '@angular/core';
 import { UserFacadeService } from 'src/app/facade/facade_services/user-facade.service';
 import { User } from 'src/app/models/response/User';
@@ -17,12 +18,33 @@ export class SidebarComponent {
   menusVM: MenusVM[] = [];
   openSidebar: boolean = true;
   isMenuOpen: boolean = false;
+  isShow: boolean = false;
   isCollapsed: boolean = false;
   element: any;
+  index:any;
+  showMenu:any;
+  ClickedShow:any;
+  ClickedHide:any;
+  HighlightRow:number;
+  currentState = { show: false} ;
   constructor(private _facadeService: UserFacadeService,
     private _commonFacade: CommonFacadeService) {
     this.user = this._facadeService.user;
+
+    this.ClickedShow = function(index :any){
+      this.HighlightRow = index;
   }
+  
+ /*  this.ClickedShow= function(index :any){ 
+    this.isShow = !this.isShow; 
+    if (this.isShow) { 
+      this.HighlightRow = index; 
+    } else { 
+      this.HighlightRow = -1;
+    } 
+}  */
+  }
+  
   menuSidebar = [
     {
       link_name: "My View",
@@ -182,7 +204,7 @@ export class SidebarComponent {
         });
       }
     });
-
+   
     var body = $("body");
     var sidebar = $('.sidebar');
     jQuery(function () {
@@ -214,6 +236,7 @@ export class SidebarComponent {
         addActiveClass($this);
       })
       $('.nav-link').on('click', function () {
+        console.log('navlink clicked');
         let $div = $(this).next('div').toggleClass('show');
         $('div').not($div).removeClass('show');
         $(this).attr('aria-expanded', 'true');
@@ -259,7 +282,27 @@ export class SidebarComponent {
     this.isMenuOpen = !this.isMenuOpen;
 
   }
-
+  
+  // clickItem(index) {
+  //  // this.isShow = !this.isShow ;
+  //  this.isShow = index;
+  //  }
+  // clicked(event) {
+  // this.isShow = !this.isShow;
+  // event.srcElement.classList.remove("rotate");
+  // } 
+  // rotate(event){
+  //   event.srcElement.classList.remove("rotate");
+  //   setTimeout(()=>{
+  //     event.srcElement.classList.add("rotate");
+  //   },0)
+  // }
+  // clicked(itemEl: HTMLElement){ 
+  //   itemEl.classList.add("hover-open");
+  // } 
+  // toggleMenu2(index: number) {
+  //   this.isShow = !this.isShow;
+  // }
   showSubmenu(itemEl: HTMLElement) {
     itemEl.classList.add("hover-open");
   }
