@@ -556,7 +556,7 @@ input:checked + .slider:after
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
-  background-color: #610df9;
+  /* background-color: #610df9; */
   border-radius: 0;
 }
 .modal-header {

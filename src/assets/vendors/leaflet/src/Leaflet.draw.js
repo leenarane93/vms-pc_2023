@@ -97,12 +97,12 @@ L.drawLocal = {
 				text: 'Delete last point'
 			},
 			buttons: {
-				polyline: 'Draw a polyline',
+				//polyline: 'Draw a polyline',
 				polygon: 'Draw a polygon',
-				rectangle: 'Draw a rectangle',
-				circle: 'Draw a circle',
+				//rectangle: 'Draw a rectangle',
+				//circle: 'Draw a circle',
 				marker: 'Draw a marker',
-				circlemarker: 'Draw a circlemarker'
+				//circlemarker: 'Draw a circlemarker'
 			}
 		},
 		handlers: {

@@ -27,6 +27,7 @@ export class AddZoneComponent implements OnInit {
   active: boolean = false;
   id: number = 0;
   btnSaveName!: string;
+  isEdit: boolean = false;
   //   options = {
   //     layers: [
   //         tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
@@ -40,7 +41,7 @@ export class AddZoneComponent implements OnInit {
     private scroller: ViewportScroller,
     private toast: ToastrService,
     private adminFacade: AdminFacadeService,
-    private confirmationDialogService:ConfirmationDialogService,
+    private confirmationDialogService: ConfirmationDialogService,
     private common: CommonFacadeService) {
     this.global.CurrentPage = "Add Zone";
     this.BuildForm();
@@ -103,16 +104,22 @@ export class AddZoneComponent implements OnInit {
           this.id = r;
           //this.toast.success("Saved successfully.");
           //this.clearForm();
+
+          this.form.controls['zoneName'].disable();
+          this.form.controls['description'].disable();
+          this.form.controls['isActive'].disable();
         }
       })
     }
-
   }
 
   FillForm(data: any) {
     if (data != "") {
       this.btnDis = true;
       this.id = data.id;
+      if (this.id != 0) {
+        this.isEdit = true;
+      }
       if (data.isActive == "Active")
         this.active = true;
       else
@@ -169,22 +176,22 @@ export class AddZoneComponent implements OnInit {
   }
   DeleteZone() {
     this.confirmationDialogService.confirm('Please confirm..', 'Do you really want to remove this zone... ?')
-    .then((confirmed) => {if(confirmed == true) this.RemoveZone()})
-    .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
+      .then((confirmed) => { if (confirmed == true) this.RemoveZone() })
+      .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
   }
-  RemoveZone(){
+  RemoveZone() {
     this.AddUpdateZone(1);
   }
 
-  AddUpdateZone(type?:any){
+  AddUpdateZone(type?: any) {
     let _zone = new ZoneMaster();
     if (this.id != 0)
-    _zone.id = this.id;
+      _zone.id = this.id;
     _zone.zoneName = this.form.controls.zoneName.value;
     _zone.description = this.form.controls.description.value;
     _zone.modifiedBy = this.global.UserCode;
-    if(type == 1)
-    _zone.isDeleted = true;
+    if (type == 1)
+      _zone.isDeleted = true;
     if (this.id != 0) {
       this.adminFacade.updateZoneMaster(_zone).subscribe(r => {
         if (r == 0) {

@@ -1,51 +1,34 @@
 import { Injectable } from '@angular/core';
-
-import { io } from "socket.io-client";
-import { Socket } from 'ngx-socket-io';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { environment } from 'src/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class SocketFacadeService {
-    private url = 'http://localhost:3000';
-
-    constructor(  private http:HttpClient) {
-        //this.socket = io(this.url);
-      
-    }
-
-    createEventSource(){
-      const evtSource = new EventSource("https://localhost:7205/subscribeToStream");
-
-      // return new Observable(observer => {
-      //     eventSource.onmessage = event => {
-      //       const messageData: any = JSON.parse(event.data);
-      //       console.log(messageData);
-      //       observer.next(messageData);
-      //   };
-      // });
-      
-      evtSource.onmessage = (e) => {
-        console.log('connection message');
-         console.log(e.data);
-     }
-     evtSource.onerror = (e) => {
-        console.log('connection error');
-         console.log(e);
-         evtSource.close();
-     }
-     evtSource.onopen = (e) => {
-        console.log('connection open');
-         console.log(e);
-     }
-
-     evtSource.addEventListener("hbevent",(res:any)=>{
-      console.log(res);
-    })
-   }
-
-   
-
+  public socket$!: WebSocketSubject<any>;
+  private todoArr: string[] = [];
+  constructor() {
+  }
+  connect() {
+    this.socket$ = webSocket('ws://' + environment.Socket_URL +"/reportEnqConnection"); // Replace with your WebSocket server URL 
+  }
+  disconnect() {
+    this.socket$.complete();
+  }
+  isConnected(): boolean {
+    return (this.socket$ === null ? false : !this.socket$.closed);
+  }
+  onMessage(): Observable<any> {
+    return this.socket$!.asObservable().pipe(
+      map(message => message)
+    );
+  }
+  send(message: any) {
+    this.socket$.next(message);
+  }
+  getTodoArr(): string[] {
+    return this.todoArr;
+  }
 }

@@ -173,13 +173,13 @@
 	background-position: -60px -1px;
 }
 
-.leaflet-draw-toolbar .leaflet-draw-draw-circle {
+/* .leaflet-draw-toolbar .leaflet-draw-draw-circle {
 	background-position: -92px -2px;
 }
 
 .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-circle {
 	background-position: -90px -1px;
-}
+} */
 
 .leaflet-draw-toolbar .leaflet-draw-draw-marker {
 	background-position: -122px -2px;
@@ -189,13 +189,13 @@
 	background-position: -120px -1px;
 }
 
-.leaflet-draw-toolbar .leaflet-draw-draw-circlemarker {
+/* .leaflet-draw-toolbar .leaflet-draw-draw-circlemarker {
 	background-position: -273px -2px;
-}
+} */
 
-.leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-circlemarker {
+/* .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-circlemarker {
 	background-position: -271px -1px;
-}
+} */
 
 /* ================================================================== */
 /* Edit toolbar

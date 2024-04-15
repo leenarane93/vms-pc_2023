@@ -45,7 +45,6 @@ export class PublishStatusComponent implements OnInit {
     // this.chatService.createEventSource().subscribe(res=>{
     //   console.log(res);
     // });
-    this.chatService.createEventSource();
   }
 
   GetPublishStatusData() {

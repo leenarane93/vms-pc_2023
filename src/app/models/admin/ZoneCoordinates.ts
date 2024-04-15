@@ -1,6 +1,6 @@
 export class ZoneCoordinate {
     zoneId: number;
     seqNo : number;
-    latitude: number;
-    longitude: number;
+    latitude: any;
+    longitude: any;
 }

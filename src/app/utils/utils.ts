@@ -29,5 +29,5 @@ export function getErrorMsg(
         return patternMsg;
     }
 
-    return '';
+    return patternMsg;
 }

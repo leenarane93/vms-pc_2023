@@ -377,7 +377,7 @@ export class PublishOperationsComponent implements OnInit {
         let globalToDate = new Date(_pubTime.pubTo);
         if (globalToDate < globalFromDate) {
           this._toast.error("Publish end date should not be greater than from date.");
-          return false;
+          
         }
         this._publish.addPublishDetails(_pubTime).subscribe(res => {
           if (res != null && res != undefined) {
@@ -392,11 +392,9 @@ export class PublishOperationsComponent implements OnInit {
       } else {
         this._toast.error("Playlist time not selected");
       }
-      return true;
     }
     catch (err: any) {
       this._toast.error(err);
-      return false;
     }
 
   }

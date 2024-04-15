@@ -71,7 +71,7 @@
                     </div>
                 </div> -->
                 <div style="height:700px; padding-bottom: 20px;">
-                    <app-cm-leaflet (latLng)="GetLatLong($event)" [zoneId]="this.id" [btnDisabled]="btnDis" type="zone" mapType="vms"></app-cm-leaflet>
+                    <app-cm-leaflet (latLng)="GetLatLong($event)" [zoneId]="this.id" [btnDisabled]="btnDis" [isEdit]="isEdit" type="zone" mapType="zone"></app-cm-leaflet>
                 </div>
             </div>
         

@@ -73,6 +73,10 @@ export class AdminService {
     return this._httpService._postMethod(_data, 'Administration_API/api/Tarrif/GetTarrifs');
   }
 
+  ValidateTarrifCode(trfCode: string) {
+    return this._httpService._getMethod('Administration_API/api/Tarrif/ValidateTarrifCode?tarrifCode=' + trfCode);
+  }
+
   addTarrifMasterData(_data: any) {
     return this._httpService._postMethod(_data, 'Administration_API/api/Tarrif/PostTarrifMaster');
   }

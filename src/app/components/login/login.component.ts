@@ -76,6 +76,7 @@ export class LoginComponent implements OnInit {
         if (res.status == 1) {
           this._commonFacade.setSession("isLoggedIn", true);
           this._commonFacade.setSession("access_token", res.token);
+          this._commonFacade.setSession("userId", res.userId);
           var user = new UserLoggedIn();
           user.LoggedIn = true;
           user.LoggedInUser = res.username;

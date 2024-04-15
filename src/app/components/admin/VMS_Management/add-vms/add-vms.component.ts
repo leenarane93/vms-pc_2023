@@ -177,7 +177,13 @@ export class AddVmsComponent implements OnInit {
   onSubmit() {
     this.AddVmsMaster(0);
   }
-
+  descriptionCheck(){
+    let description = this.form.controls.description.value;
+    if(description.trim() == "") {
+      this.getErrorMessage("description","Description",false,"Invalid data in description");
+      this.form.patchValue({description:""});
+    }
+  }
   AddVmsMaster(type?: any) {
     let _vmsMaster = new VmsMaster();
     if (this.id != 0)

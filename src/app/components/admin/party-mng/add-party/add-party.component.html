@@ -47,10 +47,10 @@
                             <div class="mb-3 col">
                                 <label class="form-label">Contact Number*</label>
                                 <input type="text" formControlName="contactNumber" class="form-control"
-                                placeholder="Contact Number"
+                                placeholder="Contact Number" maxlength="10" 
                                 [ngClass]="{ 'is-invalid': f['contactNumber'].touched && f['contactNumber'].errors, 'is-valid': f['contactNumber'].valid }" />
                                 <div *ngIf="f['contactNumber'].touched && f['contactNumber'].errors" class="invalid-feedback">
-                                    <div>{{getErrorMessage('contactNumber','Contact Number',true,"Invalid data available in Contact Number")}}
+                                    <div>{{getErrorMessage('contactNumber','Contact Number',false,"Invalid data available in Contact Number")}}
                                     </div>
                                 </div>
                             </div>

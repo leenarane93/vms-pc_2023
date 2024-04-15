@@ -8,6 +8,7 @@ import { Globals } from 'src/app/utils/global';
 import { VgApiService } from '@videogular/ngx-videogular/core';
 import { BlData, PlaylistAuditMedias } from 'src/app/models/media/PlAudit';
 import { mediaAudit } from 'src/app/models/media/PlaylistMaster';
+import { environment } from 'src/environment';
 
 @Component({
   selector: 'app-cm-md-audit',
@@ -36,6 +37,7 @@ export class CmMdAuditComponent implements OnInit {
   blocks: any;
   blockWise:any;
   activeIndex = 0;
+  plPreviewSrc : string = "";
   currentVideo = this.videoItems[this.activeIndex];
 
   constructor(private _mediaFacade: MediaFacadeService,
@@ -61,15 +63,16 @@ export class CmMdAuditComponent implements OnInit {
       if (res != null) {
         //console.log(res);
         this.blockWise = res;
-        for (var i = 0; i < blocks.length; i++) {
-          if ((blocks[i].blId = res[i].blId)) {
-            blocks[i].src = res[i].medias[0].mediaPath;
-          }
-          // if ((blocks[i].blId= this.blockWise[i].blId)) {
-          //   this.videoItems.blocks[i].src =
-          //     this.blockWise[i].medias[0].mediaPath;
-          // }
-        }
+        this.plPreviewSrc = environment.PreviewPath + this.data.plMaster.id +"/Final.mp4";
+        // for (var i = 0; i < blocks.length; i++) {
+        //   if ((blocks[i].blId = res[i].blId)) {
+        //     blocks[i].src = res[i].medias[0].mediaPath;
+        //   }
+        //   // if ((blocks[i].blId= this.blockWise[i].blId)) {
+        //   //   this.videoItems.blocks[i].src =
+        //   //     this.blockWise[i].medias[0].mediaPath;
+        //   // }
+        // }
       }
     })
   }

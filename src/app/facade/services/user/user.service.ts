@@ -13,7 +13,9 @@ export class UserService {
   getUsers(_data: any) {
     return this._httpService._postMethod(_data, 'user_api/api/User/GetUserMaster');
   }
-
+  getUserDetails(_data: any) {
+    return this._httpService._getMethod('user_api/api/User/GetUserDetails?id='+_data);
+  }
   addUser(_data: any) {
     return this._httpService._postMethod(_data, 'user_api/api/User/PostUserMaster');
   }

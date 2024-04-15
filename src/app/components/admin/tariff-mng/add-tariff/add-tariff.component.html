@@ -15,7 +15,7 @@
                             <div class="mb-3 col">
                                 <label class="form-label">Tarrif Code*</label>
                                 <input type="text" formControlName="tarrifCode" class="form-control" placeholder="Tarrif Code"
-                                    [ngClass]="{ 'is-invalid': f['tarrifCode'].touched && f['tarrifCode'].errors, 'is-valid': f['tarrifCode'].valid }" />
+                                    [ngClass]="{ 'is-invalid': f['tarrifCode'].touched && f['tarrifCode'].errors, 'is-valid': f['tarrifCode'].valid }" (focusout)="ValidateTarrifCode()" />
                                 <div *ngIf="f['tarrifCode'].touched && f['tarrifCode'].errors" class="invalid-feedback">
                                     <div>{{getErrorMessage('tarrifCode','Tarrif Code',true,"Invalid data available in Tarrif Code")}}
                                     </div>
@@ -32,10 +32,10 @@
                                 </div>
                             </div>
                             <div class="mb-9 col">
-                                <label class="form-label">Unit Of Measurement*</label>
+                                <label class="form-label">Unit Of Measurement*</label> 
                                 <select class="form-control form-control-sm" formControlName="uomName" [(ngModel)] = "selectedUOM"
                                     [ngClass]="{'is-invalid': submitting && f['uomName'].errors}">
-                                    <option value="">Select UOM</option>
+                                    <option value="0" selected>Select UOM</option>
                                     <option value="second">Second Wise</option>
                                     <option value="minute">Minute Wise</option>
                                     <option value="hour">Hourly</option>

@@ -94,4 +94,8 @@ export class AdminFacadeService {
   ValidateIPAddress(ipAdd:string, id :number) {
     return this._adminService.ValidateIPAddress(ipAdd,id);
   }
+
+  ValidateTarrifCode(trfCode:string) {
+    return this._adminService.ValidateTarrifCode(trfCode);
+  }
 }

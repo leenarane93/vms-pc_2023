@@ -127,4 +127,8 @@ export class UserFacadeService {
   updateUser(data: any) {
     return this._userService.updateUser(data);
   }
+
+  getUserDetailsById(_data:any) {
+    return this._userService.getUserDetails(_data);
+  }
 }

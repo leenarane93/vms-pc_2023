@@ -34,7 +34,7 @@
                             <div class="mb-9 col">
                                 <label class="form-label">Description*</label>
                                 <input type="text" formControlName="description" class="form-control"
-                                    placeholder="Description"
+                                    placeholder="Description" (focusout)="descriptionCheck()"
                                     [ngClass]="{ 'is-invalid': f['description'].touched && f['description'].errors, 'is-valid': f['description'].valid }" />
                                 <div *ngIf="f['description'].touched && f['description'].errors"
                                     class="invalid-feedback">

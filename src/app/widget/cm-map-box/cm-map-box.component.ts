@@ -34,6 +34,7 @@ export class CmMapBoxComponent implements OnInit {
     this.activeModal.dismiss();
   }
   GetMarkerData(data:any){
+    console.log(data);
     this.emitService.next(data);
     this.activeModal.dismiss();
   }

@@ -22,7 +22,7 @@ export class AddTariffComponent {
   id: number = 0;
   formItems !: FormArray;
   totalAmt !: number;
-  selectedUOM !:any;
+  selectedUOM: any = "0";
   constructor(private router: Router,
     private global: Globals,
     private formBuilder: FormBuilder,
@@ -30,7 +30,7 @@ export class AddTariffComponent {
     private _common: CommonFacadeService,
     private toast: ToastrService,
     private actRoutes: ActivatedRoute,
-    private confirmationDialogService:ConfirmationDialogService) {
+    private confirmationDialogService: ConfirmationDialogService) {
     this.global.CurrentPage = "Add Tarrif";
     this.BuildForm();
   }
@@ -38,13 +38,14 @@ export class AddTariffComponent {
     this.id = 0;
     let data = this._common.getSession("ModelShow");
     this.FillForm(data == null ? "" : JSON.parse(data));
+    this.selectedUOM = "0";
   }
   get f() { return this.form.controls; }
   BuildForm() {
     this.form = this.formBuilder.group({
       tarrifCode: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9]*$")]],
       tarrifType: ['', [Validators.required, Validators.pattern("^[A-Za-z][A-Za-z ]*$")]],
-      uomName: ['', [Validators.required, Validators.pattern("[A-Za-z]*$")]],
+      uomName: ['0'],
       amount: ['', [Validators.required, Validators.pattern("^[0-9.]*$")]],
       gstPer: ['', [Validators.required, Validators.pattern("[0-9.]*$")]],
       totalAmount: ['', [Validators.required]],
@@ -65,12 +66,12 @@ export class AddTariffComponent {
         this.active = true;
       else
         this.active = false;
-      let uom="";
-      if(data.uomName == "second")
+      let uom = "";
+      if (data.uomName == "second")
         uom = "Second Wise";
-      if(data.uomName == "minute")
+      if (data.uomName == "minute")
         uom = "Minute Wise";
-      if(data.uomName == "hour")
+      if (data.uomName == "hour")
         uom = "Hourly";
       this.selectedUOM = data.uomName;
       this.totalAmt = data.totalAmount;
@@ -103,17 +104,27 @@ export class AddTariffComponent {
   }
   DeleteTarrif() {
     this.confirmationDialogService.confirm('Please confirm..', 'Do you really want to remove this tarrif... ?')
-    .then((confirmed) => {if(confirmed == true) this.RemoveTarrif()})
-    .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
+      .then((confirmed) => { if (confirmed == true) this.RemoveTarrif() })
+      .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
   }
-  RemoveTarrif(){
+  RemoveTarrif() {
     this.AddUpdateTarrif(1);
   }
-
-  AddUpdateTarrif(type?:any){
+  ValidateTarrifCode() {
+    let trfCode = this.form.controls.tarrifCode.value;
+    if(this.id == 0) {
+      this._facade.ValidateTarrifCode(trfCode).subscribe(res => {
+        if (res == 0) {
+          this.toast.error("Tarrif Code already in use.");
+          this.form.patchValue({ tarrifCode: "" });
+        }
+      })
+    }
+  }
+  AddUpdateTarrif(type?: any) {
     let _trfData = new TarrifMaster();
     if (this.id != 0)
-    _trfData.id = this.id;
+      _trfData.id = this.id;
     _trfData.tarrifCode = this.form.controls.tarrifCode.value;
     _trfData.tarrifType = this.form.controls.tarrifType.value;
     _trfData.uomName = this.form.controls.uomName.value;
@@ -122,27 +133,32 @@ export class AddTariffComponent {
     _trfData.totalAmount = this.form.controls.totalAmount.value;
     _trfData.isActive = this.active;
     _trfData.createdBy = this.global.UserCode;
-    if(type == 1)
-      _trfData.isDeleted = true;
-    if (this.id != 0) {
-      this._facade.updateTarrif(_trfData).subscribe(r => {
-        if (r == 0) {
-          this.toast.error("Error occured while saving data");
-        } else {
-          this.toast.success("Updated successfully.");
-          this.clearForm();
-        }
-      })
+    if (_trfData.uomName == "0" && type != 1) {
+      this.toast.error("Please select Unit of measurement");
+    } else {
+      if (type == 1)
+        _trfData.isDeleted = true;
+      if (this.id != 0) {
+        this._facade.updateTarrif(_trfData).subscribe(r => {
+          if (r == 0) {
+            this.toast.error("Error occured while saving data");
+          } else {
+            this.toast.success("Updated successfully.");
+            this.router.navigate(['masters/tarrif-master']);
+          }
+        })
+      }
+      else {
+        this._facade.addTarrif(_trfData).subscribe(r => {
+          if (r == 0) {
+            this.toast.error("Error occured while saving data");
+          } else {
+            this.toast.success("Saved successfully.");
+            this.clearForm();
+          }
+        })
+      }
     }
-    else {
-      this._facade.addTarrif(_trfData).subscribe(r => {
-        if (r == 0) {
-          this.toast.error("Error occured while saving data");
-        } else {
-          this.toast.success("Saved successfully.");
-          this.clearForm();
-        }
-      })
-    }
+
   }
 }
