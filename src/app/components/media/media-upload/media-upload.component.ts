@@ -109,7 +109,10 @@ export class MediaUploadComponent implements OnInit {
     console.log("event::::::", event);
     for (let i = 0; i < files.length; i++) {
       let file = files[i];
-
+      if (file.type.toLocaleLowerCase().includes("video")) {
+        var val = this.ValidateVDOFile(file);
+        console.log(val);
+      }
       //if(!this.isFileSelected(file)){
       if (this.Validations()) {
         //      if(this.isImage(file)) {
@@ -123,15 +126,40 @@ export class MediaUploadComponent implements OnInit {
       //}
     }
   }
+
+  ValidateVDOFile(Vdofile: any) {
+    if (Vdofile.type.toLocaleLowerCase().includes("video")) {
+      const video = document.createElement('video');
+      const reader = new FileReader();
+      var vdoWidth = 0;
+      var vdoHeight = 0;
+      reader.onload = (e: any) => {
+        video.src = e.target.result;
+        video.addEventListener('loadedmetadata', () => {
+          vdoWidth = video.videoWidth;
+          vdoHeight = video.videoHeight;
+          if (vdoWidth != 1920 && vdoHeight != 1080) {
+            this.toast.error("File resolution should be 1920*1080.");
+            this.selectedFiles = [];
+            this.files =[];
+            return false;
+          } else {
+            return true;
+          }
+        });
+      }
+      reader.readAsDataURL(Vdofile);
+    }
+  }
   Validations() {
     let res = true;
     if (this.active == 1) {
-      if(this.selectedFiles != undefined) {
+      if (this.selectedFiles != undefined) {
 
         if (this.selectedFiles.length > 0) {
           for (var i = 0; i < this.selectedFiles.length; i++) {
             if (this.selectedFiles[i].type.includes('image') || this.selectedFiles[i].type.includes('video')) {
-  
+
             }
             else {
               res = false;
@@ -142,7 +170,7 @@ export class MediaUploadComponent implements OnInit {
             this.toast.error("Only image/video files are allowed.", "Error", { positionClass: "toast-bottom-right" });
             return res;
           }
-  
+
         }
       }
       else {
@@ -153,7 +181,7 @@ export class MediaUploadComponent implements OnInit {
     return res;
   }
   AddMediaUpload() {
-    if(this.files.length > 0) {
+    if (this.files.length > 0) {
       var formData = new FormData();
       formData.append("uploadsetid", this.uploadSetId.toString());
       formData.append("userCode", this.global.UserCode);
@@ -171,7 +199,7 @@ export class MediaUploadComponent implements OnInit {
         }
       })
     }
-    
+
   }
   RemoveFile(idx: number) {
     this.selectedFiles.slice(idx, 1);
@@ -180,7 +208,7 @@ export class MediaUploadComponent implements OnInit {
     if (this.Validations() && this.active == 1) {
       this.AddMediaUpload();
     }
-    else if(this.active == 2) {
+    else if (this.active == 2) {
       this.SaveTextData();
     }
   }
@@ -226,7 +254,7 @@ export class MediaUploadComponent implements OnInit {
     this._request.startId = this.startId;
     this._request.searchItem = this.searchText;
 
-    this._mediaFacade.getMediaUpload(this._request,3).subscribe(res => {
+    this._mediaFacade.getMediaUpload(this._request, 3).subscribe(res => {
       if (res != null && res != undefined) {
         res.data.forEach((ele: any) => {
           if (ele.status == 0) {

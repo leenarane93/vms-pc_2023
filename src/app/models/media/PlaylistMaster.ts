@@ -7,6 +7,7 @@ export class PlaylistMaster {
     isActive: boolean;
     isDeleted: boolean;
     createdBy: string;
+    createdDate: string;
     modifiedBy: string;
     remarks: string;
     auditedBy: string;

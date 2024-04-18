@@ -9,6 +9,7 @@ import { VgApiService } from '@videogular/ngx-videogular/core';
 import { BlData, PlaylistAuditMedias } from 'src/app/models/media/PlAudit';
 import { mediaAudit } from 'src/app/models/media/PlaylistMaster';
 import { environment } from 'src/environment';
+import { SessionService } from 'src/app/facade/services/common/session.service';
 
 @Component({
   selector: 'app-cm-md-audit',
@@ -43,7 +44,7 @@ export class CmMdAuditComponent implements OnInit {
   constructor(private _mediaFacade: MediaFacadeService,
     private _toast: ToastrService,
     private modal: NgbModal,
-    private global: Globals) {
+    private global: Globals, private _session:SessionService) {
 
   }
   ngOnInit(): void {
@@ -100,29 +101,35 @@ export class CmMdAuditComponent implements OnInit {
   }
   ViewMedia(row: any) {
     var _data = new mediaAudit();
+    let mediaPath = this._session.getnetworkreportXview();
+    
     if(this.data.mediaType == "Text")  {
+      let strFilePath = mediaPath + row.uploadSetId + "//" + row.fileName;
       _data = {
-        mediaPath: row.fileName,
+        mediaPath: strFilePath,
         mediaType: "Image"
       }
+      this.isImg = true;
+      this.imgSrc = strFilePath;
     } else {
       _data = {
         mediaPath: row.filePath,
         mediaType: row.fileType
       }
+
+      this._mediaFacade.getMediaString(_data).subscribe(res => {
+        if (res != null && res != undefined) {
+          if (row.fileType == "Image") {
+            this.isImg = true;
+            this.imgSrc = res;
+          }
+          else {
+            this.isVdo = true;
+            this.vdoUrl = res;
+          }
+        }
+      })
     }
-    this._mediaFacade.getMediaString(_data).subscribe(res => {
-      if (res != null && res != undefined) {
-        if (row.fileType == "Image" || this.data.mediaType == "Text" ) {
-          this.isImg = true;
-          this.imgSrc = res;
-        }
-        else {
-          this.isVdo = true;
-          this.vdoUrl = res;
-        }
-      }
-    })
   }
   Operation(type: number) {
     if (type == 0)//Rejected

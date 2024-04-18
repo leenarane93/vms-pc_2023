@@ -16,6 +16,7 @@ import { CommonFacadeService } from 'src/app/facade/facade_services/common-facad
 import { BlockDetails } from 'src/app/models/media/BlockDetails';
 import { ConfirmationDialogService } from 'src/app/facade/services/confirmation-dialog.service';
 import { ActivatedRoute } from '@angular/router';
+import { SessionService } from 'src/app/facade/services/common/session.service';
 //import 'rxjs/add/operator/filter';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -138,6 +139,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
     private _media: MediaFacadeService,
     private modalService: NgbModal,
     private _common: CommonFacadeService,
+    private _session:SessionService
   ) { config.seconds = true; config.spinners = false; this.global.CurrentPage = "Playlist Configuration" }
 
   ngAfterViewInit(): void {
@@ -226,6 +228,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
           this.ValidatePlaylistName(_master);
         }
         if (this.isCopy == true) {
+          this.form.patchValue({playlistName:""});
           this.ValidatePlaylistName(_master);
           this.GetplBlData();
         }
@@ -277,6 +280,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
       else {
         if (this.selectedMedia.length > 0) {
           if (this.isCopy == true) {
+            this.form.patchValue({playlistName:""});
             this.selectedMedia.forEach(ele => {
               this.dataSource.push(ele);
             });
@@ -793,8 +797,10 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
   }
 
   ViewMedia(_data: any) {
+    let mediaPath = this._session.getnetworkreportXview();
     if (_data.textContent != undefined && _data.textContent != "") {
-      let _inputData = { "filePath": _data.filePath, "fileName": _data.fileName, modalType: "playlistcreation", mediaType: "playlistcreation", "fileType": _data.fileType, "uploadSetId": _data.uploadSetId };
+      let strFilePath = mediaPath + _data.uploadSetId +"//"+_data.fileName;
+      let _inputData = { "filePath": strFilePath, "fileName": _data.fileName, modalType: "playlistcreation", mediaType: "playlistcreation", "fileType": _data.fileType, "uploadSetId": _data.uploadSetId };
       const modalRef = this.modalService.open(CmMediaModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
       let _reqdata = { "action": "view", urls: [], modalType: "playlistcreation", content: _inputData };
       modalRef.componentInstance.data = _reqdata;
@@ -903,7 +909,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
     let plName = this.form.controls["playlistName"].value;
     this._media.ValidatePlaylistName(plName).subscribe(res => {
       if (res == 1) {
-        this.toast.error("Playlist Name already exists.", "Error", { positionClass: "toast-botton-right" });
+        this.toast.error("Playlist Name already in use.");
         this.form.patchValue({
           playlistName: ""
         });

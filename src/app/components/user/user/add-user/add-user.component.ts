@@ -52,7 +52,7 @@ export class AddUserComponent implements OnInit {
       username: ['', [Validators.required, Validators.pattern("[a-zA-Z0-9]*$")]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
-      roleId: ['', [Validators.required]],
+      roleId: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]],
       mobileNo: ['', [Validators.required, Validators.pattern("[0-9]*$")]],
       emailId: ['', [Validators.required, Validators.email]],
       isActive: [false, [Validators.required]],
@@ -166,6 +166,13 @@ export class AddUserComponent implements OnInit {
           }
         })
       }
+    }
+  }
+  CheckMobileNo() {
+    let _mobile = this.form.controls["mobileNo"].value;
+    if (_mobile.length != 10) {
+      this.toast.error("Please enter valid mobile no.");
+      this.form.patchValue({ mobileNo: "" });
     }
   }
 }

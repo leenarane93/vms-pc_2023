@@ -46,7 +46,7 @@
                         <div class="row">
                             <div class="mb-3 col">
                                 <label class="form-label">Contact Number*</label>
-                                <input type="text" formControlName="contactNumber" class="form-control"
+                                <input type="number" formControlName="contactNumber" class="form-control"
                                 placeholder="Contact Number" maxlength="10" 
                                 [ngClass]="{ 'is-invalid': f['contactNumber'].touched && f['contactNumber'].errors, 'is-valid': f['contactNumber'].valid }" />
                                 <div *ngIf="f['contactNumber'].touched && f['contactNumber'].errors" class="invalid-feedback">

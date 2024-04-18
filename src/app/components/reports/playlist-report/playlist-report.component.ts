@@ -45,7 +45,9 @@ export class PlaylistReportComponent {
     { "Head": "Status", "FieldName": "statuslable", "type": "string" },
     { "Head": "Action", "FieldName": "actions", "type": "button" },
   ];
-  btnArray: any[] = [{ "name": "PDF", "icon": "fa fa-file-pdf-o", "tip": "", "action": "pdf" }, { "name": "Excel", "icon": "fa fa-file-excel-o", "tip": "", "action": "excel" }];
+  btnArray: any[] = [{ "name": "PDF", "icon": "fa fa-file-pdf-o", "tip": "", "action": "pdf" }, 
+  //{ "name": "Excel", "icon": "fa fa-file-excel-o", "tip": "", "action": "excel" }
+];
   xlsReportPath: any;
   constructor(
     private global: Globals,
@@ -217,5 +219,8 @@ export class PlaylistReportComponent {
     let _d = this.listOfData.find((x:any)=>x.id == actiondata.data.id);
     if(_d.status == 0) 
       this._toast.error("Report generation process is not completed. Please wait for some time.","Error",{positionClass:"toast-bottom-right"})
+    else {
+      window.open(_d.rptPath);
+    }
   }
 }

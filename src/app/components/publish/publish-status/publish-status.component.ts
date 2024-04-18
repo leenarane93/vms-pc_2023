@@ -19,6 +19,7 @@ export class PublishStatusComponent implements OnInit {
   dtCreatedPublish: any[] = [];
   dtSendingPublish: any[] = [];
   dtRunningPublish: any[] = [];
+  dtCompletePublish: any[] = [];
   savedItems: any[];
   messageList: any[] = [];
   newMessage: string;
@@ -51,6 +52,7 @@ export class PublishStatusComponent implements OnInit {
     this.dtCreatedPublish = [];
     this.dtSendingPublish = [];
     this.dtRunningPublish = [];
+    this.dtCompletePublish = [];
     this.publish.getPlaylistStatusData().subscribe(res => {
       if (res != null) {
         res.forEach((ele: any) => {
@@ -76,6 +78,8 @@ export class PublishStatusComponent implements OnInit {
             this.dtSendingPublish.push(ele);
           } else if (ele.status == 2) {
             this.dtRunningPublish.push(ele);
+          } else if (ele.status == 3) {
+            this.dtCompletePublish.push(ele);
           }
         });
       }

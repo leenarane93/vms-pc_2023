@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { MediaFacadeService } from 'src/app/facade/facade_services/media-facade.service';
+import { SessionService } from 'src/app/facade/services/common/session.service';
 
 @Component({
   selector: 'app-cm-media-modal',
@@ -20,6 +21,7 @@ export class CmMediaModalComponent implements OnInit {
   type: string = "Media Upload";
   constructor(private _mediaFacade: MediaFacadeService,
     private _toast: ToastrService,
+    private _session: SessionService,
     private modal: NgbModal) {
 
   }
@@ -53,7 +55,7 @@ export class CmMediaModalComponent implements OnInit {
     }
     else if (this.data.modalType == "playlistcreation") {
       this.mediaType = this.data.content.fileType;
-      let plData = { "fileName":this.data.content.fileName,"filePath": this.data.content.filePath, "fileType": this.data.content.fileType }
+      let plData = { "fileName": this.data.content.fileName, "filePath": this.data.content.filePath, "fileType": this.data.content.fileType }
       this.viewData.push(plData);
 
     }
@@ -64,20 +66,31 @@ export class CmMediaModalComponent implements OnInit {
   }
   ViewMedia(filepath: string, type: string) {
     if (this.data.modalType == "mediaupload") {
-      let data = { "mediaPath": filepath, "mediaType": type };
-      this._mediaFacade.getMediaString(data).subscribe(res => {
-        if (res != null) {
-          this.isViewMedia = true;
-          if (type == "Video")
-            this.isImage = false;
-          else
-            this.isImage = true;
-          this.imgData = res;
-        }
-        else {
-          this._toast.error("Something is wrong, Please contact sytem administration", "Error", { positionClass: "toast-right-bottom" });
-        }
-      })
+      let strFilePath = "";
+      if (this.data.content.mediaType == "Text") {
+        let mediaPath = this._session.getnetworkreportXview();
+        strFilePath = mediaPath + this.data.content.uploadSetId + "//" + filepath;
+        this.imgData = strFilePath;
+        this.isViewMedia = true;
+        this.isImage = true;
+      } else {
+        strFilePath = filepath;
+        let data = { "mediaPath": strFilePath, "mediaType": type };
+        this._mediaFacade.getMediaString(data).subscribe(res => {
+          if (res != null) {
+            this.isViewMedia = true;
+            if (type == "Video")
+              this.isImage = false;
+            else
+              this.isImage = true;
+            this.imgData = res;
+          }
+          else {
+            this._toast.error("Something is wrong, Please contact sytem administration", "Error", { positionClass: "toast-right-bottom" });
+          }
+        })
+      }
+
     }
     if (this.data.modalType == "playlistcreation") {
       if (this.data.content.fileType == "Text") {
@@ -93,13 +106,13 @@ export class CmMediaModalComponent implements OnInit {
           }
         })
       }
-      else if (this.data.content.fileType == "Image"){
+      else if (this.data.content.fileType == "Image") {
         this.isViewMedia = true;
         this.isImage = true;
         this.isVideo = false;
         this.imgData = this.data.content.filePath;
       }
-      else if (this.data.content.fileType == "Video"){
+      else if (this.data.content.fileType == "Video") {
         this.isViewMedia = true;
         this.isImage = false;
         this.isVideo = true;

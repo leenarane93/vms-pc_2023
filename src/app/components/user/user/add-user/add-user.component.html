@@ -80,10 +80,10 @@
                                 <div class="mb-3 col">
                                     <label class="form-label">Mobile No.*</label>
                                     <input type="text" formControlName="mobileNo" class="form-control"
-                                        placeholder="Mobile No."
+                                        placeholder="Mobile No." maxlength="10" minlength="10" (focusout)="CheckMobileNo()"
                                         [ngClass]="{ 'is-invalid': f['mobileNo'].touched && f['mobileNo'].errors, 'is-valid': f['mobileNo'].valid }" />
                                     <div *ngIf="f['mobileNo'].touched && f['mobileNo'].errors" class="invalid-feedback">
-                                        <div>{{getErrorMessage('mobileNo','Mobile No.',true,"Invalid data available in  Mobile No.")}}
+                                        <div>{{getErrorMessage('mobileNo','Mobile No.',false,"Invalid data available in  Mobile No.")}}
                                         </div>
                                     </div>
                                 </div>
