@@ -52,14 +52,14 @@ export class AddUserComponent implements OnInit {
       username: ['', [Validators.required, Validators.pattern("[a-zA-Z0-9]*$")]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
-      roleId: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]],
+      roleId: ['', [Validators.required]],
       mobileNo: ['', [Validators.required, Validators.pattern("[0-9]*$")]],
       emailId: ['', [Validators.required, Validators.email]],
       isActive: [false, [Validators.required]],
     });
   }
   FillForm(data: any) {
-    if (data != "") {
+    if (data != "" && data != null) {
 
       this.global.CurrentPage = "Edit User";
       this.id = data.id;
@@ -131,6 +131,7 @@ export class AddUserComponent implements OnInit {
   }
   AddUpdateUser(type?: any) {
     let v = this.ConfirmPasswordCheck(type);
+    console.log(this.form);
     if (v == true) {
       let _usrData = new UserMaster();
       if (this.id != 0)

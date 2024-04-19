@@ -75,6 +75,7 @@ export class AddRoleComponent implements OnInit {
   clearForm() {
     this.id = 0;
     this.isEdit = false;
+    this.global.CurrentPage = "Add Role";
     this.form.reset();
     this.form.controls["isActive"].setValue(false);
   }
