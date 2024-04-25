@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <div class="btn-group" style="padding:5px;" ngbDropdown role="group"
                 aria-label="Button group with nested dropdown">
-                <select class="form-control" aria-label=".form-select-sm example" formControlName="selectedYearG" (change)="ChangeDate(0)">
+                <select [disabled]="isFromComplete == 0 || isFromComplete == 1" class="form-control" aria-label=".form-select-sm example" formControlName="selectedYearG" (change)="ChangeDate(0)">
                     <option selected value="0">--Select Year--</option>
                     <option value="{{i}}" *ngFor="let i of years">{{i}}</option>
                 </select>

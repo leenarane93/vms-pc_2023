@@ -41,6 +41,7 @@ export class PublishOperationsComponent implements OnInit {
   dropdownSettings: any;
   dropdownSettingsVms: any;
   _common: CommonSelectList;
+  selectedTime: any;
   selectedZones: any[] = [];
   selectedVMS: any[] = [];
   playlistList: any[] = [];
@@ -352,45 +353,84 @@ export class PublishOperationsComponent implements OnInit {
 
   ValidateAndSubmit() {
     try {
+      let hasError: boolean = false;
       var _pubTime = new publishDetails();
       _pubTime.zones = this.selectedZones;
       _pubTime.vms = this.selectedVMS;
       _pubTime.username = this.global.UserCode;
-      _pubTime.pubFrom = this._publishMaster.fromtime;
-      _pubTime.pubTo = this._publishMaster.totime;
-      let _playTime: publishTime[] = [];
-      if (this.form.value.items.length > 0) {
-        var seq = 0;
-        this.form.value.items.forEach((ele: any) => {
-          seq++;
-          let _play = new publishTime();
-          _play.sequence = seq;
-          _play.plId = ele.plid;
-          _play.endDate = "" + ele.toDate.year + "-" + ("0" + ele.toDate.month).slice(-2) + "-" + ("0" + ele.toDate.day).slice(-2) + " " + ("0" + ele.toTime.hour).slice(-2) + ":" + ("0" + ele.toTime.minute).slice(-2) + ":" + ("0" + ele.toTime.second).slice(-2) + "";
-          _play.startDate = "" + ele.fromDate.year + "-" + ("0" + ele.fromDate.month).slice(-2) + "-" + ("0" + ele.fromDate.day).slice(-2) + " " + ("0" + ele.fromTime.hour).slice(-2) + ":" + ("0" + ele.fromTime.minute).slice(-2) + ":" + ("0" + ele.fromTime.second).slice(-2) + "";
-          _play.startTime = "" + ele.fromDate.year + "-" + ("0" + ele.fromDate.month).slice(-2) + "-" + ("0" + ele.fromDate.day).slice(-2) + " " + ("0" + ele.fromTime.hour).slice(-2) + ":" + ("0" + ele.fromTime.minute).slice(-2) + ":" + ("0" + ele.fromTime.second).slice(-2) + "";
-          _play.endTime = "" + ele.toDate.year + "-" + ("0" + ele.toDate.month).slice(-2) + "-" + ("0" + ele.toDate.day).slice(-2) + " " + ("0" + ele.toTime.hour).slice(-2) + ":" + ("0" + ele.toTime.minute).slice(-2) + ":" + ("0" + ele.toTime.second).slice(-2) + "";
-          _playTime.push(_play);
-        });
-        _pubTime.pubTime = _playTime;
-        let globalFromDate = new Date(_pubTime.pubFrom);
-        let globalToDate = new Date(_pubTime.pubTo);
-        if (globalToDate < globalFromDate) {
-          this._toast.error("Publish end date should not be greater than from date.");
-          
-        }
-        this._publish.addPublishDetails(_pubTime).subscribe(res => {
-          if (res != null && res != undefined) {
-            if (res != 0) {
-              this._toast.success("Publish saved successfully.");
-              this.router.navigate(['publish/media-status']);
+      if (this._publishMaster == undefined || this._publishMaster.length > 0) {
+        hasError = true;
+        this._toast.error("Invalid data found in Publish From Date/ Publish To Date", "Error");
+      }
+      else if (this._publishMaster.fromtime != undefined)
+        _pubTime.pubFrom = this._publishMaster.fromtime;
+      else {
+        this._toast.error("Invalid data in Publish From Date", "Error");
+        hasError = true;
+      }
+      if (this._publishMaster.totime != undefined)
+        _pubTime.pubTo = this._publishMaster.totime;
+      else {
+        this._toast.error("Invalid data in Publish To Date", "Error");
+        hasError = true;
+      }
+      if (!hasError) {
+        var _currentTime = new Date();
+        let _playTime: publishTime[] = [];
+        if (this.form.value.items.length > 0) {
+          var seq = 0;
+          let valid: boolean = false;
+          for (var i = 0; i < this.form.value.items.length; i++) {
+            seq++;
+            let _play = new publishTime();
+            _play.sequence = seq;
+            _play.plId = this.form.value.items[i].plid;
+            _play.endDate = "" + this.form.value.items[i].toDate.year + "-" + ("0" + this.form.value.items[i].toDate.month).slice(-2) + "-" + ("0" + this.form.value.items[i].toDate.day).slice(-2) + " " + ("0" + this.form.value.items[i].toTime.hour).slice(-2) + ":" + ("0" + this.form.value.items[i].toTime.minute).slice(-2) + ":" + ("0" + this.form.value.items[i].toTime.second).slice(-2) + "";
+            _play.startDate = "" + this.form.value.items[i].fromDate.year + "-" + ("0" + this.form.value.items[i].fromDate.month).slice(-2) + "-" + ("0" + this.form.value.items[i].fromDate.day).slice(-2) + " " + ("0" + this.form.value.items[i].fromTime.hour).slice(-2) + ":" + ("0" + this.form.value.items[i].fromTime.minute).slice(-2) + ":" + ("0" + this.form.value.items[i].fromTime.second).slice(-2) + "";
+            _play.startTime = "" + this.form.value.items[i].fromDate.year + "-" + ("0" + this.form.value.items[i].fromDate.month).slice(-2) + "-" + ("0" + this.form.value.items[i].fromDate.day).slice(-2) + " " + ("0" + this.form.value.items[i].fromTime.hour).slice(-2) + ":" + ("0" + this.form.value.items[i].fromTime.minute).slice(-2) + ":" + ("0" + this.form.value.items[i].fromTime.second).slice(-2) + "";
+            _play.endTime = "" + this.form.value.items[i].toDate.year + "-" + ("0" + this.form.value.items[i].toDate.month).slice(-2) + "-" + ("0" + this.form.value.items[i].toDate.day).slice(-2) + " " + ("0" + this.form.value.items[i].toTime.hour).slice(-2) + ":" + ("0" + this.form.value.items[i].toTime.minute).slice(-2) + ":" + ("0" + this.form.value.items[i].toTime.second).slice(-2) + "";
+            if (_currentTime.getHours() == this.form.value.items[i].fromTime.hour && _currentTime.getMinutes() > this.form.value.items[i].fromTime.minute) {
+              _playTime.push(_play);
+              valid = true;
+            } else if (_currentTime.getHours() > this.form.value.items[i].fromTime.hour) {
+              valid = false;
+              break;
             } else {
-              this._toast.error("Something went wrong.");
+              _playTime.push(_play);
+              valid = true;
             }
           }
-        })
-      } else {
-        this._toast.error("Playlist time not selected");
+
+          if (valid == true) {
+            _pubTime.pubTime = _playTime;
+            let globalFromDate = new Date(_pubTime.pubFrom);
+            let globalToDate = new Date(_pubTime.pubTo);
+            if (globalToDate < globalFromDate) {
+              this._toast.error("Publish end date should not be greater than from date.");
+            }
+            var d = this.checkTimeOverlap(_pubTime);
+            if (d) {
+              this._publish.addPublishDetails(_pubTime).subscribe(res => {
+                if (res != null && res != undefined) {
+                  if (res != 0) {
+                    this._toast.success("Publish saved successfully.");
+                    this.router.navigate(['publish/media-status']);
+                  } else {
+                    this._toast.error("Something went wrong.");
+                  }
+                }
+              })
+            } else {
+              this._toast.error("Time overlap between playlist from date and to date");
+            }
+
+          } else {
+            this._toast.error("Time overlap between playlist from date and to date");
+          }
+
+        } else {
+          this._toast.error("Playlist time not selected");
+        }
       }
     }
     catch (err: any) {
@@ -412,7 +452,9 @@ export class PublishOperationsComponent implements OnInit {
         this._publishMaster.createdby = this.global.UserCode;
         this._publishMaster.id = 0;
         this._publishMaster.fromtime = _year + "-" + _month + "-" + _day + " " + _time;
+        this.selectedTime = this._publishMaster.totime
         this._publishMaster.isactive = true;
+        this._publishMaster.totime = _year + "-" + _month + "-" + _day + " " + _time;
       }
       else
         this._toast.error("Invalid date selected.");
@@ -420,6 +462,7 @@ export class PublishOperationsComponent implements OnInit {
     else if (type == 1) {
       if (_date.getUTCDate() <= Number(_day) && (_date.getMonth() + 1) <= Number(_month) && _date.getFullYear() <= _year) {
         this._publishMaster.totime = _year + "-" + _month + "-" + _day + " " + _time;
+
         let _fromDate = new Date(this._publishMaster.fromtime);
         let _toDate = new Date(this._publishMaster.totime);
         if (_fromDate >= _toDate) {
@@ -436,5 +479,20 @@ export class PublishOperationsComponent implements OnInit {
         this.selectedPlaylist.slice(len, 1);
       len = len + 1;
     });
+  }
+  checkTimeOverlap(data: any) {
+    let _pubFromDate = new Date(data.pubFrom);
+    let _pubToDate = new Date(data.pubTo);
+    for (var i = 0; i < data.pubTime.length; i++) {
+      let startdate = new Date(data.pubTime[i].startDate);
+      let enddate = new Date(data.pubTime[i].endDate);
+      if (_pubFromDate > startdate) {
+        return false;
+      }
+      else if (_pubToDate < enddate) {
+        return false;
+      }
+    }
+    return true;
   }
 }

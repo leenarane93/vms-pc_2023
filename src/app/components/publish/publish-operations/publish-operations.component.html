@@ -98,7 +98,7 @@
                                     <div class="col-md-1"></div>
                                     <label class="col-md-2 text-right mt-2">Publish To : </label>
                                     <cm-datetimepicker (inputData)="fromTimeArr" type="to" fromYear="2024" toYear="2030"
-                                        class="col-md-8" (selectedTime)="GetTime($event,1)"></cm-datetimepicker>
+                                        class="col-md-8" (selectedTime)="GetTime($event,1)" [selectedTimeG]="selectedTime"></cm-datetimepicker>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">

@@ -24,6 +24,8 @@ export class CmDatetimepickerComponent implements OnInit, AfterViewInit {
   @Input() inputData: any;
   @Input() fromYear: any;
   @Input() toYear: any;
+  @Input() isFromComplete: any;
+  @Input() selectedTimeG : any;
   @Output() selectedTime = new EventEmitter();
   months: any;
   years: any[] = [];
@@ -81,6 +83,9 @@ export class CmDatetimepickerComponent implements OnInit, AfterViewInit {
     for (var i = 0; i < 60; i++) {
       this.minutes.push(i);
     }
+    if(this.selectedTimeG != undefined) {
+      this.timeForm.patchValue({"selectedTimeG" : this.selectedTimeG});
+    }
   }
 
   ngAfterViewInit(): void {
@@ -132,7 +137,22 @@ export class CmDatetimepickerComponent implements OnInit, AfterViewInit {
 
   ValidateAndSubmit() {
     if (this.timeForm.valid) {
-      this.selectedTime.emit(this.timeForm);
+      var _currentTime = new Date();
+      let time = this.timeForm.controls["selectedTimeG"].value.split(":");
+      let year = this.timeForm.controls["selectedYearG"].value;
+      let month = this.timeForm.controls["selectedMonthG"].value;
+      let day = this.timeForm.controls["selectedDayG"].value;
+      if ( year == _currentTime.getFullYear() && month == (_currentTime.getMonth()+1) && day == _currentTime.getDate() &&  _currentTime.getHours() >= time[0] && _currentTime.getMinutes() > time[1]) {
+        this.toast.error("Time should be greater than current time.");
+        this.timeForm.patchValue({selectedTimeG : ""});
+        this.isFromComplete = 2;
+      }
+      else {
+        this.selectedTime.emit(this.timeForm);        
+        this.isFromComplete = 2;
+      }
+    } else {
+      this.isFromComplete = 2;
     }
   }
   ChangeDate(type: number) {
