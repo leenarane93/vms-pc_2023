@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
               ){ 
     console.log(this.loggedIn);
     this._facadeService.isLoggedin.subscribe(x => {
+      debugger;
       this.loggedIn = x.LoggedIn;
       if(x.LoggedIn == false)
         this._router.navigate(['login']);

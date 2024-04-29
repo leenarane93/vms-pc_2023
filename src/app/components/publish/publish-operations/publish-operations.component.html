@@ -12,7 +12,7 @@
                                 </button>
                             </div>
                             <div class="col-md-6 text-right">
-                                <button class="btn btn-danger" (click)="BackToList(1)">
+                                <button *ngIf="_currentIndex != 0" class="btn btn-danger" (click)="BackToList(1)">
                                     Reset
                                 </button>
                             </div>

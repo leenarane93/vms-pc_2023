@@ -12,7 +12,7 @@ import { FormArray, FormBuilder, FormGroup, NgControl, Validators } from '@angul
 import { DateTimeModel } from 'src/app/models/DateTimeModel';
 import { PublishMaster } from 'src/app/models/publish/publishmaster';
 import { publishDetails, publishTime } from 'src/app/models/publish/PublishDetails';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-publish-operations',
@@ -20,6 +20,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./publish-operations.component.css']
 })
 export class PublishOperationsComponent implements OnInit {
+  _currentIndex : number = 0;
   today = inject(NgbCalendar).getToday();
   minDate: any;
   maxDate: any;
@@ -121,20 +122,25 @@ export class PublishOperationsComponent implements OnInit {
 
   }
   resetStepper() {
-    this._inputZoneData = [];
-    this._inputVmsData = [];
-    this.GetAllZoneDetails();
-    this.selectedPlaylist = [];
-    this.selectedZones = [];
-    this.selectedVMS = [];
+    // this.playlistList = [];
+    // this.filteredPlaylist= [];
+    // this._currentIndex = 0;
+    // // this.GetAllZoneDetails();
+    // this.selectedPlaylist = [];
     this.stepper.to(1);
   }
   BackToList(type: number) {
-    if (type == 0) {
-      this.router.navigate(['publish/media-status']);
-    } else if (type == 1) {
-      this.resetStepper();
+    // if (type == 0) {
+    //   this.router.navigate(['publish/media-status']);
+    // } else if (type == 1) {
+    //   this.resetStepper();
+    // }
+    let objToSend: NavigationExtras = {
+      queryParams : {
+        isReset : true
+      }
     }
+    this.router.navigate(['publish/media-status'],{state:{isReset : objToSend}});
   }
   BuildForm() {
 
@@ -246,6 +252,7 @@ export class PublishOperationsComponent implements OnInit {
     }
   }
   StepPrev(step: number) {
+    this._currentIndex = step -1;
     if (step == 2) {
       this._publish.getPlaylistMasterData().subscribe(res => {
         if (res != null && res.length > 0) {
@@ -273,6 +280,7 @@ export class PublishOperationsComponent implements OnInit {
         })
         this.selectedPlaylist = [];
         this.stepper.next();
+        this._currentIndex = step;
       }
     }
     else if (step == 2) {
@@ -294,6 +302,7 @@ export class PublishOperationsComponent implements OnInit {
           });
         }
         this.stepper.next();
+        this._currentIndex = step;
       }
     }
   }
@@ -419,7 +428,10 @@ export class PublishOperationsComponent implements OnInit {
                     this._toast.error("Something went wrong.");
                   }
                 }
-              })
+              },(error=>{
+                this._toast.error("Invalid data entered in some field.");
+                
+              }))
             } else {
               this._toast.error("Time overlap between playlist from date and to date");
             }

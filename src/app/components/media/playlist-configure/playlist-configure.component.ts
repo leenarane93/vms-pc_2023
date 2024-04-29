@@ -324,6 +324,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
                 if (this.isCopy == true)
                   type = 1;
                 this.plBlData = [];
+                let res : boolean = false;
                 for (var i = 0; i < this.dataSource.length; i++) {
                   let _pl = new PlBlMdDetails();
                   this.dataSource[i].seqNo = i + 1;
@@ -338,14 +339,32 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
                   _pl.sequenceNo = this.dataSource[i].seqNo;
                   _pl.mdType = this.dataSource[i].mdType;
                   _pl.mediaName = this.plid + "_" + this.dataSource[i].seqNo + ".avi";
+                  if(_pl.duration == undefined || _pl.duration == 0) {
+                    res =true;
+                    break;
+                  } else if(_pl.tarrifId == undefined || _pl.tarrifId == 0)  {
+                    res =true;
+                    break;
+                  } else if(_pl.partyId == undefined || _pl.partyId == 0)  {
+                    res =true;
+                    break;
+                  }
                   this.plBlData.push(_pl);
                 }
-                this._media.addPlaylistMedia(this.plBlData, type).subscribe(res => {
-                  if (res != undefined && res != null && res.length != 0) {
-                    this.toast.success("Saved Successfully.");
-                    this.router.navigate(['medias/playlist-creation']);
-                  }
-                });
+                if(res == false) {
+                  this._media.addPlaylistMedia(this.plBlData, type).subscribe(res => {
+                    if (res != undefined && res != null && res.length != 0) {
+                      this.toast.success("Saved Successfully.");
+                      this.router.navigate(['medias/playlist-creation']);
+                    }
+                  },(error)=>{
+                    this.toast.error("Invalid data entered in fields.");
+                    console.log(error);
+                  });
+                } else {
+                  this.toast.error("Invalid data entered in fields.");
+                }
+                
               }
             }
             else {

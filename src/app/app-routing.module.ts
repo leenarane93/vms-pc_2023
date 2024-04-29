@@ -223,7 +223,7 @@ const routes: Routes = [
     path: "publish/publish-operation", 
     component: PublishOperationsComponent,
     data: { title: 'Publish Operations' },
-    canActivate: [AuthGuradService]
+    //canActivate: [AuthGuradService]
   },
   { 
     path: "publish/media-status", 

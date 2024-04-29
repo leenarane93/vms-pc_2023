@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataTableDirective } from 'angular-datatables';
 import { ToastrService } from 'ngx-toastr';
@@ -14,6 +14,7 @@ import { Globals } from 'src/app/utils/global';
   styleUrls: ['./publish-status.component.css']
 })
 export class PublishStatusComponent implements OnInit {
+  @Input() isReset : boolean = false;
   activetab = 1;
   selectedItems: any[];
   dtCreatedPublish: any[] = [];
@@ -41,7 +42,9 @@ export class PublishStatusComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    ;
+    debugger;
+    let _data = this.router.getCurrentNavigation()?.extras.state;
+    console.log(_data);
     this.GetPublishStatusData();
     // this.chatService.createEventSource().subscribe(res=>{
     //   console.log(res);
