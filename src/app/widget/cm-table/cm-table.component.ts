@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,11 +6,12 @@ import { Router } from '@angular/router';
   templateUrl: './cm-table.component.html',
   styleUrls: ['./cm-table.component.css']
 })
-export class CmTableComponent {
+export class CmTableComponent implements OnChanges {
 
   listOfData: any;
   tooltip: string = "";
   searchText: string = "";
+  @Input() isSearch: boolean = false;
   @Output() pager = new EventEmitter<number>();
   @Output() searchWithId = new EventEmitter<any>();
   @Output() search = new EventEmitter<string>();
@@ -33,11 +34,20 @@ export class CmTableComponent {
   constructor(private router: Router) {
 
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    if(!this.isSearch) {
+      this.searchText = "";
+    }
+  }
   displayActivePage(activePageNumber: number) {
     this.activePage = activePageNumber
   }
   Search() {
-    this.search.emit(this.searchText);
+    if (this.searchText.trim().length > 2) {
+      this.search.emit(this.searchText);
+    } else if (this.searchText.trim() == "") {
+      this.search.emit(this.searchText);
+    }
   }
   mouseEnter(msg: string) {
     this.tooltip = msg;

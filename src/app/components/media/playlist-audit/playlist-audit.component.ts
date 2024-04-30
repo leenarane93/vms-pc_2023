@@ -20,6 +20,7 @@ import { CmMdAuditComponent } from 'src/app/widget/cm-md-audit/cm-md-audit.compo
 export class PlaylistAuditComponent implements OnInit {
   searchText!: string;
   page: any;
+  isSearch : boolean = false;
   tabno: number =0;
   listOfPlaylist: any;
   listOfPlaylistPending: any;
@@ -125,6 +126,7 @@ export class PlaylistAuditComponent implements OnInit {
   }
 
   onPageSearch(search: string) {
+    this.isSearch = true;
     this.searchText = search;
     this.getPlaylistData();
   }
@@ -200,6 +202,8 @@ export class PlaylistAuditComponent implements OnInit {
   }
   OnTabChange(status: number) {
     this.tabno = status;
+    this.searchText = "";
+    this.isSearch = false;
     this.getPlaylistData();
   }
 }

@@ -13,7 +13,7 @@
                         [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)"
                         [btnArray]="btnArray" (btnAction)="ButtonAction($event)" [collectionSize]="totalRecords"
                         (recordPerPage)="onRecordPageChange($event)" link="users/add-user" fieldName="id"
-                        (search)="onPageSearch($event)" (searchWithId)="SearchWithId($event)"></app-cm-table>
+                        (search)="onPageSearch($event)" [isSearch]="isSearch" (searchWithId)="SearchWithId($event)"></app-cm-table>
                     </tab>
 
                     <tab heading="Approved" (selectTab)="OnTabChange(1)">
@@ -21,7 +21,7 @@
                         [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)"
                         [btnArray]="btnArray" (btnAction)="ButtonAction($event)" [collectionSize]="totalRecords"
                         (recordPerPage)="onRecordPageChange($event)" link="users/add-user" fieldName="id"
-                        (search)="onPageSearch($event)" (searchWithId)="SearchWithId($event)"></app-cm-table>
+                        (search)="onPageSearch($event)" [isSearch]="isSearch"   (searchWithId)="SearchWithId($event)"></app-cm-table>
                     </tab>
 
                     <tab heading="Rejected" (selectTab)="OnTabChange(2)">
@@ -29,7 +29,7 @@
                         [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)"
                         [btnArray]="btnArray" (btnAction)="ButtonAction($event)" [collectionSize]="totalRecords"
                         (recordPerPage)="onRecordPageChange($event)" link="users/add-user" fieldName="id"
-                        (search)="onPageSearch($event)" (searchWithId)="SearchWithId($event)"></app-cm-table>
+                        (search)="onPageSearch($event)" [isSearch]="isSearch"  (searchWithId)="SearchWithId($event)"></app-cm-table>
                     </tab>
                 </tabset>
             </div>

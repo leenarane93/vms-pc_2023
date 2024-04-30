@@ -23,7 +23,7 @@ export class PublishOpsService {
     return this._httpService._getMethod("media_api/api/PlaylistMaster/GetPlaylistMasterForPublish");
   }
 
-  AddPublishDetails(_data:any) {
+  AddPublishDetails(_data: any) {
     return this._httpService._postMethod(_data, 'Publish_API/api/PublishDetails/AddPublishDetails');
   }
 
@@ -31,7 +31,13 @@ export class PublishOpsService {
     return this._httpService._getMethod("publish_api/api/PublishDetails/GetPlaylstStatusData");
   }
 
-  removePublishDetails(data:any) {
-    return this._httpService._postMethod(data,"publish_api/api/PublishDetails/DeletePlaylist");
+  removePublishDetails(data: any) {
+    return this._httpService._postMethod(data, "publish_api/api/PublishDetails/DeletePlaylist");
+  }
+  getPublishStatusData(vmsid?: number) {
+    if (vmsid != undefined && vmsid != null)
+      return this._httpService._getMethod("publish_api/api/PublishDetails/GetPublishStatusData?vmsid=" + vmsid);
+    else
+      return this._httpService._getMethod("publish_api/api/PublishDetails/GetPublishStatusData");
   }
 }

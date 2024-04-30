@@ -88,6 +88,10 @@
                           <button tooltip="Click to Stop" placement="top" delay="500" type="button"
                             class="btn btn-inverse-primary btn-sm" (click)="RemovePublish(data,1)">
                             <i class="icon-trash"></i>
+                          </button> &nbsp;&nbsp;
+                          <button tooltip="View More" placement="top" delay="500" type="button"
+                            class="btn btn-inverse-primary btn-sm" (click)="getPublishStatusByVmsId(data.vmsId)">
+                            <i class="icon-outbox"></i>
                           </button>
                         </td>
                       </tr>

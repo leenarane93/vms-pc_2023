@@ -2,11 +2,13 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DataTableDirective } from 'angular-datatables';
 import { ToastrService } from 'ngx-toastr';
 import { PublishFacadeService } from 'src/app/facade/facade_services/publish-facade.service';
 import { SocketFacadeService } from 'src/app/facade/facade_services/socket-facade.service';
 import { Globals } from 'src/app/utils/global';
+import { CmPublishdetailsComponent } from 'src/app/widget/cm-publishdetails/cm-publishdetails.component';
 
 @Component({
   selector: 'app-publish-status',
@@ -14,7 +16,7 @@ import { Globals } from 'src/app/utils/global';
   styleUrls: ['./publish-status.component.css']
 })
 export class PublishStatusComponent implements OnInit {
-  @Input() isReset : boolean = false;
+  @Input() isReset: boolean = false;
   activetab = 1;
   selectedItems: any[];
   dtCreatedPublish: any[] = [];
@@ -35,7 +37,8 @@ export class PublishStatusComponent implements OnInit {
     private global: Globals,
     private publish: PublishFacadeService,
     private _toast: ToastrService,
-    private router:Router,
+    private router: Router,
+    private modalService: NgbModal,
     private chatService: SocketFacadeService
   ) {
     this.global.CurrentPage = "Publish Status";
@@ -51,12 +54,22 @@ export class PublishStatusComponent implements OnInit {
     // });
   }
 
-  GetPublishStatusData() {
+  getPublishStatusByVmsId(vmsid: number) {
+    const modalRef = this.modalService.open(CmPublishdetailsComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
+
+    modalRef.componentInstance.playlistAudit = true;
+    modalRef.componentInstance.mediaAudit = false;
+    modalRef.componentInstance.passEntry.subscribe((receivedEntry: any) => {
+
+    })
+  }
+
+  GetPublishStatusData(vmsid?: number) {
     this.dtCreatedPublish = [];
     this.dtSendingPublish = [];
     this.dtRunningPublish = [];
     this.dtCompletePublish = [];
-    this.publish.getPlaylistStatusData().subscribe(res => {
+    this.publish.getPublishStatusData(vmsid).subscribe(res => {
       if (res != null) {
         res.forEach((ele: any) => {
           let _dtFrom = new Date(ele.fromTime);
@@ -77,7 +90,7 @@ export class PublishStatusComponent implements OnInit {
           ele.toTime = _toDay.padStart(2, '0') + "-" + _toMonth.padStart(2, '0') + "-" + _toYear + " " + _toHrs.padStart(2, '0') + ":" + _toMins.padStart(2, '0') + ":" + _toSecs.padStart(2, '0');
           if (ele.status == 0) {
             this.dtCreatedPublish.push(ele);
-          } else if (ele.status == 1 || ele.status == 0 ) {
+          } else if (ele.status == 1 || ele.status == 0) {
             this.dtSendingPublish.push(ele);
           } else if (ele.status == 2) {
             this.dtRunningPublish.push(ele);

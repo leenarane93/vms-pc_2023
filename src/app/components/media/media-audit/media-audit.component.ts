@@ -28,6 +28,7 @@ export class MediaAuditComponent implements OnInit {
   totalRecords!: number;
   recordPerPage: number = 10;
   startId!: number;
+  isSearch:boolean  =false;
   closeResult!: string;
   _request: any = new InputRequest();
   headerArr = [
@@ -95,7 +96,9 @@ export class MediaAuditComponent implements OnInit {
   }
 
   OnTabChange(status: number) {
-    this.tabno = status
+    this.tabno = status;
+    this.searchText = "";
+    this.isSearch = false;
     this.getMediaDetails();
   }
 
@@ -117,6 +120,7 @@ export class MediaAuditComponent implements OnInit {
   }
 
   onPageSearch(search: string) {
+    this.isSearch = true;
     this.searchText = search;
     this.getMediaDetails();
   }
