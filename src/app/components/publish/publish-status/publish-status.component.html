@@ -48,6 +48,10 @@
                           <button tooltip="Click to Stop" placement="top" delay="500" type="button"
                             class="btn btn-inverse-primary btn-sm" (click)="RemovePublish(data,0)">
                             <i class="icon-trash"></i>
+                          </button> &nbsp;&nbsp;
+                          <button tooltip="View More" placement="top" delay="500" type="button"
+                            class="btn btn-inverse-primary btn-sm" (click)="getPublishStatusByVmsId(data.vmsId,'Created')">
+                            <i class="icon-outbox"></i>
                           </button>
                         </td>
                       </tr>
@@ -90,7 +94,7 @@
                             <i class="icon-trash"></i>
                           </button> &nbsp;&nbsp;
                           <button tooltip="View More" placement="top" delay="500" type="button"
-                            class="btn btn-inverse-primary btn-sm" (click)="getPublishStatusByVmsId(data.vmsId)">
+                            class="btn btn-inverse-primary btn-sm" (click)="getPublishStatusByVmsId(data.vmsId,'Sending')">
                             <i class="icon-outbox"></i>
                           </button>
                         </td>
@@ -128,6 +132,10 @@
                             <button tooltip="Click to Stop" placement="top" delay="500" type="button"
                               class="btn btn-inverse-primary btn-sm" (click)="RemovePublish(data,2)">
                               <i class="icon-trash"></i>
+                            </button> &nbsp;&nbsp;
+                            <button tooltip="View More" placement="top" delay="500" type="button"
+                              class="btn btn-inverse-primary btn-sm" (click)="getPublishStatusByVmsId(data.vmsId,'Running')">
+                              <i class="icon-outbox"></i>
                             </button>
                           </td>
                         </tr>
@@ -164,6 +172,10 @@
                             <button tooltip="Click to Stop" placement="top" delay="500" type="button"
                               class="btn btn-inverse-primary btn-sm" (click)="RemovePublish(data,2)">
                               <i class="icon-trash"></i>
+                            </button> &nbsp;&nbsp;
+                            <button tooltip="View More" placement="top" delay="500" type="button"
+                              class="btn btn-inverse-primary btn-sm" (click)="getPublishStatusByVmsId(data.vmsId,'Completed')">
+                              <i class="icon-outbox"></i>
                             </button>
                           </td>
                         </tr>

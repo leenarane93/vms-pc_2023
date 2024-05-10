@@ -12,7 +12,7 @@
                         <span class="spinner-border-sm me-1"></span>
                         <i class="icon-plus"></i> Add New
                     </button>
-                    <app-cm-table [headArr]="headerArr" [gridArr]="listOfZones" [totalRecords]="totalRecords"
+                    <app-cm-table [headArr]="headerArr" [isSearch]="isSearch" [gridArr]="listOfZones" [totalRecords]="totalRecords"
                     [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)"
                     [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)"
                     link="admin/add-zone" fieldName="id" (searchWithId)="SearchWithId($event)"

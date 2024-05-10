@@ -457,6 +457,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
     }
     else if (form == 4) {
       this.dataSource = [];
+      this.selectedMedia = [];
     }
   }
   addNewBlock() {
@@ -819,7 +820,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
     let mediaPath = this._session.getnetworkreportXview();
     if (_data.textContent != undefined && _data.textContent != "") {
       let strFilePath = mediaPath + _data.uploadSetId +"//"+_data.fileName;
-      let _inputData = { "filePath": strFilePath, "fileName": _data.fileName, modalType: "playlistcreation", mediaType: "playlistcreation", "fileType": _data.fileType, "uploadSetId": _data.uploadSetId };
+      let _inputData = { "filePath": strFilePath, "fileName": _data.fileName, modalType: "playlistcreation", mediaType: "playlistcreation", "fileType": "Image", "uploadSetId": _data.uploadSetId };
       const modalRef = this.modalService.open(CmMediaModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
       let _reqdata = { "action": "view", urls: [], modalType: "playlistcreation", content: _inputData };
       modalRef.componentInstance.data = _reqdata;

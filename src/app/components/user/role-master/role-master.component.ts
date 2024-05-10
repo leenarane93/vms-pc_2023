@@ -12,6 +12,7 @@ import { Globals } from 'src/app/utils/global';
 })
 export class RoleMasterComponent implements OnInit {
   title = 'angular13';
+  isSearch: boolean = false;
   searchText!: string;
   page: any;
   listOfRoles: any;
@@ -55,6 +56,7 @@ export class RoleMasterComponent implements OnInit {
   }
 
   onPageSearch(search: string) {
+    this.isSearch=  true;
     this.searchText = search;
     this.getRoles();
   }

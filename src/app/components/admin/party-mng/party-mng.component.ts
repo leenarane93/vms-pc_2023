@@ -12,7 +12,7 @@ import { Globals } from 'src/app/utils/global';
   styleUrls: ['./party-mng.component.css']
 })
 export class PartyMngComponent {
-
+  isSearch:boolean = false;
   title = 'angular13';
   searchText!: string;
   page: any;
@@ -93,6 +93,7 @@ export class PartyMngComponent {
   }
 
   onPageSearch(search: string) {
+    this.isSearch = true;
     this.searchText = search;
     this.getParties();
   }

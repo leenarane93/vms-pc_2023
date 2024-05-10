@@ -90,6 +90,7 @@ import { SocketFacadeService } from './facade/facade_services/socket-facade.serv
 import { ToastModule } from 'primeng/toast';
 import { PlaylistReportComponent } from './components/reports/playlist-report/playlist-report.component';
 import { CmPublishdetailsComponent } from './widget/cm-publishdetails/cm-publishdetails.component';
+import { PageNotFoundComponent } from './components/shared/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -145,6 +146,7 @@ import { CmPublishdetailsComponent } from './widget/cm-publishdetails/cm-publish
     NetworkReportComponent,
     PlaylistReportComponent,
     CmPublishdetailsComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     CommonModule,

@@ -11,7 +11,7 @@
                     <i class="icon-plus"></i> Add New
                 </button>
             <app-cm-table [headArr]="headerArr" [gridArr]="listOfUsers" [totalRecords]="totalRecords"
-                [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)"
+                [totalPages]="totalPages" [isSearch]="isSearch"  [perPage]="recordPerPage" (pager)="onPager($event)"
                 [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)" link="users/add-user"
                 fieldName="id" (search)="onPageSearch($event)" (searchWithId)="SearchWithId($event)"></app-cm-table>
             </div>

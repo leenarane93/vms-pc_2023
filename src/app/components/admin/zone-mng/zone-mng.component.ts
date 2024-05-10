@@ -18,6 +18,7 @@ export type eventModel = {
   styleUrls: ['./zone-mng.component.css']
 })
 export class ZoneMngComponent {
+  isSearch:boolean =false;
   form: any = [];
   title = 'angular13';
   searchText!: string;
@@ -98,6 +99,7 @@ export class ZoneMngComponent {
   }
 
   onPageSearch(search: string) {
+    this.isSearch = true;
     this.searchText = search;
     this.getZones();
   }

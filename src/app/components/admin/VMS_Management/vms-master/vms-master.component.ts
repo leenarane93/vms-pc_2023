@@ -13,6 +13,7 @@ import { Globals } from 'src/app/utils/global';
   styleUrls: ['./vms-master.component.css']
 })
 export class VmsMasterComponent {
+  isSearch:boolean = false;
   form: any = [];
   title = 'angular13';
   searchText!: string;
@@ -63,6 +64,7 @@ export class VmsMasterComponent {
   }
 
   onPageSearch(search: string) {
+    this.isSearch =true;
     this.searchText = search;
     this.GetVmsData();
   }

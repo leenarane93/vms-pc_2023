@@ -28,6 +28,7 @@ export class MediaUploadComponent implements OnInit {
   uploadSetId!: any;
   selectedFiles: any;
   searchText!: string;
+  isSearch : boolean = false;
   page: any;
   listOfMediaSet: any;
   totalPages: number = 1;
@@ -230,6 +231,7 @@ export class MediaUploadComponent implements OnInit {
   }
 
   onPageSearch(search: string) {
+    this.isSearch = true;
     this.searchText = search;
     this.getMediaUploadData();
   }

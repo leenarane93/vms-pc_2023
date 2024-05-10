@@ -54,9 +54,13 @@ export class PublishStatusComponent implements OnInit {
     // });
   }
 
-  getPublishStatusByVmsId(vmsid: number) {
+  getPublishStatusByVmsId(vmsid: number, type:string) {
     const modalRef = this.modalService.open(CmPublishdetailsComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
-
+    let dataSend = {
+      vmsId : vmsid,
+      pubType : type
+    } 
+    modalRef.componentInstance.data = dataSend;
     modalRef.componentInstance.playlistAudit = true;
     modalRef.componentInstance.mediaAudit = false;
     modalRef.componentInstance.passEntry.subscribe((receivedEntry: any) => {

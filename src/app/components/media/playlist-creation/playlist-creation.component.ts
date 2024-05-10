@@ -40,6 +40,7 @@ export class PlaylistCreationComponent {
   recordPerPage: number = 10;
   startId!: number;
   closeResult!: string;
+  isSearch: boolean = false;
   _request: any = new InputRequest();
 
 
@@ -64,7 +65,7 @@ export class PlaylistCreationComponent {
     this._request.pageSize = this.recordPerPage;
     this._request.startId = this.startId;
     this._request.searchItem = this.searchText;
-    this.adminFacade.getPlaylistMasterData(this._request,4).subscribe(data => {
+    this.adminFacade.getPlaylistMasterData(this._request, 4).subscribe(data => {
       if (data != null || data != undefined) {
         this.listOfPlaylist = data.data;
         var _length = data.totalRecords / this.recordPerPage;
@@ -101,6 +102,7 @@ export class PlaylistCreationComponent {
   }
 
   onPageSearch(search: string) {
+    this.isSearch = true;
     this.searchText = search;
     this.getPlaylistData();
   }
@@ -121,7 +123,7 @@ export class PlaylistCreationComponent {
   ButtonAction(actiondata: any) {
     if (actiondata.action == 'view') {
       this._commonFacade.setSession("playlistData", JSON.stringify(actiondata.data));
-      this._router.navigate(['medias/playlist-configure'],{queryParams:{ isCopy: false, status: actiondata.data.status, plid:actiondata.data.plid }});
+      this._router.navigate(['medias/playlist-configure'], { queryParams: { isCopy: false, status: actiondata.data.status, plid: actiondata.data.plid } });
     }
     else if (actiondata.action == 'remove') {
       this.DeletePlaylist(actiondata.data);
@@ -151,7 +153,7 @@ export class PlaylistCreationComponent {
 
   CopyPlaylist(data: any) {
     this._commonFacade.setSession("playlistData", JSON.stringify(data));
-    this._router.navigate(['medias/playlist-configure'],{queryParams:{ isCopy: true, status: data.status, plid:data.plid }});
+    this._router.navigate(['medias/playlist-configure'], { queryParams: { isCopy: true, status: data.status, plid: data.plid } });
   }
 
 }

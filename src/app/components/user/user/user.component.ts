@@ -13,7 +13,7 @@ import { Globals } from 'src/app/utils/global';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  
+  isSearch:boolean =false;
   form: any = [];
   title = 'angular13';
   searchText!: string;
@@ -99,6 +99,7 @@ export class UserComponent implements OnInit {
   }
 
   onPageSearch(search: string) {
+    this.isSearch = true;
     this.searchText = search;
     this.getUsers();
   }

@@ -12,7 +12,7 @@ import { Globals } from 'src/app/utils/global';
   styleUrls: ['./tariff-mng.component.css']
 })
 export class TariffMngComponent {
-
+isSearch:boolean = false;
   form: any = [];
   title = 'angular13';
   searchText!: string;
@@ -97,6 +97,7 @@ export class TariffMngComponent {
   }
 
   onPageSearch(search: string) {
+    this.isSearch = true;
     this.searchText = search;
     this.getTarrifs();
   }

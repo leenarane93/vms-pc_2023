@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnInit, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Injector, Input, OnInit, ViewChild, inject } from '@angular/core';
 
 import Stepper from 'bs-stepper';
 import { ToastrService } from 'ngx-toastr';
@@ -20,10 +20,14 @@ import { NavigationExtras, Router } from '@angular/router';
   styleUrls: ['./publish-operations.component.css']
 })
 export class PublishOperationsComponent implements OnInit {
-  _currentIndex : number = 0;
+  _currentIndex: number = 0;
   today = inject(NgbCalendar).getToday();
   minDate: any;
   maxDate: any;
+  globalFromDt:any;
+  globalToDt:any;
+  globalFromTm:any;
+  globalToTm:any;
   model: NgbDateStruct;
   date: { year: number; month: number };
   stepper: Stepper;
@@ -75,7 +79,8 @@ export class PublishOperationsComponent implements OnInit {
     private config: NgbPopoverConfig,
     private inj: Injector,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private cdf: ChangeDetectorRef
   ) {
     this.global.CurrentPage = "Publish Operations";
     this.dropdownSettings = {
@@ -104,6 +109,9 @@ export class PublishOperationsComponent implements OnInit {
     this.form = this.fb.group({
       items: this.fb.array([])
     })
+  }
+  changeDetect() {
+    this.cdf.detectChanges();
   }
   createItem(): FormGroup {
     return this.fb.group({
@@ -136,11 +144,11 @@ export class PublishOperationsComponent implements OnInit {
     //   this.resetStepper();
     // }
     let objToSend: NavigationExtras = {
-      queryParams : {
-        isReset : true
+      queryParams: {
+        isReset: true
       }
     }
-    this.router.navigate(['publish/media-status'],{state:{isReset : objToSend}});
+    this.router.navigate(['publish/media-status'], { state: { isReset: objToSend } });
   }
   BuildForm() {
 
@@ -252,7 +260,7 @@ export class PublishOperationsComponent implements OnInit {
     }
   }
   StepPrev(step: number) {
-    this._currentIndex = step -1;
+    this._currentIndex = step - 1;
     if (step == 2) {
       this._publish.getPlaylistMasterData().subscribe(res => {
         if (res != null && res.length > 0) {
@@ -303,6 +311,7 @@ export class PublishOperationsComponent implements OnInit {
         }
         this.stepper.next();
         this._currentIndex = step;
+        this.changeDetect();
       }
     }
   }
@@ -428,9 +437,9 @@ export class PublishOperationsComponent implements OnInit {
                     this._toast.error("Something went wrong.");
                   }
                 }
-              },(error=>{
+              }, (error => {
                 this._toast.error("Invalid data entered in some field.");
-                
+
               }))
             } else {
               this._toast.error("Time overlap between playlist from date and to date");
@@ -460,7 +469,7 @@ export class PublishOperationsComponent implements OnInit {
 
     if (type == 0) {
       this._publishMaster = new PublishMaster();
-      if (_date.getUTCDate() >= Number(_day) && (_date.getMonth() + 1) >= Number(_month) && _date.getFullYear() >= _year) {
+      if (_date.getUTCDate() >= Number(_day) && (_date.getMonth() + 1) >= Number(_month) && _date.getFullYear() >= Number(_year)) {
         this._publishMaster.createdby = this.global.UserCode;
         this._publishMaster.id = 0;
         this._publishMaster.fromtime = _year + "-" + _month + "-" + _day + " " + _time;
@@ -485,12 +494,21 @@ export class PublishOperationsComponent implements OnInit {
     }
   }
   RemovePlaylist(item: any) {
-    var len = 0;
-    this.selectedPlaylist.forEach(element => {
-      if (element.id == item.id)
-        this.selectedPlaylist.slice(len, 1);
-      len = len + 1;
-    });
+    debugger;
+    for (var i = 0; i < this.selectedPlaylist.length; i++) {
+      if (this.selectedPlaylist[i].id == item.id) {
+        this.selectedPlaylist.splice(i, 1);
+        break;
+      }
+    }
+    for(var j=0;j<this.items.value.length;j++) {
+      if (this.items.value[i].plid == item.id) {
+        this.items.value.splice(i, 1);
+        break;
+      }
+    }
+    this.changeDetect();
+    console.log(this.items);
   }
   checkTimeOverlap(data: any) {
     let _pubFromDate = new Date(data.pubFrom);

@@ -33,6 +33,7 @@ import { PublishStatusComponent } from './components/publish/publish-status/publ
 import { ListViewComponent } from './components/dashboard/list-view/list-view.component';
 import { NetworkReportComponent } from './components/reports/network-report/network-report.component';
 import { PlaylistReportComponent } from './components/reports/playlist-report/playlist-report.component';
+import { PageNotFoundComponent } from './components/shared/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -243,6 +244,9 @@ const routes: Routes = [
     data: { title: 'Playlist Report' },
     canActivate: [AuthGuradService]
   },
+  //Wild Card Route for 404 request 
+  { path: '**', pathMatch: 'full',  
+  component: PageNotFoundComponent }, 
 ];
 
 @NgModule({

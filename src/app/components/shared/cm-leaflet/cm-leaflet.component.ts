@@ -391,8 +391,10 @@ export class CmLeafletComponent implements AfterViewInit {
 		//
 
 		this.map.on("singleclick", (event: any) => {
-			var lonLat = L.proj.toLonLat(event.coordinate);
-			console.log(lonLat);
+			if(this.type.toLowerCase() != "zone") {
+				var lonLat = L.proj.toLonLat(event.coordinate);
+				console.log(lonLat);
+			}
 			//this.addMarker(lonLat[0], lonLat[1]);
 		});
 	}
@@ -459,7 +461,8 @@ export class CmLeafletComponent implements AfterViewInit {
 			else
 				console.log('Invalid Value');
 
-			var mp = new L.Marker([lattitude, longitude]).addTo(this.map);
+				if(this.type.toLowerCase() != "zone")
+					var mp = new L.Marker([lattitude, longitude]).addTo(this.map);
 
 		});
 	}

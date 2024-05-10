@@ -182,7 +182,7 @@
                     [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)" [btnArray]="btnArray"
                     [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)"
                     link="masters/add-party" fieldName="id" (search)="onPageSearch($event)"
-                    (btnAction)="ButtonAction($event)" (searchWithId)="SearchWithId($event)"></app-cm-table>
+                    (btnAction)="ButtonAction($event)" [isSearch]="isSearch" (searchWithId)="SearchWithId($event)"></app-cm-table>
             
         </div>
 

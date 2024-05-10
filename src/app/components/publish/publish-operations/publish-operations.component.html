@@ -89,20 +89,43 @@
                             <div id="test-l-3" class="content">
                                 <div class="row">
                                     <div class="col-md-1"></div>
-                                    <label class="col-md-2 text-right mt-2">Publish From : </label>
-                                    <cm-datetimepicker [inputData]="fromTimeArr" type="from" fromYear="2020"
+                                    <div class="col-md-2">
+                                        <label class="text-right mt-2">Publish From : </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input (ngModel)="globalFromDt" class="form-control" placeholder="yyyy-mm-dd"
+                                            name="dp" [minDate]="minDate" ngbDatepicker #dFromDatePub="ngbDatepicker" />
+                                        <button class="btn btn-outline-primary border-primary"
+                                            (click)="dFromDatePub.toggle()" type="button">
+                                            <i class="fa fa-calendar"></i></button>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <ngb-timepicker (ngModel)="globalFromTm" [seconds]="true"
+                                            class="col-6 float-left" />
+                                    </div>
+                                    <!-- <cm-datetimepicker [inputData]="fromTimeArr" type="from" fromYear="2020"
                                         toYear="2030" class="col-md-8"
-                                        (selectedTime)="GetTime($event,0)"></cm-datetimepicker>
+                                        (selectedTime)="GetTime($event,0)"></cm-datetimepicker> -->
+
+
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-md-1"></div>
                                     <label class="col-md-2 text-right mt-2">Publish To : </label>
-                                    <cm-datetimepicker (inputData)="fromTimeArr" type="to" fromYear="2024" toYear="2030"
-                                        class="col-md-8" (selectedTime)="GetTime($event,1)" [selectedTimeG]="selectedTime"></cm-datetimepicker>
+                                    <!-- <cm-datetimepicker (inputData)="fromTimeArr" type="to" fromYear="2024" toYear="2030"
+                                        class="col-md-8" (selectedTime)="GetTime($event,1)"
+                                        [selectedTimeG]="selectedTime"></cm-datetimepicker> -->
+                                    <input (ngModel)="globalToDt" class="form-control" placeholder="yyyy-mm-dd"
+                                        name="dp" [minDate]="minDate" ngbDatepicker #dToDatePub="ngbDatepicker" />
+                                    <button class="btn btn-outline-primary border-primary" (click)="dToDatePub.toggle()"
+                                        type="button">
+                                        <i class="fa fa-calendar"></i></button>
+                                    <ngb-timepicker (ngModel)="globalToTm" [seconds]="true" class="col-6 float-left" />
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <table class="table table-striped table-bordered table-sm row-border hover">
+                                        <table *ngIf="selectedPlaylist.length > 0"
+                                            class="table table-striped table-bordered table-sm row-border hover">
                                             <thead class="table-dark">
                                                 <tr>
                                                     <th class="text-center">Playlist Name</th>
@@ -111,60 +134,57 @@
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
-                                           
-                                                    <tbody formArrayName="items"
-                                                    *ngFor="let item of form.get('items').controls; let i = index;">
-                                                        <tr [formGroupName]="i">
-                                                            <td class="text-center">
-                                                                <input type="text" [disabled]="true"
-                                                                    formControlName="playlistName" class="form-control"
-                                                                    value="{{selectedPlaylist[i].playlistName}}" />
-                                                            </td>
-                                                            <td>
-                                                                <div class="input-group col-6 float-left">
-                                                                    <input formControlName="fromDate"
-                                                                        class="form-control" placeholder="yyyy-mm-dd"
-                                                                        name="dp" [minDate]="minDate" ngbDatepicker
-                                                                        #dFromDate="ngbDatepicker" />
-                                                                    <button
-                                                                        class="btn btn-outline-primary border-primary"
-                                                                        (click)="dFromDate.toggle()" type="button">
-                                                                        <i class="fa fa-calendar"></i></button>
-                                                                </div>
-                                                                <ngb-timepicker formControlName="fromTime"
-                                                                    [seconds]="true" class="col-6 float-left" />
-                                                            </td>
-                                                            <td>
-                                                                <div class="input-group col-6 float-left">
-                                                                    <input formControlName="toDate" class="form-control"
-                                                                        placeholder="yyyy-mm-dd" name="dp"
-                                                                        [minDate]="minDate" ngbDatepicker
-                                                                        #dToDate="ngbDatepicker" />
-                                                                    <button
-                                                                        class="btn btn-outline-primary border-primary"
-                                                                        (click)="dToDate.toggle()" type="button">
-                                                                        <i class="fa fa-calendar"></i></button>
-                                                                </div>
-                                                                <ngb-timepicker formControlName="toTime"
-                                                                    [seconds]="true" class="col-6 float-left" />
-                                                            </td>
-                                                            <td>
-                                                                <div class="col-md-2 text-center">
-                                                                    <button class="btn btn-danger btn-rounded" (click)="RemovePlaylist(selectedPlaylist[i])">
-                                                                        <i class="fa fa-trash"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                               
+
+                                            <tbody formArrayName="items"
+                                                *ngFor="let item of form.get('items').controls; let i = index;">
+                                                <tr [formGroupName]="i">
+                                                    <td class="text-center">
+                                                        <input type="text" [disabled]="true"
+                                                            formControlName="playlistName" class="form-control"
+                                                            value="{{selectedPlaylist[i].playlistName}}" />
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-group col-6 float-left">
+                                                            <input formControlName="fromDate" class="form-control"
+                                                                placeholder="yyyy-mm-dd" name="dp" [minDate]="minDate"
+                                                                ngbDatepicker #dFromDate="ngbDatepicker" />
+                                                            <button class="btn btn-outline-primary border-primary"
+                                                                (click)="dFromDate.toggle()" type="button">
+                                                                <i class="fa fa-calendar"></i></button>
+                                                        </div>
+                                                        <ngb-timepicker formControlName="fromTime" [seconds]="true"
+                                                            class="col-6 float-left" />
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-group col-6 float-left">
+                                                            <input formControlName="toDate" class="form-control"
+                                                                placeholder="yyyy-mm-dd" name="dp" [minDate]="minDate"
+                                                                ngbDatepicker #dToDate="ngbDatepicker" />
+                                                            <button class="btn btn-outline-primary border-primary"
+                                                                (click)="dToDate.toggle()" type="button">
+                                                                <i class="fa fa-calendar"></i></button>
+                                                        </div>
+                                                        <ngb-timepicker formControlName="toTime" [seconds]="true"
+                                                            class="col-6 float-left" />
+                                                    </td>
+                                                    <td>
+                                                        <div class="col-md-2 text-center">
+                                                            <button class="btn btn-danger btn-rounded"
+                                                                (click)="RemovePlaylist(selectedPlaylist[i])">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+
                                         </table>
                                         <div class="row">
                                             <div class="col-md-12 text-right">
                                                 <button class="btn btn-primary mr-1" (click)="StepPrev(2)">
-                                                   <i class="fa fa-plus-circle"></i> Add Playlist
+                                                    <i class="fa fa-plus-circle"></i> Add Playlist
                                                 </button>
-                                            
+
                                                 <button class="btn btn-primary" (click)="ValidateAndSubmit()">
                                                     Submit
                                                 </button>
