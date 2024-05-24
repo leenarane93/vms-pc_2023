@@ -25,7 +25,7 @@ export class PublishFacadeService {
   removePublishDetails(_data:any) {
     return this._publishService.removePublishDetails(_data);
   }
-  getPublishStatusData(vmsid?:number) {
-    return this._publishService.getPublishStatusData(vmsid);
+  getPublishStatusData(vmsid?:number,status?: number) {
+    return this._publishService.getPublishStatusData(vmsid,status);
   }
 }

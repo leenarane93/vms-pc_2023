@@ -582,3 +582,6 @@ textarea {
 ::ng-deep .bs-stepper .step-trigger.disabled, .bs-stepper .step-trigger:disabled{opacity: 1;}
 ::ng-deep .border-primary{border-color:#b71ec5!important}
 
+.chkBox {
+  padding-bottom: 5px;
+}

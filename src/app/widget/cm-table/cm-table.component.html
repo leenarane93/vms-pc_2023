@@ -18,7 +18,7 @@
           <span *ngIf="head.FieldName == 'isActive' && item[head.FieldName] == 'In Active'" class="badge badge-danger">{{item[head.FieldName]}}</span>
           <span *ngIf="head.FieldName == 'statusText'" [class]="item.class">{{item[head.FieldName]}}</span>
           <span *ngIf="head.type == 'checkbox'">
-            <input  class="form-check-input" (change)="Checked($event,item)"
+            <input  class="chkBox" (change)="Checked($event,item)"
             type="checkbox" id="defaultCheck1">
           </span>
           <span *ngIf="head.FieldName == 'actions' && btnArray.length > 0"><button *ngFor="let btn of btnArray" type="button" class="btn btn-inverse-primary btn-sm" (click)="GoToBtnAction(btn,item)">

@@ -151,7 +151,10 @@ export class AddUserComponent implements OnInit {
         this._facade.updateUser(_usrData).subscribe(r => {
           if (r == 0) {
             this.toast.error("Error occured while saving data");
-          } else {
+          } else if (r == 4) {
+            this.toast.error("Email or Contact number already in use.");
+          }
+          else {
             this.toast.success("Updated successfully.");
             this.clearForm();
           }
@@ -161,6 +164,8 @@ export class AddUserComponent implements OnInit {
         this._facade.addUser(_usrData).subscribe(r => {
           if (r == 0) {
             this.toast.error("Error occured while saving data");
+          } else if (r == 4) {
+            this.toast.error("Email or Contact number already in use.");
           } else {
             this.toast.success("Saved successfully.");
             this.clearForm();

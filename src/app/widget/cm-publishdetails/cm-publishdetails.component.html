@@ -24,7 +24,7 @@
                                 <th class="text-center" *ngIf="data.pubType == 'Sending'">Media Status</th>
                                 <th class="text-center">From Time</th>
                                 <th class="text-center">To Time</th>
-                                <th class="text-center">Action</th>
+                                <!-- <th class="text-center">Action</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -35,12 +35,12 @@
                                 <td class="text-center" *ngIf="data.pubType == 'Sending'">{{ d.sentMedia }} Out Of {{ d.totalMedia }}</td>
                                 <td class="text-center">{{d.fromTime}}</td>
                                 <td class="text-center">{{d.toTime}}</td>
-                                <td class="text-center">
+                                <!-- <td class="text-center">
                                     <button tooltip="Click to Stop" placement="top" delay="500" type="button"
                                         class="btn btn-inverse-primary btn-sm">
                                         <i class="icon-trash"></i>
                                     </button>
-                                </td>
+                                </td> -->
                             </tr>
                         </tbody>
                     </table>

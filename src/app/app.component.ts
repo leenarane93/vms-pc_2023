@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { UserFacadeService } from './facade/facade_services/user-facade.service';
 import { User } from './models/response/User';
-import { Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
 import { SessionService } from './facade/services/common/session.service';
 import { CommonFacadeService } from './facade/facade_services/common-facade.service';
-import {SocketFacadeService} from './facade/facade_services/socket-facade.service';
-import { HubConnection,HubConnectionBuilder  } from '@microsoft/signalr';
+import { SocketFacadeService } from './facade/facade_services/socket-facade.service';
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environment';
 
+let browserRefresh = false;
 
 @Component({
   selector: 'app-root',
@@ -20,28 +21,38 @@ import { environment } from 'src/environment';
 export class AppComponent implements OnInit {
   title = 'vms-pc';
   public _hubConnecton: HubConnection;
-  message:string;
-  messages:any[]=[];
-  config$!:Observable<any>;
-  user!:User;
-  loggedIn:boolean=false;
-  secretCode:any;
-  constructor(private _facadeService:UserFacadeService,
-              private _router: Router,
-              private _commonFacade:CommonFacadeService,
-              private chatService: SocketFacadeService,
-              private _toast:ToastrService
-              ){ 
+  message: string;
+  messages: any[] = [];
+  config$!: Observable<any>;
+  user!: User;
+  loggedIn: boolean = false;
+  secretCode: any;
+  subscription: Subscription;
+  constructor(private _facadeService: UserFacadeService,
+    private _router: Router,
+    private _commonFacade: CommonFacadeService,
+    private chatService: SocketFacadeService,
+    private _toast: ToastrService
+  ) {
     console.log(this.loggedIn);
     this._facadeService.isLoggedin.subscribe(x => {
       debugger;
       this.loggedIn = x.LoggedIn;
-      if(x.LoggedIn == false)
+      if (x.LoggedIn == false)
         this._router.navigate(['login']);
     });
-   }
+
+    //   this.subscription = _router.events.subscribe((event) => {
+    //     if (event instanceof NavigationStart) {
+    //       console.log(browserRefresh);
+    //       console.log(event);
+    //     } else {
+    //       this._router.navigate(['login']);
+    //     }
+    // });
+  }
   //loggedIn = this._facadeService.isLoggedin;
-  
+
   ngOnInit(): void {
     this.user = this._facadeService.user;
     this._commonFacade.setSwaggerUrl();

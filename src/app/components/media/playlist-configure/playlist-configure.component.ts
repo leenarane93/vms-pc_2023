@@ -836,7 +836,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
 
   onDuration(val: any, ele: any) {
     this.dataSource.forEach((eleDta) => {
-      if (eleDta.id == ele.id) {
+      if (eleDta.id == ele.id && ele.uploadSetId == eleDta.uploadSetId) {
         eleDta.duration = val;
       }
     });

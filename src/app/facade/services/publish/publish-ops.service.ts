@@ -34,9 +34,11 @@ export class PublishOpsService {
   removePublishDetails(data: any) {
     return this._httpService._postMethod(data, "publish_api/api/PublishDetails/DeletePlaylist");
   }
-  getPublishStatusData(vmsid?: number) {
-    if (vmsid != undefined && vmsid != null)
-      return this._httpService._getMethod("publish_api/api/PublishDetails/GetPublishStatusData?vmsid=" + vmsid);
+  getPublishStatusData(vmsid?: number, status?: number) {
+    if (vmsid != undefined && vmsid != null && status != null && status != undefined)
+      return this._httpService._getMethod("publish_api/api/PublishDetails/GetPublishStatusData?vmsid=" + vmsid + "&status=" + status);
+    else if (vmsid == undefined && status != undefined)
+      return this._httpService._getMethod("publish_api/api/PublishDetails/GetPublishStatusData?status=" + status);
     else
       return this._httpService._getMethod("publish_api/api/PublishDetails/GetPublishStatusData");
   }

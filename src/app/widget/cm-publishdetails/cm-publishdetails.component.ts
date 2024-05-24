@@ -14,7 +14,7 @@ export class CmPublishdetailsComponent implements OnInit {
   constructor(private modalService:NgbModal,
               private publishService:PublishFacadeService){}
   ngOnInit(): void {
-    this.publishService.getPublishStatusData(this.data.vmsId).subscribe(res=>{
+    this.publishService.getPublishStatusData(this.data.vmsId,this.data.status).subscribe(res=>{
       this.dtSendingPublish = [];
       if(res != null && res != undefined) {
         this.dtSendingPublish = res;

@@ -48,18 +48,19 @@ export class PublishStatusComponent implements OnInit {
     debugger;
     let _data = this.router.getCurrentNavigation()?.extras.state;
     console.log(_data);
-    this.GetPublishStatusData();
+    this.GetPublishStatusData(undefined,0);
     // this.chatService.createEventSource().subscribe(res=>{
     //   console.log(res);
     // });
   }
 
-  getPublishStatusByVmsId(vmsid: number, type:string) {
+  getPublishStatusByVmsId(vmsid: number, type: string,statusVal:number) {
     const modalRef = this.modalService.open(CmPublishdetailsComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
     let dataSend = {
-      vmsId : vmsid,
-      pubType : type
-    } 
+      vmsId: vmsid,
+      pubType: type,
+      status : statusVal
+    }
     modalRef.componentInstance.data = dataSend;
     modalRef.componentInstance.playlistAudit = true;
     modalRef.componentInstance.mediaAudit = false;
@@ -67,13 +68,24 @@ export class PublishStatusComponent implements OnInit {
 
     })
   }
-
-  GetPublishStatusData(vmsid?: number) {
+  TabChange(eve: any) {
+    console.log(eve);
+    if (eve.nextId == 1)
+      this.GetPublishStatusData(undefined, 0);
+    else if (eve.nextId == 2)
+      this.GetPublishStatusData(undefined, 1);
+    else if (eve.nextId == 3)
+      this.GetPublishStatusData(undefined, 2);
+    else if (eve.nextId == 4)
+      this.GetPublishStatusData(undefined, 3);
+  }
+  GetPublishStatusData(vmsid?: number, status?: number) {
+    console.log(this.activetab);
     this.dtCreatedPublish = [];
     this.dtSendingPublish = [];
     this.dtRunningPublish = [];
     this.dtCompletePublish = [];
-    this.publish.getPublishStatusData(vmsid).subscribe(res => {
+    this.publish.getPublishStatusData(vmsid, status).subscribe(res => {
       if (res != null) {
         res.forEach((ele: any) => {
           let _dtFrom = new Date(ele.fromTime);

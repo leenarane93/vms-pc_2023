@@ -18,7 +18,7 @@
         
         <div class="card-header bgTable pb-0" style="color: red;">
           <ul class="nav nav-tabs mb-0 border-0 mt-1 nav-pills nav-fill" id="pills-tab" role="tablist" ngbNav
-            #mediaStatus="ngbNav" [(activeId)]="activetab">
+            #mediaStatus="ngbNav" [(activeId)]="activetab" (navChange)="TabChange($event)">
             <li class="nav-item" [ngbNavItem]="1">
               <a class="nav-link text-center " data-toggle="pill" href="#Created" role="tab"
                 aria-controls="media-upload" aria-selected="true" ngbNavLink> <i class="icon-file-add"></i> Created</a>
@@ -50,7 +50,7 @@
                             <i class="icon-trash"></i>
                           </button> &nbsp;&nbsp;
                           <button tooltip="View More" placement="top" delay="500" type="button"
-                            class="btn btn-inverse-primary btn-sm" (click)="getPublishStatusByVmsId(data.vmsId,'Created')">
+                            class="btn btn-inverse-primary btn-sm" (click)="getPublishStatusByVmsId(data.vmsId,'Created',0)">
                             <i class="icon-outbox"></i>
                           </button>
                         </td>
@@ -94,7 +94,7 @@
                             <i class="icon-trash"></i>
                           </button> &nbsp;&nbsp;
                           <button tooltip="View More" placement="top" delay="500" type="button"
-                            class="btn btn-inverse-primary btn-sm" (click)="getPublishStatusByVmsId(data.vmsId,'Sending')">
+                            class="btn btn-inverse-primary btn-sm" (click)="getPublishStatusByVmsId(data.vmsId,'Sending',1)">
                             <i class="icon-outbox"></i>
                           </button>
                         </td>
@@ -134,7 +134,7 @@
                               <i class="icon-trash"></i>
                             </button> &nbsp;&nbsp;
                             <button tooltip="View More" placement="top" delay="500" type="button"
-                              class="btn btn-inverse-primary btn-sm" (click)="getPublishStatusByVmsId(data.vmsId,'Running')">
+                              class="btn btn-inverse-primary btn-sm" (click)="getPublishStatusByVmsId(data.vmsId,'Running',2)">
                               <i class="icon-outbox"></i>
                             </button>
                           </td>
@@ -174,7 +174,7 @@
                               <i class="icon-trash"></i>
                             </button> &nbsp;&nbsp;
                             <button tooltip="View More" placement="top" delay="500" type="button"
-                              class="btn btn-inverse-primary btn-sm" (click)="getPublishStatusByVmsId(data.vmsId,'Completed')">
+                              class="btn btn-inverse-primary btn-sm" (click)="getPublishStatusByVmsId(data.vmsId,'Completed',3)">
                               <i class="icon-outbox"></i>
                             </button>
                           </td>

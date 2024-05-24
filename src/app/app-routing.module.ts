@@ -245,8 +245,9 @@ const routes: Routes = [
     canActivate: [AuthGuradService]
   },
   //Wild Card Route for 404 request 
-  { path: '**', pathMatch: 'full',  
-  component: PageNotFoundComponent }, 
+  { path: '**',  
+  component: PageNotFoundComponent,
+  canActivate: [AuthGuradService] }, 
 ];
 
 @NgModule({

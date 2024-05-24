@@ -24,10 +24,10 @@ export class PublishOperationsComponent implements OnInit {
   today = inject(NgbCalendar).getToday();
   minDate: any;
   maxDate: any;
-  globalFromDt:any;
-  globalToDt:any;
-  globalFromTm:any;
-  globalToTm:any;
+  globalFromDt: any;
+  globalToDt: any;
+  globalFromTm: any;
+  globalToTm: any;
   model: NgbDateStruct;
   date: { year: number; month: number };
   stepper: Stepper;
@@ -107,6 +107,10 @@ export class PublishOperationsComponent implements OnInit {
     config.placement = 'auto';
 
     this.form = this.fb.group({
+      globalFromDt: ["", Validators.required],
+      globalFromTm: ["", Validators.required],
+      globalToDt: ["", Validators.required],
+      globalToTm: ["", Validators.required],
       items: this.fb.array([])
     })
   }
@@ -407,10 +411,20 @@ export class PublishOperationsComponent implements OnInit {
             _play.startDate = "" + this.form.value.items[i].fromDate.year + "-" + ("0" + this.form.value.items[i].fromDate.month).slice(-2) + "-" + ("0" + this.form.value.items[i].fromDate.day).slice(-2) + " " + ("0" + this.form.value.items[i].fromTime.hour).slice(-2) + ":" + ("0" + this.form.value.items[i].fromTime.minute).slice(-2) + ":" + ("0" + this.form.value.items[i].fromTime.second).slice(-2) + "";
             _play.startTime = "" + this.form.value.items[i].fromDate.year + "-" + ("0" + this.form.value.items[i].fromDate.month).slice(-2) + "-" + ("0" + this.form.value.items[i].fromDate.day).slice(-2) + " " + ("0" + this.form.value.items[i].fromTime.hour).slice(-2) + ":" + ("0" + this.form.value.items[i].fromTime.minute).slice(-2) + ":" + ("0" + this.form.value.items[i].fromTime.second).slice(-2) + "";
             _play.endTime = "" + this.form.value.items[i].toDate.year + "-" + ("0" + this.form.value.items[i].toDate.month).slice(-2) + "-" + ("0" + this.form.value.items[i].toDate.day).slice(-2) + " " + ("0" + this.form.value.items[i].toTime.hour).slice(-2) + ":" + ("0" + this.form.value.items[i].toTime.minute).slice(-2) + ":" + ("0" + this.form.value.items[i].toTime.second).slice(-2) + "";
-            if (_currentTime.getHours() == this.form.value.items[i].fromTime.hour && _currentTime.getMinutes() > this.form.value.items[i].fromTime.minute) {
-              _playTime.push(_play);
-              valid = true;
-            } else if (_currentTime.getHours() > this.form.value.items[i].fromTime.hour) {
+            
+            let plStartDt = this.form.value.items[i].fromDate.year+("0" + this.form.value.items[i].fromDate.month).slice(-2)+("0" + this.form.value.items[i].fromDate.day).slice(-2)+("0" + this.form.value.items[i].fromTime.hour).slice(-2)+("0" + this.form.value.items[i].fromTime.minute).slice(-2)+("0" + this.form.value.items[i].fromTime.second).slice(-2);
+            let plEndDt = this.form.value.items[i].toDate.year+("0" + this.form.value.items[i].toDate.month).slice(-2)+("0" + this.form.value.items[i].toDate.day).slice(-2)+("0" + this.form.value.items[i].toTime.hour).slice(-2)+("0" + this.form.value.items[i].toTime.minute).slice(-2)+("0" + this.form.value.items[i].toTime.second).slice(-2);
+            // if (_currentTime.getHours() == this.form.value.items[i].fromTime.hour && _currentTime.getMinutes() > this.form.value.items[i].fromTime.minute) {
+            //   _playTime.push(_play);
+            //   valid = true;
+            // } else if (_currentTime.getHours() > this.form.value.items[i].fromTime.hour) {
+            //   valid = false;
+            //   break;
+            // } else {
+            //   _playTime.push(_play);
+            //   valid = true;
+            // }
+            if(Number(plStartDt) >= Number(plEndDt)) {
               valid = false;
               break;
             } else {
@@ -493,6 +507,30 @@ export class PublishOperationsComponent implements OnInit {
         this._toast.error("Invalid date selected.");
     }
   }
+  ValidateTime() {
+    console.log(this.form);
+    let pubFromDt = this.form.controls["globalFromDt"].value;
+    let pubToDt = this.form.controls["globalToDt"].value;
+    let pubFromTime = this.form.controls["globalFromTm"].value;
+    let pubToTime = this.form.controls["globalToTm"].value;
+    let globalFromDate = pubFromDt.year + ("0" + pubFromDt.month).slice(-2) + ("0" + pubFromDt.day).slice(-2) + ("0" + pubFromTime.hour).slice(-2) + ("0" + pubFromTime.minute).slice(-2) + ("0" + pubFromTime.second).slice(-2);
+    let globalToDate = pubToDt.year + ("0" + pubToDt.month).slice(-2) + ("0" + pubToDt.day).slice(-2) + ("0" + pubToTime.hour).slice(-2) + ("0" + pubToTime.minute).slice(-2) + ("0" + pubToTime.second).slice(-2);
+    if (Number(globalFromDate) >= Number(globalToDate)) {
+      this._toast.error("Invalid DateTime selected for Publish From and Publish To.");
+      this.form.patchValue({
+        globalFromDt: "",
+        globalToDt: "",
+        globalFromTm: "",
+        globalToTm: ""
+      })
+    } else {
+      this._publishMaster = new PublishMaster();
+      let _fromTime = ("0" + pubFromTime.hour).slice(-2) + ":" + ("0" + pubFromTime.minute).slice(-2) + ":" + ("0" + pubFromTime.second).slice(-2);
+      let _toTime = ("0" + pubToTime.hour).slice(-2) + ":" + ("0" + pubToTime.minute).slice(-2) + ":" + ("0" + pubToTime.second).slice(-2);
+      this._publishMaster.fromtime = pubFromDt.year + "-" + ("0" + pubFromDt.month).slice(-2) + "-" + ("0" + pubFromDt.day).slice(-2) + " " + _fromTime;
+      this._publishMaster.totime = pubToDt.year + "-" + ("0" + pubToDt.month).slice(-2) + "-" + ("0" + pubToDt.day).slice(-2) + " " + _toTime;
+    }
+  }
   RemovePlaylist(item: any) {
     debugger;
     for (var i = 0; i < this.selectedPlaylist.length; i++) {
@@ -501,9 +539,9 @@ export class PublishOperationsComponent implements OnInit {
         break;
       }
     }
-    for(var j=0;j<this.items.value.length;j++) {
+    for (var j = 0; j < this.items.value.length; j++) {
       if (this.items.value[i].plid == item.id) {
-        this.items.value.splice(i, 1);
+        (<FormArray>this.form.controls['items']).removeAt(i);
         break;
       }
     }
@@ -520,6 +558,9 @@ export class PublishOperationsComponent implements OnInit {
         return false;
       }
       else if (_pubToDate < enddate) {
+        return false;
+      }
+      else if (startdate > enddate) {
         return false;
       }
     }
