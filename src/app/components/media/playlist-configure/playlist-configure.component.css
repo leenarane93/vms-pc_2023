@@ -568,3 +568,7 @@ textarea {
 }
 
 ::ng-deep .bs-stepper .step-trigger.disabled, .bs-stepper .step-trigger:disabled{opacity: 1;}
+
+.chkCls{
+  padding-top: 5px;
+}

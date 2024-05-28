@@ -11,6 +11,7 @@ export class CmTableComponent implements OnChanges {
   listOfData: any;
   tooltip: string = "";
   searchText: string = "";
+  @Input() pagination:boolean =true;
   @Input() isSearch: boolean = false;
   @Output() pager = new EventEmitter<number>();
   @Output() searchWithId = new EventEmitter<any>();

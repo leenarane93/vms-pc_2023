@@ -24,6 +24,7 @@ export class PublishOperationsComponent implements OnInit {
   today = inject(NgbCalendar).getToday();
   minDate: any;
   maxDate: any;
+  isSearch:boolean = false;
   globalFromDt: any;
   globalToDt: any;
   globalFromTm: any;
@@ -355,6 +356,7 @@ export class PublishOperationsComponent implements OnInit {
 
   onPageSearch(search: string) {
     this.searchText = search;
+    this.isSearch = true;
     this.filteredPlaylist = [];
     this.playlistList.forEach(element => {
       if (element.playlistName.includes(search)) {

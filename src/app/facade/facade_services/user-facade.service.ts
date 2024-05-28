@@ -35,11 +35,14 @@ export class UserFacadeService {
     private _dashboard: DashboardService,
     private _roleService: RolesService,
     private _menusService: MenusService,
-    private _userService: UserService) {
+    private _userService: UserService,
+    private _sessionService:SessionService) {
+      debugger;
     this.isLoggedin = this.isLoggedinSubject.asObservable();
   }
 
   loginAuthenticate(_login: Login) {
+    debugger;
     //return this._httpService._postMethod(_login,'User_API/api/User/LoginRequest');
     return this._authenticationService.login(_login)
       .pipe(tap(items => this.items.next(items)))
@@ -52,6 +55,7 @@ export class UserFacadeService {
           this.isLoggedinSubject.next(user);
           this._commonaFacade.setSession("access_token", res.token);
           this.user = res;
+          this._sessionService._setSessionValue("LoggedIn",true);
         }
         else {
           var user = new UserLoggedIn();
@@ -79,6 +83,7 @@ export class UserFacadeService {
   }
 
   ClearUserObject() {
+    debugger;
     var _user = new UserLoggedIn();
     _user.LoggedIn = false;
     _user.LoggedInUser = "";

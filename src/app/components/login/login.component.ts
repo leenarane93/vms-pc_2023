@@ -15,6 +15,7 @@ import { UserLoggedIn } from 'src/app/models/$bs/userLoggedIn';
 import { HttpHeaders } from '@angular/common/http';
 import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 import { Globals } from 'src/app/utils/global';
+import { AppComponent } from 'src/app/app.component';
 import { AdminFacadeService } from 'src/app/facade/facade_services/admin-facade.service';
 
 @Component({
@@ -39,7 +40,8 @@ export class LoginComponent implements OnInit {
     private toastr: ToastrService,
     private _adminFacade: AdminFacadeService,
     private route: ActivatedRoute,
-    private global: Globals) {
+    private global: Globals,
+    private _app : AppComponent) {
     //this.config$ = this._facadeService._configData$;
     console.log(this._commonFacade.getSession("api_url"));
     this.version = environment.version;
@@ -49,6 +51,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this._commonFacade.setSession("isLoggedIn", false);
     this._facadeService.ClearUserObject();
+    this._app.loggedIn = false;
     //const bs$ = new BehaviorSubject(this._facadeService.items$);
     //console.log(bs$.getValue());
     //this._facadeService.items$;
@@ -74,9 +77,12 @@ export class LoginComponent implements OnInit {
     this._authenticationService.login(_login).subscribe(res => {
       if (res != null) {
         if (res.status == 1) {
+          this._app.loggedIn = true;
           this._commonFacade.setSession("isLoggedIn", true);
           this._commonFacade.setSession("access_token", res.token);
           this._commonFacade.setSession("userId", res.userId);
+          this._commonFacade.setSession("roleId", res.roleId);
+          this._commonFacade.setSession("userName", res.username);
           var user = new UserLoggedIn();
           user.LoggedIn = true;
           user.LoggedInUser = res.username;

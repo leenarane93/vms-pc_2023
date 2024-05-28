@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as $ from 'jquery';
+import { AppComponent } from 'src/app/app.component';
 import { CommonFacadeService } from 'src/app/facade/facade_services/common-facade.service';
 import { UserFacadeService } from 'src/app/facade/facade_services/user-facade.service';
 import { SessionService } from 'src/app/facade/services/common/session.service';
@@ -20,7 +21,8 @@ export class HeaderComponent {
   constructor(private _userFacade:UserFacadeService,
               private route:ActivatedRoute,
               private _commonFacade:CommonFacadeService,
-              private globals:Globals) {
+              private globals:Globals,
+              private _appComp : AppComponent,) {
                 this.global = globals;
     //this.accountService.user.subscribe(x => this.user = x);
   }
@@ -43,6 +45,7 @@ export class HeaderComponent {
   }
 
   logout() {
+    this._appComp.loggedIn = false;
     this._userFacade.ClearUserObject();
   }
 

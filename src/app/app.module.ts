@@ -68,7 +68,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CdkTableModule } from "@angular/cdk/table";
 import { MediaAuditComponent } from './components/media/media-audit/media-audit.component';
 import {TabsModule} from 'ngx-bootstrap/tabs';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { CmMdAuditComponent } from './widget/cm-md-audit/cm-md-audit.component';
 import { PlaylistAuditComponent } from './components/media/playlist-audit/playlist-audit.component';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -184,6 +184,7 @@ import { PageNotFoundComponent } from './components/shared/page-not-found/page-n
   ],
   exports: [TooltipDirective,BlockCopyPasteDirective],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   DatePipe,
     NgbActiveModal,

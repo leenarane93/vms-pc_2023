@@ -34,7 +34,7 @@
 </div>
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12" *ngIf="pagination || pagination == undefined">
       <app-cm-pagination [totalRecords]="totalRecords" [recordsPerPage]="perPage" [collectionSize]="collectionSize" [totalPages]="totalPages"
         (pageno)="onPageChange($event)" (perPage)="onPageRecordsChange($event)" >
       </app-cm-pagination>

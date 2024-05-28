@@ -10,6 +10,8 @@ import { SocketFacadeService } from './facade/facade_services/socket-facade.serv
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environment';
+import { UserLoggedIn } from './models/$bs/userLoggedIn';
+import { HttpService } from './facade/services/common/http.service';
 
 let browserRefresh = false;
 
@@ -32,15 +34,42 @@ export class AppComponent implements OnInit {
     private _router: Router,
     private _commonFacade: CommonFacadeService,
     private chatService: SocketFacadeService,
-    private _toast: ToastrService
+    private _sessionService: SessionService,
+    private _toast: ToastrService,
+    private _httpService:HttpService,
   ) {
     console.log(this.loggedIn);
-    this._facadeService.isLoggedin.subscribe(x => {
-      debugger;
-      this.loggedIn = x.LoggedIn;
-      if (x.LoggedIn == false)
-        this._router.navigate(['login']);
-    });
+    // this._facadeService.isLoggedin.subscribe(x => {
+    //   debugger;
+    //   this.loggedIn = x.LoggedIn;
+    //   if (x.LoggedIn == false)
+    //     this._router.navigate(['login']);
+    // });
+    debugger;
+    let val = this._sessionService._getSessionValue("isLoggedIn");
+    if (val == false.toString()) {
+      this.loggedIn = false;
+      this._router.navigate(['login']);
+    }
+    else {
+      let val = this._sessionService._getSessionValue("api_url");
+      this._httpService._api_url = JSON.parse(JSON.stringify(val));
+      let _userCode = this._sessionService._getSessionValue("userId") == null ? "" : this._sessionService._getSessionValue("userId");
+      var _user = new UserLoggedIn();
+      _user.LoggedIn = true;
+      _user.LoggedInUser = JSON.stringify(_userCode);
+      _user.LoggedTime = new Date();
+      var res = new User();
+      res.roleId = Number(this._sessionService._getSessionValue("roleId"));
+      res.status = "1";
+      res.token = JSON.stringify(this._sessionService._getSessionValue("access_token"));
+      res.userId = Number(this._sessionService._getSessionValue("userId"));
+      res.username= JSON.stringify(this._sessionService._getSessionValue("userName"));
+      this._facadeService.user = res;
+      this._facadeService.isLoggedinSubject.next(_user);
+      this.loggedIn = true;
+    }
+
 
     //   this.subscription = _router.events.subscribe((event) => {
     //     if (event instanceof NavigationStart) {
