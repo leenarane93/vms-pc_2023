@@ -24,10 +24,12 @@ export class AddVmsComponent implements OnInit {
   brightness: number = 130;
   vmsOn: boolean = false;
   active: boolean = false;
-  range:any;
-  tooltip:any;
-  setValue:any;
-  newPosition:any;
+  range: any;
+  tooltip: any;
+  vmdTypes: any[] = [];
+  selectedVmdType:any;
+  setValue: any;
+  newPosition: any;
   loading: boolean = false;
   submitting: boolean = false;
   zones: any[] = [];
@@ -50,30 +52,29 @@ export class AddVmsComponent implements OnInit {
   }
   ngOnInit(): void {
     let data = this.commonFacade.getSession("ModelShow");
+    debugger;
     this.FillForm(data == null ? "" : JSON.parse(data));
-
-
 
     $(document).ready(() => {
       this.range = document.getElementById("range"),
-      this.tooltip = document.getElementById("tooltip"),
-      this.setValue = () => {
-        const newValue = Number(
+        this.tooltip = document.getElementById("tooltip"),
+        this.setValue = () => {
+          const newValue = Number(
             ((this.range.value - this.range.min) * 100) / (this.range.max - this.range.min)
           ),
-          newPosition = 16 - newValue * 0.32;
-       this.tooltip.innerHTML = `<span>${this.range.value}</span>`;
-       this.brightness = this.range.value;
-        this.tooltip.style.left = `calc(${newValue}% + (${newPosition}px))`;
-        document.documentElement.style.setProperty(
-          "--range-progress",
-          `calc(${newValue}% + (${newPosition}px))`
-        );
-      };
-    document.addEventListener("DOMContentLoaded", this.setValue);
-    this.range.addEventListener("input", this.setValue);
-    }); 
-    
+            newPosition = 16 - newValue * 0.32;
+          this.tooltip.innerHTML = `<span>${this.range.value}</span>`;
+          this.brightness = this.range.value;
+          this.tooltip.style.left = `calc(${newValue}% + (${newPosition}px))`;
+          document.documentElement.style.setProperty(
+            "--range-progress",
+            `calc(${newValue}% + (${newPosition}px))`
+          );
+        };
+      document.addEventListener("DOMContentLoaded", this.setValue);
+      this.range.addEventListener("input", this.setValue);
+    });
+
   }
   get f() { return this.form.controls; }
 
@@ -88,6 +89,7 @@ export class AddVmsComponent implements OnInit {
       this.selectedZone = data.zoneId;
       this.installDate = data.installDate.slice(0, 10);
       this.brightness = data.brightnessCtrl;
+      this.selectedVmdType = data.vmdType;
       this.form.setValue({
         vmsId: data.vmsId,
         serialNo: data.serialNo,
@@ -102,6 +104,7 @@ export class AddVmsComponent implements OnInit {
         isActive: data.isActive,
         brightnessCtrl: data.brightnessCtrl,
         vmson: data.vmsOn,
+        vmdType: data.vmdType
       })
     }
   }
@@ -120,8 +123,10 @@ export class AddVmsComponent implements OnInit {
       isActive: [false, [Validators.required]],
       brightnessCtrl: ['', [Validators.required]],
       vmson: [false, [Validators.required]],
+      vmdType: ['', Validators.required],
     });
     this.GetZones();
+    this.GetVMDType();
   }
 
   getErrorMessage(_controlName: any, _controlLable: any, _isPattern: boolean, _msg: string) {
@@ -131,7 +136,13 @@ export class AddVmsComponent implements OnInit {
   BackToList() {
     this.router.navigate(['masters/vms-master']);
   }
-
+  GetVMDType() {
+    this.adminFacade.getConfigurationByUnit("VMDType").subscribe(res => {
+      if (res != undefined && res != null) {
+        this.vmdTypes = res;
+      }
+    });
+  }
   GetZones() {
     let _request = new InputRequest();
     _request.currentPage = 0;
@@ -177,11 +188,11 @@ export class AddVmsComponent implements OnInit {
   onSubmit() {
     this.AddVmsMaster(0);
   }
-  descriptionCheck(){
+  descriptionCheck() {
     let description = this.form.controls.description.value;
-    if(description.trim() == "") {
-      this.getErrorMessage("description","Description",false,"Invalid data in description");
-      this.form.patchValue({description:""});
+    if (description.trim() == "") {
+      this.getErrorMessage("description", "Description", false, "Invalid data in description");
+      this.form.patchValue({ description: "" });
     }
   }
   AddVmsMaster(type?: any) {
@@ -211,6 +222,7 @@ export class AddVmsComponent implements OnInit {
         } else {
           this.toaster.success("Updated successfully.");
           this.clearForm();
+          this.BackToList();
         }
       })
     }
@@ -221,6 +233,7 @@ export class AddVmsComponent implements OnInit {
         } else {
           this.toaster.success("Saved successfully.");
           this.clearForm();
+          this.BackToList();
         }
       })
     }
@@ -241,24 +254,24 @@ export class AddVmsComponent implements OnInit {
     this.router.navigate(['masters/vms-master']);
   }
 
-  ValidateVMSID(){
+  ValidateVMSID() {
     let vmsid = this.form.controls["vmsId"].value;
-    if(vmsid != undefined && vmsid !="") {
-      this.adminFacade.ValidateVMSId(vmsid,this.id).subscribe(res =>{ 
-        if(res ==0 ) {
-          this.form.patchValue({ vmsId: ""});
+    if (vmsid != undefined && vmsid != "") {
+      this.adminFacade.ValidateVMSId(vmsid, this.id).subscribe(res => {
+        if (res == 0) {
+          this.form.patchValue({ vmsId: "" });
           this.toaster.error("VMSID already in use.");
         }
       })
     }
   }
 
-  ValidateIPAddress(){
+  ValidateIPAddress() {
     let ipadd = this.form.controls["ipAddress"].value;
-    if(ipadd != undefined && ipadd !="") {
-      this.adminFacade.ValidateIPAddress(ipadd,this.id).subscribe(res =>{ 
-        if(res ==0 ) {
-          this.form.patchValue({ ipAddress: ""});
+    if (ipadd != undefined && ipadd != "") {
+      this.adminFacade.ValidateIPAddress(ipadd, this.id).subscribe(res => {
+        if (res == 0) {
+          this.form.patchValue({ ipAddress: "" });
           this.toaster.error("IP Address already in use.");
         }
       })
@@ -266,5 +279,5 @@ export class AddVmsComponent implements OnInit {
   }
 
 
-  
+
 }

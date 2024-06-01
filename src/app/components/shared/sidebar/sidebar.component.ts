@@ -143,7 +143,6 @@ export class SidebarComponent {
 
   ]
   ngOnInit() {
-    debugger;
     this.menus = [];
     this.menusVM = [];
     var data = this._commonFacade.getSession("Role");

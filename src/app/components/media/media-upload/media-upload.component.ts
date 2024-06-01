@@ -154,13 +154,14 @@ export class MediaUploadComponent implements OnInit {
   }
   Validations() {
     let res = true;
+    let size=0;
     if (this.active == 1) {
       if (this.selectedFiles != undefined) {
 
         if (this.selectedFiles.length > 0) {
           for (var i = 0; i < this.selectedFiles.length; i++) {
             if (this.selectedFiles[i].type.includes('image') || this.selectedFiles[i].type.includes('video')) {
-
+              size += this.selectedFiles[i].size;
             }
             else {
               res = false;
@@ -179,6 +180,7 @@ export class MediaUploadComponent implements OnInit {
       }
 
     }
+    
     return res;
   }
   AddMediaUpload() {
@@ -187,18 +189,26 @@ export class MediaUploadComponent implements OnInit {
       formData.append("uploadsetid", this.uploadSetId.toString());
       formData.append("userCode", this.global.UserCode);
       let fileList = this.files;
+      let size = 0; 
       for (var i = 0; i < fileList.length; i++) {
         formData.append("files.files", fileList[i]);
+        size += fileList[i].size;
       }
-      this._mediaFacade.uploadMedia(formData).subscribe(res => {
-        if (res != 0 || res != undefined) {
-          this.toast.success("Saved Successfully");
-          this.Reset(1);
-        }
-        else {
-          this.toast.error("Something went wrong", "Error", { positionClass: "toast-bottom-right" });
-        }
-      })
+      if(size != 0 && size > 25000000) {
+        this.toast.error("File size should be less than 25 MB", "Error", { positionClass: "toast-bottom-right" });
+      }
+      else {
+        this._mediaFacade.uploadMedia(formData).subscribe(res => {
+          if (res != 0 || res != undefined) {
+            this.toast.success("Saved Successfully");
+            this.Reset(1);
+          }
+          else {
+            this.toast.error("Something went wrong", "Error", { positionClass: "toast-bottom-right" });
+          }
+        })
+      }
+      
     }
 
   }

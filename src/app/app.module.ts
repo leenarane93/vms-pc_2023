@@ -91,6 +91,7 @@ import { ToastModule } from 'primeng/toast';
 import { PlaylistReportComponent } from './components/reports/playlist-report/playlist-report.component';
 import { CmPublishdetailsComponent } from './widget/cm-publishdetails/cm-publishdetails.component';
 import { PageNotFoundComponent } from './components/shared/page-not-found/page-not-found.component';
+import { NotificationComponent } from './components/dashboard/notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -147,6 +148,7 @@ import { PageNotFoundComponent } from './components/shared/page-not-found/page-n
     PlaylistReportComponent,
     CmPublishdetailsComponent,
     PageNotFoundComponent,
+    NotificationComponent,
   ],
   imports: [
     CommonModule,

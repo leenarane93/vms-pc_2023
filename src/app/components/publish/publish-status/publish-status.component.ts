@@ -45,7 +45,6 @@ export class PublishStatusComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    debugger;
     let _data = this.router.getCurrentNavigation()?.extras.state;
     console.log(_data);
     this.GetPublishStatusData(undefined,0);

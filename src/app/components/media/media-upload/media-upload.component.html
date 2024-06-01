@@ -19,7 +19,7 @@
                                         <hr>
 
                                         <h5>Upload Set ID : {{uploadSetId}} </h5>
-
+                                        <h6><span style="color: red;"><b>Note : </b>File resolution should be 1920*1080.</span></h6>
                                         <input type="file" #InputVar class="form-control file-upload-primary"
                                             placeholder="Upload Image" (change)="save($event)" multiple="multiple">
 
@@ -46,7 +46,6 @@
                                 <ng-template ngbNavContent>
                                     <div>
                                         <h5>Upload Set ID : {{uploadSetId}} </h5>
-
                                         <table class="table table-bordered table-stripped">
                                             <thead class="table-dark text-center">
                                                 <tr>

@@ -1,5 +1,5 @@
 export const environment = {
-    version:"Ver 2.0.4",
+    version:"Ver 2.0.5",
     production: false,
     user:"superadmin",
     password:"Cms$$2023#1",

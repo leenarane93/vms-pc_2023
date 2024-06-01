@@ -18,6 +18,9 @@ export class AdminFacadeService {
   getConfiguration() {
     return this._adminService.getConfigurationData();
   }
+  getConfigurationByUnit(unit: string) {
+    return this._adminService.getConfigurationByUnit(unit);
+  }
   getKeysDataForConfig(key: string) {
     return this._adminService.getKeysDataForConfig(key);
   }

@@ -534,7 +534,6 @@ export class PublishOperationsComponent implements OnInit {
     }
   }
   RemovePlaylist(item: any) {
-    debugger;
     for (var i = 0; i < this.selectedPlaylist.length; i++) {
       if (this.selectedPlaylist[i].id == item.id) {
         this.selectedPlaylist.splice(i, 1);

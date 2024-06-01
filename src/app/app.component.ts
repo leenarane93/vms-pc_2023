@@ -45,7 +45,6 @@ export class AppComponent implements OnInit {
     //   if (x.LoggedIn == false)
     //     this._router.navigate(['login']);
     // });
-    debugger;
     let val = this._sessionService._getSessionValue("isLoggedIn");
     if (val == false.toString()) {
       this.loggedIn = false;

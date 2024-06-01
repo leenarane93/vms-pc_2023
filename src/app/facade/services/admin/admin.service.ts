@@ -18,7 +18,10 @@ export class AdminService {
   getConfigurationData() {
     return this._httpService._getMethod('administration_api/api/ConfigParam/GetConfigDetails');
   }
-
+  getConfigurationByUnit(unit:string) {
+    return this._httpService._getMethod('administration_api/api/ConfigParam/GetConfigDetailsByUnit?unit='+unit);
+  }
+  
   getKeysDataForConfig(key: string) {
     return this._http.get(this.jsonurl);
   }

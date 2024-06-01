@@ -21,7 +21,6 @@ export class AuthGuradService implements CanActivate {
   }
 
   CheckTokenExpireation(){
-    debugger;
     const token = sessionStorage.getItem("access_token");
     const userId = sessionStorage.getItem("userId");
     this.checkLoggedInUser(userId);

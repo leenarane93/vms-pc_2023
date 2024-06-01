@@ -37,12 +37,10 @@ export class UserFacadeService {
     private _menusService: MenusService,
     private _userService: UserService,
     private _sessionService:SessionService) {
-      debugger;
     this.isLoggedin = this.isLoggedinSubject.asObservable();
   }
 
   loginAuthenticate(_login: Login) {
-    debugger;
     //return this._httpService._postMethod(_login,'User_API/api/User/LoginRequest');
     return this._authenticationService.login(_login)
       .pipe(tap(items => this.items.next(items)))
@@ -83,7 +81,6 @@ export class UserFacadeService {
   }
 
   ClearUserObject() {
-    debugger;
     var _user = new UserLoggedIn();
     _user.LoggedIn = false;
     _user.LoggedInUser = "";
