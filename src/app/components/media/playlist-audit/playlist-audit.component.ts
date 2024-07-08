@@ -163,6 +163,7 @@ export class PlaylistAuditComponent implements OnInit {
               plWidth: actiondata.data.width,
               plMaster: actiondata.data,
               checkedUpd: true,
+              title : "Playlist Audit"
             };
 
             const modalRef = this.modalService.open(CmMdAuditComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });

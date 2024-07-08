@@ -53,6 +53,7 @@ export class ZoneMngComponent {
     this._request.pageSize = this.recordPerPage;
     this._request.startId = this.startId;
     this._request.searchItem = this.searchText;
+    this._request.cacheKey = "ZoneMaster";
     //get request from web api
     this.adminFacade.getZones(this._request).subscribe(data => {
       if (data != null && data != undefined) {

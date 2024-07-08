@@ -34,7 +34,7 @@
                             <div class="mb-3 col">
                                 <label class="form-label">UserName (Login ID)*</label>
                                 <input type="text" formControlName="username" class="form-control"
-                                    placeholder="UserName (Login ID)"
+                                    placeholder="UserName (Login ID)" (focusout)="ValidateUserName()"
                                     [ngClass]="{ 'is-invalid': f['username'].touched && f['username'].errors, 'is-valid': f['username'].valid }" />
                                 <div *ngIf="f['username'].touched && f['username'].errors" class="invalid-feedback">
                                     <div>{{getErrorMessage('username','UserName (Login ID)',true,"Invalid data available in UserName (Login ID)")}}

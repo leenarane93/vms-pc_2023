@@ -24,7 +24,8 @@ export class PublishOperationsComponent implements OnInit {
   today = inject(NgbCalendar).getToday();
   minDate: any;
   maxDate: any;
-  isSearch:boolean = false;
+  ishidevms:boolean = false;
+  isSearch: boolean = false;
   globalFromDt: any;
   globalToDt: any;
   globalFromTm: any;
@@ -204,6 +205,7 @@ export class PublishOperationsComponent implements OnInit {
 
   getSelectedZone(eve: any, type: number) {
     if (type == 1) {
+      this.ishidevms = false;
       if (eve.length > 0) {
         eve.forEach((ele: any) => {
           this.selectedZones.push(ele.value);
@@ -214,15 +216,35 @@ export class PublishOperationsComponent implements OnInit {
       }
     }
     else {
-      if (this.selectedZones.length > 0) {
+      if (eve.length == 0 ) {
+        var _idx = 0;
+        // this.selectedZones.forEach(element => {
+        //   _idx++;
+        //     this.selectedZones.splice(_idx - 1, 1);
+        // });
+        this.selectedZones = [];
+        this.ishidevms = true;
+        this.selectedVMS = [];
+      }
+      else if(eve.displayName == undefined ) {
+        // this.selectedZones.forEach(element => {
+        //   _idx++;
+        //     this.selectedZones.splice(_idx - 1, 1);
+        // });
+        this.selectedZones = [];
+        this.ishidevms = true;
+        this.selectedVMS = [];
+      }
+      else {
         var _idx = 0;
         this.selectedZones.forEach(element => {
           _idx++;
-          if (element == eve.value)
+          if(eve.value == element)
             this.selectedZones.splice(_idx - 1, 1);
         });
       }
       this._inputVmsData = [];
+      //this.ishidevms = true;
     }
     this._publish.getVmsDetailsByZone(this.selectedZones).subscribe(res => {
       if (res != null && res.length > 0) {
@@ -413,9 +435,9 @@ export class PublishOperationsComponent implements OnInit {
             _play.startDate = "" + this.form.value.items[i].fromDate.year + "-" + ("0" + this.form.value.items[i].fromDate.month).slice(-2) + "-" + ("0" + this.form.value.items[i].fromDate.day).slice(-2) + " " + ("0" + this.form.value.items[i].fromTime.hour).slice(-2) + ":" + ("0" + this.form.value.items[i].fromTime.minute).slice(-2) + ":" + ("0" + this.form.value.items[i].fromTime.second).slice(-2) + "";
             _play.startTime = "" + this.form.value.items[i].fromDate.year + "-" + ("0" + this.form.value.items[i].fromDate.month).slice(-2) + "-" + ("0" + this.form.value.items[i].fromDate.day).slice(-2) + " " + ("0" + this.form.value.items[i].fromTime.hour).slice(-2) + ":" + ("0" + this.form.value.items[i].fromTime.minute).slice(-2) + ":" + ("0" + this.form.value.items[i].fromTime.second).slice(-2) + "";
             _play.endTime = "" + this.form.value.items[i].toDate.year + "-" + ("0" + this.form.value.items[i].toDate.month).slice(-2) + "-" + ("0" + this.form.value.items[i].toDate.day).slice(-2) + " " + ("0" + this.form.value.items[i].toTime.hour).slice(-2) + ":" + ("0" + this.form.value.items[i].toTime.minute).slice(-2) + ":" + ("0" + this.form.value.items[i].toTime.second).slice(-2) + "";
-            
-            let plStartDt = this.form.value.items[i].fromDate.year+("0" + this.form.value.items[i].fromDate.month).slice(-2)+("0" + this.form.value.items[i].fromDate.day).slice(-2)+("0" + this.form.value.items[i].fromTime.hour).slice(-2)+("0" + this.form.value.items[i].fromTime.minute).slice(-2)+("0" + this.form.value.items[i].fromTime.second).slice(-2);
-            let plEndDt = this.form.value.items[i].toDate.year+("0" + this.form.value.items[i].toDate.month).slice(-2)+("0" + this.form.value.items[i].toDate.day).slice(-2)+("0" + this.form.value.items[i].toTime.hour).slice(-2)+("0" + this.form.value.items[i].toTime.minute).slice(-2)+("0" + this.form.value.items[i].toTime.second).slice(-2);
+
+            let plStartDt = this.form.value.items[i].fromDate.year + ("0" + this.form.value.items[i].fromDate.month).slice(-2) + ("0" + this.form.value.items[i].fromDate.day).slice(-2) + ("0" + this.form.value.items[i].fromTime.hour).slice(-2) + ("0" + this.form.value.items[i].fromTime.minute).slice(-2) + ("0" + this.form.value.items[i].fromTime.second).slice(-2);
+            let plEndDt = this.form.value.items[i].toDate.year + ("0" + this.form.value.items[i].toDate.month).slice(-2) + ("0" + this.form.value.items[i].toDate.day).slice(-2) + ("0" + this.form.value.items[i].toTime.hour).slice(-2) + ("0" + this.form.value.items[i].toTime.minute).slice(-2) + ("0" + this.form.value.items[i].toTime.second).slice(-2);
             // if (_currentTime.getHours() == this.form.value.items[i].fromTime.hour && _currentTime.getMinutes() > this.form.value.items[i].fromTime.minute) {
             //   _playTime.push(_play);
             //   valid = true;
@@ -426,7 +448,7 @@ export class PublishOperationsComponent implements OnInit {
             //   _playTime.push(_play);
             //   valid = true;
             // }
-            if(Number(plStartDt) >= Number(plEndDt)) {
+            if (Number(plStartDt) >= Number(plEndDt)) {
               valid = false;
               break;
             } else {
@@ -532,6 +554,9 @@ export class PublishOperationsComponent implements OnInit {
       this._publishMaster.fromtime = pubFromDt.year + "-" + ("0" + pubFromDt.month).slice(-2) + "-" + ("0" + pubFromDt.day).slice(-2) + " " + _fromTime;
       this._publishMaster.totime = pubToDt.year + "-" + ("0" + pubToDt.month).slice(-2) + "-" + ("0" + pubToDt.day).slice(-2) + " " + _toTime;
     }
+  }
+  keyPress(event: KeyboardEvent) {
+    event.preventDefault();
   }
   RemovePlaylist(item: any) {
     for (var i = 0; i < this.selectedPlaylist.length; i++) {

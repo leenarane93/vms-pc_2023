@@ -23,4 +23,8 @@ export class UserService {
   updateUser(_data: any) {
     return this._httpService._postMethod(_data, 'user_api/api/User/PutUserMaster');
   }
+
+  ValidateUserName(_data: any) {
+    return this._httpService._getMethod('user_api/api/User/ValidateUserName?username='+_data);
+  }
 }

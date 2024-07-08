@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environment';
 import { UserLoggedIn } from './models/$bs/userLoggedIn';
 import { HttpService } from './facade/services/common/http.service';
+import { Globals } from './utils/global';
 
 let browserRefresh = false;
 
@@ -37,6 +38,7 @@ export class AppComponent implements OnInit {
     private _sessionService: SessionService,
     private _toast: ToastrService,
     private _httpService:HttpService,
+    private _global:Globals
   ) {
     console.log(this.loggedIn);
     // this._facadeService.isLoggedin.subscribe(x => {
@@ -66,6 +68,7 @@ export class AppComponent implements OnInit {
       res.username= JSON.stringify(this._sessionService._getSessionValue("userName"));
       this._facadeService.user = res;
       this._facadeService.isLoggedinSubject.next(_user);
+      this._global.UserCode = this._commonFacade.getSession("userName");
       this.loggedIn = true;
     }
 

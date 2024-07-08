@@ -32,7 +32,7 @@
                                 </div>
                             </div>
                             <div class="mb-9 col">
-                                <label class="form-label">Unit Of Measurement*</label> 
+                                <label class="form-label">Unit Of Measurement*</label> {{this.selectedUOM}}
                                 <select class="form-control form-control-sm" formControlName="uomName" [(ngModel)] = "selectedUOM"
                                     [ngClass]="{'is-invalid': submitting && f['uomName'].errors}">
                                     <option value="0" selected>Select UOM</option>

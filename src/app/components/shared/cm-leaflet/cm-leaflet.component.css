@@ -21,3 +21,6 @@
   ::ng-deep .leaflet-popup-content{
     color: #ffffff!important;
   }
+  ::ng-deep .leaflet-touch .leaflet-right .leaflet-draw-actions{
+    display: none!important;
+  }

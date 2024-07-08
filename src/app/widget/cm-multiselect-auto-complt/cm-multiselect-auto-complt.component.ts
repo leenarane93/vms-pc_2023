@@ -11,6 +11,7 @@ export class CmMultiselectAutoCompltComponent implements OnInit {
   @Input() inputData: any;
   @Input() dropdownSettings: IDropdownSettings = {};
   @Input() label: string;
+  @Input() isHide:boolean = false;
   @Output() selectedItem = new EventEmitter<any>();
   @Output() deSelectedItem = new EventEmitter<any>();
   @Input() notifyIsReset: () => void;

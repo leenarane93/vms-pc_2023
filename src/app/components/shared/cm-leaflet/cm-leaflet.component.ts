@@ -304,16 +304,18 @@ export class CmLeafletComponent implements AfterViewInit {
 					circle: false,
 					circlemarker: false,
 					marker: false,
+					
 				},
 				edit: {
 					featureGroup: this.drawnItems, //REQUIRED!!
 					edit: false,
 					remove: false,
+					
 				}
 			};
 		}
 		
-
+		
 		var drawControl = new L.Control.Draw(this.options);
 		this.map.addControl(drawControl);
 

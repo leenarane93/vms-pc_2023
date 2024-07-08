@@ -1,6 +1,6 @@
 
             <div class="form-group row">
-                <div class="col-md-12" *ngIf="inputData != undefined">
+                <div class="col-md-12" *ngIf="inputData != undefined && isHide == false">
                     <label for="">{{label}}</label>
                     <form [formGroup]="form">
                         <ng-multiselect-dropdown name="zones" (onSelectAll)="selectAll($event,1)"

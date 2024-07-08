@@ -133,4 +133,8 @@ export class UserFacadeService {
   getUserDetailsById(_data:any) {
     return this._userService.getUserDetails(_data);
   }
+
+  validateUserName(_data:any) {
+    return this._userService.ValidateUserName(_data);
+  }
 }

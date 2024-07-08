@@ -23,7 +23,7 @@ export class AddRoleComponent implements OnInit {
   loading: boolean = false;
   submitting: boolean = false;
   id: number = 0;
-  selectedRole : number= 0;
+  selectedRole: number = 0;
   constructor(private router: Router,
     private global: Globals,
     private formBuilder: FormBuilder,
@@ -31,7 +31,7 @@ export class AddRoleComponent implements OnInit {
     private toast: ToastrService,
     private userFacade: UserFacadeService,
     private ngModal: NgbModal,
-    private confirmationDialogService:ConfirmationDialogService
+    private confirmationDialogService: ConfirmationDialogService
   ) {
     this.global.CurrentPage = "Add Role";
     this.BuildForm();
@@ -86,7 +86,7 @@ export class AddRoleComponent implements OnInit {
   onSubmit() {
     this.SaveData(0);
   }
-  SaveData(type:number) {
+  SaveData(type: number) {
     let _roleData = new RoleMaster();
     if (this.id != 0)
       _roleData.id = this.id;
@@ -94,15 +94,18 @@ export class AddRoleComponent implements OnInit {
     _roleData.description = this.form.controls.description.value;
     _roleData.createdBy = this.global.UserCode;
     _roleData.isActive = this.active;
-    if(type == 1)
+    if (type == 1)
       _roleData.isDeleted = true;
     if (this.id != 0) {
       this.userFacade.updateRoles(_roleData).subscribe(r => {
         if (r == 0) {
           this.toast.error("Error occured while saving data");
-        } else {
+        } else if (r == -1) {
+          this.toast.error("Role name already in used.");
+        }
+        else {
           this.toast.success("Updated successfully.");
-          if(type == 1)
+          if (type == 1)
             this.BackToList();
           //this.clearForm();
         }
@@ -112,6 +115,8 @@ export class AddRoleComponent implements OnInit {
       this.userFacade.addRoles(_roleData).subscribe(r => {
         if (r == 0) {
           this.toast.error("Error occured while saving data");
+        } else if (r == -1) {
+          this.toast.error("Role name already in used.");
         } else {
           this.toast.success("Saved successfully.");
           this.isEdit = true;
@@ -124,19 +129,19 @@ export class AddRoleComponent implements OnInit {
   }
   goToAccessConfig() {
     const modalRef = this.ngModal.open(AccessConfigComponent, { windowClass: 'rounded-7', size: 'xl' });
-    modalRef.componentInstance.selectedRole =this.selectedRole;
+    modalRef.componentInstance.selectedRole = this.selectedRole;
     modalRef.result.then((result) => {
       if (result) {
         console.log(result);
       }
     });
   }
-  removeRole(){
+  removeRole() {
     this.confirmationDialogService.confirm('Please confirm..', 'Do you really want to remove this role... ?')
-    .then((confirmed) => {if(confirmed == true) this.RemoveRole()})
-    .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
+      .then((confirmed) => { if (confirmed == true) this.RemoveRole() })
+      .catch(() => console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
   }
-  RemoveRole(){
+  RemoveRole() {
     this.SaveData(1);
   }
 }

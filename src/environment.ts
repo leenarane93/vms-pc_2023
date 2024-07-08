@@ -1,5 +1,5 @@
 export const environment = {
-    version:"Ver 2.0.5",
+    version:"Ver 2.0.6",
     production: false,
     user:"superadmin",
     password:"Cms$$2023#1",
@@ -12,9 +12,9 @@ export const environment = {
     // Socket_URL : "172.19.32.51:8028",
 
     //Vadodara UAT Server Settings
-    //SSE_Url : "https://10.20.1.111:8025/publish_api/notify",
-    //Socket_URL : "10.20.1.111:8028",
-    //PreviewPath : "https://10.20.1.111:8025/mediaLists/playlists/",
+    // SSE_Url : "https://10.20.1.111:8025/publish_api/notify",
+    // Socket_URL : "10.20.1.111:8028",
+    // PreviewPath : "https://10.20.1.111:8025/mediaLists/playlists/",
 
     //Development Settings
     PreviewPath : "https://172.19.32.161:442/mediaLists/playlists/",

@@ -8,7 +8,7 @@ import { SessionService } from '../services/common/session.service';
   providedIn: 'root'
 })
 export class CommonFacadeService {
-
+  loader:boolean= false;
   constructor(private _sessionService:SessionService,
     private _encdecService: EncdecService,
     private _httpService:HttpService){}

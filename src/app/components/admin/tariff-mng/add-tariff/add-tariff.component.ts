@@ -37,8 +37,9 @@ export class AddTariffComponent {
   ngOnInit(): void {
     this.id = 0;
     let data = this._common.getSession("ModelShow");
-    this.FillForm(data == null ? "" : JSON.parse(data));
     this.selectedUOM = "0";
+    this.FillForm(data == null ? "" : JSON.parse(data));
+    
   }
   get f() { return this.form.controls; }
   BuildForm() {
@@ -78,7 +79,7 @@ export class AddTariffComponent {
       this.form.setValue({
         tarrifCode: data.tarrifCode,
         tarrifType: data.tarrifType,
-        uomName: uom,
+        uomName: data.uomName,
         amount: data.amount,
         gstPer: data.gstPer,
         totalAmount: data.totalAmount,

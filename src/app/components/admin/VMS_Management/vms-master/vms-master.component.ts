@@ -79,7 +79,7 @@ export class VmsMasterComponent {
     this._request.pageSize = this.recordPerPage;
     this._request.startId = this.startId;
     this._request.searchItem = this.searchText;
-
+    this._request.cacheKey = "VMSMaster";
     this.adminFacade.getVmss(this._request).subscribe(data => {
       if (data != null && data != undefined) {
 

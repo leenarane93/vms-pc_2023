@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   submitted = false;
   config$!: Observable<any>;
   _isLoggedIn: boolean = false;
-  swaggerUrl :any;
+  swaggerUrl: any;
   constructor(private formBuilder: FormBuilder,
     private _authenticationService: AuthenticationService,
     private loaderService: LoaderService,
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
     private _adminFacade: AdminFacadeService,
     private route: ActivatedRoute,
     private global: Globals,
-    private _app : AppComponent) {
+    private _app: AppComponent) {
     //this.config$ = this._facadeService._configData$;
     console.log(this._commonFacade.getSession("api_url"));
     this.version = environment.version;
@@ -118,8 +118,9 @@ export class LoginComponent implements OnInit {
             this.router.navigate(["dashboard"]);
           }
         }
-        else
-          this.toastr.warning(res.token, "Error", { positionClass: 'toast-bottom-right' });
+        else {
+          this.toastr.error(res.message,"Error");
+        }
       }
     })
   }

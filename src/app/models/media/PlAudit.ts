@@ -10,6 +10,7 @@ export class PlaylistAuditMedias {
     blocks: BlData[];
     plMaster: PlaylistMaster;
     checkedUpd: boolean;
+    title:string;
 }
 
 

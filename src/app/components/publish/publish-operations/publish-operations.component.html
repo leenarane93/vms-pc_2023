@@ -47,13 +47,13 @@
                                         <cm-multiselect-auto-complt [inputData]="_inputZoneData" [label]="label1"
                                             [dropdownSettings]="dropdownSettings"
                                             (selectedItem)="getSelectedZone($event,1)"
-                                            (deSelectedItem)="getSelectedZone($event,0)"></cm-multiselect-auto-complt>
+                                            (deSelectedItem)="getSelectedZone($event,0)" [isHide]="false"></cm-multiselect-auto-complt>
                                     </div>
                                     <div class="col-md-6" *ngIf="_inputVmsData != undefined">
                                         <cm-multiselect-auto-complt [inputData]="_inputVmsData" [label]="label2"
                                             [dropdownSettings]="dropdownSettingsVms"
                                             (selectedItem)="getSelectedVms($event,1)"
-                                            (deSelectedItem)="getSelectedVms($event,0)"></cm-multiselect-auto-complt>
+                                            (deSelectedItem)="getSelectedVms($event,0)" [isHide]="ishidevms"></cm-multiselect-auto-complt>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -94,7 +94,7 @@
                                     
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                        <input formControlName="globalFromDt" class="form-control" placeholder="yyyy-mm-dd"
+                                        <input formControlName="globalFromDt" appBlockCopyPaste (keypress)="keyPress($event)" class="form-control" placeholder="yyyy-mm-dd"
                                             name="dp" [minDate]="minDate" ngbDatepicker #dFromDatePub="ngbDatepicker" />
                                         <button class="btn btn-outline-primary border-primary"
                                             (click)="dFromDatePub.toggle()" type="button">
@@ -118,7 +118,7 @@
                                         [selectedTimeG]="selectedTime"></cm-datetimepicker> -->
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                    <input formControlName="globalToDt" class="form-control" placeholder="yyyy-mm-dd"
+                                    <input formControlName="globalToDt" appBlockCopyPaste class="form-control" (keypress)="keyPress($event)" placeholder="yyyy-mm-dd"
                                         name="dp" [minDate]="minDate" ngbDatepicker #dToDatePub="ngbDatepicker" />
                                     <button class="btn btn-outline-primary border-primary" (click)="dToDatePub.toggle()"
                                         type="button">
@@ -151,7 +151,7 @@
                                                     <td>
                                                         <div class="input-group col-6 float-left">
                                                             <input formControlName="fromDate" class="form-control"
-                                                                placeholder="yyyy-mm-dd" name="dp" [minDate]="minDate"
+                                                                placeholder="yyyy-mm-dd" name="dp" [minDate]="minDate" (keypress)="keyPress($event)" appBlockCopyPaste
                                                                 ngbDatepicker #dFromDate="ngbDatepicker" />
                                                             <button class="btn btn-outline-primary border-primary"
                                                                 (click)="dFromDate.toggle()" type="button">
@@ -163,7 +163,7 @@
                                                     <td>
                                                         <div class="input-group col-6 float-left">
                                                             <input formControlName="toDate" class="form-control"
-                                                                placeholder="yyyy-mm-dd" name="dp" [minDate]="minDate"
+                                                                placeholder="yyyy-mm-dd" name="dp" [minDate]="minDate" (keypress)="keyPress($event)" appBlockCopyPaste
                                                                 ngbDatepicker #dToDate="ngbDatepicker" />
                                                             <button class="btn btn-outline-primary border-primary"
                                                                 (click)="dToDate.toggle()" type="button">

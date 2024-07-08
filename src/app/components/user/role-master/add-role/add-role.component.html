@@ -61,6 +61,11 @@
                                 Next
                             </button>
 
+                            <button *ngIf="id != 0" [disabled]="!form.valid" class="btn btn-primary mr-2" >
+                                <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+                                Save
+                            </button>
+
                             <button [disabled]="!form.valid" type="button" class="btn btn-secondary" (click)="clearForm()">
                                 <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
                                 Reset

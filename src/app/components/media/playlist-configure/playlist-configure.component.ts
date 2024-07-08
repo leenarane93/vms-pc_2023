@@ -139,7 +139,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
     private _media: MediaFacadeService,
     private modalService: NgbModal,
     private _common: CommonFacadeService,
-    private _session:SessionService
+    private _session: SessionService
   ) { config.seconds = true; config.spinners = false; this.global.CurrentPage = "Playlist Configuration" }
 
   ngAfterViewInit(): void {
@@ -228,7 +228,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
           this.ValidatePlaylistName(_master);
         }
         if (this.isCopy == true) {
-          this.form.patchValue({playlistName:""});
+          this.form.patchValue({ playlistName: "" });
           this.ValidatePlaylistName(_master);
           this.GetplBlData();
         }
@@ -280,7 +280,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
       else {
         if (this.selectedMedia.length > 0) {
           if (this.isCopy == true) {
-            this.form.patchValue({playlistName:""});
+            this.form.patchValue({ playlistName: "" });
             this.selectedMedia.forEach(ele => {
               this.dataSource.push(ele);
             });
@@ -324,7 +324,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
                 if (this.isCopy == true)
                   type = 1;
                 this.plBlData = [];
-                let res : boolean = false;
+                let res: boolean = false;
                 for (var i = 0; i < this.dataSource.length; i++) {
                   let _pl = new PlBlMdDetails();
                   this.dataSource[i].seqNo = i + 1;
@@ -332,39 +332,42 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
                   _pl.duration = this.dataSource[i].duration;
                   _pl.effectIn = 0;
                   _pl.effectOut = 0;
-                  _pl.mdId = this.dataSource[i].id;
+                  if (this.isCopy == true)
+                    _pl.mdId = this.dataSource[i].mdId;
+                  else
+                    _pl.mdId = this.dataSource[i].id;
                   _pl.partyId = this.dataSource[i].party;
                   _pl.tarrifId = this.dataSource[i].tarrif;
                   _pl.plId = this.plid;
                   _pl.sequenceNo = this.dataSource[i].seqNo;
                   _pl.mdType = this.dataSource[i].mdType;
                   _pl.mediaName = this.plid + "_" + this.dataSource[i].seqNo + ".avi";
-                  if(_pl.duration == undefined || _pl.duration == 0) {
-                    res =true;
+                  if (_pl.duration == undefined || _pl.duration == 0) {
+                    res = true;
                     break;
-                  } else if(_pl.tarrifId == undefined || _pl.tarrifId == 0)  {
-                    res =true;
+                  } else if (_pl.tarrifId == undefined || _pl.tarrifId == 0) {
+                    res = true;
                     break;
-                  } else if(_pl.partyId == undefined || _pl.partyId == 0)  {
-                    res =true;
+                  } else if (_pl.partyId == undefined || _pl.partyId == 0) {
+                    res = true;
                     break;
                   }
                   this.plBlData.push(_pl);
                 }
-                if(res == false) {
+                if (res == false) {
                   this._media.addPlaylistMedia(this.plBlData, type).subscribe(res => {
                     if (res != undefined && res != null && res.length != 0) {
                       this.toast.success("Saved Successfully.");
                       this.router.navigate(['medias/playlist-creation']);
                     }
-                  },(error)=>{
+                  }, (error) => {
                     this.toast.error("Invalid data entered in fields.");
                     console.log(error);
                   });
                 } else {
                   this.toast.error("Invalid data entered in fields.");
                 }
-                
+
               }
             }
             else {
@@ -386,6 +389,14 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
           ele.party = ele.partyId;
           ele.tarrif = ele.tarrifId;
           this.dataSource.push(ele);
+          if (this.isCopy == true) {
+            var _ele = {
+              id: ele.mdId,
+              fileName: ele.mediaName,
+              isChecked: true
+            }
+            this.selectedMedia.push(_ele);
+          }
         });
       }
     })
@@ -819,7 +830,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
   ViewMedia(_data: any) {
     let mediaPath = this._session.getnetworkreportXview();
     if (_data.textContent != undefined && _data.textContent != "") {
-      let strFilePath = mediaPath + _data.uploadSetId +"//"+_data.fileName;
+      let strFilePath = mediaPath + _data.uploadSetId + "//" + _data.fileName;
       let _inputData = { "filePath": strFilePath, "fileName": _data.fileName, modalType: "playlistcreation", mediaType: "playlistcreation", "fileType": "Image", "uploadSetId": _data.uploadSetId };
       const modalRef = this.modalService.open(CmMediaModalComponent, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
       let _reqdata = { "action": "view", urls: [], modalType: "playlistcreation", content: _inputData };
@@ -941,7 +952,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
               this.toast.success("Saved Successfully");
               this.form.reset();
               this.plid = res;
-              if(this.isCopy == true)
+              if (this.isCopy == true)
                 this.stepper.to(4);
               // else 
               //   this.stepper.next();

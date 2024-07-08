@@ -112,7 +112,7 @@ saveConfiguration() {
       }
   });
   if(valid == true) {
-    this._loader.showLoader();
+    //this._loader.showLoader();
     this._adminFacade.AddConfigData(_data).subscribe(res => {
       if(res == 1)
       {

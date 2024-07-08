@@ -24,6 +24,7 @@ export class AddUserComponent implements OnInit {
   loading: boolean = false;
   submitting: boolean = false;
   id: number = 0;
+  formValidations :any;
   formItems !: FormArray;
   totalAmt !: number;
   selectedRole !: any;
@@ -80,6 +81,12 @@ export class AddUserComponent implements OnInit {
         emailId: data.emailId,
         isActive: this.active
       })
+
+      this.formValidations = {
+        "username" : data.username,
+        "mobileno" : data.mobileNo,
+        "emailId" :  data.emailId
+      }
     }
   }
   getErrorMessage(_controlName: any, _controlLable: any, _isPattern: boolean = false, _msg: string) {
@@ -180,5 +187,28 @@ export class AddUserComponent implements OnInit {
       this.toast.error("Please enter valid mobile no.");
       this.form.patchValue({ mobileNo: "" });
     }
+  }
+
+  ValidateUserName() {
+    let username = this.form.controls["username"].value;
+    if(this.formValidations != undefined || this.formValidations != null) {
+      if(this.formValidations.username.toLocaleLowerCase() != username.toLocaleLowerCase()){
+        this.usernamevalidation(username);
+      }
+    }
+    else {
+      this.usernamevalidation(username);
+    }
+  }
+
+  usernamevalidation(username:any){
+    this._facade.validateUserName(username).subscribe(res=>{
+      if(res == 0) {
+        this.toast.error("Username is already in used.");
+        this.form.patchValue({
+          username : ""
+        })
+      }
+    })
   }
 }

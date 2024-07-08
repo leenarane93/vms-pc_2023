@@ -48,6 +48,9 @@ export class CmMdAuditComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    if(this.data.title != undefined  && this.data.title != "") {
+      this.type = this.data.title;
+    }
     this.isVdo = false;
     if (this.mediaAudit)
       this.getMediaUploadBySetID();

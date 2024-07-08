@@ -53,6 +53,7 @@ export class MediaDetails {
     selected: boolean;
     isNew: boolean;
     mdType: string;
+    mdId:number;
 }
 
 export class mediaAudit {

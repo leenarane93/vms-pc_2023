@@ -61,6 +61,7 @@ export class PlaylistCreationComponent {
     this.getPlaylistData();
   }
   getPlaylistData() {
+    this._commonFacade.loader = true;
     this._request.currentPage = this.pager;
     this._request.pageSize = this.recordPerPage;
     this._request.startId = this.startId;
@@ -83,6 +84,10 @@ export class PlaylistCreationComponent {
         else
           ele.isActive = "In Active";
       });
+      //this._commonFacade.loader = false;
+    },(error)=>{
+      console.log(error);
+      //this._commonFacade.loader = false;
     })
   }
   onPager(pager: number) {
