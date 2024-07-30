@@ -92,6 +92,7 @@ import { PlaylistReportComponent } from './components/reports/playlist-report/pl
 import { CmPublishdetailsComponent } from './widget/cm-publishdetails/cm-publishdetails.component';
 import { PageNotFoundComponent } from './components/shared/page-not-found/page-not-found.component';
 import { NotificationComponent } from './components/dashboard/notification/notification.component';
+import { CronMngComponent } from './components/publish/cron-mng/cron-mng.component';
 
 @NgModule({
   declarations: [
@@ -149,6 +150,7 @@ import { NotificationComponent } from './components/dashboard/notification/notif
     CmPublishdetailsComponent,
     PageNotFoundComponent,
     NotificationComponent,
+    CronMngComponent,
   ],
   imports: [
     CommonModule,

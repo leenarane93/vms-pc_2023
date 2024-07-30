@@ -6,13 +6,14 @@ import { PublishFacadeService } from 'src/app/facade/facade_services/publish-fac
 import { CommonSelectList } from 'src/app/models/common/cmSelectList';
 import { InputRequest } from 'src/app/models/request/inputReq';
 import { Globals } from 'src/app/utils/global';
-import { NgbTimeStruct, NgbDateStruct, NgbPopoverConfig, NgbPopover, NgbDatepicker, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTimeStruct, NgbDateStruct, NgbPopoverConfig, NgbPopover, NgbDatepicker, NgbCalendar, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { noop } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup, NgControl, Validators } from '@angular/forms';
 import { DateTimeModel } from 'src/app/models/DateTimeModel';
 import { PublishMaster } from 'src/app/models/publish/publishmaster';
 import { publishDetails, publishTime } from 'src/app/models/publish/PublishDetails';
 import { NavigationExtras, Router } from '@angular/router';
+import { CronMngComponent } from '../cron-mng/cron-mng.component';
 
 @Component({
   selector: 'app-publish-operations',
@@ -62,6 +63,8 @@ export class PublishOperationsComponent implements OnInit {
   globalFrom: any;
   globalTo: any;
   _publishMaster: any;
+  IsCustom:boolean =false;
+  IsReg : boolean = true;
   headerArr = [
     { "Head": "ID", "FieldName": "id", "type": "number" },
     { "Head": "Playlist Name", "FieldName": "playlistName", "type": "string" },
@@ -82,7 +85,8 @@ export class PublishOperationsComponent implements OnInit {
     private inj: Injector,
     private fb: FormBuilder,
     private router: Router,
-    private cdf: ChangeDetectorRef
+    private cdf: ChangeDetectorRef,
+    private modalService : NgbModal
   ) {
     this.global.CurrentPage = "Publish Operations";
     this.dropdownSettings = {
@@ -591,5 +595,41 @@ export class PublishOperationsComponent implements OnInit {
       }
     }
     return true;
+  }
+
+  CustomScheduled(){
+    let type = 0;
+    if(this.IsReg)
+      type = 0;
+    else 
+      type = 1;
+    let _PlIds: any[] = [];
+    this.selectedPlaylist.forEach(element => {
+      _PlIds.push(element.id);
+    });
+    let _data = {
+      PlaylistIds  : _PlIds,
+      ScheduleType : type,
+      GlobalFrom : this.globalFrom,
+      GlobalTo : this.globalTo,
+    }
+    const modalRef = this.modalService.open(CronMngComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
+    modalRef.componentInstance.data = _data;
+    //modalRef.componentInstance.playlistAudit = true;
+    //modalRef.componentInstance.mediaAudit = false;
+    modalRef.componentInstance.passEntry.subscribe((receivedEntry: any) => {
+      console.log(receivedEntry);
+      //this.getPlaylistData();
+    })
+  }
+
+  RadioChange(type : number){
+    if(type == 0){
+      this.IsReg = true;
+      this.IsCustom = false;
+    } else if(type == 1){
+      this.IsReg = false;
+      this.IsCustom = true;
+    }
   }
 }

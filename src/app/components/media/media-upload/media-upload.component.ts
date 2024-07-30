@@ -172,7 +172,6 @@ export class MediaUploadComponent implements OnInit {
             this.toast.error("Only image/video files are allowed.", "Error", { positionClass: "toast-bottom-right" });
             return res;
           }
-
         }
       }
       else {

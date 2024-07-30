@@ -398,7 +398,6 @@ textarea {
 
 .table-bordered>:not(caption)>* {border-width: 1px!important;}
 
-
 ::ng-deep .btn-primary {
   color: #fff;
   background-color: #ec37fc;
@@ -425,6 +424,8 @@ textarea {
   background-color: #ec37fc;
   border-color: #ec37fc;
 }
+.btn-outline-primary:not(.btn-outline-secondary) {
+  border-color: #8c0298;}
 
 ::ng-deep .btn-primary:not(:disabled):not(.disabled):active,
 ::ng-deep .btn-primary:not(:disabled):not(.disabled).active,
@@ -584,4 +585,16 @@ textarea {
 
 .chkBox {
   padding-bottom: 5px;
+}
+
+.scheduleCss{
+  padding: 5px;
+}
+
+::ng-deep .form-check-input:checked {
+  background-color: #7316f3!important;
+  border-color: #7316f3!important;
+}
+::ng-deep .form-check-input:focus {
+box-shadow: 0 0 0 .25rem rgb(115 22 243 / 25%);
 }
