@@ -39,6 +39,8 @@
                                 </button>
                             </div>
                         </div>
+                        
+                        <hr>
                         <div class="bs-stepper-content">
                             <div id="test-l-1" class="content">
                                 <div class="row">
@@ -155,10 +157,10 @@
                                                     Custom Schedule
                                                 </label>
                                             </div>
-                                            <div class="col-md-3">
-                                                <button class="btn-outline-primary btn"
-                                                    (click)="CustomScheduled()">Custom Schedule</button>
-                                            </div>
+                                            <!-- <div class="col-md-3 text-right" *ngIf="IsCustom">
+                                                <button class="btn-outline-primary btn" 
+                                                    (click)="CustomScheduled('All')">Common Schedule</button>
+                                            </div> -->
                                         </div>
                                         <div class="row">
                                             <hr>
@@ -236,7 +238,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody formArrayName="items"
-                                                        *ngFor="let item of form.get('items').controls; let i = index;">
+                                                        *ngFor="let item of form.get('items').controls; let i = index ">
                                                         <tr [formGroupName]="i">
                                                             <td class="text-center">
                                                                 <input type="text" [disabled]="true"
@@ -244,8 +246,10 @@
                                                                     value="{{selectedPlaylist[i].playlistName}}" />
                                                             </td>
                                                             <td>
-                                                                <span style="color: red;"><b>SCHEDULE NOT
-                                                                        DONE.</b></span>
+                                                                <input type="text" *ngIf="!item.isSchedule" [disabled]="true" style="color: red;font-weight:bold;"
+                                                                    formControlName="scheduleMsg" class="form-control" />
+                                                                <input type="text" *ngIf="item.isSchedule" [disabled]="true" style="color: green;font-weight:bold;"
+                                                                    formControlName="scheduleMsg" class="form-control" />
                                                             </td>
                                                             <td style="display: flex; justify-content:space-around;">
 
@@ -254,10 +258,9 @@
                                                                     <i class="fa fa-trash"></i>
                                                                 </button>
 
-
                                                                 <button class="btn btn-outline-primary btn-rounded"
                                                                     tootip="Schedule Playlist"
-                                                                    (click)="CustomScheduled()">
+                                                                    (click)="CustomScheduled(selectedPlaylist[i])">
                                                                     <i class="fa fa-clock-o" aria-hidden="true"></i>
                                                                 </button>
 
@@ -271,7 +274,7 @@
 
                                         <div class="row">
                                             <div class="col-md-12 text-right">
-                                                <button class="btn btn-primary mr-1" (click)="StepPrev(2)">
+                                                <button class="btn btn-warning mr-1" (click)="StepPrev(2)">
                                                     <i class="fa fa-plus-circle"></i> Add Playlist
                                                 </button>
 

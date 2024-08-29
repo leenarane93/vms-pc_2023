@@ -23,7 +23,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let row of medias">
-                    <td> {{row.fileName}}</td>
+                    <td> {{row.displayName}}</td>
                     <td> {{row.fileType}}</td>
                     <td class="text-center"> <button class="btn btn-primary btn-sm " (click)="ViewMedia(row)">
                             View/Play

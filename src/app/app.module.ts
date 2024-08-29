@@ -93,6 +93,7 @@ import { CmPublishdetailsComponent } from './widget/cm-publishdetails/cm-publish
 import { PageNotFoundComponent } from './components/shared/page-not-found/page-not-found.component';
 import { NotificationComponent } from './components/dashboard/notification/notification.component';
 import { CronMngComponent } from './components/publish/cron-mng/cron-mng.component';
+import { PlaylistStatusComponent } from './components/media/playlist-status/playlist-status.component';
 
 @NgModule({
   declarations: [
@@ -151,6 +152,7 @@ import { CronMngComponent } from './components/publish/cron-mng/cron-mng.compone
     PageNotFoundComponent,
     NotificationComponent,
     CronMngComponent,
+    PlaylistStatusComponent,
   ],
   imports: [
     CommonModule,

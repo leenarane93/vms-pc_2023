@@ -4,6 +4,7 @@ import { PlaylistService } from '../services/media/playlist.service';
 import { AdminFacadeService } from './admin-facade.service';
 import { MediaAuditService } from '../services/media/media-audit.service';
 import { PlAuditService } from '../services/media/pl-audit.service';
+import { PlaylistStatusService } from '../services/media/playlist-status.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class MediaFacadeService {
     private _playlistService: PlaylistService,
     private _adminFacade: AdminFacadeService,
     private _mediaAudit : MediaAuditService,
-    private _plAudit : PlAuditService) { }
+    private _plAudit : PlAuditService,
+    private _plProcess : PlaylistStatusService) { }
   getMediaUploadDetails(data: any) {
     return this._mediaUploadService.getuploaddetails(data);
   }
@@ -101,5 +103,8 @@ export class MediaFacadeService {
   }
   ValidatePlaylistName(plName:string) {
     return this._playlistService.ValidatePlaylistName(plName);
+  }
+  GetPlaylistProcessStatus() {
+    return this._plProcess.GetPlaylistProcessStatus();
   }
 }

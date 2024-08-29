@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, Injector, Input, OnInit, ViewChild, inject } from '@angular/core';
-
 import Stepper from 'bs-stepper';
 import { ToastrService } from 'ngx-toastr';
 import { PublishFacadeService } from 'src/app/facade/facade_services/publish-facade.service';
@@ -14,6 +13,8 @@ import { PublishMaster } from 'src/app/models/publish/publishmaster';
 import { publishDetails, publishTime } from 'src/app/models/publish/PublishDetails';
 import { NavigationExtras, Router } from '@angular/router';
 import { CronMngComponent } from '../cron-mng/cron-mng.component';
+import { PublishCron, PublishCronVM } from 'src/app/models/publish/PublishCron';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-publish-operations',
@@ -25,7 +26,8 @@ export class PublishOperationsComponent implements OnInit {
   today = inject(NgbCalendar).getToday();
   minDate: any;
   maxDate: any;
-  ishidevms:boolean = false;
+  cnt: number = 0;
+  ishidevms: boolean = false;
   isSearch: boolean = false;
   globalFromDt: any;
   globalToDt: any;
@@ -63,8 +65,9 @@ export class PublishOperationsComponent implements OnInit {
   globalFrom: any;
   globalTo: any;
   _publishMaster: any;
-  IsCustom:boolean =false;
-  IsReg : boolean = true;
+  IsCustom: boolean = false;
+  IsReg: boolean = true;
+  cron: any;
   headerArr = [
     { "Head": "ID", "FieldName": "id", "type": "number" },
     { "Head": "Playlist Name", "FieldName": "playlistName", "type": "string" },
@@ -86,7 +89,8 @@ export class PublishOperationsComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private cdf: ChangeDetectorRef,
-    private modalService : NgbModal
+    private modalService: NgbModal,
+    private datePipe: DatePipe
   ) {
     this.global.CurrentPage = "Publish Operations";
     this.dropdownSettings = {
@@ -130,7 +134,9 @@ export class PublishOperationsComponent implements OnInit {
       fromDate: '',
       toDate: '',
       fromTime: '',
-      toTime: ''
+      toTime: '',
+      isSchedule: [{ value: false, disabled: true }],
+      scheduleMsg: [{ value: 'SCHEDULE NOT DONE', disabled: true }],
     });
   }
   getErrorMessage(_controlName: any, _controlLable: any, _isPattern: boolean = false, _msg: string) {
@@ -178,6 +184,8 @@ export class PublishOperationsComponent implements OnInit {
       month: _mon,
       day: _day
     }
+
+    this.cron = new PublishCronVM();
   }
 
   GetAllZoneDetails() {
@@ -206,7 +214,7 @@ export class PublishOperationsComponent implements OnInit {
       }
     })
   }
-
+  get getScheduleMsg() { return this.form.get('items') as FormArray }
   getSelectedZone(eve: any, type: number) {
     if (type == 1) {
       this.ishidevms = false;
@@ -220,7 +228,7 @@ export class PublishOperationsComponent implements OnInit {
       }
     }
     else {
-      if (eve.length == 0 ) {
+      if (eve.length == 0) {
         var _idx = 0;
         // this.selectedZones.forEach(element => {
         //   _idx++;
@@ -230,7 +238,7 @@ export class PublishOperationsComponent implements OnInit {
         this.ishidevms = true;
         this.selectedVMS = [];
       }
-      else if(eve.displayName == undefined ) {
+      else if (eve.displayName == undefined) {
         // this.selectedZones.forEach(element => {
         //   _idx++;
         //     this.selectedZones.splice(_idx - 1, 1);
@@ -243,7 +251,7 @@ export class PublishOperationsComponent implements OnInit {
         var _idx = 0;
         this.selectedZones.forEach(element => {
           _idx++;
-          if(eve.value == element)
+          if (eve.value == element)
             this.selectedZones.splice(_idx - 1, 1);
         });
       }
@@ -337,7 +345,7 @@ export class PublishOperationsComponent implements OnInit {
         for (var j = 0; j < _itemLen; j++) {
           this.items.at(j).patchValue({
             plid: this.selectedPlaylist[j].id,
-            playlistName: this.selectedPlaylist[j].playlistName
+            playlistName: this.selectedPlaylist[j].playlistName,
           });
         }
         this.stepper.next();
@@ -393,6 +401,8 @@ export class PublishOperationsComponent implements OnInit {
 
   checked(_data: any, type: number) {
     if (type == 1) {
+      this.cnt++;
+      _data.uniqueId = this.cnt;
       this.selectedPlaylist.push(_data);
     }
     else {
@@ -461,7 +471,7 @@ export class PublishOperationsComponent implements OnInit {
             }
           }
 
-          if (valid == true) {
+          if (valid == true && this.IsReg) {
             _pubTime.pubTime = _playTime;
             let globalFromDate = new Date(_pubTime.pubFrom);
             let globalToDate = new Date(_pubTime.pubTo);
@@ -481,14 +491,23 @@ export class PublishOperationsComponent implements OnInit {
                 }
               }, (error => {
                 this._toast.error("Invalid data entered in some field.");
-
               }))
             } else {
               this._toast.error("Time overlap between playlist from date and to date");
             }
 
           } else {
-            this._toast.error("Time overlap between playlist from date and to date");
+            if (this.cron != null) {
+              this._publish.addPublishCron(this.cron).subscribe(res => {
+                if (res != null)
+                  if (res != 0) {
+                    this._toast.success("Successfully submitted.");
+                    this.router.navigate(['publish/media-status']);
+                  } else {
+                    this._toast.error("Something went wrong.");
+                  }
+              })
+            }
           }
 
         } else {
@@ -576,7 +595,6 @@ export class PublishOperationsComponent implements OnInit {
       }
     }
     this.changeDetect();
-    console.log(this.items);
   }
   checkTimeOverlap(data: any) {
     let _pubFromDate = new Date(data.pubFrom);
@@ -597,37 +615,122 @@ export class PublishOperationsComponent implements OnInit {
     return true;
   }
 
-  CustomScheduled(){
-    let type = 0;
-    if(this.IsReg)
-      type = 0;
-    else 
-      type = 1;
-    let _PlIds: any[] = [];
-    this.selectedPlaylist.forEach(element => {
-      _PlIds.push(element.id);
-    });
-    let _data = {
-      PlaylistIds  : _PlIds,
-      ScheduleType : type,
-      GlobalFrom : this.globalFrom,
-      GlobalTo : this.globalTo,
+  CustomScheduled(eve: any) {
+    let valFrom = this.form.controls["globalFromDt"].value;
+    let valTo = this.form.controls["globalToDt"].value;
+    if (valFrom == "" || valTo == "") {
+      this._toast.error("Please enter global from date and to date.");
+    } else {
+      console.log(eve);
+      let _PlIds: any[] = [];
+      if (eve == 'All') {
+        this.selectedPlaylist.forEach(element => {
+          let Pl = {
+            "id": element.id,
+            "playlistName": element.playlistName,
+            "uniqueId" : element.uniqueId
+          };
+          _PlIds.push(Pl);
+        });
+      } else {
+        let Pl = {
+          "id": eve.id,
+          "playlistName": eve.playlistName,
+          "uniqueId" : eve.uniqueId
+        };
+        _PlIds.push(Pl);
+      }
+      let type = 0;
+      if (this.IsReg)
+        type = 0;
+      else if (eve == 'All')
+        type = 1;
+      else {
+        type = 2;
+      }
+        
+      let _data = {
+        PlaylistIds: _PlIds,
+        ScheduleType: type,
+        GlobalFrom: this.globalFrom,
+        GlobalTo: this.globalTo,
+        vmsIds: this.selectedVMS.toString(),
+        cronData : this.cron,
+      }
+      const modalRef = this.modalService.open(CronMngComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
+      modalRef.componentInstance.data = _data;
+      //modalRef.componentInstance.playlistAudit = true;
+      //modalRef.componentInstance.mediaAudit = false;
+      modalRef.componentInstance.cronEntry.subscribe((receivedEntry: any) => {
+        if (receivedEntry != 'failed') {
+          let globalFromDate = new Date(this._publishMaster.fromtime);
+          let globalToDate = new Date(this._publishMaster.totime);
+          let _cron = new PublishCronVM();
+          _cron.globalFrom = this.datePipe.transform(globalFromDate, "yyyy-MM-dd HH:mm:ss");
+          _cron.globalTo = this.datePipe.transform(globalToDate, "yyyy-MM-dd HH:mm:ss");
+         
+          this.cron.globalFrom = _cron.globalFrom;
+          this.cron.globalTo = _cron.globalTo;
+          if (type == 2) {
+            var _idx = this.selectedPlaylist.findIndex(x=>x.uniqueId == receivedEntry.uniqueId);
+            if(this.cron.publishCrons.length > 0) {
+              this.cron.publishCrons.forEach((ele:any) => {
+                let idx = ele.uniqueId;
+                if(idx == receivedEntry.uniqueId) {
+                  var chk = this.cron.publishCrons.findIndex((x:any)=>x.uniqueId == receivedEntry.uniqueId);
+                  this.cron.publishCrons.splice(chk,1);
+                }
+              });
+            } 
+            _cron.publishCrons = receivedEntry;
+            this.getScheduleMsg.at(_idx).patchValue({
+              "isSchedule": true,
+              "scheduleMsg": "Schedule Set (" + receivedEntry.cronStartTime + " -- " + receivedEntry.cronEndTime + ")"
+            })
+            this.cron.publishCrons.push(_cron.publishCrons);
+          }
+          else if (type == 1) {
+            var _plid = "";
+            this.cron.publishCrons = [];
+            for (var i = 0; i < this.selectedPlaylist.length; i++) {
+              if (i == (this.selectedPlaylist.length - 1)) {
+                _plid += this.selectedPlaylist[i].id
+              } else {
+                _plid += this.selectedPlaylist[i].id + ",";
+              }
+              this.getScheduleMsg.at(i).patchValue({
+                "isSchedule": true,
+                "scheduleMsg": "Schedule Set (" + receivedEntry.cronStartTime + " -- " + receivedEntry.cronEndTime + ")"
+              })
+            }
+            receivedEntry.PlaylistId = _plid;
+            _cron.publishCrons = receivedEntry;
+            this.cron.publishCrons.push(_cron.publishCrons);
+          }
+        }
+        console.log(this.cron);
+        // _cronJob = receivedEntry;
+        // _cronJob.VmsId = this.selectedVMS.toString();
+        // if(_cronJob != null) {
+        //   this._publish.addPublishCron(_cronJob).subscribe(res=>{
+        //     if(res != null) 
+        //       if(res != 0) {
+        //         this._toast.success("Successfully submitted.");
+        //       } else {
+        //         this._toast.error("Something went wrong.");
+        //       }
+        //   })
+        // }
+      })
+
     }
-    const modalRef = this.modalService.open(CronMngComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
-    modalRef.componentInstance.data = _data;
-    //modalRef.componentInstance.playlistAudit = true;
-    //modalRef.componentInstance.mediaAudit = false;
-    modalRef.componentInstance.passEntry.subscribe((receivedEntry: any) => {
-      console.log(receivedEntry);
-      //this.getPlaylistData();
-    })
   }
 
-  RadioChange(type : number){
-    if(type == 0){
+  RadioChange(type: number) {
+    if (type == 0) {
       this.IsReg = true;
       this.IsCustom = false;
-    } else if(type == 1){
+    } else if (type == 1) {
       this.IsReg = false;
       this.IsCustom = true;
     }

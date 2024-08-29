@@ -28,4 +28,9 @@ export class PublishFacadeService {
   getPublishStatusData(vmsid?:number,status?: number) {
     return this._publishService.getPublishStatusData(vmsid,status);
   }
+
+  //publish cron
+  addPublishCron(_data:any) {
+    return this._publishService.AddPublishCronDetails(_data);
+  }
 }

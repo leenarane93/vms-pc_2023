@@ -34,6 +34,7 @@ import { ListViewComponent } from './components/dashboard/list-view/list-view.co
 import { NetworkReportComponent } from './components/reports/network-report/network-report.component';
 import { PlaylistReportComponent } from './components/reports/playlist-report/playlist-report.component';
 import { PageNotFoundComponent } from './components/shared/page-not-found/page-not-found.component';
+import { PlaylistStatusComponent } from './components/media/playlist-status/playlist-status.component';
 
 const routes: Routes = [
   {
@@ -200,6 +201,12 @@ const routes: Routes = [
     path: "medias/playlist-configure",
     component: PlaylistConfigureComponent,
     data: { title: 'Playlist Configuration' },
+    canActivate: [AuthGuradService]
+  },
+  {
+    path: "medias/playlist-status",
+    component: PlaylistStatusComponent,
+    data: { title: 'Playlist Status' },
     canActivate: [AuthGuradService]
   },
   {

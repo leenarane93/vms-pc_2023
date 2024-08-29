@@ -42,4 +42,11 @@ export class PublishOpsService {
     else
       return this._httpService._getMethod("publish_api/api/PublishDetails/GetPublishStatusData");
   }
+
+
+  //Publish Cron
+  
+  AddPublishCronDetails(_data: any) {
+    return this._httpService._postMethod(_data, 'Publish_API/api/PublishCron/AddPublishCron');
+  }
 }

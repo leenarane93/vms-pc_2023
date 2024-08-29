@@ -5,46 +5,7 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-
-
-<div class="modal-body" *ngIf="this.data.ScheduleType == 0">
-    <div class="row">
-        <div class="col-md-3 text-right">
-            Type :
-        </div>
-        <div class="col-md-4 text-left">
-            <select name="drpSelectType" id="drpSelectType" class="form-control"  (change)="CronTypeChange()" [(ngModel)]="selectedType"   size="1" style="position:relative; overflow:hidden" onclick="size=(size!=1)?1:4;" onblur="size=1;">
-                <option value="D">Daily</option>
-                <option value="W">Weekly</option>
-                <option value="M">Monthly</option>
-                <option value="Y">Yearly</option>
-            </select>
-        </div>
-    </div>
-    <div class="row mt-2">
-        <div class="col-md-3 text-right">
-            At every
-        </div>
-        <div class="col-md-4 text-left">
-            <select name="drpSelectHour" id="drpSelectHour" class="form-control"  size="1" style="position:relative; overflow:hidden" onclick="size=(size!=1)?1:9;" onblur="size=1;">
-                <option value="D">All</option>
-                <option value="W">00</option>
-                <option value="M">01</option>
-                <option value="Y">02</option>
-                <option value="Y">03</option>
-                <option value="Y">04</option>
-                <option value="Y">05</option>
-                <option value="Y">06</option>
-                <option value="Y">07</option>
-            </select>
-        </div>
-        <div class="col-md-3 text-left">
-            hour
-        </div>
-    </div>
-</div>
-
-<div class="modal-body" *ngIf="this.data.ScheduleType == 1">
+<div class="modal-body">
     <div class="row">
         <div class="col-md-2 text-right">
             <label> Playlist Name :  </label>
@@ -66,14 +27,14 @@
     <div class="row mt-2" *ngIf="monthsVisible">
         <label class="col-md-2 text-right mt-2">Select Days : </label>
         <div class="col-md-10">
-            <ng-multiselect-dropdown name="days" [settings]="dropdownSettings" [data]="days" [(ngModel)]="selectedDays" (onSelectAll)="ChangeSelectedDays($event,0)" >
+            <ng-multiselect-dropdown name="days" [settings]="dropdownSettings" [data]="days" [(ngModel)]="selectedDays" (onSelect)="onItemSelect($event,0)" (onSelectAll)="ChangeSelectedDays($event,0)" >
                         </ng-multiselect-dropdown>
         </div>
     </div>
     <div class="row" *ngIf="daysVisible">
         <label class="col-md-2 text-right mt-2">Select Days : </label>
         <div class="col-md-10">
-            <ng-multiselect-dropdown name="weekdays" [settings]="dropdownSettings" [data]="weekdays" [(ngModel)]="selectedWeekDays" (onSelectAll)="ChangeSelectedDays($event,0)" style="position: relative;" >
+            <ng-multiselect-dropdown name="weekdays" [settings]="dropdownSettings" [data]="weekdays" [(ngModel)]="selectedWeekDays" (onSelect)="onItemSelect($event,1)" (onSelectAll)="ChangeSelectedDays($event,0)" style="position: relative;" >
                         </ng-multiselect-dropdown>
         </div>
     </div>
@@ -106,11 +67,11 @@
 <div class="modal-footer">
 <div class="row">
     <div class="col-md-12 text-right">
-        <button class="btn btn-secondary mr-2">
+        <button type="button" class="btn btn-secondary mr-2">
             Reset
         </button>
        
-        <button class="btn btn-primary">
+        <button type="button" class="btn btn-primary" (click)="SubmitCron()">
             Submit
         </button>
     </div>
