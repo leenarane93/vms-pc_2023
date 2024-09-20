@@ -38,7 +38,7 @@
             <div *ngIf="isImg" class="col-md-12">
                 <img src="{{imgSrc}}" height="400" width="600">
             </div>
-            <div *ngIf="isVdo" class="col-md-12">
+            <div *ngIf="isVdo" class="col-md-12" style="border-color: black;border-style: solid;">
                 <video id="my_video_1" controls (click)="toggleVideo()" #videoPlayer style="width: 288px;height: 320px;"
                 autoplay loop muted playsinline="true" webkit-playsinline="true"  [src]="vdoUrl" type="video/mp4">
                 </video>
@@ -82,7 +82,7 @@
                 <img src="{{imgSrc}}" height="400" width="600">
             </div>
 
-            <div *ngIf="isVdo" class="col-md-12" [style.height.px]="data.plHeight" [style.width.px]="data.plWidth">
+            <div *ngIf="isVdo" class="col-md-12" style="height: 250px;width:auto">
                 <!-- <vg-player>
                     <video [vgMedia]="$any(media)" #media id="singleVideo" preload="auto" controls>
                         <source src="http://localhost/mediaLists/Playlists/1/1/1_1.mp4" type="video/mp4">
@@ -91,8 +91,8 @@
                     </video>
                 </vg-player> -->
                 <video
-                [width]="data.plWidth"
-                [height]="data.plHeight"
+                width="auto"
+                height="250px"
                 autoplay
                 [src]="plPreviewSrc"
               ></video>
@@ -130,6 +130,3 @@
         </div>
     </div>
 </div>
-
-
-

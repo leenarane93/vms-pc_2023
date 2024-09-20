@@ -28,9 +28,11 @@
                                     <th class="text-center">Sr.No.</th>
                                     <th class="text-center">Playlist ID</th>
                                     <th class="text-center">Playlist Name</th>
+                                    <th class="text-center">Created Date</th>
                                     <th class="text-center">Total Files</th>
                                     <th class="text-center">Processed Files</th>
                                     <!-- <th class="text-center">Completion</th> -->
+                                    <th class="text-center">Modified Date</th>
                                     <th class="text-center">Status</th>
                                 </tr>
                             </thead>
@@ -39,8 +41,10 @@
                                     <td class="text-center">{{i+1}}</td>
                                     <td class="text-center">{{data.plId}}</td>
                                     <td class="text-center">{{data.playlistName}}</td>
+                                    <td class="text-center">{{data.createdDate}}</td>
                                     <td class="text-center">{{data.totalCount}}</td>
                                     <td class="text-center">{{data.processCount}}</td>
+                                    <td class="text-center">{{data.updationDate}}</td>
                                     <td class="text-center">
                                             <span *ngIf="data.status == 1" class="badge badge-info">Processing</span>
                                             <span *ngIf="data.status == 2" class="badge badge-success">Complete</span>

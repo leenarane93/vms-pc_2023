@@ -9,3 +9,14 @@
     text-align: center;
     line-height: 100vh;
   }
+
+ .makeCenter{
+  
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width:50%;
+  margin: auto;
+ }

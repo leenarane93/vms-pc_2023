@@ -139,6 +139,7 @@ export class PublishOperationsComponent implements OnInit {
       scheduleMsg: [{ value: 'SCHEDULE NOT DONE', disabled: true }],
     });
   }
+  
   getErrorMessage(_controlName: any, _controlLable: any, _isPattern: boolean = false, _msg: string) {
     //return getErrorMsg(this.form, _controlName, _controlLable, _isPattern, _msg);
   }

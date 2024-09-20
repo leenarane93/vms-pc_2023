@@ -22,9 +22,32 @@
                                         <h6><span style="color: red;"><b>Note : </b>File resolution should be 1920*1080.</span></h6>
                                         <input type="file" #InputVar class="form-control file-upload-primary"
                                             placeholder="Upload Image" (change)="save($event)" multiple="multiple">
-
+                                            <!-- <button class="btn btn-success btn-sm" [disabled]="!currentFile" (click)="upload()">
+                                                Upload
+                                              </button> -->
+                                             
                                         <br>
-                                        <table>
+                                        <!-- <div class="progress" *ngIf="progress">
+                                            <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div> 
+                                        </div> -->
+                                       
+                                            <!-- <div class="progress my-3" >
+                                              <div
+                                                class="progress-bar progress-bar-info"
+                                                role="progressbar"
+                                                attr.aria-valuenow="{{ progress }}"
+                                                aria-valuemin="0"
+                                                aria-valuemax="100"
+                                                [ngStyle]="{ width: progress + '%' }"
+                                              >
+                                                {{ progress }}%
+                                              </div>
+                                            </div> -->
+                                           
+                                           
+                                            <!-- <div class="alert alert-secondary" role="alert" *ngIf="message">{{ message }}</div> -->
+                                           
+                                        <!-- <table>
                                             <tr>
                                                 <th>Files</th>
                                             </tr>
@@ -33,7 +56,27 @@
                                                     {{file.name}}
                                                 </td>
                                             </tr>
-                                        </table>
+                                        </table> -->
+                                        <div class="media-upload-table-container" >
+                                            <table class="media-upload-table table table-bordered">
+                                              <thead>
+                                                <tr>
+                                                  <th style="width: 246px" >File Name</th>
+                                                  <!-- <th class="media-progress-bar" >Progress</th> -->
+                                                  <!-- <th style="width: 100px;">Status</th> -->
+                                                </tr>
+                                              </thead>
+                                              <tbody >
+                                                <tr  *ngFor="let file of selectedFiles">
+                                                    <td colspan="2">
+                                                        {{file.name}}
+                                                    </td>
+                                                    
+                                                </tr>
+                                                </tbody>
+                                               
+                                            </table>
+                                          </div>
                                     </div>
                                 </ng-template>
                             </li>
@@ -155,6 +198,7 @@
                             </button>
                             <button type="button" class="btn btn-primary btn-sm" (click)="RequestSubmit()">Save
                             </button>
+                           
                         </div>
                     </div>
                     <div class="card-footer bg-light text-right">
@@ -178,10 +222,10 @@
                   <div class="card-body p-2 bgTable" style="border-radius: 0 0;">                      
                     
                 <app-cm-table [headArr]="headerArr" [gridArr]="listOfMediaSet" [totalRecords]="totalRecords"
-                    [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)" [btnArray]="btnArray"
-                    [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)"
+                    [totalPages]="totalPages" [perPage]="recordPerPage" (pager)="onPager($event)" [btnArray]="btnArray" [collectionSize]="totalRecords" (recordPerPage)="onRecordPageChange($event)"
                     link="masters/add-party" fieldName="id" (search)="onPageSearch($event)"
-                    (btnAction)="ButtonAction($event)" [isSearch]="isSearch" (searchWithId)="SearchWithId($event)"></app-cm-table>
+                    (btnAction)="ButtonAction($event)" [isSearch]="isSearch" (searchWithId)="SearchWithId($event)">
+                </app-cm-table>
             
         </div>
 

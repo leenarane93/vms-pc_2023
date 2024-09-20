@@ -20,7 +20,7 @@ export class CmMdAuditComponent implements OnInit {
   @ViewChild("videoPlayer", { static: false }) videoplayer: ElementRef;
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
   @Input() data: any;
-  playlistData:any;
+  playlistData: any;
   @Input() playlistAudit: boolean = false;
   @Input() mediaAudit: boolean = false;
   screenHeight: number;
@@ -36,19 +36,19 @@ export class CmMdAuditComponent implements OnInit {
   videoItems: any[] = [];
   plName: string = "";
   blocks: any;
-  blockWise:any;
+  blockWise: any;
   activeIndex = 0;
-  plPreviewSrc : string = "";
+  plPreviewSrc: string = "";
   currentVideo = this.videoItems[this.activeIndex];
 
   constructor(private _mediaFacade: MediaFacadeService,
     private _toast: ToastrService,
     private modal: NgbModal,
-    private global: Globals, private _session:SessionService) {
+    private global: Globals, private _session: SessionService) {
 
   }
   ngOnInit(): void {
-    if(this.data.title != undefined  && this.data.title != "") {
+    if (this.data.title != undefined && this.data.title != "") {
       this.type = this.data.title;
     }
     this.isVdo = false;
@@ -67,7 +67,7 @@ export class CmMdAuditComponent implements OnInit {
       if (res != null) {
         //console.log(res);
         this.blockWise = res;
-        this.plPreviewSrc = environment.PreviewPath + this.data.plMaster.id +"/Final.mp4";
+        this.plPreviewSrc = environment.PreviewPath + this.data.plMaster.id + "/" + this.data.plMaster.id + "_Final.mp4";
         // for (var i = 0; i < blocks.length; i++) {
         //   if ((blocks[i].blId = res[i].blId)) {
         //     blocks[i].src = res[i].medias[0].mediaPath;
@@ -81,7 +81,7 @@ export class CmMdAuditComponent implements OnInit {
     })
   }
   getMediaUploadBySetID() {
-    if(this.data.mediaType != "Text") {
+    if (this.data.mediaType != "Text") {
       this._mediaFacade.getMediaBySetID(this.data.uploadSetId).subscribe(res => {
         if (res != null && res != undefined) {
           this.medias = res;
@@ -93,6 +93,12 @@ export class CmMdAuditComponent implements OnInit {
     } else {
       this._mediaFacade.getTextByUsID(this.data.uploadSetId).subscribe(res => {
         if (res != null && res != undefined) {
+          if (res.length > 0) {
+            res.forEach((ele: any) => {
+              ele.displayName = ele.fileName;
+              ele.fileType = "Text";
+            });
+          }
           this.medias = res;
         }
         else {
@@ -100,13 +106,13 @@ export class CmMdAuditComponent implements OnInit {
         }
       })
     }
-    
+
   }
   ViewMedia(row: any) {
     var _data = new mediaAudit();
     let mediaPath = this._session.getnetworkreportXview();
-    
-    if(this.data.mediaType == "Text")  {
+
+    if (this.data.mediaType == "Text") {
       let strFilePath = mediaPath + row.uploadSetId + "//" + row.fileName;
       _data = {
         mediaPath: strFilePath,
@@ -197,7 +203,7 @@ export class CmMdAuditComponent implements OnInit {
       this.playlistData.plMaster.remarks = this.remarks;
     }
     this._mediaFacade.updatePlaylistMaster(this.playlistData.plMaster).subscribe(
-      (res:any) => {
+      (res: any) => {
         if (res != null) {
           this._toast.success("Playlist updated successfully");
           this.passBack();
@@ -241,8 +247,8 @@ export class CmMdAuditComponent implements OnInit {
     })
   }
 
-  alertEndVideo(node:any, blk:any) {
-    console.log("Node : "+node + " Block : "+blk);
+  alertEndVideo(node: any, blk: any) {
+    console.log("Node : " + node + " Block : " + blk);
     if (this.blockWise.length > node.seq) {
       node.src = this.blockWise[blk.blId - 1].medias[node.seq].mediaPath;
       node.seq = node.seq + 1;

@@ -1,5 +1,4 @@
-import { event } from 'jquery';
-import { Component, ElementRef, HostListener, OnInit, ViewChild, numberAttribute,AfterViewInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild, numberAttribute } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -15,9 +14,7 @@ import { CmMediaModalComponent } from 'src/app/widget/cm-media-modal/cm-media-mo
 import { CmConfirmBoxComponent } from 'src/app/widget/cm-confirm-box/cm-confirm-box.component';
 import { ConfirmationDialogService } from 'src/app/facade/services/confirmation-dialog.service';
 import { MediaDetails, MediaUpload, TextDetails } from 'src/app/models/media/Media';
-import {HttpClient} from "@angular/common/http";
-import { map, catchError, takeUntil } from "rxjs/operators";
-import { Observable, Subject, throwError } from "rxjs";
+
 @Component({
   selector: 'app-media-upload',
   templateUrl: './media-upload.component.html',
@@ -53,13 +50,7 @@ export class MediaUploadComponent implements OnInit {
   foreColor: string = "#ffffff";
   textContent: string = "";
   textData: any[] = [];
-  
-  changeToShow = false;
-  currentFile?: File;
-  progress = 0;
-  message = '';
-  fileInfos?: Observable<any>;
-  show: boolean = true;
+
   files: File[] = [];
   TooltipPosition: typeof TooltipPosition = TooltipPosition;
   x = 0;
@@ -78,8 +69,6 @@ export class MediaUploadComponent implements OnInit {
     { "Head": "Action", "FieldName": "actions", "type": "button" }
   ];
   btnArray: any[] = [{ "name": "View", "icon": "icon-eye", "tip": "Click to View", "action": "view" }, { "name": "Remove", "icon": "icon-trash", "tip": "Click to Remove", "action": "delete" }];
-  event: any;
-  uploadedMedia: Array<any> = [];
   constructor(private fb: FormBuilder,
     private toast: ToastrService,
     private _commonFacade: CommonFacadeService,
@@ -88,7 +77,7 @@ export class MediaUploadComponent implements OnInit {
     private modalService: NgbModal,
     private sanitizer: DomSanitizer,
     private _mediaFacade: MediaFacadeService,
-    private global: Globals,private http: HttpClient) {
+    private global: Globals) {
     this.global.CurrentPage = "Media/Text Upload";
   }
 
@@ -96,9 +85,7 @@ export class MediaUploadComponent implements OnInit {
   ngOnInit() {
     this.generateUploadSetId();
     this.GetFontDetails();
-  
   }
-
   tabChange() {
     this.generateUploadSetId();
   }
@@ -113,24 +100,14 @@ export class MediaUploadComponent implements OnInit {
     this.uploadSetId = _dd + _mm + _yyyy + _hh + _min + _ss;
     this.getMediaUploadData();
   }
-  showProcessTxt() {
-    this._mediaFacade.setProcess(true);
-  }
-  hideProcessTxt() {
-    this._mediaFacade.setProcess(false);
-  }
+
   save(event: any): void {
     this.selectedFiles = event.target.files;
     this.files = [];
-    this.message = '';
-    this.show = true;
-    this.currentFile = event.target.files.item(0);
-       let files = event.dataTransfer
+    let files = event.dataTransfer
       ? event.dataTransfer.files
       : event.target.files;
     console.log("event::::::", event);
-    this.showProcessTxt();
-   
     for (let i = 0; i < files.length; i++) {
       let file = files[i];
       
@@ -140,7 +117,7 @@ export class MediaUploadComponent implements OnInit {
       }
       if (file.type.toLocaleLowerCase().includes("video")) {
         var val = this.ValidateVDOFile(file);
-        console.log('val->: ' + val);
+        console.log(val);
       }
       //if(!this.isFileSelected(file)){
       if (this.Validations()) {
@@ -150,18 +127,12 @@ export class MediaUploadComponent implements OnInit {
         );
         //}
         this.files.push(files[i]);
-      
         //  }
       }
       //}
-    
     }
-
   }
 
-  
-   
-  
   ValidateVDOFile(Vdofile: any) {
     if (Vdofile.type.toLocaleLowerCase().includes("video")) {
       const video = document.createElement('video');
@@ -223,56 +194,39 @@ export class MediaUploadComponent implements OnInit {
       formData.append("userCode", this.global.UserCode);
       let fileList = this.files;
       let size = 0; 
-      this.show = !this.show;
-      
       for (var i = 0; i < fileList.length; i++) {
         formData.append("files.files", fileList[i]);
         size += fileList[i].size;
-        
       }
-     
       if(size != 0 && size > 25000000) {
         this.toast.error("File size should be less than 25 MB", "Error", { positionClass: "toast-bottom-right" });
       }
       else {
         this._mediaFacade.uploadMedia(formData).subscribe(res => {
-          if (res != 0 || res != undefined) {   
-         
+          if (res != 0 || res != undefined) {
             this.toast.success("Saved Successfully");
             this.Reset(1);
-            this.hideProcessTxt();
           }
           else {
             this.toast.error("Something went wrong", "Error", { positionClass: "toast-bottom-right" });
           }
         })
-       
       }
       
     }
 
   }
-
-
-
-
-//end code for upload media progress
   RemoveFile(idx: number) {
     this.selectedFiles.slice(idx, 1);
   }
-  RequestSubmit(): void {
-   
+  RequestSubmit() {
     if (this.Validations() && this.active == 1) {
-    
       this.AddMediaUpload();
-     
     }
     else if (this.active == 2) {
       this.SaveTextData();
     }
-    
   }
- 
   onPager(pager: number) {
     this._request.pageSize = this.recordPerPage;
     this.pager = pager;
@@ -315,7 +269,7 @@ export class MediaUploadComponent implements OnInit {
     this._request.pageSize = this.recordPerPage;
     this._request.startId = this.startId;
     this._request.searchItem = this.searchText;
-    this.changeToShow = false;
+
     this._mediaFacade.getMediaUpload(this._request, 3).subscribe(res => {
       if (res != null && res != undefined) {
         res.data.forEach((ele: any) => {
@@ -349,7 +303,6 @@ export class MediaUploadComponent implements OnInit {
     this.generateUploadSetId();
     this.textData = [];
     this.InputVar.nativeElement.value = "";
-    this.uploadedMedia = [];
   }
 
   ButtonAction(actiondata: any) {

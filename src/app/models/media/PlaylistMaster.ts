@@ -21,11 +21,11 @@ export class PlBlMdDetails {
     blId: number;
     mdId: number;
     sequenceNo: number;
-    duration: number;
+    duration: string;
     effectIn: number;
     effectOut: number;
-    partyId: number;
-    tarrifId: number;
+    partyId: string;
+    tarrifId: string;
     mediaName: string;
     mdType: string;
 }
@@ -47,13 +47,14 @@ export class MediaDetails {
     block: number;
     eIn: number;
     eOut: number;
-    party: number;
-    tarrif: number;
-    duration: number;
+    party: string;
+    tarrif: string;
+    duration: string;
     selected: boolean;
     isNew: boolean;
     mdType: string;
     mdId:number;
+    displayName:string;
 }
 
 export class mediaAudit {

@@ -5,12 +5,14 @@ import { AdminFacadeService } from './admin-facade.service';
 import { MediaAuditService } from '../services/media/media-audit.service';
 import { PlAuditService } from '../services/media/pl-audit.service';
 import { PlaylistStatusService } from '../services/media/playlist-status.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MediaFacadeService {
-
+  fileSizeUnit: number = 1024;
+  public isApiSetup = false;
   constructor(private _mediaUploadService: MediaUploadService,
     private _playlistService: PlaylistService,
     private _adminFacade: AdminFacadeService,
@@ -107,4 +109,53 @@ export class MediaFacadeService {
   GetPlaylistProcessStatus() {
     return this._plProcess.GetPlaylistProcessStatus();
   }
+
+  // for file upload progress
+
+  getFileSize(fileSize: number): number {
+    if (fileSize > 0) {
+      if (fileSize < this.fileSizeUnit * this.fileSizeUnit) {
+        fileSize = parseFloat((fileSize / this.fileSizeUnit).toFixed(2));
+      } else if (
+        fileSize <
+        this.fileSizeUnit * this.fileSizeUnit * this.fileSizeUnit
+      ) {
+        fileSize = parseFloat(
+          (fileSize / this.fileSizeUnit / this.fileSizeUnit).toFixed(2)
+        );
+      }
+    }
+
+    return fileSize;
+  }
+
+  getFileSizeUnit(fileSize: number) {
+    let fileSizeInWords = 'bytes';
+
+    if (fileSize > 0) {
+      if (fileSize < this.fileSizeUnit) {
+        fileSizeInWords = 'bytes';
+      } else if (fileSize < this.fileSizeUnit * this.fileSizeUnit) {
+        fileSizeInWords = 'KB';
+      } else if (
+        fileSize <
+        this.fileSizeUnit * this.fileSizeUnit * this.fileSizeUnit
+      ) {
+        fileSizeInWords = 'MB';
+      }
+    }
+
+    return fileSizeInWords;
+  }
+
+  public textProcess = new BehaviorSubject<boolean>(false);
+
+  setProcess(changeToggle: boolean) {
+    this.textProcess.next(changeToggle);
+  }
+
+  getProcess() {
+    return this.textProcess.asObservable();
+  }
+  
 }

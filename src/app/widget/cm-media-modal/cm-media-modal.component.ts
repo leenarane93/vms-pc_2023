@@ -54,10 +54,11 @@ export class CmMediaModalComponent implements OnInit {
 
     }
     else if (this.data.modalType == "playlistcreation") {
+      this.type = "View Media";
       this.mediaType = this.data.content.fileType;
       let plData = { "fileName": this.data.content.fileName, "filePath": this.data.content.filePath, "fileType": this.data.content.fileType }
       this.viewData.push(plData);
-
+      this.ViewMedia(this.data.content.filePath, this.data.content.fileType);
     }
   }
 

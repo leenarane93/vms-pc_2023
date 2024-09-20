@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { HttpService } from '../common/http.service';
 import { Observable } from 'rxjs';
@@ -31,7 +31,12 @@ export class PlaylistService {
     return this._httpService._postMethod(data, 'Media_API/api/PlaylistMedia/PostPlaylistMedia?type=' + type);
   }
   AddBlockDetails(body: any) {
-    return this._httpService._postMethod(body, "Media_API/api/BlockDetails/AddBlockDetails");
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "X-Skip-Interceptor": "true",
+      }),
+    };
+    return this._httpService._postMethod(body, "Media_API/api/BlockDetails/AddBlockDetails",httpOptions);
   }
   GetBlockDetailsByPlid(plid: number) {
     return this._httpService._getMethod("media_api/api/BlockDetails/GetBlockDetailsByPlid?plid=" + plid);

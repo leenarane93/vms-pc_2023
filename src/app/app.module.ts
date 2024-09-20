@@ -186,7 +186,7 @@ import { PlaylistStatusComponent } from './components/media/playlist-status/play
     CdkTableModule,
     NgMultiSelectDropDownModule,
     ToastModule,
-    NgxBootstrapIconsModule.pick(allIcons),
+    NgxBootstrapIconsModule.pick(allIcons)
   ],
   exports: [TooltipDirective,BlockCopyPasteDirective],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },

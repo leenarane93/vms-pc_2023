@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Injectable, Input, OnDestroy, Output, Renderer2, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModal, NgbTimeStruct, NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import Stepper from 'bs-stepper';
@@ -75,6 +75,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
   tarrifDetails: any[] = [];
   status: number = 0;
   partyDetails: any[] = [];
+  items:any;
   @ViewChild("table", { static: false }) table: any;
   plid: number = 0;
   seqData: any[] = [];
@@ -92,7 +93,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
   nodeDetails: any = [];
   isCollide: boolean = false;
   active = 1;
-  isActive: boolean = false;
+  isActive: boolean = true;
   submitted = false;
   isCompleted = false;
   model2!: string;
@@ -245,7 +246,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
             if (element != null) {
               var _ele = {
                 id: element.id,
-                fileName: element.fileName,
+                fileName: element.displayName,
                 isChecked: true
               }
               this.mediaDetails.push(_ele);
@@ -280,9 +281,12 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
       else {
         if (this.selectedMedia.length > 0) {
           if (this.isCopy == true) {
+            //this.dataSource = [];
             this.form.patchValue({ playlistName: "" });
             this.selectedMedia.forEach(ele => {
-              this.dataSource.push(ele);
+              ele.fileName = ele.displayName;
+              if(ele.fileName != undefined)
+                this.dataSource.push(ele);
             });
           }
           else
@@ -341,20 +345,25 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
                   _pl.plId = this.plid;
                   _pl.sequenceNo = this.dataSource[i].seqNo;
                   _pl.mdType = this.dataSource[i].mdType;
-                  _pl.mediaName = this.plid + "_" + this.dataSource[i].seqNo + ".avi";
-                  if (_pl.duration == undefined || _pl.duration == 0) {
+                  //_pl.mediaName = this.plid + "_" + this.dataSource[i].seqNo + ".avi";
+                  _pl.mediaName = this.dataSource[i].displayName;
+                  if (_pl.duration == undefined || _pl.duration == "0" || _pl.duration == "") {
                     res = true;
+                    this.dataSource[i].duration = ""; 
                     break;
-                  } else if (_pl.tarrifId == undefined || _pl.tarrifId == 0) {
+                  } else if (_pl.tarrifId == undefined || _pl.tarrifId == "0" || _pl.tarrifId == "") {
                     res = true;
+                    this.dataSource[i].tarrif = "";
                     break;
-                  } else if (_pl.partyId == undefined || _pl.partyId == 0) {
+                  } else if (_pl.partyId == undefined || _pl.partyId == "0" || _pl.partyId == "") {
                     res = true;
+                    this.dataSource[i].party = "";
                     break;
                   }
                   this.plBlData.push(_pl);
                 }
                 if (res == false) {
+                  console.log(this.plBlData);
                   this._media.addPlaylistMedia(this.plBlData, type).subscribe(res => {
                     if (res != undefined && res != null && res.length != 0) {
                       this.toast.success("Saved Successfully.");
@@ -386,14 +395,17 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
         res.forEach((ele: any) => {
           ele.block = ele.blId;
           ele.fileName = ele.mediaName;
+          ele.displayName = ele.mediaName;
           ele.party = ele.partyId;
           ele.tarrif = ele.tarrifId;
+          ele.fileType = ele.mdType;
           this.dataSource.push(ele);
           if (this.isCopy == true) {
             var _ele = {
               id: ele.mdId,
               fileName: ele.mediaName,
-              isChecked: true
+              isChecked: true,
+              fileType: ele.fileType
             }
             this.selectedMedia.push(_ele);
           }
@@ -506,6 +518,8 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
   }
 
   addNewMedia() {
+    if(this.isCopy == true)
+      this.selectedMedia = [];
     this.getMediaDetails();
     this.stepper.to(3);
     this.textDetails = this.mainTextDetails;
@@ -661,11 +675,12 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
 
   MediaCheck(_data: any, event: any, type: any) {
     if (type == 0) {
+      _data.mdId = _data.id;
       if (_data.fileType.toLocaleLowerCase() == "video" && event.currentTarget.checked == true) {
         var _mPath = new MediaDuration();
         _mPath.path = _data.filePath;
         _data.isChecked = true;
-        _data.mdType = "Media";
+        _data.mdType = "Video";
         this._media.getVideoDuration(_mPath).subscribe(res => {
           _data.duration = Math.round(res);
           _data.block = this.currentBlock;
@@ -679,9 +694,9 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
             this.selectedMedia.splice(i, 1);
         }
       }
-      else {
+      else if (_data.fileType.toLocaleLowerCase() == "image") {
         _data.isChecked = true;
-        _data.mdType = "Media";
+        _data.mdType = "Image";
         _data.block = this.currentBlock;
         this.selectedMedia.push(_data);
       }
@@ -699,6 +714,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
         _data.isChecked = true;
         _data.block = this.currentBlock;
         _data.fileType = "Text";
+        _data.displayName = _data.fileName;
         this.selectedMedia.push(_data);
       }
     }
@@ -736,30 +752,53 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  TarrifChange(ele: any, val: any) {
+  TarrifChange(ele: any, val: any, idx: number) {
+    debugger;
+    let i: number = 0;
     if (this.dataSource.length > 0) {
-      var d = this.dataSource.filter((x) => x.id == ele.id);
-      if (d.length > 0) {
-        this.updatePlBlData(ele, 6, val.target.value);
-      } else {
-        this.addAndUpdatePlBlData(ele, 6, val.target.value);
-      }
+      this.dataSource.forEach((eleDta) => {
+        var d = this.dataSource.filter((x) => x.id == ele.id);
+        if (d.length == 0) {
+          this.addAndUpdatePlBlData(ele, 6, val.target.value);
+        }
+        if (idx == i) {
+          this.updatePlBlData(ele, 6, val.target.value, i);
+        }
+
+        i++;
+      });
+      // var d = this.dataSource.filter((x) => x.id == ele.id);
+      // if (d.length > 0) {
+      //   this.updatePlBlData(ele, 6, val.target.value, i);
+      // } else {
+      //   this.addAndUpdatePlBlData(ele, 6, val.target.value);
+      // }
     }
   }
-  PartyChange(ele: any, val: any) {
+  PartyChange(ele: any, val: any, idx: Number) {
+    let i: number = 0;
     if (this.dataSource.length > 0) {
       var d = this.dataSource.filter((x) => x.id == ele.id);
-      if (d.length > 0) {
-        this.updatePlBlData(ele, 5, val.target.value);
-      } else {
+      if (d.length == 0) {
         this.addAndUpdatePlBlData(ele, 5, val.target.value);
       }
+      if (idx == i) {
+        this.updatePlBlData(ele, 5, val.target.value, i);
+      }
+      i++;
+      // var d = this.dataSource.filter((x) => x.id == ele.id);
+      // if (d.length > 0) {
+      //   this.updatePlBlData(ele, 5, val.target.value, i);
+      // } else {
+      //   this.addAndUpdatePlBlData(ele, 5, val.target.value);
+      // }
     }
   }
 
-  updatePlBlData(ele: any, type: any, val: any) {
+  updatePlBlData(ele: any, type: any, val: any, idx: number) {
+    let i: number = 0;
     this.dataSource.forEach((eleDta) => {
-      if (eleDta.id == ele.id) {
+      if (i == idx) {
         if (type == 1) {
           eleDta.block = val;
         } else if (type == 2) {
@@ -774,6 +813,7 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
           eleDta.tarrif = val;
         }
       }
+      i++;
     });
     console.log(this.plBlData);
   }
@@ -820,10 +860,12 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
     this.changeSequence();
   }
 
-  RemoveFromDt(_data: any) {
+  RemoveFromDt(_data: any, idx: number) {
     for (var i = 0; i < this.dataSource.length; i++) {
-      if (this.dataSource[i].id == _data.id)
+      if (i == idx) {
         this.dataSource.splice(i, 1);
+        break;
+      }
     }
   }
 
@@ -845,11 +887,16 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
 
   }
 
-  onDuration(val: any, ele: any) {
+  onDuration(val: any, ele: any, idx: number) {
+    let i: number = 0;
     this.dataSource.forEach((eleDta) => {
-      if (eleDta.id == ele.id && ele.uploadSetId == eleDta.uploadSetId) {
+      // if (eleDta.id == ele.id && ele.uploadSetId == eleDta.uploadSetId) {
+      //   eleDta.duration = val;
+      // }
+      if (i == idx) {
         eleDta.duration = val;
       }
+      i++;
     });
   }
 
@@ -966,6 +1013,48 @@ export class PlaylistConfigureComponent implements OnDestroy, AfterViewInit {
       }
     })
   }
+
+  TarrifAll(_data: any) {
+    if (_data.tarrif == undefined || _data.tarrif == "") {
+      this.toast.error("Tarrif not selected.");
+    } else {
+      this.dataSource.forEach(element => {
+        element.tarrif = _data.tarrif;
+      });
+    }
+  }
+  PartyAll(_data: any) {
+    if (_data.party == undefined || _data.party == "") {
+      this.toast.error("Party not selected.");
+    } else {
+      this.dataSource.forEach(element => {
+        element.party = _data.party;
+      });
+    }
+  }
+
+  plblForm : FormGroup;
+  
+  createItem(): FormGroup {
+    return this.fb.group({ 
+      plId: '',
+      blId: '',
+      duration: '',
+      effectIn: '',
+      effectOut: '',
+      mdId: '',
+      sequenceNo: '',
+      mdType: '',
+      mediaName: '',
+    });
+  }
+
+  CreateFinalForm(){
+    this.plblForm = this.fb.group({
+      items: this.fb.array([])
+    })
+  }
+
 }
 
 

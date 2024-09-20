@@ -5,6 +5,7 @@ import { CommonFacadeService } from 'src/app/facade/facade_services/common-facad
 import { MediaFacadeService } from 'src/app/facade/facade_services/media-facade.service';
 import { InputRequest } from 'src/app/models/request/inputReq';
 import { Globals } from 'src/app/utils/global';
+import { Subscription, interval } from 'rxjs';
 
 @Component({
   selector: 'app-playlist-status',
@@ -12,10 +13,12 @@ import { Globals } from 'src/app/utils/global';
   styleUrls: ['./playlist-status.component.css']
 })
 export class PlaylistStatusComponent {
+  playlistSub: Subscription;
   pager: number = 0; isSearch: boolean = true; startId: number = 0;
   totalRecords: number = 0; totalPages: number = 0; recordPerPage: number = 5;
   listOfPlaylist: any;
   filteredPlaylist: any;
+  subscription: any;
   _request: any = new InputRequest();
   headerArr = [
     { "Head": "Playlist ID", "FieldName": "plId", "type": "number" },
@@ -37,7 +40,8 @@ export class PlaylistStatusComponent {
   }
 
   ngOnInit(): void {
-    this.getPlaylistData();
+    const source = interval(5000);
+    this.subscription = source.subscribe((val) => this.getPlaylistData());
   }
   getPlaylistData() {
     this._commonFacade.loader = true;
@@ -46,6 +50,7 @@ export class PlaylistStatusComponent {
       if (data != null || data != undefined) {
         this.listOfPlaylist = data;
         this.filteredPlaylist = data;
+        this.Search();
       }
     }, (error) => {
       console.log(error);
@@ -73,6 +78,13 @@ export class PlaylistStatusComponent {
     this.getPlaylistData();
   }
   Search() {
-    this.filteredPlaylist = this.listOfPlaylist.filter((x:any)=>x.playlistName.toLocaleLowerCase().includes(this.searchText.toLocaleLowerCase()));
+    this.filteredPlaylist = this.listOfPlaylist.filter((x: any) => x.playlistName.toLocaleLowerCase().includes(this.searchText.toLocaleLowerCase()));
+  }
+
+  ngOnDestroy(): void {
+    if(this.subscription != undefined){
+      this.subscription.unsubscribe();
+      this.subscription.closed;
+    }
   }
 }

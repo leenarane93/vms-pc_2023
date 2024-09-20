@@ -42,8 +42,8 @@ export class HttpService {
     return this._sessionService._getSessionValue("swagger_url");
   }
 
-  _postMethod(_object:any,_appendUrl:string):Observable<any>{
-    return this.http.post( this._api_url+_appendUrl,_object);
+  _postMethod(_object:any,_appendUrl:string,options?:any):Observable<any>{
+    return this.http.post( this._api_url+_appendUrl,_object,options);
   }
   
   _getMethod(_appendUrl:string):Observable<any>{

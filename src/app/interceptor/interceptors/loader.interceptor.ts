@@ -8,6 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { LoaderService } from 'src/app/facade/services/common/loader.service';
+export const InterceptorSkipHeader = 'X-Skip-Interceptor';
 
 @Injectable()
 export class LoaderInterceptor implements HttpInterceptor {
@@ -17,7 +18,9 @@ export class LoaderInterceptor implements HttpInterceptor {
     next: HttpHandler,
     isLoader:boolean=true
   ): Observable<HttpEvent<any>> {
-    if(isLoader) {
+    let IsSkipLoader=request.headers.has(InterceptorSkipHeader);
+    isLoader = IsSkipLoader;
+    if(!isLoader) {
       this.loaderService.showLoader();
       return next.handle(request).pipe(
         finalize(() => this.loaderService.hideLoader())

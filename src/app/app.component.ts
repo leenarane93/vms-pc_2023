@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   title = 'vms-pc';
   public _hubConnecton: HubConnection;
   message: string;
+  ver : string;
   messages: any[] = [];
   config$!: Observable<any>;
   user!: User;
@@ -40,6 +41,7 @@ export class AppComponent implements OnInit {
     private _httpService:HttpService,
     private _global:Globals
   ) {
+    this.ver = environment.version;
     console.log(this.loggedIn);
     // this._facadeService.isLoggedin.subscribe(x => {
     //   debugger;
