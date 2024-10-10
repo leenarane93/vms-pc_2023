@@ -94,6 +94,13 @@ import { PageNotFoundComponent } from './components/shared/page-not-found/page-n
 import { NotificationComponent } from './components/dashboard/notification/notification.component';
 import { CronMngComponent } from './components/publish/cron-mng/cron-mng.component';
 import { PlaylistStatusComponent } from './components/media/playlist-status/playlist-status.component';
+import { MediaStatusComponent } from './components/publish/media-status/media-status.component';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { environment } from 'src/environment';
+import { ChatAppComponent } from './components/shared/chat-app/chat-app.component';
+import { NotificationPanelComponent } from './components/shared/notification-panel/notification-panel.component';
+
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
   declarations: [
@@ -153,6 +160,9 @@ import { PlaylistStatusComponent } from './components/media/playlist-status/play
     NotificationComponent,
     CronMngComponent,
     PlaylistStatusComponent,
+    MediaStatusComponent,
+    ChatAppComponent,
+    NotificationPanelComponent,
   ],
   imports: [
     CommonModule,
@@ -186,7 +196,8 @@ import { PlaylistStatusComponent } from './components/media/playlist-status/play
     CdkTableModule,
     NgMultiSelectDropDownModule,
     ToastModule,
-    NgxBootstrapIconsModule.pick(allIcons)
+    NgxBootstrapIconsModule.pick(allIcons),
+    SocketIoModule.forRoot(config),
   ],
   exports: [TooltipDirective,BlockCopyPasteDirective],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },

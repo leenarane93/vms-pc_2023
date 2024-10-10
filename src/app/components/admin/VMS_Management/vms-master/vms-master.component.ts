@@ -27,6 +27,13 @@ export class VmsMasterComponent {
   closeResult!: string;
   _request: any = new InputRequest();
 
+  headerArr = [
+    { "Head": "ID", "FieldName": "id", "type": "number" },
+    { "Head": "VMSID", "FieldName": "vmsId", "type": "string" },
+    { "Head": "Device Serial No", "FieldName": "serialNo", "type": "string" },
+    { "Head": "Description", "FieldName": "description", "type": "string" },
+    { "Head": "Status", "FieldName": "isActive", "type": "boolean" }
+  ];
   constructor(private adminFacade: AdminFacadeService,
     private global: Globals,
     private modalService: NgbModal,
@@ -38,13 +45,6 @@ export class VmsMasterComponent {
     this.GetVmsData();
   }
 
-  headerArr = [
-    { "Head": "ID", "FieldName": "id", "type": "number" },
-    { "Head": "VMSID", "FieldName": "vmsId", "type": "string" },
-    { "Head": "Device Serial No", "FieldName": "serialNo", "type": "string" },
-    { "Head": "Description", "FieldName": "description", "type": "string" },
-    { "Head": "Status", "FieldName": "isActive", "type": "boolean" }
-  ];
 
   onPager(pager: number) {
     this._request.pageSize = this.recordPerPage;

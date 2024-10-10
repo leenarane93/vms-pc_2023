@@ -4,4 +4,5 @@ import { Injectable } from '@angular/core';
 export class Globals {
   CurrentPage: string = '';
   UserCode?:any = '';
+  NotificationCount?:any = '';
 }

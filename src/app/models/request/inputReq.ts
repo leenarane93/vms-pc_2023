@@ -3,6 +3,7 @@ export class InputRequest{
     currentPage!:number;
     startId!:number;
     searchItem!:string;
+    filter!:string;
 }
 
 export class ModalRequest {

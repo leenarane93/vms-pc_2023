@@ -35,6 +35,8 @@ import { NetworkReportComponent } from './components/reports/network-report/netw
 import { PlaylistReportComponent } from './components/reports/playlist-report/playlist-report.component';
 import { PageNotFoundComponent } from './components/shared/page-not-found/page-not-found.component';
 import { PlaylistStatusComponent } from './components/media/playlist-status/playlist-status.component';
+import { ChatAppComponent } from './components/shared/chat-app/chat-app.component';
+import { NotificationPanelComponent } from './components/shared/notification-panel/notification-panel.component';
 
 const routes: Routes = [
   {
@@ -249,6 +251,12 @@ const routes: Routes = [
     path: "reports/playlist-report", 
     component: PlaylistReportComponent,
     data: { title: 'Playlist Report' },
+    canActivate: [AuthGuradService]
+  },
+  { 
+    path: "notification", 
+    component: NotificationPanelComponent,
+    data: { title: 'Notification Report' },
     canActivate: [AuthGuradService]
   },
   //Wild Card Route for 404 request 

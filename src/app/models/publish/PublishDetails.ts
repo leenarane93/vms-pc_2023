@@ -15,5 +15,7 @@ export class publishTime {
     pubTo: string;
     pubTime: publishTime[];
     username: string;
+    pubType : string;
+    status : number;
   }
   

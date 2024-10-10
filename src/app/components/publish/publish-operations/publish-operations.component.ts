@@ -471,8 +471,9 @@ export class PublishOperationsComponent implements OnInit {
               valid = true;
             }
           }
-
+          _pubTime.status = 0;
           if (valid == true && this.IsReg) {
+            _pubTime.pubType = "Regular";
             _pubTime.pubTime = _playTime;
             let globalFromDate = new Date(_pubTime.pubFrom);
             let globalToDate = new Date(_pubTime.pubTo);
@@ -498,6 +499,7 @@ export class PublishOperationsComponent implements OnInit {
             }
 
           } else {
+            _pubTime.pubType = "Cron";
             if (this.cron != null) {
               this._publish.addPublishCron(this.cron).subscribe(res => {
                 if (res != null)
